@@ -1,18 +1,18 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
-import 'tool.dart';
-import '../data_objects/pixel_controller.dart';
+import 'package:project_pickle/tools/tool.dart';
+import 'package:project_pickle/widgets/pixels/pixel_canvas.dart';
 
 class LineTool extends Tool {
   LineTool(
     this._context,
-    this._controller
+    this._canvas
   );
 
 
   final BuildContext _context;
-  final PixelController _controller;
+  final PixelCanvas _canvas;
 
   Offset _startPoint;
   Offset _endPoint;
@@ -26,11 +26,11 @@ class LineTool extends Tool {
     
     if (_startPoint == null) {
       _startPoint = new Offset(snappedX, snappedY);
-      _controller.setPixel(snappedX, snappedY, Colors.purple);
+      _canvas.setPixel(snappedX, snappedY, Colors.purple);
     }
     else {
       _endPoint = new Offset(snappedX, snappedY);
-      _controller.setPixelsFromLine(_startPoint, _endPoint, Colors.purple);
+      _canvas.setPixelsFromLine(_startPoint, _endPoint, Colors.purple);
     }
   }
 
@@ -46,19 +46,19 @@ class LineTool extends Tool {
     else {
       _endPoint = new Offset(snappedX, snappedY);
     }
-    _controller.setPixelsFromLine(_startPoint, _endPoint, Colors.green);
+    _canvas.setPixelsFromLine(_startPoint, _endPoint, Colors.green);
   }
 
   @override
   void handlePanEnd(DragEndDetails details) {
-    _controller.finalizePixels();
+    _canvas.finalizePixels();
     resetLinePoints();
   }
 
   @override
   void handleTapUp(TapUpDetails details) {
     if(_endPoint != null) {
-      _controller.finalizePixels();
+      _canvas.finalizePixels();
       resetLinePoints();
     }
   }

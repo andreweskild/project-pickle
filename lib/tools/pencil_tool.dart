@@ -1,17 +1,17 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
-import 'tool.dart';
-import '../data_objects/pixel_controller.dart';
+import 'package:project_pickle/tools/tool.dart';
+import 'package:project_pickle/widgets/pixels/pixel_canvas.dart';
 
-class PixelTool extends Tool {
-  PixelTool(
+class PencilTool extends Tool {
+  PencilTool(
     this._context,
     this._controller
   );
 
   final BuildContext _context;
-  final PixelController _controller;
+  final PixelCanvas _controller;
 
   Offset _lastPoint;
 

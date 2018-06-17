@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import '../data_objects/project.dart';
-
-import '../elements/project_card.dart';
-
-import '../layout/responsive_scaffold.dart';
+import 'package:project_pickle/layout/responsive_scaffold.dart';
+import 'package:project_pickle/widgets/projects/project_card.dart';
 
 class ProjectsPage extends StatefulWidget {
   ProjectsPage({
@@ -35,18 +32,13 @@ class _ProjectsPageState extends State<ProjectsPage> {
     return new ResponsiveScaffold(
       name: "Projects",
       body: new GridView.extent(
-  primary: false,
-  padding: const EdgeInsets.all(20.0),
-  mainAxisSpacing: 24.0,
-  crossAxisSpacing: 24.0,
-  maxCrossAxisExtent: 300.0,
-  children: devProjects
-)
-        // child: new Wrap(
-        //   spacing: 24.0, // gap between adjacent chips
-        //   runSpacing: 24.0, // gap between lines
-        //   children: devProjects,
-        // ),
+        primary: false,
+        padding: const EdgeInsets.all(20.0),
+        mainAxisSpacing: 24.0,
+        crossAxisSpacing: 24.0,
+        maxCrossAxisExtent: 300.0,
+        children: devProjects
+      )
     );
   }
 }

@@ -1,4 +1,4 @@
-import '../tools/tool_types.dart';
+import 'package:project_pickle/data_objects/tool_types.dart';
 
 class SetCurrentToolTypeAction {
   final ToolType toolType;
