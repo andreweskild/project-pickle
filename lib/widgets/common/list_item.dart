@@ -20,7 +20,8 @@ class ListItem extends StatelessWidget {
     return new Padding(
       padding: new EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
       child: new FlatButton(
-        color: isHighlighted ? Colors.amberAccent : Colors.transparent,
+        color: isHighlighted ? Theme.of(context).highlightColor : Colors.transparent,
+        textColor: isHighlighted ? Theme.of(context).accentTextTheme.button.color : Colors.black,
         padding: new EdgeInsets.all(8.0),
         shape: new RoundedRectangleBorder(
           borderRadius: new BorderRadius.circular(6.0),

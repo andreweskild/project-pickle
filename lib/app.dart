@@ -22,10 +22,13 @@ class MyApp extends StatelessWidget {
       child: new MaterialApp(
         title: 'Project pickle',
         theme: new ThemeData(
-          accentColor: Colors.amber,
+          accentColor: Colors.amberAccent,
           primarySwatch: Colors.amber,
           splashColor: Colors.amber,
-          highlightColor: Colors.amberAccent,
+          highlightColor: Colors.amberAccent.shade100,
+          accentTextTheme: Theme.of(context).accentTextTheme.copyWith(
+            button: Theme.of(context).accentTextTheme.button.copyWith(color: Colors.amber.shade900)
+          )
         ),
         home: new PixelEditorPage(
           name: 'Pickle Editor'
