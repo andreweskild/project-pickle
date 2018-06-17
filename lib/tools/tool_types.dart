@@ -1,0 +1,4 @@
+enum ToolType {
+  pencil,
+  line,
+}

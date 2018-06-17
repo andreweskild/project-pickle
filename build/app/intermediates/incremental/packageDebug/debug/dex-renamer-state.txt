@@ -1,0 +1,4 @@
+#Sun Jun 17 03:28:20 UTC 2018
+base.0=/home/andreweskild/dart/project-pickle/build/app/intermediates/transforms/dexMerger/debug/0
+path.0=classes.dex
+renamed.0=classes.dex
