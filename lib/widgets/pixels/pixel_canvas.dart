@@ -27,13 +27,12 @@ class PixelCanvas extends StatefulWidget {
   var _redoPixels = <Pixel>[];
 
 
-  void setPixel(double x, double y, Color color) {
+  void addPreviewPixel(double x, double y, Color color) {
     _previewPixels.add(new Pixel(x, y, color));
     _notifier.notifyListeners();
   }
 
-  void setPixelsFromLine(Offset p1, Offset p2, Color color) {
-    _previewPixels.clear();
+  void addPreviewPixelsFromLine(Offset p1, Offset p2, Color color) {
     var horizontalMovement = (p1.dx - p2.dx).abs();
     var verticalMovement = (p1.dy - p2.dy).abs();
 
@@ -49,7 +48,7 @@ class PixelCanvas extends StatefulWidget {
       var slope = (p2.dy - p1.dy) / (p2.dx - p1.dx);
       var crossAxisPosition = p1.dy;
       for (double i = p1.dx; i <= p2.dx; i++) {
-        setPixel(i, crossAxisPosition.round().toDouble(), color);
+        addPreviewPixel(i, crossAxisPosition.round().toDouble(), color);
         crossAxisPosition = crossAxisPosition + slope;
       }
     }
@@ -64,14 +63,19 @@ class PixelCanvas extends StatefulWidget {
       var slope = (p2.dx - p1.dx) / (p2.dy - p1.dy);
       var crossAxisPosition = p1.dx;
       for (double i = p1.dy; i >= p2.dy; i--) {
-        setPixel(crossAxisPosition.round().toDouble(), i, color);
+        addPreviewPixel(crossAxisPosition.round().toDouble(), i, color);
         crossAxisPosition = crossAxisPosition - slope;
       }
     }
   }
 
-  void finalizePixels() {
+  void finalizePreview() {
     _pixels.addAll(_previewPixels);
+    _previewPixels.clear();
+    _notifier.notifyListeners();
+  }
+
+  void resetPreview() {
     _previewPixels.clear();
     _notifier.notifyListeners();
   }

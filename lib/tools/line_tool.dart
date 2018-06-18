@@ -26,16 +26,18 @@ class LineTool extends Tool {
     
     if (_startPoint == null) {
       _startPoint = new Offset(snappedX, snappedY);
-      _canvas.setPixel(snappedX, snappedY, Colors.purple);
+      _canvas.addPreviewPixel(snappedX, snappedY, Colors.purple);
     }
     else {
       _endPoint = new Offset(snappedX, snappedY);
-      _canvas.setPixelsFromLine(_startPoint, _endPoint, Colors.purple);
+      _canvas.addPreviewPixelsFromLine(_startPoint, _endPoint, Colors.purple);
     }
   }
 
   @override
   void handlePanUpdate(DragUpdateDetails details) {
+    _canvas.resetPreview();
+    
     RenderBox box = _context.findRenderObject();
     var pos = box.globalToLocal(details.globalPosition);
     double snappedX = pos.dx.floorToDouble();
@@ -46,19 +48,19 @@ class LineTool extends Tool {
     else {
       _endPoint = new Offset(snappedX, snappedY);
     }
-    _canvas.setPixelsFromLine(_startPoint, _endPoint, Colors.green);
+    _canvas.addPreviewPixelsFromLine(_startPoint, _endPoint, Colors.green);
   }
 
   @override
   void handlePanEnd(DragEndDetails details) {
-    _canvas.finalizePixels();
+    _canvas.finalizePreview();
     resetLinePoints();
   }
 
   @override
   void handleTapUp(TapUpDetails details) {
     if(_endPoint != null) {
-      _canvas.finalizePixels();
+      _canvas.finalizePreview();
       resetLinePoints();
     }
   }

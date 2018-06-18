@@ -7,11 +7,11 @@ import 'package:project_pickle/widgets/pixels/pixel_canvas.dart';
 class PencilTool extends Tool {
   PencilTool(
     this._context,
-    this._controller
+    this._canvas
   );
 
   final BuildContext _context;
-  final PixelCanvas _controller;
+  final PixelCanvas _canvas;
 
   Offset _lastPoint;
 
@@ -22,7 +22,7 @@ class PencilTool extends Tool {
     var pos = box.globalToLocal(details.globalPosition);
     double snappedX = pos.dx.floorToDouble();
     double snappedY = pos.dy.floorToDouble();
-    _controller.setPixel(snappedX, snappedY, Colors.red);
+    _canvas.addPreviewPixel(snappedX, snappedY, Colors.red);
   }
 
   @override
@@ -35,19 +35,19 @@ class PencilTool extends Tool {
     if(_lastPoint != null) {
       if((_lastPoint.dx - snappedX).abs() > 1 || 
         (_lastPoint.dy - snappedY).abs() > 1) {
-          _controller.setPixelsFromLine(
+          _canvas.addPreviewPixelsFromLine(
             _lastPoint,
             new Offset(snappedX, snappedY), 
             Colors.red
           );
       }
       else {
-        _controller.setPixel(snappedX, snappedY, Colors.blue);
+        _canvas.addPreviewPixel(snappedX, snappedY, Colors.blue);
       }
       _lastPoint = new Offset(snappedX, snappedY);
     }
     else {
-      _controller.setPixel(snappedX, snappedY, Colors.green);
+      _canvas.addPreviewPixel(snappedX, snappedY, Colors.green);
       _lastPoint = new Offset(snappedX, snappedY);
     }
   }
@@ -55,11 +55,12 @@ class PencilTool extends Tool {
   @override
   void handlePanEnd(DragEndDetails details) {
     _lastPoint = null;
+    _canvas.finalizePreview();
   }
 
   @override
   void handleTapUp(TapUpDetails details) {
-    
+    _canvas.finalizePreview();
   }
 
 }
