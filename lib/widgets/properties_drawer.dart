@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:project_pickle/widgets/color_selector/color_selection_rect.dart';
-import 'package:project_pickle/widgets/color_selector/hue_slider.dart';
+import 'package:project_pickle/widgets/color_selector/color_chip.dart';
 
 
 class ObjectPropertiesDrawer extends StatelessWidget {
@@ -21,8 +20,25 @@ class ObjectPropertiesDrawer extends StatelessWidget {
       child: new ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          new ColorSelectionRect(),
-          new HueSlider(),
+          new Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: new Row(
+              children: <Widget>[
+                new Expanded(
+                  child: new ColorChip(
+                    color: Colors.blue,
+                    label: 'Foreground',
+                  ),
+                ),
+                new Expanded(
+                  child: new ColorChip(
+                    color: Colors.yellow,
+                    label: 'Background'
+                  ),
+                ),
+              ],
+            ),
+          ),
           new ListTile(
             title: new Text('Properties 1'),
             onTap: () {

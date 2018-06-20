@@ -33,15 +33,6 @@ class _ColorSelectionRectState extends State<ColorSelectionRect> {
             shape: new RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(6.0),
             ),
-              child: new AspectRatio(
-              aspectRatio: 1.33,
-              child: new GestureDetector(
-                child: new CustomPaint(
-                  willChange: true,
-                  painter: new ColorGradientPainter(new Color.fromRGBO(1, 0, 0, 1.0), widget._notifier),
-                ),
-              ),
-            ),
           ),
         );
       },

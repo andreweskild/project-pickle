@@ -28,7 +28,7 @@ class _HueSliderState extends State<HueSlider> {
               borderRadius: new BorderRadius.circular(6.0),
             ),
               child: new SizedBox(
-              height: 12.0,
+              height: 24.0,
               child: new GestureDetector(
                 child: new CustomPaint(
                   willChange: true,
