@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:project_pickle/layout/responsive_scaffold.dart';
+import 'package:project_pickle/widgets/layout/responsive_scaffold.dart';
 import 'package:project_pickle/widgets/projects/project_card.dart';
 
 class ProjectsPage extends StatefulWidget {

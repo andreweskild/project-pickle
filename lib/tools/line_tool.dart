@@ -1,66 +1,31 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
-import 'package:project_pickle/tools/tool.dart';
-import 'package:project_pickle/widgets/pixels/pixel_canvas.dart';
+import 'package:project_pickle/tools/drawing_tool.dart';
 
-class LineTool extends Tool {
-  LineTool(
-    this._context,
-    this._canvas
-  );
-
-
-  final BuildContext _context;
-  final PixelCanvas _canvas;
+class LineTool extends DrawingTool {
+  LineTool() : super();
 
   Offset _startPoint;
   Offset _endPoint;
 
   @override
-  void handlePanDown(DragDownDetails details) {
-    RenderBox box = _context.findRenderObject();
-    var pos = box.globalToLocal(details.globalPosition);
-    double snappedX = pos.dx.floorToDouble();
-    double snappedY = pos.dy.floorToDouble();
-    
+  void handleDrawPosUpdate(Offset pos) {
     if (_startPoint == null) {
-      _startPoint = new Offset(snappedX, snappedY);
-      _canvas.addPreviewPixel(snappedX, snappedY, Colors.purple);
+      _startPoint = pos;
+      addPixel(pos);
     }
     else {
-      _endPoint = new Offset(snappedX, snappedY);
-      _canvas.addPreviewPixelsFromLine(_startPoint, _endPoint, Colors.purple);
+      _endPoint = pos;
+      addPixelLine(_startPoint, _endPoint);
     }
   }
 
   @override
-  void handlePanUpdate(DragUpdateDetails details) {
-    _canvas.resetPreview();
-    
-    RenderBox box = _context.findRenderObject();
-    var pos = box.globalToLocal(details.globalPosition);
-    double snappedX = pos.dx.floorToDouble();
-    double snappedY = pos.dy.floorToDouble();
-    if(_startPoint == null) {
-      _startPoint = new Offset(snappedX, snappedY);
-    }
-    else {
-      _endPoint = new Offset(snappedX, snappedY);
-    }
-    _canvas.addPreviewPixelsFromLine(_startPoint, _endPoint, Colors.green);
-  }
-
-  @override
-  void handlePanEnd(DragEndDetails details) {
-    _canvas.finalizePreview();
-    resetLinePoints();
-  }
-
-  @override
-  void handleTapUp(TapUpDetails details) {
-    if(_endPoint != null) {
-      _canvas.finalizePreview();
+  void handleDrawEnd() {
+    if (onDrawFinished != null &&
+        _endPoint != null) {
+      onDrawFinished();
       resetLinePoints();
     }
   }

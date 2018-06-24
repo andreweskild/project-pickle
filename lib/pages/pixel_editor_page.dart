@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:project_pickle/layout/responsive_scaffold.dart';
+import 'package:project_pickle/widgets/layout/responsive_scaffold.dart';
 import 'package:project_pickle/widgets/common/multi_touch_container.dart';
 import 'package:project_pickle/widgets/pixels/pixel_canvas.dart';
-import 'package:project_pickle/widgets/tools/tools_drawer.dart';
-import 'package:project_pickle/widgets/properties_drawer.dart';
+import 'package:project_pickle/widgets/layout/left_drawer.dart';
+import 'package:project_pickle/widgets/layout/right_drawer.dart';
 
 class PixelEditorPage extends StatefulWidget {
   PixelEditorPage({
@@ -14,14 +14,13 @@ class PixelEditorPage extends StatefulWidget {
   }) : super(key: key);
 
   final String name;
-
-  final _pixelCanvas = new PixelCanvas();
   
   @override
   _PixelEditorPageState createState() => new _PixelEditorPageState();
 }
 
 class _PixelEditorPageState extends State<PixelEditorPage> {
+  PixelCanvas _canvas = new PixelCanvas();
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +29,12 @@ class _PixelEditorPageState extends State<PixelEditorPage> {
       body: new MultiTouchContainer(
         child: new LayoutBuilder(
           builder: (context, constraints) {
-            return widget._pixelCanvas;
+            return _canvas;
           }
         )
       ),
-      drawer: new ToolsDrawer(),
-      endDrawer: new ObjectPropertiesDrawer(),
+      drawer: new LeftDrawer(),
+      endDrawer: new RightDrawer(),
     );
   }
 }

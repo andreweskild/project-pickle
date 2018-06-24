@@ -2,118 +2,48 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:project_pickle/actions/action_controller.dart';
+import 'package:project_pickle/data_objects/pixel_layer.dart';
 import 'package:project_pickle/data_objects/tool_types.dart';
-import 'package:project_pickle/data_objects/pixel.dart';
 import 'package:project_pickle/state/app_state.dart';
-import 'package:project_pickle/tools/line_tool.dart';
-import 'package:project_pickle/tools/pencil_tool.dart';
-import 'package:project_pickle/tools/tool.dart';
 import 'package:project_pickle/widgets/pixels/pixel_painter.dart';
-
-class PixelChangeNotifier extends ChangeNotifier {
-  PixelChangeNotifier();
-}
 
 
 class PixelCanvas extends StatefulWidget {
   PixelCanvas({
     Key key,
   }) : super(key: key);
-  final _notifier = new PixelChangeNotifier();
-
-
-  var _pixels = <Pixel>[];
-  var _previewPixels = <Pixel>[];
-  var _redoPixels = <Pixel>[];
-
-
-  void addPreviewPixel(double x, double y, Color color) {
-    _previewPixels.add(new Pixel(x, y, color));
-    _notifier.notifyListeners();
-  }
-
-  void addPreviewPixelsFromLine(Offset p1, Offset p2, Color color) {
-    var horizontalMovement = (p1.dx - p2.dx).abs();
-    var verticalMovement = (p1.dy - p2.dy).abs();
-
-    // if line is more horizontal
-    if(horizontalMovement >= verticalMovement) {
-      // if start is higher
-      if (p1.dx > p2.dx) {
-        // swap points
-        var tempOffset = p1;
-        p1 = p2;
-        p2 = tempOffset;
-      }
-      var slope = (p2.dy - p1.dy) / (p2.dx - p1.dx);
-      var crossAxisPosition = p1.dy;
-      for (double i = p1.dx; i <= p2.dx; i++) {
-        addPreviewPixel(i, crossAxisPosition.round().toDouble(), color);
-        crossAxisPosition = crossAxisPosition + slope;
-      }
-    }
-    else {
-      // if start is higher
-      if (p1.dy < p2.dy) {
-        // swap points
-        var tempOffset = p1;
-        p1 = p2;
-        p2 = tempOffset;
-      }
-      var slope = (p2.dx - p1.dx) / (p2.dy - p1.dy);
-      var crossAxisPosition = p1.dx;
-      for (double i = p1.dy; i >= p2.dy; i--) {
-        addPreviewPixel(crossAxisPosition.round().toDouble(), i, color);
-        crossAxisPosition = crossAxisPosition - slope;
-      }
-    }
-  }
-
-  void finalizePreview() {
-    _pixels.addAll(_previewPixels);
-    _previewPixels.clear();
-    _notifier.notifyListeners();
-  }
-
-  void resetPreview() {
-    _previewPixels.clear();
-    _notifier.notifyListeners();
-  }
 
   @override
   _PixelCanvasState createState() => new _PixelCanvasState();
 }
 
 class _PixelCanvasState extends State<PixelCanvas> {
-  Tool _currentTool;
+  ActionController _controller;
 
   @override
   Widget build(BuildContext context) {
-
-
     return new StoreConnector<AppState, ToolType>(
             converter: (store) => store.state.currentToolType,
             builder: (context, toolType) {
-              switch (toolType) {
-                case ToolType.line: 
-                  _currentTool = new LineTool(context, widget);
-                  break;
-                case ToolType.pencil: 
-                  _currentTool = new PencilTool(context, widget);
-                  break;
+              if(_controller == null) {
+                _controller = new ActionController(context);
               }
+              _controller.setCurrentToolType(toolType);
+              _controller.setCurrentLayerIndex(0);
+
               return new GestureDetector(
                 onPanUpdate: (details) {
-                  _currentTool.handlePanUpdate(details);
+                  _controller.handlePanUpdate(details);
                 },
                 onPanDown: (details) {
-                  _currentTool.handlePanDown(details);
+                  _controller.handlePanDown(details);
                 },
                 onPanEnd: (details) {
-                  _currentTool.handlePanEnd(details);
+                  _controller.handlePanEnd(details);
                 },
                 onTapUp: (details) {
-                  _currentTool.handleTapUp(details);
+                  _controller.handleTapUp(details);
                 },
                 child: SizedBox(
                   width: 32.0,
@@ -123,12 +53,12 @@ class _PixelCanvasState extends State<PixelCanvas> {
                       color: Colors.white
                     ),
                     child: new CustomPaint(
-                      willChange: true,
-                      painter: new PixelPainter(widget._pixels, widget._previewPixels, widget._notifier),
+                        willChange: true,
+                        painter: new PixelPainter(_controller.finalLayers, _controller.previewLayer, _controller.changeNotifier),
+                      )
                     ),
                   ),
-                ),
-              );
+                );
             },
           );
   }
