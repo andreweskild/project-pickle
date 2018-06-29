@@ -25,29 +25,26 @@ class LayersCard extends StatelessWidget {
       title: 'Layers',
       children: <Widget>[
         new Expanded(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 0.0),
-            child: new ConstrainedBox(
-              constraints: new BoxConstraints.expand(),
-              child: new ListView(
-                shrinkWrap: true,
-                children: layers.map(
-                  (name) => new ListItem(
-                    icon: new SizedBox(
-                      height: 48.0,
-                      child: new AspectRatio(
-                        aspectRatio: 1.0,
-                        child: new Material(
-                          color: Colors.grey.shade100,
-                        ),
+          child: new ConstrainedBox(
+            constraints: new BoxConstraints.expand(),
+            child: new ListView(
+              shrinkWrap: true,
+              children: layers.map(
+                (name) => new ListItem(
+                  icon: new SizedBox(
+                    height: 48.0,
+                    child: new AspectRatio(
+                      aspectRatio: 1.0,
+                      child: new Material(
+                        color: Colors.grey.shade100,
                       ),
                     ),
-                    label: name,
-                    onTap: (){},
-                  )
-                ).toList(),
-              )
-            ),
+                  ),
+                  label: name,
+                  onTap: (){},
+                )
+              ).toList(),
+            )
           ),
         )
       ],

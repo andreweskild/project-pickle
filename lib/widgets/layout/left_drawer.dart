@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'package:project_pickle/widgets/color_selector/color_selection_card.dart';
 import 'package:project_pickle/widgets/tools/tools_card.dart';
-import 'package:project_pickle/widgets/preview_window/preview_card.dart';
+import 'package:project_pickle/widgets/palette_selector/palette_card.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({
@@ -18,8 +19,9 @@ class LeftDrawer extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 4.0),
             child: Column(
               children: <Widget>[
-                new Expanded(child: new ToolsCard()),
-                new PreviewCard(),
+                new ToolsCard(),
+                new ColorSelectionCard(),
+                new Expanded(child: new PaletteCard()),
               ],
             ),
           ),

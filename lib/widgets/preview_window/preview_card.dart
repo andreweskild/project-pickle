@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:project_pickle/widgets/layout/left_drawer_card.dart';
+import 'package:project_pickle/widgets/layout/right_drawer_card.dart';
 
 
 class PreviewCard extends StatelessWidget {
@@ -13,7 +13,7 @@ class PreviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new LeftDrawerCard(
+    return new RightDrawerCard(
       title: 'Preview',
       children: <Widget>[
         Padding(

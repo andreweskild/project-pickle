@@ -24,8 +24,33 @@ class ToolsCard extends StatelessWidget {
           toolType: ToolType.pencil,
         ),
         new ToolsListItem(
+          icon: new Icon(Icons.brightness_1),
+          label: 'Eraser Tool',
+          toolType: ToolType.line,
+        ),
+        new ToolsListItem(
+          icon: new Icon(Icons.brightness_1),
+          label: 'Fill Tool',
+          toolType: ToolType.line,
+        ),
+        new ToolsListItem(
           icon: new Icon(Icons.brush),
-          label: 'Line Tool',
+          label: 'Path Tool',
+          toolType: ToolType.line,
+        ),
+        new ToolsListItem(
+          icon: new Icon(Icons.brightness_1),
+          label: 'Rectangle Tool',
+          toolType: ToolType.line,
+        ),
+        new ToolsListItem(
+          icon: new Icon(Icons.brightness_1),
+          label: 'Circle Tool',
+          toolType: ToolType.line,
+        ),
+        new ToolsListItem(
+          icon: new Icon(Icons.brightness_1),
+          label: 'Selection Tool',
           toolType: ToolType.line,
         ),
       ],

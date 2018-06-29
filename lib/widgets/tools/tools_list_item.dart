@@ -5,14 +5,29 @@ import 'package:project_pickle/data_objects/tool_types.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/common/list_item.dart';
 
-class ToolState {
-  ToolState({
+class _ToolModel {
+  VoidCallback callback;
+  ToolType currentToolType;
+  
+  _ToolModel({
     this.callback,
     this.currentToolType
   });
 
-  VoidCallback callback;
-  ToolType currentToolType;
+  @override
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + currentToolType.hashCode;
+    return result;
+  }
+  
+  @override
+  bool operator ==(dynamic other) {
+    if (other is! _ToolModel) return false;
+    _ToolModel model = other;
+    return (model.currentToolType == currentToolType && 
+      model.callback == callback);
+  }
 }
 
 class ToolsListItem extends StatelessWidget {
@@ -29,19 +44,20 @@ class ToolsListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<AppState, ToolState>(
+    return new StoreConnector<AppState, _ToolModel>(
+      distinct: true,
       converter: (store) {
-        return new ToolState(
+        return new _ToolModel(
           callback: () => store.dispatch(new SetCurrentToolTypeAction(toolType)),
           currentToolType: store.state.currentToolType,
-          ); 
+        ); 
       },
-      builder: (context, state) {
+      builder: (context, toolModel) {
         return new ListItem(
           icon: icon,
           label: label,
-          isHighlighted: state.currentToolType == toolType,
-          onTap: state.callback,
+          isHighlighted: toolModel.currentToolType == toolType,
+          onTap: toolModel.callback,
         );
       },
     );

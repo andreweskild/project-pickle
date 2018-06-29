@@ -47,7 +47,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
           // return Desktop Scaffold
           return new Scaffold(
             appBar: new AppBar(
-              elevation: 0.5,
+              elevation: 1.0,
               title: new Text(widget.name),
               primary: true,
             ),

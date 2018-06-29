@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:project_pickle/widgets/layout/responsive_scaffold.dart';
-import 'package:project_pickle/widgets/common/multi_touch_container.dart';
+import 'package:project_pickle/widgets/pixels/canvas_gesture_container.dart';
 import 'package:project_pickle/widgets/pixels/pixel_canvas.dart';
 import 'package:project_pickle/widgets/layout/left_drawer.dart';
 import 'package:project_pickle/widgets/layout/right_drawer.dart';
@@ -13,6 +13,8 @@ class PixelEditorPage extends StatefulWidget {
     this.name,
   }) : super(key: key);
 
+  final int height = 32, width = 32;
+
   final String name;
   
   @override
@@ -20,18 +22,26 @@ class PixelEditorPage extends StatefulWidget {
 }
 
 class _PixelEditorPageState extends State<PixelEditorPage> {
-  PixelCanvas _canvas = new PixelCanvas();
+  PixelCanvas _canvas;
+
+  void initCanvas() {
+    _canvas = new PixelCanvas(
+      height: widget.height,
+      width: widget.width,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    if (_canvas == null) {
+      initCanvas();
+    }
+
     return new ResponsiveScaffold(
       name: widget.name,
-      body: new MultiTouchContainer(
-        child: new LayoutBuilder(
-          builder: (context, constraints) {
-            return _canvas;
-          }
-        )
+      body: new CanvasGestureContainer(
+        canvas: _canvas,
       ),
       drawer: new LeftDrawer(),
       endDrawer: new RightDrawer(),
