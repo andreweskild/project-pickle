@@ -65,6 +65,7 @@ class _PixelCanvasState extends State<PixelCanvas> {
         // holds the highest number of mouse/touch events
         // that have been in contact with the screen during
         // the current gesture.
+
         int maxPointerCount = 0;
         return new Listener(
           onPointerMove: (details) {
