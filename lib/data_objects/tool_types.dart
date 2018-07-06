@@ -1,4 +1,6 @@
 enum ToolType {
-  pencil,
+  eraser,
+  fill,
   line,
+  pencil,
 }

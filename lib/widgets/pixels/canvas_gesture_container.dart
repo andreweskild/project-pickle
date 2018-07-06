@@ -1,14 +1,14 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:project_pickle/widgets/pixels/pixel_canvas.dart';
+import 'package:project_pickle/widgets/pixels/canvas_controller.dart';
 
 class CanvasGestureContainer extends StatefulWidget {
   const CanvasGestureContainer({
     Key key,
-    this.canvas,
+    this.canvasController,
   }) : super(key: key);
 
-  final PixelCanvas canvas;
+  final CanvasController canvasController;
 
 
   @override
@@ -39,9 +39,9 @@ class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
     double initialScale;
 
     if (viewSize.width < viewSize.height) {
-      initialScale = (viewSize.width - padding*2) / widget.canvas.width;
+      initialScale = (viewSize.width - padding*2) / widget.canvasController.width;
     } else {
-      initialScale = (viewSize.height - padding*2) / widget.canvas.height;
+      initialScale = (viewSize.height - padding*2) / widget.canvasController.height;
     }
 
     _startingFocalPoint = focalPoint;
@@ -77,7 +77,7 @@ class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
           onScaleUpdate: _handleScaleUpdate,
           child: new Container(
             child: new Center (
-              child: widget.canvas,
+              child: widget.canvasController,
             ),
             transform: _matrix,
           ),

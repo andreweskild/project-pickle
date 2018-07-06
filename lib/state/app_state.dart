@@ -1,40 +1,64 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 
 import 'package:project_pickle/data_objects/pixel_layer.dart';
 import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/data_objects/tool_types.dart';
-
-class SetCurrentToolTypeAction {
-  final ToolType toolType;
-
-  SetCurrentToolTypeAction(this.toolType);
-}
-
-class SetCurrentColorAction {
-  final HSLColor color;
-
-  SetCurrentColorAction(this.color);
-}
+import 'package:project_pickle/widgets/pixels/pixel_canvas_layer.dart';
 
 class AddCurrentColorToPaletteAction {
   AddCurrentColorToPaletteAction();
 }
 
+class AddNewLayerAction {
+  AddNewLayerAction(this.name);
+  final String name;
+}
+
+class SetCurrentToolTypeAction {
+  SetCurrentToolTypeAction(this.toolType);
+  final ToolType toolType;
+}
+
+class SetCurrentColorAction {
+  SetCurrentColorAction(this.color);
+  final HSLColor color;
+}
+
+
 class AddPixelAction {
   AddPixelAction(
     this.pos,
-    this.color
   );
 
   final Offset pos;
-  final Color color;
+}
+
+class RemovePixelAction {
+  RemovePixelAction(
+      this. pos,
+      );
+  final Offset pos;
+}
+
+class ClearPreviewAction {
+  ClearPreviewAction();
+}
+
+class FillAreaAction {
+  FillAreaAction(this.pos);
+  final Offset pos;
+}
+
+class FinalizePixelsAction {
+  FinalizePixelsAction();
 }
 
 class SetCurrentLayerAction {
   SetCurrentLayerAction(
     this.currentLayerIndex,
   );
-
   final int currentLayerIndex;
 }
 
@@ -43,19 +67,32 @@ class AppState {
     this.currentToolType = ToolType.pencil,
     this.currentColor,
     this.palette,
-    this.currentLayer,
-  });
+  }) {
+    currentLayer = layers[0];
+  }
 
-  ToolType currentToolType;
   HSLColor currentColor;
-  PixelLayer currentLayer;
-
-  List<HSLColor> palette = new List<HSLColor>();
-  List<PixelLayer> layers = <PixelLayer>[new PixelLayer('Layer 1')];
+  PixelCanvasLayer currentLayer;
+  ToolType currentToolType;
+  var layers = <PixelCanvasLayer>[new PixelCanvasLayer(name: 'Layer 1')];
+  final previewLayer = new PixelCanvasLayer();
+  var palette = new List<HSLColor>();
 }
 
 AppState stateReducer(AppState state, dynamic action) {
-  if (action is SetCurrentToolTypeAction) {
+  if (action is AddPixelAction) {
+    state.previewLayer.setPixel(action.pos, state.currentColor.toColor());
+    return state;
+  } 
+  else if (action is AddNewLayerAction) {
+    state.layers.add(
+      new PixelCanvasLayer(
+        name: action.name
+      )
+    );
+    return state;
+  }
+  else if (action is SetCurrentToolTypeAction) {
     state.currentToolType = action.toolType;
     return state;
   }
@@ -67,17 +104,34 @@ AppState stateReducer(AppState state, dynamic action) {
     state.palette.add(state.currentColor);
     return state;
   }
-  else if (action is AddPixelAction) {
-    state.currentLayer.pixels[action.pos] = action.color;
+  else if (action is ClearPreviewAction) {
+    state.previewLayer.clearPixels();
     return state;
   }
   else if (action is SetCurrentLayerAction) {
     if (action.currentLayerIndex < state.layers.length) {
-        state.currentLayer = state.layers[action.currentLayerIndex];
+      state.currentLayer = state.layers[action.currentLayerIndex];
     }
+    return state;
+  }
+  else if (action is RemovePixelAction) {
+    state.currentLayer.removePixel(action.pos);
+    return state;
+  }
+  else if (action is FinalizePixelsAction) {
+    state.currentLayer.setPixelsFromMap(state.previewLayer.rawPixels);
+    state.previewLayer.clearPixels();
+    return state;
+  }
+  else if (action is FillAreaAction) {
+    state.currentLayer.fillArea(
+      action.pos,
+      state.currentColor.toColor()
+    );
     return state;
   }
   else {
     return state;
   }
 }
+

@@ -26,12 +26,12 @@ class ToolsCard extends StatelessWidget {
         new ToolsListItem(
           icon: new Icon(Icons.brightness_1),
           label: 'Eraser Tool',
-          toolType: ToolType.line,
+          toolType: ToolType.eraser,
         ),
         new ToolsListItem(
           icon: new Icon(Icons.brightness_1),
           label: 'Fill Tool',
-          toolType: ToolType.line,
+          toolType: ToolType.fill,
         ),
         new ToolsListItem(
           icon: new Icon(Icons.brush),
