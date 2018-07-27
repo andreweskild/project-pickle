@@ -18,7 +18,7 @@ class ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Padding(
-      padding: new EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+      padding: new EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
       child: new FlatButton(
         color: isHighlighted ? Theme.of(context).highlightColor : Colors.transparent,
         textColor: isHighlighted ? Theme.of(context).accentTextTheme.button.color : Colors.black,
