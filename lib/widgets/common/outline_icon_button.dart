@@ -15,7 +15,7 @@ class OutlineIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlatButton(
       color: Colors.white,
-      padding: EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(12.0),
       child: Icon(icon),
       onPressed: onPressed,
       shape: RoundedRectangleBorder(

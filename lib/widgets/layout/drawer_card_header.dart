@@ -49,7 +49,7 @@ class DrawerCardHeader extends StatelessWidget {
         Align(
           alignment: (alignment == DrawerAlignment.start) ? Alignment.centerRight : Alignment.centerLeft,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(12.0),
             child: OutlineIconButton(
               icon: (collapsed) ? Icons.arrow_forward : Icons.arrow_back,
               onPressed: onToggleCollapse,

@@ -4,7 +4,7 @@ class HSLColor {
   HSLColor({
     this.h = 1.0,
     this.s = 1.0,
-    this.l = 1.0
+    this.l = 0.5
   });
 
   HSLColor.from(
