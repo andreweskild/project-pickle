@@ -69,7 +69,7 @@ class PixelCanvasLayer extends StatelessWidget {
       );
     }
     else {
-      _nullAreaFill(pos);
+      _nullAreaFill(pos, color);
     }
     _repaintNotifier.notifyListeners();
   }
@@ -82,10 +82,10 @@ class PixelCanvasLayer extends StatelessWidget {
     uncheckedPixels.add(targetPos);
 
     while (uncheckedPixels.isNotEmpty) {
-      uncheckedPixels.forEach( (currentPixel) { 
+      uncheckedPixels.forEach( (currentPixel) {
           _getAdjacentColoredPixels(currentPixel, targetColor).forEach(
             (adjacentPixel) {
-              if( !tempPixels.contains(adjacentPixel) && 
+              if( !tempPixels.contains(adjacentPixel) &&
                   !checkedPixels.contains(adjacentPixel) &&
                   !uncheckedPixels.contains(adjacentPixel)) {
                     tempPixels.add(adjacentPixel);
@@ -128,7 +128,66 @@ class PixelCanvasLayer extends StatelessWidget {
     return adjacentPixels;
   }
 
-  void _nullAreaFill(Offset targetPos) {
-    
+  List<Offset> _getAdjacentNullPixels(Offset targetPixelPos) {
+    List<Offset> adjacentPixels = new List<Offset>();
+    Offset currentPixelPoint;
+
+    currentPixelPoint = targetPixelPos.translate(-1.0, 0.0);
+    if ( currentPixelPoint.dx >= 0 && currentPixelPoint.dx < 32 &&
+          currentPixelPoint.dy >= 0 && currentPixelPoint.dy < 32 &&
+          !_pixels.containsKey(currentPixelPoint)) {
+      adjacentPixels.add(currentPixelPoint);
+    }
+    currentPixelPoint = targetPixelPos.translate(1.0, 0.0);
+    if ( currentPixelPoint.dx >= 0 && currentPixelPoint.dx < 32 &&
+        currentPixelPoint.dy >= 0 && currentPixelPoint.dy < 32 &&
+        !_pixels.containsKey(currentPixelPoint)) {
+      adjacentPixels.add(currentPixelPoint);
+    }
+    currentPixelPoint = targetPixelPos.translate(0.0, -1.0);
+    if ( currentPixelPoint.dx >= 0 && currentPixelPoint.dx < 32 &&
+        currentPixelPoint.dy >= 0 && currentPixelPoint.dy < 32 &&
+        !_pixels.containsKey(currentPixelPoint)) {
+      adjacentPixels.add(currentPixelPoint);
+    }
+    currentPixelPoint = targetPixelPos.translate(0.0, 1.0);
+    if ( currentPixelPoint.dx >= 0 && currentPixelPoint.dx < 32 &&
+        currentPixelPoint.dy >= 0 && currentPixelPoint.dy < 32 &&
+        !_pixels.containsKey(currentPixelPoint) ) {
+      adjacentPixels.add(currentPixelPoint);
+    }
+
+    return adjacentPixels;
+  }
+
+
+  void _nullAreaFill(Offset targetPos, Color newColor) {
+    var uncheckedPixels = <Offset>[];
+    var checkedPixels = <Offset>[];
+    var tempPixels = <Offset>[];
+
+    uncheckedPixels.add(targetPos);
+
+    while (uncheckedPixels.isNotEmpty) {
+      uncheckedPixels.forEach( (currentPixel) {
+        _getAdjacentNullPixels(currentPixel).forEach(
+                (adjacentPixel) {
+              if( !tempPixels.contains(adjacentPixel) &&
+                  !checkedPixels.contains(adjacentPixel) &&
+                  !uncheckedPixels.contains(adjacentPixel)) {
+                tempPixels.add(adjacentPixel);
+              }
+            }
+        );
+      }
+      );
+
+      checkedPixels.addAll(uncheckedPixels);
+      uncheckedPixels.clear();
+      uncheckedPixels.addAll(tempPixels);
+      tempPixels.clear();
+    }
+
+    checkedPixels.forEach((pixelPos) => _pixels[pixelPos] = newColor);
   }
 }
