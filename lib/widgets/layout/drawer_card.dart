@@ -45,7 +45,7 @@ class _DrawerCardState extends State<DrawerCard> {
       alignment: Alignment.centerLeft,
       curve: Curves.ease,
       duration: Duration(milliseconds: 200),
-      width: _currentlyCollapsed ? 72.0 : 256.0,
+      width: _currentlyCollapsed ? 116.0 : 264.0,
       child: Material(
         color: Colors.grey.shade100,
         elevation: 4.0,

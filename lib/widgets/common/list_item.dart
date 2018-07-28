@@ -17,19 +17,19 @@ class ListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Padding(
-      padding: new EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 6.0),
-      child: new FlatButton(
+    return Padding(
+      padding: const EdgeInsets.only(top: 6.0, bottom: 6.0),
+      child: FlatButton(
         color: isHighlighted ? Theme.of(context).highlightColor : Colors.transparent,
         textColor: isHighlighted ? Theme.of(context).accentTextTheme.button.color : Colors.black,
-        padding: new EdgeInsets.all(12.0),
-        shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(16.0),
+        padding: EdgeInsets.all(8.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
           side: BorderSide(
             color: isHighlighted ? Theme.of(context).accentColor : Colors.transparent,
           )
         ),
-        child: new Stack(
+        child: Stack(
           children: <Widget>[
             Align(alignment: Alignment.centerLeft, child: icon),
             Positioned(

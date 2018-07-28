@@ -37,12 +37,7 @@ class DrawerCardHeader extends StatelessWidget {
           child: Center(
             child: Padding(
               padding: const EdgeInsets.all(12.0),
-              child: AnimatedOpacity(
-                  curve: Curves.ease,
-                  duration: Duration(milliseconds: 150),
-                  opacity: collapsed ? 0.0 : 1.0,
-                  child: Text(title ?? '')
-              ),
+              child: Text(title ?? ''),
             ),
           ),
         ),

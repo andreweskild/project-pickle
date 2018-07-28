@@ -124,7 +124,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
 
     final Animation<Size> size = SizeTween(
       begin: widget.initialSize,
-      end: Size(200.0, 148.0),
+      end: Size(256.0, 148.0),
     ).animate(
       CurvedAnimation(
         parent: widget.parentAnimation,
@@ -261,6 +261,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                   data: SliderTheme.of(context).copyWith(
                                     activeTrackColor: Colors.transparent,
                                     inactiveTrackColor: Colors.transparent,
+                                    thumbColor: _getContrastingColor(_currentColor.toColor()),
                                   ),
                                   child: Stack(
                                     children: <Widget>[
@@ -270,11 +271,20 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                         bottom: 0.0,
                                         right: 0.0,
                                         child: Padding(
-                                          padding: const EdgeInsets.all(6.0),
+                                          padding: const EdgeInsets.all(9.0),
                                           child: DecoratedBox(
                                             decoration: BoxDecoration(
-                                              color: Colors.red,
-                                              borderRadius: BorderRadius.circular(16.0)
+                                              gradient: new LinearGradient(
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
+                                                colors: [const Color(0xFF000000), _currentColor.copyWith(s: 1.0, l: 0.5).toColor(), const Color(0xFFFFFFFF)], // whitish to gray
+                                                tileMode: TileMode.clamp, // repeats the gradient over the canvas
+                                              ),
+                                              borderRadius: BorderRadius.circular(16.0),
+                                              border: new Border.all(
+                                                color: Colors.black38,
+                                                width: 1.0,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -387,9 +397,10 @@ class ColorMenuButton extends StatelessWidget {
     return FlatButton(
       color: color.toColor(),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(12.0),
         child: Text(''),
       ),
+      padding: EdgeInsets.all(0.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
         side: BorderSide(

@@ -17,41 +17,83 @@ class ToolsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return DrawerCard(
       title: 'Tools',
-      builder: (context, collapse) {
+      builder: (context, collapsed) {
         return Padding(
-          padding: const EdgeInsets.only(top: 6.0, bottom: 6.0),
+          padding: const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 6.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              new ToolsListItem(
-                icon: new Icon(Icons.brush),
-                label: 'Pencil Tool',
-                toolType: ToolType.pencil,
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 6.0),
+                      child: ToolsListItem(
+                        icon: Icon(Icons.brush),
+                        label: 'Pencil',
+                        toolType: ToolType.pencil,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 6.0),
+                      child: ToolsListItem(
+                        icon: Icon(Icons.brightness_1),
+                        label: 'Eraser',
+                        toolType: ToolType.eraser,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              new ToolsListItem(
-                icon: new Icon(Icons.brightness_1),
-                label: 'Eraser Tool',
-                toolType: ToolType.eraser,
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 6.0),
+                      child: ToolsListItem(
+                        icon: Icon(Icons.brush),
+                        label: 'Fill',
+                        toolType: ToolType.fill,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 6.0),
+                      child: ToolsListItem(
+                        icon: Icon(Icons.brightness_1),
+                        label: 'Path',
+                        toolType: ToolType.line,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              new ToolsListItem(
-                icon: new Icon(Icons.brightness_1),
-                label: 'Fill Tool',
-                toolType: ToolType.fill,
-              ),
-              new ToolsListItem(
-                icon: new Icon(Icons.brush),
-                label: 'Path Tool',
-                toolType: ToolType.line,
-              ),
-              new ToolsListItem(
-                icon: new Icon(Icons.brightness_1),
-                label: 'Shape Tool',
-                toolType: ToolType.line,
-              ),
-              new ToolsListItem(
-                icon: new Icon(Icons.brightness_1),
-                label: 'Selection Tool',
-                toolType: ToolType.line,
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 6.0),
+                      child: ToolsListItem(
+                        icon: Icon(Icons.brush),
+                        label: 'Shape',
+                        toolType: ToolType.line,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 6.0),
+                      child: ToolsListItem(
+                        icon: Icon(Icons.brightness_1),
+                        label: 'Select',
+                        toolType: ToolType.line,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
