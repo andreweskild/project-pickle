@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:project_pickle/widgets/layout/right_drawer_card.dart';
+import 'package:project_pickle/widgets/layout/drawer_card.dart';
 
 
 class PreviewCard extends StatelessWidget {
@@ -13,22 +13,23 @@ class PreviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new RightDrawerCard(
+    return DrawerCard(
+      alignment: DrawerAlignment.end,
       title: 'Preview',
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 0.0),
-          child: new AspectRatio(
-            aspectRatio: 1.2,
-            child: new DecoratedBox(
-              decoration: new BoxDecoration(
+      builder: (context, collapsed) {
+        return Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: AspectRatio(
+            aspectRatio: 1.0,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
                 color: Colors.grey.shade300,
-                borderRadius: new BorderRadius.circular(12.0),
+                borderRadius: BorderRadius.circular(16.0),
               ),
             )
           ),
-        )
-      ],
+        );
+      }
     );
   }
 }

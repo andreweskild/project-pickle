@@ -16,6 +16,8 @@ class CanvasGestureContainer extends StatefulWidget {
 }
 
 class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
+
+
   Matrix4 _matrix = new Matrix4.diagonal3Values(1.0, 1.0, 1.0);
 
   bool _initialized = false;
@@ -63,6 +65,45 @@ class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
     }
   }
 
+  void centerAndFill(BoxConstraints constraints) {
+    _matrix = new Matrix4.diagonal3Values(1.0, 1.0, 1.0);
+    _offset = new Offset(0.0, 0.0);
+    _previousScale = 1.0;
+    _scale = 1.0;
+
+
+    Size viewSize = constraints.biggest;
+    Offset focalPoint = new Offset(
+      viewSize.width/2,
+      viewSize.height/2,
+    );
+    double initialScale;
+
+    if (viewSize.width - 512 < viewSize.height) {
+      initialScale = (viewSize.width - 512 - padding*2) / widget.canvasController.width;
+    } else {
+      initialScale = (viewSize.height - padding*2) / widget.canvasController.height;
+    }
+
+    _startingFocalPoint = focalPoint;
+    _previousOffset = _offset;
+    _previousScale = _scale;
+
+    if(initialScale != 1.0) {
+      double newScale = _previousScale * initialScale;
+
+      // Ensure that item under the focal point stays in the same place despite zooming
+      final Offset normalizedOffset = (_startingFocalPoint - _previousOffset) / _previousScale;
+      final Offset newOffset = focalPoint - normalizedOffset * newScale;
+
+      _scale = newScale;
+      _offset = newOffset;
+
+      _setScaleOfMatrix(newScale, _matrix);
+      _matrix.setTranslationRaw(newOffset.dx, newOffset.dy, 1.0);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return new LayoutBuilder(
@@ -71,6 +112,10 @@ class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
           _setInitialScale(constraints);
           _initialized = true;
         }
+        else {
+          centerAndFill(constraints);
+        }
+
         return new GestureDetector(
           behavior: HitTestBehavior.opaque,
           onScaleStart: _handleScaleStart,

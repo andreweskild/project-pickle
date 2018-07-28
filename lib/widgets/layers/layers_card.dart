@@ -4,7 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/common/list_item.dart';
-import 'package:project_pickle/widgets/layout/right_drawer_card.dart';
+import 'package:project_pickle/widgets/layout/drawer_card.dart';
 import 'package:project_pickle/widgets/pixels/pixel_canvas_layer.dart';
 
 class LayerListModel {
@@ -47,52 +47,50 @@ class LayersCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, LayerListModel>(
       distinct: true,
-      converter: (store) => new LayerListModel(
+      converter: (store) => LayerListModel(
         layers: store.state.layers,
         currentLayer: store.state.currentLayer,
-        callback: () => store.dispatch(new AddNewLayerAction('test ${store.state.layers.length}')),
+        callback: () => store.dispatch(AddNewLayerAction('test ${store.state.layers.length}')),
       ),
       builder: (context, model) {
-        return RightDrawerCard(
+        return DrawerCard(
           title: 'Layers',
-          children: <Widget>[
-            new Expanded(
-              child: new Stack(
-                children: <Widget>[
-                  new ListView(
-                    shrinkWrap: true,
-                    children: model.layers.map(
-                      (layer) => new ListItem(
-                        icon: new SizedBox(
-                          height: 48.0,
-                          child: new AspectRatio(
-                            aspectRatio: 1.0,
-                            child: layer.canvas
-                          ),
+          builder: (context, collapsed) {
+            return Stack(
+              children: <Widget>[
+                ListView(
+                  shrinkWrap: true,
+                  children: model.layers.map(
+                    (layer) => ListItem(
+                      icon: SizedBox(
+                        height: 48.0,
+                        child: AspectRatio(
+                          aspectRatio: 1.0,
+                          child: layer.canvas
                         ),
-                        isHighlighted: (model.currentLayer == layer),
-                        label: layer.name,
-                        onTap: (){},
-                      )
-                    ).toList(),
-                  ),
-                  new Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: new FloatingActionButton(
-                        child: new Icon(Icons.add, color: Colors.white,),
-                        onPressed: model.callback,
-                        mini: true,
-                        shape: new RoundedRectangleBorder( borderRadius: new BorderRadius.all(new Radius.circular(12.0))),
-                        tooltip: 'Create New Layer',
                       ),
+                      isHighlighted: (model.currentLayer == layer),
+                      label: layer.name,
+                      onTap: (){},
+                    )
+                  ).toList(),
+                ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: FloatingActionButton(
+                      child: Icon(Icons.add, color: Colors.white,),
+                      onPressed: model.callback,
+                      mini: true,
+                      shape: RoundedRectangleBorder( borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                      tooltip: 'Create New Layer',
                     ),
                   ),
-                ],
-              ),
-            )
-          ],
+                ),
+              ],
+            );
+          }
         );
       }
     );

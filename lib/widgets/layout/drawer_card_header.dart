@@ -31,7 +31,8 @@ class DrawerCardHeader extends StatelessWidget {
           ),
         ),
         Positioned(
-          left: 0.0,
+          left: (alignment == DrawerAlignment.start) ? 0.0 : null,
+          right: (alignment == DrawerAlignment.start) ? null : 0.0,
           top: 0.0,
           bottom: 0.0,
           child: Center(
@@ -46,7 +47,9 @@ class DrawerCardHeader extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: OutlineIconButton(
-              icon: (collapsed) ? Icons.arrow_forward : Icons.arrow_back,
+              icon: (alignment == DrawerAlignment.start) ? 
+                (collapsed) ? Icons.arrow_forward : Icons.arrow_back :
+                (collapsed) ? Icons.arrow_back : Icons.arrow_forward,
               onPressed: onToggleCollapse,
             ),
           ),
