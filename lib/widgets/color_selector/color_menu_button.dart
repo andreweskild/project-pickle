@@ -404,7 +404,7 @@ class ColorMenuButton extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
         side: BorderSide(
-          color: Color.lerp(color.toColor(), Colors.black, 0.33),
+          color: Colors.black38,
         ),
       ),
       onPressed: () {
