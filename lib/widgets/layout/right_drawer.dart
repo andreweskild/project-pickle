@@ -21,7 +21,12 @@ class RightDrawer extends StatelessWidget {
               padding: const EdgeInsets.only(right: 12.0, top: 6.0, bottom: 6.0),
               child: PreviewCard(),
             ),
-            Expanded(child: LayersCard()),
+            Expanded(
+              child: Padding(
+              padding: const EdgeInsets.only(right: 12.0, top: 6.0, bottom: 6.0),
+                child: LayersCard(),
+              )
+            ),
           ],
         ),
       ),

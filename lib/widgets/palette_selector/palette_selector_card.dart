@@ -103,7 +103,7 @@ class PaletteSelectorCard extends StatelessWidget {
                     mainAxisSpacing: 12.0,
                   ),
                   new Align(
-                    alignment: Alignment.bottomLeft,
+                    alignment: Alignment.bottomRight,
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: new FloatingActionButton(

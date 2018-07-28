@@ -54,41 +54,45 @@ class LayersCard extends StatelessWidget {
       ),
       builder: (context, model) {
         return DrawerCard(
+          alignment: DrawerAlignment.end,
           title: 'Layers',
           builder: (context, collapsed) {
-            return Stack(
-              children: <Widget>[
-                ListView(
-                  shrinkWrap: true,
-                  children: model.layers.map(
-                    (layer) => ListItem(
-                      icon: SizedBox(
-                        height: 48.0,
-                        child: AspectRatio(
-                          aspectRatio: 1.0,
-                          child: layer.canvas
+            return Expanded(
+              child: Stack(
+                children: <Widget>[
+                  ListView(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 6.0),
+                    children: model.layers.map(
+                      (layer) => ListItem(
+                        icon: SizedBox(
+                          height: 48.0,
+                          child: AspectRatio(
+                            aspectRatio: 1.0,
+                            child: layer.canvas
+                          ),
                         ),
+                        isHighlighted: (model.currentLayer == layer),
+                        label: layer.name,
+                        onTap: (){},
+                      )
+                    ).toList(),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: FloatingActionButton(
+                        child: Icon(Icons.add, color: Colors.white,),
+                        onPressed: model.callback,
+                        mini: true,
+                        shape: RoundedRectangleBorder( borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                        tooltip: 'Create New Layer',
                       ),
-                      isHighlighted: (model.currentLayer == layer),
-                      label: layer.name,
-                      onTap: (){},
-                    )
-                  ).toList(),
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: FloatingActionButton(
-                      child: Icon(Icons.add, color: Colors.white,),
-                      onPressed: model.callback,
-                      mini: true,
-                      shape: RoundedRectangleBorder( borderRadius: BorderRadius.all(Radius.circular(12.0))),
-                      tooltip: 'Create New Layer',
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           }
         );
