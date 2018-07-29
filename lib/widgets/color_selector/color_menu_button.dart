@@ -348,6 +348,9 @@ class _ColorPopupRoute extends PopupRoute<HSLColor> {
   String get barrierLabel => '';
 
   @override
+  HSLColor get currentResult => color;
+
+  @override
   Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> forwardAnimation) {
     return SizedBox();
   }
@@ -373,7 +376,7 @@ class _ColorPopupRoute extends PopupRoute<HSLColor> {
               position,
             ),
             child: ColorPopupContent(
-              color: HSLColor(),
+              color: color,
               initialSize: initialSize,
               parentAnimation: parentAnimation,
             )
@@ -384,13 +387,36 @@ class _ColorPopupRoute extends PopupRoute<HSLColor> {
   }
 }
 
+typedef ColorChangeCallback = void Function(HSLColor);
+
 class ColorMenuButton extends StatelessWidget {
   ColorMenuButton({
     Key key,
     @required this.color,
+    @required this.onColorChanged
   }) : super(key: key);
 
   final HSLColor color;
+  final ColorChangeCallback onColorChanged;
+
+  _showColorMenu(BuildContext context) async {
+    final RenderBox button = context.findRenderObject();
+    final RenderBox overlay = Overlay.of(context).context.findRenderObject();
+    final RelativeRect position = new RelativeRect.fromRect(
+      new Rect.fromPoints(
+        button.localToGlobal(Offset.zero, ancestor: overlay),
+        button.localToGlobal(button.size.bottomRight(Offset.zero), ancestor: overlay),
+      ),
+      Offset.zero & overlay.size,
+    );
+    final HSLColor newColor = await Navigator.of(context).push(new _ColorPopupRoute(
+      color: color,
+      initialSize: button.size,
+      position: position,
+    ));
+
+    onColorChanged(newColor);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -407,22 +433,7 @@ class ColorMenuButton extends StatelessWidget {
           color: Colors.black38,
         ),
       ),
-      onPressed: () {
-        final RenderBox button = context.findRenderObject();
-        final RenderBox overlay = Overlay.of(context).context.findRenderObject();
-        final RelativeRect position = new RelativeRect.fromRect(
-          new Rect.fromPoints(
-            button.localToGlobal(Offset.zero, ancestor: overlay),
-            button.localToGlobal(button.size.bottomRight(Offset.zero), ancestor: overlay),
-          ),
-          Offset.zero & overlay.size,
-        );
-        Navigator.of(context).push(new _ColorPopupRoute(
-          color: color,
-          initialSize: button.size,
-          position: position,
-        ));
-      },
+      onPressed: () => _showColorMenu(context),
     );
   }
 }
