@@ -12,7 +12,7 @@ class ListItem extends StatelessWidget {
   final VoidCallback onTap;
 
   final Widget icon;
-  final String label;
+  final Widget label;
   final bool isHighlighted;
 
   @override
@@ -37,8 +37,8 @@ class ListItem extends StatelessWidget {
               top: 0.0,
               bottom: 0.0,
               child: Padding(
-                padding: const EdgeInsets.only(left: 24.0),
-                child: Center(child: Text(label)),
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Center(child: label),
               ),
             )
           ],

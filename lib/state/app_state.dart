@@ -55,8 +55,8 @@ class FinalizePixelsAction {
   FinalizePixelsAction();
 }
 
-class SetCurrentLayerAction {
-  SetCurrentLayerAction(
+class SetCurrentLayerIndexAction {
+  SetCurrentLayerIndexAction(
     this.currentLayerIndex,
   );
   final int currentLayerIndex;
@@ -68,11 +68,20 @@ class AppState {
     this.currentColor,
     this.palette,
   }) {
-    currentLayer = layers[0];
+    currentLayerIndex = 0;
   }
 
+  AppState.copyWith({
+    this.currentColor,
+    this.currentLayerIndex,
+    this.currentToolType = ToolType.pencil,
+    this.layers,
+    this.palette,
+  });
+
   HSLColor currentColor;
-  PixelCanvasLayer currentLayer;
+  PixelCanvasLayer get currentLayer => layers[currentLayerIndex];
+  int currentLayerIndex;
   ToolType currentToolType;
   var layers = <PixelCanvasLayer>[new PixelCanvasLayer(name: 'Layer 1')];
   final previewLayer = new PixelCanvasLayer();
@@ -108,9 +117,9 @@ AppState stateReducer(AppState state, dynamic action) {
     state.previewLayer.clearPixels();
     return state;
   }
-  else if (action is SetCurrentLayerAction) {
+  else if (action is SetCurrentLayerIndexAction) {
     if (action.currentLayerIndex < state.layers.length) {
-      state.currentLayer = state.layers[action.currentLayerIndex];
+      state.currentLayerIndex = action.currentLayerIndex;
     }
     return state;
   }
