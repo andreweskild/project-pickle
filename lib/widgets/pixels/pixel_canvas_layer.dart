@@ -9,6 +9,8 @@ class PixelCanvasLayer extends StatelessWidget {
   PixelCanvasLayer({
     Key key,
     this.name,
+    @required this.width,
+    @required this.height,
   }) : super(key: key) {
     canvas = new CustomPaint(
       willChange: true,
@@ -17,6 +19,8 @@ class PixelCanvasLayer extends StatelessWidget {
   }
 
   String name;
+  final int width;
+  final int height;
 
   final _repaintNotifier = LayerChangeNotifier();
   final _pixels = HashMap<Offset, Color>();
@@ -24,18 +28,24 @@ class PixelCanvasLayer extends StatelessWidget {
   get rawPixels => _pixels;
 
   void setPixel(Offset pos, Color color) {
-    if (!_pixels.containsKey(pos) ||
+    if (pos.dx >= 0 && pos.dx < width &&
+        pos.dy >= 0 && pos.dy < height ) {
+      if (!_pixels.containsKey(pos) ||
           _pixels[pos] != color) {
-      _pixels[pos] = color;
-      _repaintNotifier.notifyListeners();
+        _pixels[pos] = color;
+        _repaintNotifier.notifyListeners();
+      }
     }
   }
 
   void setPixelsFromMap(HashMap<Offset, Color> pixels) {
     pixels.forEach((pos, color) {
-      if (!_pixels.containsKey(pos) ||
-            _pixels[pos] != color) {
-        _pixels[pos] = color;
+      if (pos.dx >= 0 && pos.dx < width &&
+          pos.dy >= 0 && pos.dy < height ) {
+        if (!_pixels.containsKey(pos) ||
+              _pixels[pos] != color) {
+          _pixels[pos] = color;
+        }
       }
     });
     _repaintNotifier.notifyListeners();

@@ -83,8 +83,8 @@ class AppState {
   PixelCanvasLayer get currentLayer => layers[currentLayerIndex];
   int currentLayerIndex;
   ToolType currentToolType;
-  var layers = <PixelCanvasLayer>[new PixelCanvasLayer(name: 'Layer 1')];
-  final previewLayer = new PixelCanvasLayer();
+  var layers = <PixelCanvasLayer>[new PixelCanvasLayer(name: 'Layer 1', height: 32, width: 32,)];
+  final previewLayer = new PixelCanvasLayer(height: 32, width: 32,);
   var palette = new List<HSLColor>();
 }
 
@@ -96,7 +96,9 @@ AppState stateReducer(AppState state, dynamic action) {
   else if (action is AddNewLayerAction) {
     state.layers.add(
       new PixelCanvasLayer(
-        name: action.name
+        name: action.name,
+        height: 32,
+        width: 32,
       )
     );
     return state;
