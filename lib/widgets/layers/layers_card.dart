@@ -79,15 +79,39 @@ class LayersCard extends StatelessWidget {
                     ).toList(),
                   ),
                   Align(
-                    alignment: Alignment.bottomLeft,
+                    alignment: Alignment.bottomCenter,
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
-                      child: FloatingActionButton(
-                        child: Icon(Icons.add, color: Colors.white,),
+                      child: RaisedButton(
+                        child: SizedBox(
+                          height: 40.0,
+                          width: 104.0,
+                          child: Stack(
+                            children: <Widget>[
+                              AnimatedAlign(
+                                duration: Duration(milliseconds: 150),
+                                alignment: (collapsed) ? Alignment.center : Alignment.centerLeft, 
+                                child: Icon(Icons.add)
+                              ),
+                              Positioned(
+                                left: 32.0, 
+                                bottom: 0.0,
+                                top: 0.0,
+                                child: Center(
+                                  child: AnimatedOpacity(
+                                    duration: Duration(milliseconds: 150),
+                                    opacity: (collapsed) ? 0.0 : 1.0,
+                                    child: Text('New Layer')
+                                  )
+                                )
+                              )
+                            ]
+                          ),
+                        ),
                         onPressed: model.callback,
-                        mini: true,
-                        shape: RoundedRectangleBorder( borderRadius: BorderRadius.all(Radius.circular(12.0))),
-                        tooltip: 'Create New Layer',
+                        shape: RoundedRectangleBorder( 
+                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        ),
                       ),
                     ),
                   ),

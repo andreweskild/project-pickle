@@ -43,7 +43,7 @@ class _PaletteModel {
   }
 }
 
-Color getContrastingColor(Color color) {
+Color _getContrastingColor(Color color) {
   if (color.computeLuminance() > 0.5) {
     return Colors.black;
   }
@@ -102,30 +102,53 @@ class PaletteSelectorCard extends StatelessWidget {
                     ).toList(),
                     mainAxisSpacing: 12.0,
                   ),
-                  new Align(
-                    alignment: Alignment.bottomRight,
+                  Align(
+                    alignment: Alignment.bottomCenter,
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
-                      child: new FloatingActionButton(
-                        elevation: 4.0,
-                        backgroundColor: paletteModel.currentColor.toColor(),
-                        child: new Icon(Icons.add, color: getContrastingColor(paletteModel.currentColor.toColor()),),
-                        mini: true,
-                        onPressed: () {
-                          if (!paletteModel.palette.contains(paletteModel.currentColor)) {
-                            paletteModel.addToPalette();
-                          }
-                        },
-                        shape: new RoundedRectangleBorder( 
-                          borderRadius: new BorderRadius.all(new Radius.circular(16.0)),
-                          side: BorderSide(
-                            color: Colors.black38,
-                          )
+                      child: RaisedButton(
+                        color: paletteModel.currentColor.toColor(),
+                        child: SizedBox(
+                          height: 40.0,
+                          width: 128.0,
+                          child: Stack(
+                            children: <Widget>[
+                              AnimatedAlign(
+                                duration: Duration(milliseconds: 150),
+                                alignment: (collapsed) ? Alignment.center : Alignment.centerLeft, 
+                                child: Icon(
+                                  Icons.add,
+                                  color: _getContrastingColor(paletteModel.currentColor.toColor()),
+                                )
+                              ),
+                              Positioned(
+                                left: 32.0, 
+                                bottom: 0.0,
+                                top: 0.0,
+                                child: Center(
+                                  child: AnimatedOpacity(
+                                    duration: Duration(milliseconds: 150),
+                                    opacity: (collapsed) ? 0.0 : 1.0,
+                                    child: Text(
+                                      'Add to Palette',
+                                      style: TextStyle(
+                                        color: _getContrastingColor(paletteModel.currentColor.toColor()),
+                                      )
+                                    )
+                                  )
+                                )
+                              )
+                            ]
+                          ),
                         ),
-                        tooltip: 'Add Current Color to Palette',
+                        onPressed: paletteModel.addToPalette,
+                        shape: RoundedRectangleBorder( 
+                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                          side: BorderSide(color: Colors.black38)
+                        ),
                       ),
                     ),
-                  )
+                  ),
                 ]
               );
             }
