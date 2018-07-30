@@ -30,6 +30,7 @@ class CanvasController extends StatefulWidget {
 
 class _CanvasControllerState extends State<CanvasController> {
   ToolController _toolController;
+  int _layerCount;
 
 
   @override
@@ -40,7 +41,17 @@ class _CanvasControllerState extends State<CanvasController> {
         if(_toolController == null) {
           _toolController = ToolController(context);
         }
-        
+
+        store.onChange.listen(
+            (state) {
+              if(state.layers.length != _layerCount) {
+                setState(() {
+                  _layerCount = state.layers.length;
+                });
+              }
+            }
+        );
+
         // holds the current number of mouse/touch events
         int currentPointerCount = 0;
         // holds the highest number of mouse/touch events

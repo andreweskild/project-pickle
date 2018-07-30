@@ -6,8 +6,8 @@ import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/layout/drawer_card.dart';
 import 'package:project_pickle/widgets/pixels/pixel_canvas_layer.dart';
 
-class PreviewModel {
-  PreviewModel({
+class _PreviewModel {
+  _PreviewModel({
     this.layers,
   }) {
     layerCount = layers.length;
@@ -30,8 +30,8 @@ class PreviewModel {
   // override hashCode.
   @override
   bool operator ==(dynamic other) {
-    if (other is! PreviewModel) return false;
-    PreviewModel model = other;
+    if (other is! _PreviewModel) return false;
+    _PreviewModel model = other;
     return (model.layerCount == layerCount);
   }
 }
@@ -51,13 +51,40 @@ class PreviewCard extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: AspectRatio(
             aspectRatio: 1.0,
-            child: StoreConnector<AppState, PreviewModel>(
+            child: StoreConnector<AppState, _PreviewModel>(
+              converter: (store) {
+                return _PreviewModel(
+                  layers: store.state.layers,
+                );
+              },
               builder: (context, model) {
-                return DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(16.0),
+                return Material(
+                  color: Colors.grey.shade300,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.black38),
+                    borderRadius: BorderRadius.circular(12.0),
                   ),
+                  child: UnconstrainedBox(
+                    child: Transform.scale(
+                      alignment: Alignment.topLeft,
+                      origin: Offset(16.0, 16.0),
+                      scale: 3.0,
+                      child: Container(
+                        height: 32.0,
+                        width: 32.0,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                            color: Colors.black38,
+                            width: 1.0 / 3.0,
+                          ),
+                        ),
+                      child: Stack(
+                        children: model.layers,
+                      ),
+                      ),
+                    ),
+                  )
                 );
               }
             )

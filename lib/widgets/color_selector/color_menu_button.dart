@@ -53,7 +53,7 @@ class _ColorPopupRouteLayout extends SingleChildLayoutDelegate {
       y = _kMenuScreenPadding;
     else if (y + childSize.height > size.height - _kMenuScreenPadding)
       y = size.height - childSize.height - _kMenuScreenPadding;
-    return new Offset(x, y);
+    return Offset(x, y);
   }
 
   @override
@@ -67,12 +67,14 @@ class ColorPopupContent extends StatefulWidget {
     Key key,
     this.color,
     @required this.initialSize,
-    @required this.parentAnimation
+    @required this.parentAnimation,
+    @required this.onAccept,
   }) : super(key: key);
 
   final HSLColor color;
   final Size initialSize;
   final Animation<double> parentAnimation;
+  final VoidCallback onAccept;
 
 
   @override
@@ -111,7 +113,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
   Widget build(BuildContext context) {
     final Animation<BorderRadius> borderRadius = BorderRadiusTween(
       begin: BorderRadius.circular(16.0),
-      end: BorderRadius.circular(6.0),
+      end: BorderRadius.circular(8.0),
     ).animate(
       CurvedAnimation(
         parent: widget.parentAnimation,
@@ -124,7 +126,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
 
     final Animation<Size> size = SizeTween(
       begin: widget.initialSize,
-      end: Size(256.0, 148.0),
+      end: Size(256.0, 172.0),
     ).animate(
       CurvedAnimation(
         parent: widget.parentAnimation,
@@ -152,6 +154,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
       height: size.value.height,
       width: size.value.width,
       child: Material(
+        elevation: 6.0,
           animationDuration: Duration.zero,
           color: _currentColor.toColor(),
           shape: RoundedRectangleBorder(
@@ -166,7 +169,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 SizedBox(
-                  height: widget.initialSize.height,
+                  height: widget.initialSize.height * 1.33,
                   child: Stack(
                     children: <Widget>[
                       Positioned(
@@ -180,7 +183,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                               Icons.check,
                               color: _getContrastingColor(_currentColor.toColor()),
                             ),
-                            onPressed: (){},
+                            onPressed: widget.onAccept,
                           ),
                         ),
                       )
@@ -192,126 +195,199 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                     decoration: BoxDecoration(
                       color: Colors.grey.shade100,
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(left: 12.0),
-                                child: Text('H'),
-                              ),
-                              Expanded(
-                                child: SliderTheme(
-                                  data: SliderTheme.of(context).copyWith(
-                                    activeTrackColor: Colors.transparent,
-                                    inactiveTrackColor: Colors.transparent,
-                                  ),
-                                  child: Slider(
-                                    onChanged: (value) {
-                                      updateColorWith(h: value);
-                                    },
-                                    label: '',
-                                    value: _currentColor.h,
-                                    min: 0.0,
-                                    max: 1.0,
-                                  ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Expanded(
+                            child: Row(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 12.0),
+                                  child: Text('H'),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(left: 12.0),
-                                child: Text('S'),
-                              ),
-                              Expanded(
-                                child: SliderTheme(
-                                  data: SliderTheme.of(context).copyWith(
-                                    activeTrackColor: Colors.transparent,
-                                    inactiveTrackColor: Colors.transparent,
-                                  ),
-                                  child: Slider(
-                                    onChanged: (value) {
-                                      updateColorWith(s: value);
-                                    },
-                                    label: '',
-                                    value: _currentColor.s,
-                                    min: 0.0,
-                                    max: 1.0,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(left: 12.0),
-                                child: Text('L'),
-                              ),
-                              Expanded(
-                                child: SliderTheme(
-                                  data: SliderTheme.of(context).copyWith(
-                                    activeTrackColor: Colors.transparent,
-                                    inactiveTrackColor: Colors.transparent,
-                                    thumbColor: _getContrastingColor(_currentColor.toColor()),
-                                  ),
-                                  child: Stack(
-                                    children: <Widget>[
-                                      Positioned(
-                                        left: 0.0,
-                                        top: 0.0,
-                                        bottom: 0.0,
-                                        right: 0.0,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(9.0),
-                                          child: DecoratedBox(
-                                            decoration: BoxDecoration(
-                                              gradient: new LinearGradient(
-                                                begin: Alignment.centerLeft,
-                                                end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
-                                                colors: [const Color(0xFF000000), _currentColor.copyWith(s: 1.0, l: 0.5).toColor(), const Color(0xFFFFFFFF)], // whitish to gray
-                                                tileMode: TileMode.clamp, // repeats the gradient over the canvas
-                                              ),
-                                              borderRadius: BorderRadius.circular(16.0),
-                                              border: new Border.all(
-                                                color: Colors.black38,
-                                                width: 1.0,
+                                Expanded(
+                                  child: SliderTheme(
+                                    data: SliderTheme.of(context).copyWith(
+                                      activeTrackColor: Colors.transparent,
+                                      inactiveTrackColor: Colors.transparent,
+                                      thumbColor: _getContrastingColor(_currentColor.toColor()),
+                                    ),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Positioned(
+                                          left: 0.0,
+                                          top: 0.0,
+                                          bottom: 0.0,
+                                          right: 0.0,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(12.0, 6.0, 6.0, 6.0),
+                                            child: DecoratedBox(
+                                              decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
+                                                  colors: [const Color(0xFFFF0000), const Color(0xFFFFFF00), const Color(0xFF00FF00), const Color(0xFF00FFFF), const Color(0xFF0000FF), const Color(0xFFFF00FF), const Color(0xFFFF0000)], // whitish to gray
+                                                  tileMode: TileMode.clamp, // repeats the gradient over the canvas
+                                                ),
+                                                borderRadius: BorderRadius.circular(6.0),
+                                                border: Border.all(
+                                                  color: Colors.black38,
+                                                  width: 1.0,
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      Positioned(
-                                        left: 0.0,
-                                        top: 0.0,
-                                        bottom: 0.0,
-                                        right: 0.0,
-                                        child: Slider(
-                                          onChanged: (value) {
-                                            updateColorWith(l: value);
-                                          },
-                                          label: '',
-                                          value: _currentColor.l,
-                                          min: 0.0,
-                                          max: 1.0,
+                                        Positioned(
+                                          left: 0.0,
+                                          top: 0.0,
+                                          bottom: 0.0,
+                                          right: 0.0,
+                                          child: Slider(
+                                            onChanged: (value) {
+                                              updateColorWith(h: value);
+                                            },
+                                            label: '',
+                                            value: _currentColor.h,
+                                            min: 0.0,
+                                            max: 1.0,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                          Expanded(
+                            child: Row(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 12.0),
+                                  child: Text('S'),
+                                ),
+                                Expanded(
+                                  child: SliderTheme(
+                                    data: SliderTheme.of(context).copyWith(
+                                      activeTrackColor: Colors.transparent,
+                                      inactiveTrackColor: Colors.transparent,
+                                      thumbColor: _getContrastingColor(_currentColor.toColor()),
+                                    ),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Positioned(
+                                          left: 0.0,
+                                          top: 0.0,
+                                          bottom: 0.0,
+                                          right: 0.0,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(12.0, 6.0, 6.0, 6.0),
+                                            child: DecoratedBox(
+                                              decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
+                                                  colors: [_currentColor.copyWith(s: 0.0).toColor(), _currentColor.copyWith(s: 1.0).toColor()], // whitish to gray
+                                                  tileMode: TileMode.clamp, // repeats the gradient over the canvas
+                                                ),
+                                                borderRadius: BorderRadius.circular(6.0),
+                                                border: Border.all(
+                                                  color: Colors.black38,
+                                                  width: 1.0,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          left: 0.0,
+                                          top: 0.0,
+                                          bottom: 0.0,
+                                          right: 0.0,
+                                          child: Slider(
+                                            onChanged: (value) {
+                                              updateColorWith(s: value);
+                                            },
+                                            label: '',
+                                            value: _currentColor.s,
+                                            min: 0.0,
+                                            max: 1.0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Row(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 12.0),
+                                  child: Text('L'),
+                                ),
+                                Expanded(
+                                  child: SliderTheme(
+                                    data: SliderTheme.of(context).copyWith(
+                                      activeTrackColor: Colors.transparent,
+                                      inactiveTrackColor: Colors.transparent,
+                                      thumbColor: _getContrastingColor(_currentColor.toColor()),
+                                    ),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Positioned(
+                                          left: 0.0,
+                                          top: 0.0,
+                                          bottom: 0.0,
+                                          right: 0.0,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(12.0, 6.0, 6.0, 6.0),
+                                            child: DecoratedBox(
+                                              decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
+                                                  colors: [const Color(0xFF000000), _currentColor.copyWith(l: 0.5).toColor(), const Color(0xFFFFFFFF)], // whitish to gray
+                                                  tileMode: TileMode.clamp, // repeats the gradient over the canvas
+                                                ),
+                                                borderRadius: BorderRadius.circular(6.0),
+                                                border: Border.all(
+                                                  color: Colors.black38,
+                                                  width: 1.0,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          left: 0.0,
+                                          top: 0.0,
+                                          bottom: 0.0,
+                                          right: 0.0,
+                                          child: Slider(
+                                            onChanged: (value) {
+                                              updateColorWith(l: value);
+                                            },
+                                            label: '',
+                                            value: _currentColor.l,
+                                            min: 0.0,
+                                            max: 1.0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -379,6 +455,9 @@ class _ColorPopupRoute extends PopupRoute<HSLColor> {
               color: color,
               initialSize: initialSize,
               parentAnimation: parentAnimation,
+              onAccept: () {
+                Navigator.pop(context);
+              },
             )
           );
         },

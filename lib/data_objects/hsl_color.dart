@@ -21,9 +21,9 @@ class HSLColor {
     double l,
   }) {
     return new HSLColor(
-      h: h ?? 1.0,
-      s: s ?? 1.0,
-      l: l ?? 0.5
+      h: h ?? this.h,
+      s: s ?? this.s,
+      l: l ?? this.l
     );
   }
 
