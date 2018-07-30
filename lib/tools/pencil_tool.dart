@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:project_pickle/tools/drawing_tool.dart';
 
 class PencilTool extends DrawingTool {
-  PencilTool() : super();
+  PencilTool(context) : super(context);
 
   Offset _lastPoint;
 
@@ -24,10 +24,8 @@ class PencilTool extends DrawingTool {
 
   @override
   void handleDrawEnd() {
-    if (onDrawFinished != null) {
-      onDrawFinished();
-      _lastPoint = null;
-    }
+    finalizePreview();
+    _lastPoint = null;
   }
 
 }

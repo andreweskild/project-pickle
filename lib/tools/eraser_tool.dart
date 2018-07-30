@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:project_pickle/tools/drawing_tool.dart';
 
 class EraserTool extends DrawingTool {
-  EraserTool() : super();
+  EraserTool(context) : super(context);
 
   Offset _lastPoint;
 
@@ -14,20 +14,17 @@ class EraserTool extends DrawingTool {
     if ( _lastPoint != null &&
         ((_lastPoint.dx - pos.dx).abs() > 1 || 
         (_lastPoint.dy - pos.dy).abs() > 1)) {
-        addPixelLine(_lastPoint, pos);
+        removePixelLine(_lastPoint, pos);
     }
     else {
-      addPixel(pos);
+      removePixel(pos);
     }
     _lastPoint = pos;
   }
 
   @override
   void handleDrawEnd() {
-    if (onDrawFinished != null) {
-      onDrawFinished();
-      _lastPoint = null;
-    }
+    _lastPoint = null;
   }
 
 }

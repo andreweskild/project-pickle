@@ -36,8 +36,11 @@ class MyApp extends StatelessWidget {
           splashColor: new Color(0xFF9bbc0f),
           highlightColor: new Color(0xFFcadc9f),
           accentTextTheme: Theme.of(context).accentTextTheme.copyWith(
-            button: Theme.of(context).accentTextTheme.button.copyWith(color: new Color(0xFF0f380f))
-          )
+            button: Theme.of(context).accentTextTheme.button.copyWith(color: new Color(0xFF0f380f)),
+          ),
+          buttonTheme: ButtonTheme.of(context).copyWith(
+            minWidth: 12.0,
+          ),
         ),
 
         // GBA Theme 2

@@ -11,18 +11,24 @@ class RightDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      child: new SizedBox(
-        width: 300.0,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 4.0),
-            child: Column(
-              children: <Widget>[
-                new PreviewCard(),
-                new Expanded(child: new LayersCard()),
-              ],
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 6.0, bottom: 6.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 12.0, top: 6.0, bottom: 6.0),
+              child: PreviewCard(),
             ),
-          ),
+            Expanded(
+              child: Padding(
+              padding: const EdgeInsets.only(right: 12.0, top: 6.0, bottom: 6.0),
+                child: LayersCard(),
+              )
+            ),
+          ],
+        ),
       ),
     );
   }

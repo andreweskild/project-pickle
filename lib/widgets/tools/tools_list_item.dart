@@ -55,7 +55,7 @@ class ToolsListItem extends StatelessWidget {
       builder: (context, toolModel) {
         return new ListItem(
           icon: icon,
-          label: label,
+          label: Text(label),
           isHighlighted: toolModel.currentToolType == toolType,
           onTap: toolModel.callback,
         );

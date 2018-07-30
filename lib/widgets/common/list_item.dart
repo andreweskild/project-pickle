@@ -12,26 +12,34 @@ class ListItem extends StatelessWidget {
   final VoidCallback onTap;
 
   final Widget icon;
-  final String label;
+  final Widget label;
   final bool isHighlighted;
 
   @override
   Widget build(BuildContext context) {
-    return new Padding(
-      padding: new EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
-      child: new FlatButton(
+    return Padding(
+      padding: const EdgeInsets.only(top: 6.0, bottom: 6.0),
+      child: FlatButton(
         color: isHighlighted ? Theme.of(context).highlightColor : Colors.transparent,
         textColor: isHighlighted ? Theme.of(context).accentTextTheme.button.color : Colors.black,
-        padding: new EdgeInsets.all(8.0),
-        shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(12.0),
+        padding: EdgeInsets.all(8.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+          side: BorderSide(
+            color: isHighlighted ? Theme.of(context).accentColor : Colors.transparent,
+          )
         ),
-        child: new Row(
+        child: Stack(
           children: <Widget>[
-            icon,
-            new Padding(
-              padding: new EdgeInsets.only(left: 24.0),
-              child: new Text(label),
+            Align(alignment: Alignment.centerLeft, child: icon),
+            Positioned(
+              left: 24.0,
+              top: 0.0,
+              bottom: 0.0,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Center(child: label),
+              ),
             )
           ],
         ),

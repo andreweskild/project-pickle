@@ -1,13 +1,16 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 
-import 'package:project_pickle/data_objects/pixel_layer.dart';
 import 'package:project_pickle/data_objects/tool_types.dart';
+import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/drawing_tool.dart';
 import 'package:project_pickle/tools/tool.dart';
+import 'package:project_pickle/tools/eraser_tool.dart';
+import 'package:project_pickle/tools/fill_tool.dart';
 import 'package:project_pickle/tools/line_tool.dart';
 import 'package:project_pickle/tools/pencil_tool.dart';
 
@@ -15,26 +18,26 @@ class LayerChangeNotifier extends ChangeNotifier {
   LayerChangeNotifier();
 }
 
-class ActionController {
+class ToolController {
   final BuildContext _canvasContext;
+  Store<AppState> _store;
   Stream<Offset> _inputStream;
   StreamController<Offset> _inputStreamController;
   Offset _lastInputPos;
+  ToolType _currentToolType;
+  Tool _currentTool;
 
-  ActionController(this._canvasContext) {
+  ToolController(this._canvasContext) {
+    _store = StoreProvider.of<AppState>(_canvasContext);
     _inputStreamController = new StreamController<Offset>();
     _inputStream = _inputStreamController.stream;
+    _currentToolType = _store.state.currentToolType;
+    updateCurrentTool();
+    _store.onChange.listen(
+      (state) => handleStateChange(state)
+    );
   }
 
-  final previewLayer = new HashMap<Offset, Color>();
-  final finalLayers = <PixelLayer>[new PixelLayer('Layer 1')];
-  final changeNotifier = new LayerChangeNotifier();
-
-  PixelLayer get currentLayer => finalLayers[_currentLayerIndex];
-  int _currentLayerIndex;
-
-  Color _currentColor;
-  Tool _currentTool;
 
   void handlePointerMove(details) {
     RenderBox box = _canvasContext.findRenderObject();
@@ -55,44 +58,45 @@ class ActionController {
     double snappedY = pos.dy.floorToDouble();
     Offset snappedPos = new Offset(snappedX, snappedY);
     if (_lastInputPos == null) {
-      if(_currentTool is LineTool) {
-        previewLayer.clear();
-      }
       _inputStreamController.add(snappedPos);
     }
     else if (snappedPos != _lastInputPos) {
-      if(_currentTool is LineTool) {
-        previewLayer.clear();
-      }
       _inputStreamController.add(snappedPos);
     }
     _lastInputPos = snappedPos;
   }
 
-  void setCurrentColor(Color color) {
-    if (_currentColor != color) {
-      _currentColor = color;
+  void handleStateChange(AppState state) {
+    if (_currentToolType != state.currentToolType) {
+      _currentToolType = state.currentToolType;
+      updateCurrentTool();
     }
   }
 
-  void setCurrentToolType(ToolType toolType) {
+  void updateCurrentTool() {
     _inputStreamController = new StreamController<Offset>();
     _inputStream = _inputStreamController.stream;
-    switch (toolType) {
+    switch (_currentToolType) {
+      case ToolType.eraser:
+        _currentTool = new EraserTool(_canvasContext);
+        _inputStream.listen(
+          (pos) => _currentTool as DrawingTool..handleDrawPosUpdate(pos)
+        );
+        break;
+      case ToolType.fill:
+        _currentTool = new FillTool(_canvasContext);
+        _inputStream.listen(
+          (pos) => _currentTool as DrawingTool..handleDrawPosUpdate(pos)
+        );
+        break;
       case ToolType.line: 
-        _currentTool = new LineTool();
-        _currentTool as DrawingTool
-          ..drawUpdate.listen((pos) => addPreviewPixel(pos.dx, pos.dy))
-          ..onDrawFinished = finalizePreview;
+        _currentTool = new LineTool(_canvasContext);
         _inputStream.listen(
           (pos) => _currentTool as DrawingTool..handleDrawPosUpdate(pos)
         );
         break;
       case ToolType.pencil: 
-        _currentTool = new PencilTool();
-        _currentTool as DrawingTool
-          ..drawUpdate.listen((pos) => addPreviewPixel(pos.dx, pos.dy))
-          ..onDrawFinished = finalizePreview;
+        _currentTool = new PencilTool(_canvasContext);
         _inputStream.listen(
           (pos) => _currentTool as DrawingTool..handleDrawPosUpdate(pos)
         );
@@ -100,33 +104,4 @@ class ActionController {
     }
 
   }
-
-  void setCurrentLayerIndex(int newLayerIndex) {
-    if (_currentLayerIndex != newLayerIndex) {
-      _currentLayerIndex = newLayerIndex;
-    }
-  }
-
-  void addPreviewPixel(double x, double y) {
-    previewLayer[new Offset(x,y)] = _currentColor;
-    changeNotifier.notifyListeners();
-  }
-
-  void clearPreview() {
-    previewLayer.clear();
-  }
-
-  void finalizePreview() {
-    previewLayer.forEach((pos, color) {
-        if (!currentLayer.pixels.containsKey(pos)) {
-          currentLayer.pixels[pos] = color;
-        }
-        else if(currentLayer.pixels[pos] != color) {
-          currentLayer.pixels[pos] = color;
-        }
-      }
-    );
-    clearPreview();
-    changeNotifier.notifyListeners();
-  }
-}
+ }

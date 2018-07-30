@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Wed Jun 20 03:12:25 UTC 2018
+#Fri Jul 27 02:43:26 UTC 2018
 4.path=flutter_assets/AssetManifest.json
 8.set=ASSET
 6.path=flutter_assets/vm_snapshot_data
