@@ -41,6 +41,9 @@ class _CanvasControllerState extends State<CanvasController> {
         if(_toolController == null) {
           _toolController = ToolController(context);
         }
+        if(_layerCount == null) {
+          _layerCount = store.state.layers.length;
+        }
 
         store.onChange.listen(
             (state) {
