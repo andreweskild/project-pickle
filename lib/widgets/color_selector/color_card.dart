@@ -54,10 +54,11 @@ class ColorCard extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(12.0),
             child: StoreConnector<AppState, ColorCardModel>(
+              distinct: true,
               converter: (store) {
                 return ColorCardModel(
-                  color: store.state.currentColor,
-                  setColorCallback: (newColor) => store.dispatch(SetCurrentColorAction(newColor)),
+                  color: HSLColor.from(store.state.currentColor),
+                  setColorCallback: (newColor) => store.dispatch(SetCurrentColorAction(HSLColor.from(newColor))),
                 );
               },
               builder: (context, model) {

@@ -27,8 +27,6 @@ class _PaletteModel {
     int result = 17;
     result = 37 * result + palette.hashCode;
     result = 37 * result + currentColor.hashCode;
-    result = 37 * result + addToPalette.hashCode;
-    result = 37 * result + setCurrentColor.hashCode;
     return result;
   }
   
@@ -37,9 +35,7 @@ class _PaletteModel {
     if (other is! _PaletteModel) return false;
     _PaletteModel model = other;
     return (model.palette.length == palette.length &&
-        model.currentColor == currentColor &&
-        model.addToPalette == addToPalette &&
-        model.setCurrentColor == setCurrentColor);
+        model.currentColor == currentColor);
   }
 }
 
@@ -65,23 +61,23 @@ class PaletteSelectorCard extends StatelessWidget {
       title: 'Palette',
       builder: (context, collapsed) {
         return Expanded(
-                  child: new StoreConnector<AppState, _PaletteModel>(
+          child: StoreConnector<AppState, _PaletteModel>(
             distinct: true,
-            converter: (store) => new _PaletteModel(
-              currentColor: store.state.currentColor,
+            converter: (store) => _PaletteModel(
+              currentColor: HSLColor.from(store.state.currentColor),
               addToPalette: () => store.dispatch(
-                new AddCurrentColorToPaletteAction(),
+                AddCurrentColorToPaletteAction(),
               ),
               palette: store.state.palette,
               setCurrentColor: (color) => store.dispatch(
-                new SetCurrentColorAction(color)
+                SetCurrentColorAction(color)
               )
             ),
             builder: (context, paletteModel) {
-              return new Stack(
+              return Stack(
                 children: <Widget>[
-                  new GridView.extent(
-                    padding: new EdgeInsets.all(12.0),
+                  GridView.extent(
+                    padding: EdgeInsets.all(12.0),
                     primary: false,
                     crossAxisSpacing: 12.0,
                     maxCrossAxisExtent: 48.0,
@@ -91,12 +87,12 @@ class PaletteSelectorCard extends StatelessWidget {
                       (hslColor) => new RaisedButton(
                         elevation: 1.0,
                         color: hslColor.toColor(),
-                        shape: new RoundedRectangleBorder( 
-                          borderRadius: new BorderRadius.all(new Radius.circular(16.0)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16.0)),
                           side: BorderSide(color: Colors.black38),
                         ),
                         onPressed: () {
-                          paletteModel.setCurrentColor(new HSLColor.from(hslColor));
+                          paletteModel.setCurrentColor(HSLColor.from(hslColor));
                         },
                       )
                     ).toList(),

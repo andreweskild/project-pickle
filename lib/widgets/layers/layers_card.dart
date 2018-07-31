@@ -71,13 +71,13 @@ class LayersCard extends StatelessWidget {
               child: Stack(
                 children: <Widget>[
                   ListView(
-                    shrinkWrap: true,
                     padding: EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 58.0),
                     children: List<Widget>.generate(
                       model.layers.length, 
                       (index) {
                         int reversedIndex = model.layers.length - 1 - index;
                         return LayerListItem(
+                          collapsed: collapsed,
                           icon: AnimatedContainer(
                             curve: Curves.ease,
                             duration: Duration(milliseconds: 150),

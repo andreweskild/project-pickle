@@ -65,26 +65,37 @@ class SetCurrentLayerIndexAction {
 class AppState {
   AppState({
     this.currentToolType = ToolType.pencil,
-    this.currentColor,
-    this.palette,
-  }) {
-    currentLayerIndex = 0;
-  }
-
-  AppState.copyWith({
-    this.currentColor,
-    this.currentLayerIndex,
-    this.currentToolType = ToolType.pencil,
-    this.layers,
-    this.palette,
+    @required this.currentColor,
+    this.currentLayerIndex = 0,
+    @required this.layers,
+    @required this.palette,
+    @required this.previewLayer,
   });
+
+  AppState copyWith({
+    HSLColor currentColor,
+    int currentLayerIndex,
+    ToolType currentToolType = ToolType.pencil,
+    List<PixelCanvasLayer> layers,
+    List<HSLColor> palette,
+    PixelCanvasLayer previewLayer,
+  }) {
+    return AppState(
+      currentColor: currentColor ?? this.currentColor,
+      currentLayerIndex: currentLayerIndex ?? this.currentLayerIndex,
+      currentToolType: currentToolType ?? this.currentToolType,
+      layers: layers ?? this.layers,
+      palette: palette ?? this.palette,
+      previewLayer: previewLayer ?? this.previewLayer,
+    );
+  }
 
   HSLColor currentColor;
   PixelCanvasLayer get currentLayer => layers[currentLayerIndex];
   int currentLayerIndex;
   ToolType currentToolType;
-  var layers = <PixelCanvasLayer>[new PixelCanvasLayer(name: 'Layer 1', height: 32, width: 32,)];
-  final previewLayer = new PixelCanvasLayer(height: 32, width: 32,);
+  List<PixelCanvasLayer> layers;
+  final PixelCanvasLayer previewLayer;
   var palette = new List<HSLColor>();
 }
 
@@ -94,26 +105,33 @@ AppState stateReducer(AppState state, dynamic action) {
     return state;
   } 
   else if (action is AddNewLayerAction) {
-    state.layers.add(
+    state.layers.insert(
+      state.currentLayerIndex + 1,
       new PixelCanvasLayer(
         name: action.name,
         height: 32,
         width: 32,
       )
     );
+    state.currentLayerIndex += 1;
     return state;
   }
   else if (action is SetCurrentToolTypeAction) {
-    state.currentToolType = action.toolType;
-    return state;
+    return state.copyWith(
+      currentToolType: action.toolType,
+    );
   }
   else if (action is SetCurrentColorAction) {
-    state.currentColor = new HSLColor.from(action.color);
-    return state;
+    return state.copyWith(
+      currentColor: HSLColor.from(action.color),
+    );
   }
   else if (action is AddCurrentColorToPaletteAction) {
-    state.palette.add(state.currentColor);
-    return state;
+    List<HSLColor> newPalette = List.from(state.palette);
+    newPalette.add(state.currentColor);
+    return state.copyWith(
+      palette: newPalette,
+    );
   }
   else if (action is ClearPreviewAction) {
     state.previewLayer.clearPixels();

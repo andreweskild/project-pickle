@@ -25,8 +25,7 @@ class _ToolModel {
   bool operator ==(dynamic other) {
     if (other is! _ToolModel) return false;
     _ToolModel model = other;
-    return (model.currentToolType == currentToolType && 
-      model.callback == callback);
+    return (model.currentToolType == currentToolType);
   }
 }
 

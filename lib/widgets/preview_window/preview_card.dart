@@ -52,12 +52,14 @@ class PreviewCard extends StatelessWidget {
           child: AspectRatio(
             aspectRatio: 1.0,
             child: StoreConnector<AppState, _PreviewModel>(
+              distinct: true,
               converter: (store) {
                 return _PreviewModel(
                   layers: store.state.layers,
                 );
               },
               builder: (context, model) {
+                print('rebuilding preview');
                 return Material(
                   color: Colors.grey.shade300,
                   shape: RoundedRectangleBorder(

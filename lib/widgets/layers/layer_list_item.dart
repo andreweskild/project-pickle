@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class LayerListItem extends StatelessWidget {
   const LayerListItem({
     Key key,
+    this.collapsed,
     this.icon,
     this.isHighlighted = false,
     this.label,
@@ -11,6 +12,7 @@ class LayerListItem extends StatelessWidget {
 
   final VoidCallback onTap;
 
+  final bool collapsed;
   final Widget icon;
   final Widget label;
   final bool isHighlighted;
@@ -27,6 +29,7 @@ class LayerListItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(16.0),
           side: BorderSide(
             color: isHighlighted ? Theme.of(context).accentColor : Colors.transparent,
+            width: collapsed ? 4.0 : 1.0,
           )
         ),
         child: Stack(
