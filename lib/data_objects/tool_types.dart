@@ -1,4 +1,5 @@
 enum ToolType {
+  colorPicker,
   eraser,
   fill,
   line,

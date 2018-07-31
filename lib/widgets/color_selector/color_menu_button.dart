@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:project_pickle/data_objects/hsl_color.dart';
+import 'package:project_pickle/widgets/color_selector/color_slider_thumb.dart';
+import 'package:project_pickle/widgets/color_selector/color_slider_value_indicator.dart';
 
 const double _kMenuScreenPadding = 8.0;
 
@@ -204,7 +206,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                             child: Row(
                               children: <Widget>[
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 12.0),
+                                  padding: const EdgeInsets.only(left: 6.0, right: 6.0),
                                   child: Text('H'),
                                 ),
                                 Expanded(
@@ -212,7 +214,11 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                     data: SliderTheme.of(context).copyWith(
                                       activeTrackColor: Colors.transparent,
                                       inactiveTrackColor: Colors.transparent,
-                                      thumbColor: _getContrastingColor(_currentColor.toColor()),
+                                      thumbColor: Colors.white,
+                                      thumbShape: ColorSliderThumbShape(),
+                                      showValueIndicator: ShowValueIndicator.always,
+                                      valueIndicatorColor: _currentColor.copyWith(s: 1.0, l: 0.5).toColor(),
+                                      valueIndicatorShape: ColorSliderValueIndicatorShape(),
                                     ),
                                     child: Stack(
                                       children: <Widget>[
@@ -222,7 +228,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                           bottom: 0.0,
                                           right: 0.0,
                                           child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(12.0, 6.0, 6.0, 6.0),
+                                            padding: const EdgeInsets.fromLTRB(6.0, 6.0, 6.0, 6.0),
                                             child: DecoratedBox(
                                               decoration: BoxDecoration(
                                                 gradient: LinearGradient(
@@ -266,7 +272,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                             child: Row(
                               children: <Widget>[
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 12.0),
+                                  padding: const EdgeInsets.only(left: 6.0, right: 6.0),
                                   child: Text('S'),
                                 ),
                                 Expanded(
@@ -274,7 +280,11 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                     data: SliderTheme.of(context).copyWith(
                                       activeTrackColor: Colors.transparent,
                                       inactiveTrackColor: Colors.transparent,
-                                      thumbColor: _getContrastingColor(_currentColor.toColor()),
+                                      thumbColor: Colors.white,
+                                      thumbShape: ColorSliderThumbShape(),
+                                      showValueIndicator: ShowValueIndicator.always,
+                                      valueIndicatorColor: _currentColor.toColor(),
+                                      valueIndicatorShape: ColorSliderValueIndicatorShape(),
                                     ),
                                     child: Stack(
                                       children: <Widget>[
@@ -284,7 +294,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                           bottom: 0.0,
                                           right: 0.0,
                                           child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(12.0, 6.0, 6.0, 6.0),
+                                            padding: const EdgeInsets.fromLTRB(6.0, 6.0, 6.0, 6.0),
                                             child: DecoratedBox(
                                               decoration: BoxDecoration(
                                                 gradient: LinearGradient(
@@ -328,7 +338,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                             child: Row(
                               children: <Widget>[
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 12.0),
+                                  padding: const EdgeInsets.only(left: 6.0, right: 6.0),
                                   child: Text('L'),
                                 ),
                                 Expanded(
@@ -336,7 +346,11 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                     data: SliderTheme.of(context).copyWith(
                                       activeTrackColor: Colors.transparent,
                                       inactiveTrackColor: Colors.transparent,
-                                      thumbColor: _getContrastingColor(_currentColor.toColor()),
+                                      thumbColor: Colors.white,
+                                      thumbShape: ColorSliderThumbShape(),
+                                      showValueIndicator: ShowValueIndicator.always,
+                                      valueIndicatorColor: _currentColor.toColor(),
+                                      valueIndicatorShape: ColorSliderValueIndicatorShape(),
                                     ),
                                     child: Stack(
                                       children: <Widget>[
@@ -346,7 +360,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                           bottom: 0.0,
                                           right: 0.0,
                                           child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(12.0, 6.0, 6.0, 6.0),
+                                            padding: const EdgeInsets.fromLTRB(6.0, 6.0, 6.0, 6.0),
                                             child: DecoratedBox(
                                               decoration: BoxDecoration(
                                                 gradient: LinearGradient(

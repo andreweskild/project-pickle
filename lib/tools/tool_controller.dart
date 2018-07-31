@@ -77,6 +77,12 @@ class ToolController {
     _inputStreamController = new StreamController<Offset>();
     _inputStream = _inputStreamController.stream;
     switch (_currentToolType) {
+      case ToolType.colorPicker:
+        _currentTool = new PencilTool(_canvasContext);
+        _inputStream.listen(
+                (pos) => _currentTool as DrawingTool..handleDrawPosUpdate(pos)
+        );
+        break;
       case ToolType.eraser:
         _currentTool = new EraserTool(_canvasContext);
         _inputStream.listen(

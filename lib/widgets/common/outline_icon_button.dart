@@ -6,23 +6,25 @@ class OutlineIconButton extends StatelessWidget {
     Key key,
     @required this.icon,
     @required this.onPressed,
+    this.highlighted = false,
   }) : super(key: key);
 
   final IconData icon;
   final VoidCallback onPressed;
+  final bool highlighted;
 
   @override
   Widget build(BuildContext context) {
     return FlatButton(
-      color: Colors.white,
+      color: highlighted ? Theme.of(context).highlightColor : Colors.white,
       padding: EdgeInsets.all(8.0),
       child: Icon(icon),
       onPressed: onPressed,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
-        side: BorderSide(
-          color: Colors.grey.shade400,
-        )
+          side: BorderSide(
+            color: highlighted ? Theme.of(context).accentColor : Colors.grey.shade400,
+          )
       ),
     );
   }
