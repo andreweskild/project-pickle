@@ -59,7 +59,6 @@ class PreviewCard extends StatelessWidget {
                 );
               },
               builder: (context, model) {
-                print('rebuilding preview');
                 return Material(
                   color: Colors.grey.shade300,
                   shape: RoundedRectangleBorder(

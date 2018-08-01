@@ -40,11 +40,11 @@ class _PixelEditorPageState extends State<PixelEditorPage> {
 
     return new ResponsiveScaffold(
       name: widget.name,
-      body: new CanvasGestureContainer(
+      body: CanvasGestureContainer(
         canvasController: _controller,
       ),
-      drawer: new LeftDrawer(),
-      endDrawer: new RightDrawer(),
+      drawer: LeftDrawer(),
+      endDrawer: RightDrawer(),
     );
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/widgets.dart';
 
 import 'package:project_pickle/widgets/pixels/canvas_controller.dart';
 
+int _widthBreakpoint = 992;
+
 class CanvasGestureContainer extends StatefulWidget {
   const CanvasGestureContainer({
     Key key,
@@ -16,7 +18,7 @@ class CanvasGestureContainer extends StatefulWidget {
 }
 
 class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
-
+  Size _previousViewportSize;
 
   Matrix4 _matrix = new Matrix4.diagonal3Values(1.0, 1.0, 1.0);
 
@@ -40,10 +42,21 @@ class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
     );
     double initialScale;
 
-    if (viewSize.width < viewSize.height) {
-      initialScale = (viewSize.width - padding*2) / widget.canvasController.width;
-    } else {
-      initialScale = (viewSize.height - padding*2) / widget.canvasController.height;
+    if (constraints.maxWidth > _widthBreakpoint) {
+      if (viewSize.width - 512.0 < viewSize.height) {
+        initialScale = (viewSize.width - 512.0 - padding*2) / widget.canvasController.width;
+      } else {
+        initialScale = (viewSize.height - padding*2) / widget.canvasController.height;
+      }
+    }
+    else {
+      if (viewSize.width < viewSize.height) {
+        initialScale =
+            (viewSize.width - padding * 2) / widget.canvasController.width;
+      } else {
+        initialScale =
+            (viewSize.height - padding * 2) / widget.canvasController.height;
+      }
     }
 
     _startingFocalPoint = focalPoint;
@@ -71,18 +84,32 @@ class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
     _previousScale = 1.0;
     _scale = 1.0;
 
-
     Size viewSize = constraints.biggest;
+
+
     Offset focalPoint = new Offset(
       viewSize.width/2,
       viewSize.height/2,
     );
     double initialScale;
 
-    if (viewSize.width - 512 < viewSize.height) {
-      initialScale = (viewSize.width - 512 - padding*2) / widget.canvasController.width;
-    } else {
-      initialScale = (viewSize.height - padding*2) / widget.canvasController.height;
+
+
+    if (constraints.maxWidth > _widthBreakpoint) {
+      if (viewSize.width - 512.0 < viewSize.height) {
+        initialScale = (viewSize.width - 512.0 - padding*2) / widget.canvasController.width;
+      } else {
+        initialScale = (viewSize.height - padding*2) / widget.canvasController.height;
+      }
+    }
+    else {
+      if (viewSize.width < viewSize.height) {
+        initialScale =
+            (viewSize.width - padding * 2) / widget.canvasController.width;
+      } else {
+        initialScale =
+            (viewSize.height - padding * 2) / widget.canvasController.height;
+      }
     }
 
     _startingFocalPoint = focalPoint;
@@ -108,12 +135,17 @@ class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
   Widget build(BuildContext context) {
     return new LayoutBuilder(
       builder: (context, constraints) {
+        if (_previousViewportSize == null) {
+          _previousViewportSize = constraints.biggest;
+        }
+
         if(!_initialized) {
           _setInitialScale(constraints);
           _initialized = true;
         }
-        else {
+        else if (_previousViewportSize != constraints.biggest) {
           centerAndFill(constraints);
+          _previousViewportSize = constraints.biggest;
         }
 
         return new GestureDetector(

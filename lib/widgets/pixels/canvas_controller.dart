@@ -70,8 +70,8 @@ class _CanvasControllerState extends State<CanvasController> {
 
         int maxPointerCount = 0;
 
+        // layer pixellayers correctly so drawing of pixels is done in the correct order
         List<PixelCanvasLayer> layers;
-
         layers = store.state.layers.getRange(0, store.state.currentLayerIndex + 1).toList();
         layers.add(store.state.previewLayer);
         layers.addAll(store.state.layers.getRange(store.state.currentLayerIndex + 1, store.state.layers.length));
