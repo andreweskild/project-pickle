@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'dart:math' as math;
 
 class HSLColor {
   HSLColor({
@@ -14,6 +15,10 @@ class HSLColor {
     s: color.s,
     l: color.l,
   );
+
+
+  HSLColor.fromRGB(Color color) :
+      this.from(_rgbToHsl(color));
 
   HSLColor copyWith({
     double h,
@@ -73,6 +78,40 @@ class HSLColor {
     return new Color.fromRGBO(r.round(), g.round(), b.round(), 1.0);
   }
 
+
+  static HSLColor _rgbToHsl(Color rgbColor) {
+    double r = rgbColor.red.toDouble();
+    double g = rgbColor.green.toDouble();
+    double b = rgbColor.blue.toDouble();
+
+    r /= 255.0;
+    g /= 255.0;
+    b /= 255.0;
+
+    double max = math.max(r, math.max(g, b)), min = math.min(r, math.min(g, b));
+    double h, s, l = (max + min) / 2.0;
+
+    if (max == min) {
+      h = s = 0.0; // achromatic
+    } else {
+      var d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+      if (max == r) {
+        h = (g - b) / d + (g < b ? 6.0 : 0.0);
+      }
+      else if (max == g) {
+        h = (b - r) / d + 2.0;
+      }
+      else if (max == b) {
+        h = (r - g) / d + 4.0;
+      }
+
+      h /= 6.0;
+    }
+
+    return HSLColor(h: h, s: s, l: l);
+  }
 
   @override
   int get hashCode {

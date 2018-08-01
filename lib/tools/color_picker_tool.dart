@@ -16,7 +16,7 @@ class ColorPickerTool extends DrawingTool {
 
   @override
   void handleDrawEnd() {
-    print(_currentSelectedColor);
+    updateCurrentColor(_currentSelectedColor);
     _currentSelectedColor = null;
   }
 

@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/tool.dart';
 
@@ -61,8 +62,6 @@ class DrawingTool extends Tool {
   }
 
   Color getPixelColor(Offset pos) {
-    Color returnValue;
-
     for (var layer in _store.state.layers.reversed) {
       if (layer.rawPixels.containsKey(pos)) {
         return layer.rawPixels[pos];
@@ -70,6 +69,11 @@ class DrawingTool extends Tool {
     }
 
     return Colors.white;
+  }
+
+  void updateCurrentColor(Color color) {
+    HSLColor hslColor = HSLColor.fromRGB(color);
+    _store.dispatch(SetCurrentColorAction(hslColor));
   }
 
   void removePixel(Offset pos) {

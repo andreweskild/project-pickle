@@ -44,3 +44,4 @@ Color colorFromHSL(double h, double s, double l) {
 
   return new Color.fromRGBO(r.round(), g.round(), b.round(), 1.0);
 }
+

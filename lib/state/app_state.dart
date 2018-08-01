@@ -75,7 +75,7 @@ class AppState {
   AppState copyWith({
     HSLColor currentColor,
     int currentLayerIndex,
-    ToolType currentToolType = ToolType.pencil,
+    ToolType currentToolType,
     List<PixelCanvasLayer> layers,
     List<HSLColor> palette,
     PixelCanvasLayer previewLayer,
