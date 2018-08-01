@@ -6,26 +6,18 @@ import 'package:project_pickle/tools/drawing_tool.dart';
 class ColorPickerTool extends DrawingTool {
   ColorPickerTool(context) : super(context);
 
-  Offset _lastPoint;
+  Color _currentSelectedColor;
 
 
   @override
   void handleDrawPosUpdate(Offset pos) {
-    if ( _lastPoint != null &&
-        ((_lastPoint.dx - pos.dx).abs() > 1 ||
-            (_lastPoint.dy - pos.dy).abs() > 1)) {
-      addPixelLine(_lastPoint, pos);
-    }
-    else {
-      addPixel(pos);
-    }
-    _lastPoint = pos;
+    _currentSelectedColor = getPixelColor(pos);
   }
 
   @override
   void handleDrawEnd() {
-    finalizePreview();
-    _lastPoint = null;
+    print(_currentSelectedColor);
+    _currentSelectedColor = null;
   }
 
 }

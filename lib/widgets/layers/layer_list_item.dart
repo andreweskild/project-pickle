@@ -29,7 +29,7 @@ class LayerListItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(16.0),
           side: BorderSide(
             color: isHighlighted ? Theme.of(context).accentColor : Colors.transparent,
-            width: collapsed ? 4.0 : 1.0,
+            width: collapsed ? 3.0 : 1.0,
           )
         ),
         child: Stack(

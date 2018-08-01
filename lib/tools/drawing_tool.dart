@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -57,6 +58,18 @@ class DrawingTool extends Tool {
         crossAxisPosition = crossAxisPosition - slope;
       }
     }
+  }
+
+  Color getPixelColor(Offset pos) {
+    Color returnValue;
+
+    for (var layer in _store.state.layers.reversed) {
+      if (layer.rawPixels.containsKey(pos)) {
+        return layer.rawPixels[pos];
+      }
+    }
+
+    return Colors.white;
   }
 
   void removePixel(Offset pos) {
