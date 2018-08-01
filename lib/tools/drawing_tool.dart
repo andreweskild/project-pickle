@@ -20,11 +20,11 @@ class DrawingTool extends Tool {
     _store = StoreProvider.of<AppState>(context);
   }
 
-  void addPixel(Offset pos) {
+  void drawPreviewPixel(Offset pos) {
     _store.dispatch(new AddPixelAction(pos));
   }
 
-  void addPixelLine(Offset p1, Offset p2) {
+  void drawPreviewPixelLine(Offset p1, Offset p2) {
     var horizontalMovement = (p1.dx - p2.dx).abs();
     var verticalMovement = (p1.dy - p2.dy).abs();
 
@@ -40,7 +40,7 @@ class DrawingTool extends Tool {
       var slope = (p2.dy - p1.dy) / (p2.dx - p1.dx);
       var crossAxisPosition = p1.dy;
       for (double i = p1.dx; i <= p2.dx; i++) {
-        addPixel(new Offset(i, crossAxisPosition.round().toDouble()));
+        drawPreviewPixel(new Offset(i, crossAxisPosition.round().toDouble()));
         crossAxisPosition = crossAxisPosition + slope;
       }
     }
@@ -55,7 +55,7 @@ class DrawingTool extends Tool {
       var slope = (p2.dx - p1.dx) / (p2.dy - p1.dy);
       var crossAxisPosition = p1.dx;
       for (double i = p1.dy; i >= p2.dy; i--) {
-        addPixel(new Offset(crossAxisPosition.round().toDouble(), i));
+        drawPreviewPixel(new Offset(crossAxisPosition.round().toDouble(), i));
         crossAxisPosition = crossAxisPosition - slope;
       }
     }

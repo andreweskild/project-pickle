@@ -79,7 +79,7 @@ class ToolsCard extends StatelessWidget {
                       child: ToolsListItem(
                         icon: Icon(Icons.brush),
                         label: 'Shape',
-                        toolType: ToolType.line,
+                        toolType: ToolType.shape,
                       ),
                     ),
                   ),

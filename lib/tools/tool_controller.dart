@@ -14,6 +14,7 @@ import 'package:project_pickle/tools/eraser_tool.dart';
 import 'package:project_pickle/tools/fill_tool.dart';
 import 'package:project_pickle/tools/line_tool.dart';
 import 'package:project_pickle/tools/pencil_tool.dart';
+import 'package:project_pickle/tools/shape_tool.dart';
 
 class LayerChangeNotifier extends ChangeNotifier {
   LayerChangeNotifier();
@@ -107,6 +108,12 @@ class ToolController {
         _currentTool = PencilTool(_canvasContext);
         _inputStream.listen(
           (pos) => _currentTool as DrawingTool..handleDrawPosUpdate(pos)
+        );
+        break;
+      case ToolType.shape:
+        _currentTool = ShapeTool(_canvasContext);
+        _inputStream.listen(
+                (pos) => _currentTool as DrawingTool..handleDrawPosUpdate(pos)
         );
         break;
     }

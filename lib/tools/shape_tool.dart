@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:project_pickle/tools/drawing_tool.dart';
 
-class LineTool extends DrawingTool {
-  LineTool(context) : super(context);
+class ShapeTool extends DrawingTool {
+  ShapeTool(context) : super(context);
 
   Offset _startPoint;
   Offset _endPoint;
@@ -13,23 +13,29 @@ class LineTool extends DrawingTool {
   void handleDrawPosUpdate(Offset pos) {
     if (_startPoint == null) {
       _startPoint = pos;
-      addPixel(pos);
+      drawPreviewPixel(pos);
     }
     else {
       if (_endPoint != null) {
         resetPreview();
       }
       _endPoint = pos;
-      addPixelLine(_startPoint, _endPoint);
+      var topLeftPoint = _startPoint;
+      var topRightPoint = Offset(_endPoint.dx, _startPoint.dy);
+      var bottomLeftPoint = Offset(_startPoint.dx, _endPoint.dy);
+      var bottomRightPoint = _endPoint;
+
+      drawPreviewPixelLine(topLeftPoint, topRightPoint);
+      drawPreviewPixelLine(topRightPoint, bottomRightPoint);
+      drawPreviewPixelLine(bottomRightPoint, bottomLeftPoint);
+      drawPreviewPixelLine(bottomLeftPoint, topLeftPoint);
     }
   }
 
   @override
   void handleDrawEnd() {
-    if (_endPoint != null) {
-      finalizePreview();
-      resetLinePoints();
-    }
+    finalizePreview();
+    resetLinePoints();
   }
 
   void resetLinePoints() {

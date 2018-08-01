@@ -13,14 +13,14 @@ class LineTool extends DrawingTool {
   void handleDrawPosUpdate(Offset pos) {
     if (_startPoint == null) {
       _startPoint = pos;
-      addPixel(pos);
+      drawPreviewPixel(pos);
     }
     else {
       if (_endPoint != null) {
         resetPreview();
       }
       _endPoint = pos;
-      addPixelLine(_startPoint, _endPoint);
+      drawPreviewPixelLine(_startPoint, _endPoint);
     }
   }
 

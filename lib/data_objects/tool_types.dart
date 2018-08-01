@@ -4,4 +4,5 @@ enum ToolType {
   fill,
   line,
   pencil,
+  shape,
 }
