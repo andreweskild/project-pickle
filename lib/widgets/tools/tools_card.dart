@@ -89,7 +89,7 @@ class ToolsCard extends StatelessWidget {
                       child: ToolsListItem(
                         icon: Icon(Icons.brightness_1),
                         label: 'Select',
-                        toolType: ToolType.line,
+                        toolType: ToolType.marquee_selector,
                       ),
                     ),
                   ),

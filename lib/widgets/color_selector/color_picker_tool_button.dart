@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/data_objects/tool_types.dart';
+import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/common/outline_icon_button.dart';
 
@@ -34,7 +35,7 @@ class ColorPickerToolButton extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
-  final ToolType toolType = ToolType.colorPicker;
+  final ToolType toolType = ToolType.color_picker;
 
   @override
   Widget build(BuildContext context) {

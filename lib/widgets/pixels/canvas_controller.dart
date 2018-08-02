@@ -4,26 +4,21 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/data_objects/tool_types.dart';
 import 'package:project_pickle/tools/tool_controller.dart';
+import 'package:project_pickle/tools/select_tool_overlay.dart';
+import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/pixels/pixel_canvas_layer.dart';
-
-class CanvasModel {
-  CanvasModel(
-    this.currentToolType,
-  );
-
-  ToolType currentToolType;
-  VoidCallback clearPreviewCallback;
-}
 
 class CanvasController extends StatefulWidget {
   CanvasController({
     Key key,
     this.width,
-    this.height
+    this.height,
+    this.scale,
   }) : super(key: key);
 
   final int height, width;
+  final double scale;
 
   @override
   _CanvasControllerState createState() => new _CanvasControllerState();
@@ -33,6 +28,17 @@ class _CanvasControllerState extends State<CanvasController> {
   ToolController _toolController;
   int _layerCount;
   int _currentLayerIndex;
+  ToolType _currentToolType;
+
+
+  List<PixelCanvasLayer> _populateLayerList(AppState state) {
+    // layer pixellayers correctly so drawing of pixels is done in the correct order
+    List<PixelCanvasLayer> layers = state.layers.getRange(0, state.currentLayerIndex + 1).toList();
+    layers.add(state.previewLayer);
+    layers.addAll(state.layers.getRange(state.currentLayerIndex + 1, state.layers.length));
+
+    return layers;
+  }
 
 
   @override
@@ -49,16 +55,22 @@ class _CanvasControllerState extends State<CanvasController> {
         if(_currentLayerIndex == null) {
           _currentLayerIndex = store.state.currentLayerIndex;
         }
+        if(_currentToolType == null) {
+          _currentToolType = store.state.currentToolType;
+        }
 
         store.onChange.listen(
             (state) {
               if(state.layers.length != _layerCount ||
-                state.currentLayerIndex != _currentLayerIndex) {
+                  state.currentLayerIndex != _currentLayerIndex ||
+                  state.currentToolType != _currentToolType) {
                 setState(() {
                   _layerCount = state.layers.length;
                   _currentLayerIndex = state.currentLayerIndex;
+                  _currentToolType = state.currentToolType;
                 });
               }
+
             }
         );
 
@@ -70,11 +82,7 @@ class _CanvasControllerState extends State<CanvasController> {
 
         int maxPointerCount = 0;
 
-        // layer pixellayers correctly so drawing of pixels is done in the correct order
-        List<PixelCanvasLayer> layers;
-        layers = store.state.layers.getRange(0, store.state.currentLayerIndex + 1).toList();
-        layers.add(store.state.previewLayer);
-        layers.addAll(store.state.layers.getRange(store.state.currentLayerIndex + 1, store.state.layers.length));
+        var layers = _populateLayerList(store.state);
 
 
         return Listener(
@@ -84,6 +92,7 @@ class _CanvasControllerState extends State<CanvasController> {
             }
           },
           onPointerDown: (details) {
+            print(details.buttons);
             currentPointerCount += 1;
             if (maxPointerCount < currentPointerCount) {
               maxPointerCount = currentPointerCount;
@@ -109,9 +118,26 @@ class _CanvasControllerState extends State<CanvasController> {
             child: SizedBox(
               width: 32.0,
               height: 32.0,
-              child: Stack(
-                children: layers
-              ),
+              child: Builder(
+                builder: (context) {
+                  if (_currentToolType == ToolType.marquee_selector) {
+                    return Stack(
+                      children: <Widget>[
+                        Stack(
+                          children: layers
+                        ),
+                        SelectToolOverlay(),
+                      ],
+                    );
+                  }
+                  else {
+                    return Stack(
+                      children: layers
+                    );
+                  }
+                },
+              ) 
+              
             ),
           ),
         );

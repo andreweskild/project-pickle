@@ -1,5 +1,9 @@
 import 'package:flutter/widgets.dart';
+import 'package:redux/redux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:project_pickle/state/actions.dart';
+import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/pixels/canvas_controller.dart';
 
 int _widthBreakpoint = 992;
@@ -33,6 +37,8 @@ class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
 
   Offset _previousOffset;
   Offset _offset = new Offset(0.0, 0.0);
+
+  Store<AppState> _store;
 
   void _setInitialScale(BoxConstraints constraints) {
     Size viewSize = constraints.biggest;
@@ -70,7 +76,7 @@ class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
       final Offset normalizedOffset = (_startingFocalPoint - _previousOffset) / _previousScale;
       final Offset newOffset = focalPoint - normalizedOffset * newScale;
 
-      _scale = newScale;
+      _updateScale(newScale);
       _offset = newOffset;
 
       _setScaleOfMatrix(newScale, _matrix);
@@ -82,7 +88,7 @@ class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
     _matrix = new Matrix4.diagonal3Values(1.0, 1.0, 1.0);
     _offset = new Offset(0.0, 0.0);
     _previousScale = 1.0;
-    _scale = 1.0;
+    _updateScale(1.0);
 
     Size viewSize = constraints.biggest;
 
@@ -123,7 +129,7 @@ class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
       final Offset normalizedOffset = (_startingFocalPoint - _previousOffset) / _previousScale;
       final Offset newOffset = focalPoint - normalizedOffset * newScale;
 
-      _scale = newScale;
+      _updateScale(newScale);
       _offset = newOffset;
 
       _setScaleOfMatrix(newScale, _matrix);
@@ -133,6 +139,11 @@ class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
 
   @override
   Widget build(BuildContext context) {
+    if (_store == null) {
+      _store = StoreProvider.of<AppState>(context);
+    }
+
+
     return new LayoutBuilder(
       builder: (context, constraints) {
         if (_previousViewportSize == null) {
@@ -163,6 +174,11 @@ class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
     );
   }
 
+  void _updateScale(double newScale) {
+    _scale = newScale;
+    _store.dispatch(SetCanvasScaleAction(newScale));
+  }
+
   void _scaleStart(Offset focal) {
     _startingFocalPoint = focal;
     _previousOffset = _offset;
@@ -178,7 +194,7 @@ class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
       final Offset newOffset = focal - normalizedOffset * newScale;
 
       setState((){
-        _scale = newScale;
+        _updateScale(newScale);
         _offset = newOffset;
 
         _setScaleOfMatrix(newScale, _matrix);
