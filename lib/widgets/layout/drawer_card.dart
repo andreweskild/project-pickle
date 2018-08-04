@@ -47,13 +47,10 @@ class _DrawerCardState extends State<DrawerCard> {
       duration: Duration(milliseconds: 200),
       width: _currentlyCollapsed ? 116.0 : 264.0,
       child: Material(
-        color: Colors.grey.shade100,
+        color: Theme.of(context).cardColor,
         elevation: 4.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.0),
-          side: BorderSide(
-            color: Colors.grey.shade400,
-          )
         ),
         child: Column(
           children: <Widget>[

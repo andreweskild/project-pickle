@@ -37,7 +37,6 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
               title: new Text(widget.name),
               primary: true,
             ),
-            backgroundColor: Colors.grey.shade300,
             body: widget.body,
             drawer: widget.drawer,
             endDrawer: widget.endDrawer,
@@ -51,7 +50,6 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
               title: new Text(widget.name),
               primary: true,
             ),
-            backgroundColor: Colors.grey.shade300,
             body: new Stack(
               children: <Widget>[
                 widget.body,

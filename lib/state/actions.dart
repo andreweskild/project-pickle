@@ -24,6 +24,10 @@ class ClearPreviewAction {
   ClearPreviewAction();
 }
 
+class DeselectAction {
+  DeselectAction();
+}
+
 class FillAreaAction {
   FillAreaAction(this.pos);
   final Offset pos;

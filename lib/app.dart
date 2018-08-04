@@ -39,15 +39,22 @@ class MyApp extends StatelessWidget {
         // GBA Theme 1
         theme: new ThemeData(
           accentColor: new Color(0xFF8bac0f),
-          primarySwatch: new MaterialColor(0xFF306230, const <int, Color> {50 : const Color(0xFFFFF8E1), 100 : const Color(0xFFFFECB3), 200 : const Color(0xFFFFE082), 300 : const Color(0xFFFFD54F), 400 : const Color(0xFFFFCA28), 500 : const Color(0xFFFFC107), 600 : const Color(0xFFFFB300), 700 : const Color(0xFFFFA000), 800 : const Color(0xFFFF8F00), 900 : const Color(0xFFFF6F00)}),
+          cardColor: Colors.grey.shade700,
+          dividerColor: Colors.grey.shade900,
+          primarySwatch: new MaterialColor(0xFF222222, const <int, Color> {50 : const Color(0xFFFFF8E1), 100 : const Color(0xFFFFECB3), 200 : const Color(0xFFFFE082), 300 : const Color(0xFFFFD54F), 400 : const Color(0xFFFFCA28), 500 : const Color(0xFFFFC107), 600 : const Color(0xFFFFB300), 700 : const Color(0xFFFFA000), 800 : const Color(0xFFFF8F00), 900 : const Color(0xFFFF6F00)}),
           splashColor: new Color(0xFF9bbc0f),
           highlightColor: new Color(0xFFcadc9f),
           accentTextTheme: Theme.of(context).accentTextTheme.copyWith(
             button: Theme.of(context).accentTextTheme.button.copyWith(color: new Color(0xFF0f380f)),
           ),
+          primaryTextTheme: Theme.of(context).primaryTextTheme.copyWith(
+            body1: Theme.of(context).primaryTextTheme.body1.copyWith(color: Colors.white),
+            button: Theme.of(context).primaryTextTheme.button.copyWith(color: Colors.white),
+          ),
           buttonTheme: ButtonTheme.of(context).copyWith(
             minWidth: 12.0,
           ),
+          scaffoldBackgroundColor: Colors.grey.shade800,
         ),
 
         // GBA Theme 2

@@ -92,7 +92,6 @@ class _CanvasControllerState extends State<CanvasController> {
             }
           },
           onPointerDown: (details) {
-            print(details.buttons);
             currentPointerCount += 1;
             if (maxPointerCount < currentPointerCount) {
               maxPointerCount = currentPointerCount;
@@ -118,26 +117,14 @@ class _CanvasControllerState extends State<CanvasController> {
             child: SizedBox(
               width: 32.0,
               height: 32.0,
-              child: Builder(
-                builder: (context) {
-                  if (_currentToolType == ToolType.marquee_selector) {
-                    return Stack(
-                      children: <Widget>[
-                        Stack(
-                          children: layers
-                        ),
-                        SelectToolOverlay(),
-                      ],
-                    );
-                  }
-                  else {
-                    return Stack(
-                      children: layers
-                    );
-                  }
-                },
-              ) 
-              
+              child: Stack(
+                children: <Widget>[
+                  Stack(
+                    children: layers
+                  ),
+                  SelectToolOverlay(),
+                ],
+              ),
             ),
           ),
         );

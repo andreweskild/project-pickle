@@ -27,7 +27,6 @@ class DrawerCardHeader extends StatelessWidget {
           bottom: 0.0,
           child: Divider(
             height: 1.0,
-            color: Colors.grey.shade400,
           ),
         ),
         Positioned(
@@ -44,14 +43,12 @@ class DrawerCardHeader extends StatelessWidget {
         ),
         Align(
           alignment: (alignment == DrawerAlignment.start) ? Alignment.centerRight : Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: OutlineIconButton(
-              icon: (alignment == DrawerAlignment.start) ? 
-                (collapsed) ? Icons.arrow_forward : Icons.arrow_back :
-                (collapsed) ? Icons.arrow_back : Icons.arrow_forward,
-              onPressed: onToggleCollapse,
-            ),
+          child: IconButton(
+            icon: Icon((alignment == DrawerAlignment.start) ?
+              (collapsed) ? Icons.arrow_forward : Icons.arrow_back :
+              (collapsed) ? Icons.arrow_back : Icons.arrow_forward,),
+            padding: EdgeInsets.all(16.0),
+            onPressed: onToggleCollapse,
           ),
         ),
 

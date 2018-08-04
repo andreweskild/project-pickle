@@ -72,47 +72,26 @@ class LayersCard extends StatelessWidget {
               child: Stack(
                 children: <Widget>[
                   ListView(
-                    padding: EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 58.0),
+                    padding: EdgeInsets.fromLTRB(0.0, 6.0, 0.0, 58.0),
                     children: List<Widget>.generate(
                       model.layers.length, 
                       (index) {
                         int reversedIndex = model.layers.length - 1 - index;
                         return LayerListItem(
                           collapsed: collapsed,
-                          icon: AnimatedContainer(
-                            curve: Curves.ease,
-                            duration: Duration(milliseconds: 150),
-                            height: (collapsed) ? 96.0 : 48.0,
-                            child: AspectRatio(
-                              aspectRatio: 1.0,
-                              child: Material(
-                                color: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16.0),
-                                  side: BorderSide(
-                                    color: Colors.black38,
-                                  ),
-                                ),
-                                child: AnimatedContainer(
-                                    curve: Curves.ease,
-                                    duration: Duration(milliseconds: 150),
-                                    transform: (collapsed) ? Matrix4.diagonal3Values(96.0 / 32.0, 96.0 / 32.0, 96.0 / 32.0) :
-                                    Matrix4.diagonal3Values(48.0 / 32.0, 48.0 / 32.0, 48.0 / 32.0),
-                                  child: model.layers[reversedIndex].canvas
-                                ),
-                              )
-                            ),
-                          ),
-                          isHighlighted: (model.currentLayerIndex == reversedIndex),
-                          label: AnimatedOpacity(
-                            curve: Curves.ease,
-                            duration: Duration(milliseconds: 150),
-                            opacity: (collapsed) ? 0.0 : 1.0,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 24.0),
-                              child: Text(model.layers[reversedIndex].name),
-                            ),
-                          ),
+                          layerCanvas: model.layers[reversedIndex].canvas,
+                          selected: (model.currentLayerIndex == reversedIndex),
+                          label: model.layers[reversedIndex].name,
+
+//                          label: AnimatedOpacity(
+//                            curve: Curves.ease,
+//                            duration: Duration(milliseconds: 150),
+//                            opacity: (collapsed) ? 0.0 : 1.0,
+//                            child: Padding(
+//                              padding: const EdgeInsets.only(left: 24.0),
+//                              child: Text(model.layers[reversedIndex].name),
+//                            ),
+//                          ),
                           onTap:() => model.setLayerCallback(reversedIndex),
                         );
                       }

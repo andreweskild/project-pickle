@@ -18,11 +18,12 @@ class SelectToolOverlayPainter extends CustomPainter {
     _store.onChange.listen(
             (state) => handleStateChange(state)
     );
-    print('overlay created');
+    _canvasScale = _store.state.canvasScale;
+    _selectionPath = _store.state.selectionPath;
   }
 
   static final _repaintNotifier = SelectChangeNotifier();
-  double _canvasScale = 1.0;
+  double _canvasScale;
   BuildContext context;
   Path _selectionPath;
   Store<AppState> _store;
@@ -30,7 +31,12 @@ class SelectToolOverlayPainter extends CustomPainter {
   void handleStateChange(AppState state) {
     if (_canvasScale != state.canvasScale ||
           _selectionPath != state.selectionPath ) {
-      _selectionPath = Path.from(state.selectionPath);
+      if (state.selectionPath != null) {
+        _selectionPath = Path.from(state.selectionPath);
+      }
+      else {
+        _selectionPath = null;
+      }
       _canvasScale = state.canvasScale;
       _repaintNotifier.notifyListeners();
     }

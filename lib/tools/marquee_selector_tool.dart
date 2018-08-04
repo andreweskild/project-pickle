@@ -42,6 +42,10 @@ class MarqueeSelectorTool extends SelectorTool {
 
   @override
   void handleSelectionEnd() {
+    if (_startPoint == null ||
+        _endPoint == null) {
+      deselectPath();
+    }
     _startPoint = null;
     _endPoint = null;
   }

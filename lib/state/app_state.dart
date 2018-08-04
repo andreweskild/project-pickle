@@ -78,6 +78,10 @@ AppState stateReducer(AppState state, dynamic action) {
     state.previewLayer.clearPixels();
     return state;
   }
+  else if (action is DeselectAction) {
+    state.selectionPath = null;
+    return state;
+  }
   else if (action is FillAreaAction) {
     state.currentLayer.fillArea(
         action.pos,

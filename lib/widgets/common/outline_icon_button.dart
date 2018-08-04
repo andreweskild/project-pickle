@@ -21,9 +21,9 @@ class OutlineIconButton extends StatelessWidget {
       child: Icon(icon),
       onPressed: onPressed,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
+        borderRadius: BorderRadius.circular(12.0),
           side: BorderSide(
-            color: highlighted ? Theme.of(context).accentColor : Colors.grey.shade400,
+            color: highlighted ? Colors.transparent : Colors.grey.shade300,
           )
       ),
     );
