@@ -17,6 +17,7 @@ class LeftDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ResponsiveDrawer(
+      alignment: DrawerAlignment.start,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

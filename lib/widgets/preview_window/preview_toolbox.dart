@@ -63,7 +63,7 @@ class PreviewToolbox extends StatelessWidget {
                     child: Transform.scale(
                       alignment: Alignment.topLeft,
                       origin: Offset(16.0, 16.0),
-                      scale: 4.0,
+                      scale: 3.3,
                       child: Container(
                         height: 32.0,
                         width: 32.0,
@@ -71,7 +71,7 @@ class PreviewToolbox extends StatelessWidget {
                           color: Colors.white,
                           border: Border.all(
                             color: Colors.black38,
-                            width: 1.0 / 4.0,
+                            width: 1.0 / 3.3,
                           ),
                         ),
                         child: Stack(

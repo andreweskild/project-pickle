@@ -13,6 +13,7 @@ class RightDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ResponsiveDrawer(
+      alignment: DrawerAlignment.end,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[

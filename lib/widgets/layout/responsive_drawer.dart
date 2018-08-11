@@ -13,12 +13,13 @@ enum DrawerSizeMode {
 class ResponsiveDrawer extends StatefulWidget {
   const ResponsiveDrawer({
     Key key,
+    this.alignment = DrawerAlignment.start,
     this.child,
     this.sizeMode = DrawerSizeMode.Medium,
   }) : super(key: key);
 
+  final DrawerAlignment alignment;
   final Widget child;
-
   final DrawerSizeMode sizeMode;
 
   _ResponsiveDrawerState createState() => _ResponsiveDrawerState();
@@ -26,20 +27,20 @@ class ResponsiveDrawer extends StatefulWidget {
 
 class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
 
-  bool drawerDragging = false;
+  bool _drawerDragging = false;
   DrawerSizeMode _sizeMode;
   double _minWidth;
   double _maxWidth;
-  double splitPos;
-  double dragPos;
+  double _splitPos;
+  double _dragPos;
 
   @override
   void initState() {
     _minWidth = 64.0;
     _maxWidth = 200.0;
     _sizeMode = widget.sizeMode;
-    splitPos = widthFromSizeMode(_sizeMode);
-    dragPos = splitPos;
+    _splitPos = widthFromSizeMode(_sizeMode);
+    _dragPos = _splitPos;
     super.initState();
   }
 
@@ -49,13 +50,13 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
         return 64.0;
         break;
       case DrawerSizeMode.Medium:
-        return 148.0;
+        return 128.0;
         break;
       case DrawerSizeMode.Large:
         return 200.0;
         break;
       default:
-        return 148.0;
+        return 128.0;
     }
   }
 
@@ -86,13 +87,13 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
         return 64.0;
         break;
       case DrawerSizeMode.Medium:
-        return 148.0;
+        return 128.0;
         break;
       case DrawerSizeMode.Large:
         return 200.0;
         break;
       default:
-        return 148.0;
+        return 128.0;
         break;
     }
   }
@@ -102,7 +103,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
     return Stack(
       children: <Widget>[
         Align(
-          alignment: Alignment.topLeft,
+          alignment: (widget.alignment == DrawerAlignment.start) ? Alignment.topLeft : Alignment.topRight,
           child: AnimatedContainer(
             alignment: Alignment.centerLeft,
             curve: Curves.ease,
@@ -118,15 +119,15 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
         Stack(
           children: <Widget> [
             Align(
-              alignment: Alignment.topLeft,
+              alignment: (widget.alignment == DrawerAlignment.start) ? Alignment.topLeft : Alignment.topRight,
               child: IgnorePointer(
                 ignoring: true,
                 child: AnimatedOpacity(
                   curve: Curves.ease,
                   duration: Duration(milliseconds: 150),
-                  opacity: drawerDragging ? 1.0 : 0.0,
+                  opacity: _drawerDragging ? 1.0 : 0.0,
                   child: Container(
-                    width: splitPos,
+                    width: _splitPos,
                     decoration: BoxDecoration(
                         color: Colors.black12
                     ),
@@ -135,8 +136,9 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
               ),
             ),
             AnimatedPositioned(
-              duration: Duration(milliseconds: drawerDragging ? 0 : 150),
-              left: 0.0,
+              duration: Duration(milliseconds: _drawerDragging ? 0 : 150),
+              left: (widget.alignment == DrawerAlignment.start) ? 0.0 : null,
+              right: (widget.alignment == DrawerAlignment.end) ? 0.0 : null,
               top: 0.0,
               bottom: 0.0,
               child: IgnorePointer(
@@ -144,11 +146,11 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                 child: AnimatedOpacity(
                   curve: Curves.ease,
                   duration: Duration(milliseconds: 200),
-                  opacity: drawerDragging ? 1.0 : 0.0,
+                  opacity: _drawerDragging ? 1.0 : 0.0,
                   child: AnimatedContainer(
                     curve: Curves.ease,
                     duration: Duration(milliseconds: 150),
-                    width: getWidthOfNewSizeMode(splitPos),
+                    width: getWidthOfNewSizeMode(_splitPos),
                     decoration: BoxDecoration(
                         color: Colors.black12
                     ),
@@ -159,43 +161,49 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
             Positioned(
               top: 0.0,
               bottom: 0.0,
-              left: splitPos,
+              left: (widget.alignment == DrawerAlignment.start) ? _splitPos : null,
+              right: (widget.alignment == DrawerAlignment.end) ? _splitPos : null,
               child: GestureDetector(
                 onTapDown: (details) {
                   setState(() {
-                    drawerDragging = true;
+                    _drawerDragging = true;
                   });
                 },
                 onTapUp: (details) {
                   setState(() {
-                    drawerDragging = false;
+                    _drawerDragging = false;
                   });
                 },
                 onHorizontalDragStart: (details) {
                   setState(() {
-                    drawerDragging = true;
+                    _drawerDragging = true;
                   });
                 },
                 onHorizontalDragUpdate: (details) {
-                  dragPos = dragPos + details.delta.dx;
-                  if(dragPos <= _maxWidth
-                      && dragPos >= _minWidth) {
+                  if (widget.alignment == DrawerAlignment.start) {
+                    _dragPos = _dragPos + details.delta.dx;
+                  }
+                  else {
+                    _dragPos = _dragPos - details.delta.dx;
+                  }
+                  if(_dragPos <= _maxWidth
+                      && _dragPos >= _minWidth) {
                     setState(() {
-                      splitPos = dragPos;
+                      _splitPos = _dragPos;
                     });
                   }
                 },
                 onHorizontalDragEnd: (details) {
                   setState(() {
-                    drawerDragging = false;
-                    _sizeMode = sizeModeFromWidth(splitPos);
-                    splitPos = widthFromSizeMode(_sizeMode);
+                    _drawerDragging = false;
+                    _sizeMode = sizeModeFromWidth(_splitPos);
+                    _splitPos = widthFromSizeMode(_sizeMode);
                   });
                 },
                 child: AnimatedContainer(
                   curve: Curves.ease,
                   duration: Duration(milliseconds: 150),
-                  color: drawerDragging ? Colors.black : Colors.black12,
+                  color: _drawerDragging ? Colors.black : Colors.black12,
                   child: AnimatedPadding(
                     curve: Curves.ease,
                     duration: Duration(milliseconds: 50),
@@ -204,8 +212,8 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                         child: AnimatedContainer(
                           curve: Curves.ease,
                           duration: Duration(milliseconds: 50),
-                          height: (drawerDragging) ? 10.0 : 24.0,
-                          width: (drawerDragging) ? 10.0 : 3.0,
+                          height: (_drawerDragging) ? 10.0 : 24.0,
+                          width: (_drawerDragging) ? 10.0 : 3.0,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(12.0),
