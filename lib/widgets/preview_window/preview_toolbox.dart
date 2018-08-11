@@ -36,40 +36,34 @@ class _PreviewModel {
   }
 }
 
-class PreviewCard extends StatelessWidget {
-  const PreviewCard({
+class PreviewToolbox extends StatelessWidget {
+  const PreviewToolbox({
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return DrawerCard(
-      alignment: DrawerAlignment.end,
       title: 'Preview',
-      builder: (context, collapsed) {
-        return Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: AspectRatio(
+      alignment: DrawerAlignment.end,
+      builder: (context) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+        child: AspectRatio(
             aspectRatio: 1.0,
             child: StoreConnector<AppState, _PreviewModel>(
-              distinct: true,
-              converter: (store) {
-                return _PreviewModel(
-                  layers: store.state.layers,
-                );
-              },
-              builder: (context, model) {
-                return Material(
-                  color: Colors.grey.shade300,
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.black38),
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  child: UnconstrainedBox(
+                distinct: true,
+                converter: (store) {
+                  return _PreviewModel(
+                    layers: store.state.layers,
+                  );
+                },
+                builder: (context, model) {
+                  return UnconstrainedBox(
                     child: Transform.scale(
                       alignment: Alignment.topLeft,
                       origin: Offset(16.0, 16.0),
-                      scale: 3.0,
+                      scale: 4.0,
                       child: Container(
                         height: 32.0,
                         width: 32.0,
@@ -77,21 +71,20 @@ class PreviewCard extends StatelessWidget {
                           color: Colors.white,
                           border: Border.all(
                             color: Colors.black38,
-                            width: 1.0 / 3.0,
+                            width: 1.0 / 4.0,
                           ),
                         ),
-                      child: Stack(
-                        children: model.layers,
-                      ),
+                        child: Stack(
+                          children: model.layers,
+                        ),
                       ),
                     ),
-                  )
-                );
-              }
+                  );
+                }
             )
-          ),
-        );
-      }
+        ),
+      );
+    },
     );
   }
 }

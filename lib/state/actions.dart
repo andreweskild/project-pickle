@@ -16,8 +16,9 @@ class AddPixelAction {
 }
 
 class AddNewLayerAction {
-  AddNewLayerAction(this.name);
+  AddNewLayerAction(this.name, this.index);
   final String name;
+  final int index;
 }
 
 class ClearPreviewAction {

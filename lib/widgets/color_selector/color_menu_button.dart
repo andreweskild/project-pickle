@@ -114,7 +114,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
   @override
   Widget build(BuildContext context) {
     final Animation<BorderRadius> borderRadius = BorderRadiusTween(
-      begin: BorderRadius.circular(16.0),
+      begin: BorderRadius.circular(6.0),
       end: BorderRadius.circular(8.0),
     ).animate(
       CurvedAnimation(
@@ -186,6 +186,21 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                               color: _getContrastingColor(_currentColor.toColor()),
                             ),
                             onPressed: widget.onAccept,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 0.0,
+                        top: 0.0,
+                        bottom: 0.0,
+                        child: AspectRatio(
+                          aspectRatio: 1.0,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.colorize,
+                              color: _getContrastingColor(_currentColor.toColor()),
+                            ),
+                            onPressed: (){},
                           ),
                         ),
                       )
@@ -513,7 +528,8 @@ class ColorMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    return RaisedButton(
+      elevation: 2.0,
       color: color.toColor(),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -521,7 +537,7 @@ class ColorMenuButton extends StatelessWidget {
       ),
       padding: EdgeInsets.all(0.0),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
+        borderRadius: BorderRadius.circular(6.0),
         side: BorderSide(
           color: Colors.black38,
         ),

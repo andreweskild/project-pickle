@@ -57,10 +57,10 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                   alignment: Alignment(-1.0, 0.0),
                   child: widget.drawer,
                 ),
-                new Align(
-                  alignment: Alignment(1.0, 0.0),
-                  child: widget.endDrawer,
-                ),
+//                new Align(
+//                  alignment: Alignment(1.0, 0.0),
+//                  child: widget.endDrawer,
+//                ),
               ],
             ),
           );

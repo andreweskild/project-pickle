@@ -51,23 +51,26 @@ class AppState {
 }
 
 AppState stateReducer(AppState state, dynamic action) {
+
   if (action is AddCurrentColorToPaletteAction) {
     List<HSLColor> newPalette = List.from(state.palette);
-    newPalette.add(state.currentColor);
+    if (!newPalette.contains(state.currentColor)) {
+      newPalette.add(state.currentColor);
+    }
     return state.copyWith(
     palette: newPalette,
     );
   }
   else if (action is AddNewLayerAction) {
     state.layers.insert(
-      state.currentLayerIndex + 1,
+      action.index,
       new PixelCanvasLayer(
         name: action.name,
         height: 32,
         width: 32,
       )
     );
-    state.currentLayerIndex += 1;
+    state.currentLayerIndex = action.index;
     return state;
   }
   else if (action is AddPixelAction) {

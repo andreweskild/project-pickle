@@ -52,9 +52,9 @@ class ColorCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return DrawerCard(
         title: 'Color',
-        builder: (context, collapsed) {
+        builder: (context) {
           return Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.only(top: 12.0, bottom: 12.0, left: 12.0, right: 12.0),
             child: StoreConnector<AppState, ColorCardModel>(
               distinct: true,
               converter: (store) {
@@ -64,24 +64,12 @@ class ColorCard extends StatelessWidget {
                 );
               },
               builder: (context, model) {
-                return Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: SizedBox(
-                        width: 190.0,
-                        child: ColorMenuButton(
-                          color: HSLColor.from(model.color),
-                          onColorChanged: model.setColorCallback,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 12.0),
-                      child: ColorPickerToolButton(
-
-                      )
-                    ),
-                  ],
+                return SizedBox(
+                  width: 190.0,
+                  child: ColorMenuButton(
+                    color: HSLColor.from(model.color),
+                    onColorChanged: model.setColorCallback,
+                  ),
                 );
               }
             ),

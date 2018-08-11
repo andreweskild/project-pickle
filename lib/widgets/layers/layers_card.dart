@@ -9,6 +9,7 @@ import 'package:project_pickle/widgets/layout/drawer_card.dart';
 import 'package:project_pickle/widgets/pixels/pixel_canvas_layer.dart';
 
 typedef SetLayerIndexCallback = void Function(int);
+typedef AddLayerCallback = void Function(int);
 
 class LayerListModel {
   LayerListModel({
@@ -25,7 +26,7 @@ class LayerListModel {
   int currentLayerIndex;
   int layerCount;
 
-  VoidCallback addLayerCallback;
+  AddLayerCallback addLayerCallback;
   SetLayerIndexCallback setLayerCallback;
 
   @override
@@ -60,80 +61,106 @@ class LayersCard extends StatelessWidget {
       converter: (store) => LayerListModel(
         layers: store.state.layers,
         currentLayerIndex: store.state.currentLayerIndex,
-        addLayerCallback: () => store.dispatch(AddNewLayerAction('Layer ${store.state.layers.length + 1}')),
+        addLayerCallback: (index) => store.dispatch(AddNewLayerAction('Layer ${store.state.layers.length + 1}', index)),
         setLayerCallback: (index) => store.dispatch(SetCurrentLayerIndexAction(index)),
       ),
       builder: (context, model) {
         return DrawerCard(
           alignment: DrawerAlignment.end,
           title: 'Layers',
-          builder: (context, collapsed) {
-            return Expanded(
-              child: Stack(
+          builder: (context) {
+            return Material(
+              color: Colors.grey.shade200,
+              child: Column(
                 children: <Widget>[
-                  ListView(
-                    padding: EdgeInsets.fromLTRB(0.0, 6.0, 0.0, 58.0),
-                    children: List<Widget>.generate(
-                      model.layers.length, 
-                      (index) {
-                        int reversedIndex = model.layers.length - 1 - index;
-                        return LayerListItem(
-                          collapsed: collapsed,
-                          layerCanvas: model.layers[reversedIndex].canvas,
-                          selected: (model.currentLayerIndex == reversedIndex),
-                          label: model.layers[reversedIndex].name,
-
-//                          label: AnimatedOpacity(
-//                            curve: Curves.ease,
-//                            duration: Duration(milliseconds: 150),
-//                            opacity: (collapsed) ? 0.0 : 1.0,
-//                            child: Padding(
-//                              padding: const EdgeInsets.only(left: 24.0),
-//                              child: Text(model.layers[reversedIndex].name),
-//                            ),
-//                          ),
-                          onTap:() => model.setLayerCallback(reversedIndex),
-                        );
-                      }
-                    )
+                  Divider(
+                    height: 1.0,
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: RaisedButton(
-                        child: SizedBox(
-                          height: 40.0,
-                          width: 104.0,
-                          child: Stack(
-                            children: <Widget>[
-                              AnimatedAlign(
-                                duration: Duration(milliseconds: 150),
-                                alignment: (collapsed) ? Alignment.center : Alignment.centerLeft, 
-                                child: Icon(Icons.add)
-                              ),
-                              Positioned(
-                                left: 32.0, 
-                                bottom: 0.0,
-                                top: 0.0,
-                                child: Center(
-                                  child: AnimatedOpacity(
-                                    duration: Duration(milliseconds: 150),
-                                    opacity: (collapsed) ? 0.0 : 1.0,
-                                    child: Text('New Layer')
-                                  )
-                                )
-                              )
-                            ]
-                          ),
+                  Expanded(
+                    child: ListView(
+                      padding: EdgeInsets.only(top: 6.0, bottom: 6.0),
+                      children: List<Widget>.generate(
+                        model.layers.length,
+                        (index) {
+                          int reversedIndex = model.layers.length - 1 - index;
+                          return LayerListItem(
+                            layerCanvas: model.layers[reversedIndex].canvas,
+                            selected: (model.currentLayerIndex == reversedIndex),
+                            label: model.layers[reversedIndex].name,
+                            onTap:() => model.setLayerCallback(reversedIndex),
+                            onAddAbove: () => model.addLayerCallback(reversedIndex+1),
+                            onAddBelow: () => model.addLayerCallback(reversedIndex),
+                          );
+                        }
+                      )
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: RaisedButton(
+                      padding: const EdgeInsets.all(0.0),
+                      elevation: 2.0,
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(right: 3.0),
+                              child: Icon(Icons.add),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 3.0),
+                              child: Text('New Layer'),
+                            ),
+                          ],
                         ),
-                        onPressed: model.addLayerCallback,
-                        shape: RoundedRectangleBorder( 
-                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                        ),
+                      ),
+                      onPressed: () {
+                        model.addLayerCallback(model.currentLayerIndex+1);
+                      },
+                      shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: Colors.black38,
+                      ),
+                      borderRadius: BorderRadius.circular(6.0),
                       ),
                     ),
                   ),
+//                Divider(
+//                  height: 1.0,
+//                ),
+//                Material(
+//                  child: ListTile(
+//                    contentPadding: EdgeInsets.all(0.0),
+//                    leading: IconButton(
+//                      icon: Icon(Icons.add),
+//                      onPressed: () {
+//                        model.addLayerCallback(model.currentLayerIndex+1);
+//                      },
+//                    ),
+//                  ),
+//                ),
+//                  Align(
+//                    alignment: Alignment.bottomCenter,
+//                    child: Padding(
+//                      padding: const EdgeInsets.all(12.0),
+//                      child: RaisedButton(
+//                        child: SizedBox(
+//                          height: 40.0,
+//                          width: 104.0,
+//                          child: Center(
+//                            child: Icon(Icons.add),
+//                          ),
+//                        ),
+//                        onPressed: model.addLayerCallback,
+//                        shape: RoundedRectangleBorder(
+//                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
+//                        ),
+//                      ),
+//                    ),
+//                  ),
                 ],
               ),
             );

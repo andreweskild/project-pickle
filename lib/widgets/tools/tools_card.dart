@@ -17,84 +17,43 @@ class ToolsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return DrawerCard(
       title: 'Tools',
-      builder: (context, collapsed) {
+      builder: (context) {
         return Padding(
-          padding: const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 6.0),
+          padding: const EdgeInsets.only(top: 24.0, bottom: 12.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 6.0),
-                      child: ToolsListItem(
-                        icon: Icon(Icons.brush),
-                        label: 'Pencil',
-                        toolType: ToolType.pencil,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 6.0),
-                      child: ToolsListItem(
-                        icon: Icon(Icons.brightness_1),
-                        label: 'Eraser',
-                        toolType: ToolType.eraser,
-                      ),
-                    ),
-                  ),
-                ],
+              ToolsListItem(
+                icon: Icon(Icons.brush),
+                label: 'Pencil',
+                toolType: ToolType.pencil,
               ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 6.0),
-                      child: ToolsListItem(
-                        icon: Icon(Icons.brush),
-                        label: 'Fill',
-                        toolType: ToolType.fill,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 6.0),
-                      child: ToolsListItem(
-                        icon: Icon(Icons.brightness_1),
-                        label: 'Path',
-                        toolType: ToolType.line,
-                      ),
-                    ),
-                  ),
-                ],
+              ToolsListItem(
+                icon: Icon(Icons.brightness_1),
+                label: 'Eraser',
+                toolType: ToolType.eraser,
               ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 6.0),
-                      child: ToolsListItem(
-                        icon: Icon(Icons.brush),
-                        label: 'Shape',
-                        toolType: ToolType.shape,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 6.0),
-                      child: ToolsListItem(
-                        icon: Icon(Icons.brightness_1),
-                        label: 'Select',
-                        toolType: ToolType.marquee_selector,
-                      ),
-                    ),
-                  ),
-                ],
+              ToolsListItem(
+                icon: Icon(Icons.brush),
+                label: 'Fill',
+                toolType: ToolType.fill,
               ),
+              ToolsListItem(
+                icon: Icon(Icons.brightness_1),
+                label: 'Path',
+                toolType: ToolType.line,
+              ),
+              ToolsListItem(
+                icon: Icon(Icons.brush),
+                label: 'Shape',
+                toolType: ToolType.shape,
+              ),
+              ToolsListItem(
+                icon: Icon(Icons.brightness_1),
+                label: 'Select',
+                toolType: ToolType.marquee_selector,
+              ),
+
             ],
           ),
         );
