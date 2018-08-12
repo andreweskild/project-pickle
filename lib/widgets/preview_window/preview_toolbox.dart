@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/state/app_state.dart';
-import 'package:project_pickle/widgets/layout/drawer_card.dart';
+import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 import 'package:project_pickle/widgets/pixels/pixel_canvas_layer.dart';
 
 class _PreviewModel {
@@ -39,14 +39,13 @@ class _PreviewModel {
 class PreviewToolbox extends StatelessWidget {
   const PreviewToolbox({
     Key key,
+    @required this.sizeMode,
   }) : super(key: key);
+
+  final DrawerSizeMode sizeMode;
 
   @override
   Widget build(BuildContext context) {
-    return DrawerCard(
-      title: 'Preview',
-      alignment: DrawerAlignment.end,
-      builder: (context) {
       return Padding(
         padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
         child: AspectRatio(
@@ -83,8 +82,6 @@ class PreviewToolbox extends StatelessWidget {
                 }
             )
         ),
-      );
-    },
     );
   }
 }

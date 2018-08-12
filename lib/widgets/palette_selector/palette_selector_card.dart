@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
-import 'package:project_pickle/widgets/layout/drawer_card.dart';
 
 typedef void ColorSetCallback(hslColor);
 
@@ -52,15 +52,14 @@ Color _getContrastingColor(Color color) {
 class PaletteSelectorCard extends StatelessWidget {
   const PaletteSelectorCard({
     Key key,
+    @required this.sizeMode,
   }) : super(key: key);
 
+  final DrawerSizeMode sizeMode;
 
 
   @override
   Widget build(BuildContext context) {
-    return DrawerCard(
-      title: 'Palette',
-      builder: (context) {
         return StoreConnector<AppState, _PaletteModel>(
           distinct: true,
           converter: (store) => _PaletteModel(
@@ -147,8 +146,6 @@ class PaletteSelectorCard extends StatelessWidget {
               ),
             );
           }
-        );
-      }
     );
   }
 }

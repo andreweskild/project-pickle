@@ -14,15 +14,17 @@ class RightDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return ResponsiveDrawer(
       alignment: DrawerAlignment.end,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
-          PreviewToolbox(),
-          Expanded(
-            child: LayersCard()
-          ),
-        ],
-      ),
+      builder: (context, sizeMode) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            PreviewToolbox(sizeMode: sizeMode),
+            Expanded(
+                child: LayersCard(sizeMode: sizeMode),
+            ),
+          ],
+        );
+      },
     );
   }
 }

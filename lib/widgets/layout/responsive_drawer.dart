@@ -6,6 +6,8 @@ import 'package:project_pickle/widgets/color_selector/color_card.dart';
 import 'package:project_pickle/widgets/tools/tools_card.dart';
 import 'package:project_pickle/widgets/palette_selector/palette_selector_card.dart';
 
+typedef DrawerChildBuilder = Widget Function(BuildContext context, DrawerSizeMode sizeMode);
+
 enum DrawerSizeMode {
   Small, Medium, Large,
 }
@@ -14,21 +16,24 @@ class ResponsiveDrawer extends StatefulWidget {
   const ResponsiveDrawer({
     Key key,
     this.alignment = DrawerAlignment.start,
-    this.child,
+    this.builder,
     this.sizeMode = DrawerSizeMode.Medium,
   }) : super(key: key);
 
   final DrawerAlignment alignment;
-  final Widget child;
+  final DrawerChildBuilder builder;
   final DrawerSizeMode sizeMode;
 
   _ResponsiveDrawerState createState() => _ResponsiveDrawerState();
 }
 
 class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
+  Widget _childCache;
+
 
   bool _drawerDragging = false;
   DrawerSizeMode _sizeMode;
+  DrawerSizeMode _previousSizeMode;
   double _minWidth;
   double _maxWidth;
   double _splitPos;
@@ -39,6 +44,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
     _minWidth = 64.0;
     _maxWidth = 200.0;
     _sizeMode = widget.sizeMode;
+    _previousSizeMode = _sizeMode;
     _splitPos = widthFromSizeMode(_sizeMode);
     _dragPos = _splitPos;
     super.initState();
@@ -100,6 +106,15 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    if(_childCache == null) {
+      _childCache = widget.builder(context, _sizeMode);
+    }
+
+//    if(_sizeMode != _previousSizeMode) {
+//      _childCache = widget.builder(context, _sizeMode);
+//      _previousSizeMode = _sizeMode;
+//    }
+
     return Stack(
       children: <Widget>[
         Align(
@@ -112,7 +127,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
             child: Material(
               elevation: 0.0,
               color: Theme.of(context).cardColor,
-              child: widget.child,
+              child: _childCache,
             ),
           ),
         ),

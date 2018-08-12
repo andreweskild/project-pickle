@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/layers/layer_list_item.dart';
-import 'package:project_pickle/widgets/layout/drawer_card.dart';
 import 'package:project_pickle/widgets/pixels/pixel_canvas_layer.dart';
 
 typedef SetLayerIndexCallback = void Function(int);
@@ -51,8 +51,10 @@ class LayerListModel {
 class LayersCard extends StatelessWidget {
   const LayersCard({
     Key key,
+    @required this.sizeMode,
   }) : super(key: key);
 
+  final DrawerSizeMode sizeMode;
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +67,6 @@ class LayersCard extends StatelessWidget {
         setLayerCallback: (index) => store.dispatch(SetCurrentLayerIndexAction(index)),
       ),
       builder: (context, model) {
-        return DrawerCard(
-          alignment: DrawerAlignment.end,
-          title: 'Layers',
-          builder: (context) {
             return Material(
               color: Colors.grey.shade200,
               child: Column(
@@ -86,6 +84,7 @@ class LayersCard extends StatelessWidget {
                           return LayerListItem(
                             layerCanvas: model.layers[reversedIndex].canvas,
                             selected: (model.currentLayerIndex == reversedIndex),
+                            sizeMode: sizeMode,
                             label: model.layers[reversedIndex].name,
                             onTap:() => model.setLayerCallback(reversedIndex),
                             onAddAbove: () => model.addLayerCallback(reversedIndex+1),
@@ -97,36 +96,50 @@ class LayersCard extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(12.0),
-                    child: RaisedButton(
-                      padding: const EdgeInsets.all(0.0),
-                      elevation: 2.0,
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(right: 3.0),
-                              child: Icon(Icons.add),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 3.0),
-                              child: Text('New Layer'),
-                            ),
-                          ],
-                        ),
+                    child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: FloatingActionButton(
+                        elevation: 4.0,
+                        isExtended: true,
+                        backgroundColor: Colors.grey.shade700,
+                        foregroundColor: Colors.white,
+                        mini: true,
+                        child: Icon(Icons.add),
+                        onPressed: () {
+                          model.addLayerCallback(model.currentLayerIndex+1);
+                        },
                       ),
-                      onPressed: () {
-                        model.addLayerCallback(model.currentLayerIndex+1);
-                      },
-                      shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        color: Colors.black38,
-                      ),
-                      borderRadius: BorderRadius.circular(6.0),
-                      ),
-                    ),
+                    )
+//                    child: RaisedButton(
+//                      padding: const EdgeInsets.all(0.0),
+//                      elevation: 2.0,
+//                      color: Colors.white,
+//                      child: Padding(
+//                        padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
+//                        child: Row(
+//                          mainAxisSize: MainAxisSize.max,
+//                          children: <Widget>[
+//                            Padding(
+//                              padding: const EdgeInsets.only(right: 3.0),
+//                              child: Icon(Icons.add),
+//                            ),
+//                            Padding(
+//                              padding: const EdgeInsets.only(left: 3.0),
+//                              child: Text('New Layer'),
+//                            ),
+//                          ],
+//                        ),
+//                      ),
+//                      onPressed: () {
+//                        model.addLayerCallback(model.currentLayerIndex+1);
+//                      },
+//                      shape: RoundedRectangleBorder(
+//                      side: BorderSide(
+//                        color: Colors.black38,
+//                      ),
+//                      borderRadius: BorderRadius.circular(6.0),
+//                      ),
+//                    ),
                   ),
 //                Divider(
 //                  height: 1.0,
@@ -163,8 +176,6 @@ class LayersCard extends StatelessWidget {
 //                  ),
                 ],
               ),
-            );
-          }
         );
       }
     );
