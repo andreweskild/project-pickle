@@ -6,6 +6,7 @@ import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/data_objects/tool_types.dart';
 import 'package:project_pickle/pages/pixel_editor_page.dart';
 import 'package:project_pickle/state/app_state.dart';
+import 'package:project_pickle/state/reducer.dart';
 import 'package:project_pickle/widgets/pixels/pixel_canvas_layer.dart';
 
 final store = new Store<AppState>(

@@ -8,8 +8,7 @@ import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/layers/layer_list_item.dart';
 import 'package:project_pickle/widgets/pixels/pixel_canvas_layer.dart';
 
-typedef SetLayerIndexCallback = void Function(int);
-typedef AddLayerCallback = void Function(int);
+typedef LayerIndexCallback = void Function(int);
 
 class LayerListModel {
   LayerListModel({
@@ -17,6 +16,7 @@ class LayerListModel {
     this.currentLayerIndex,
     this.addLayerCallback,
     this.setLayerCallback,
+    this.removeLayerCallback
   }) {
     layerCount = layers.length;
   }
@@ -26,8 +26,9 @@ class LayerListModel {
   int currentLayerIndex;
   int layerCount;
 
-  AddLayerCallback addLayerCallback;
-  SetLayerIndexCallback setLayerCallback;
+  LayerIndexCallback addLayerCallback;
+  LayerIndexCallback setLayerCallback;
+  LayerIndexCallback removeLayerCallback;
 
   @override
   int get hashCode {
@@ -51,10 +52,8 @@ class LayerListModel {
 class LayersCard extends StatelessWidget {
   const LayersCard({
     Key key,
-    @required this.sizeMode,
   }) : super(key: key);
 
-  final DrawerSizeMode sizeMode;
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +64,7 @@ class LayersCard extends StatelessWidget {
         currentLayerIndex: store.state.currentLayerIndex,
         addLayerCallback: (index) => store.dispatch(AddNewLayerAction('Layer ${store.state.layers.length + 1}', index)),
         setLayerCallback: (index) => store.dispatch(SetCurrentLayerIndexAction(index)),
+        removeLayerCallback: (index) => store.dispatch(RemoveLayerAction(index)),
       ),
       builder: (context, model) {
             return Material(
@@ -81,14 +81,17 @@ class LayersCard extends StatelessWidget {
                         model.layers.length,
                         (index) {
                           int reversedIndex = model.layers.length - 1 - index;
-                          return LayerListItem(
-                            layerCanvas: model.layers[reversedIndex].canvas,
-                            selected: (model.currentLayerIndex == reversedIndex),
-                            sizeMode: sizeMode,
-                            label: model.layers[reversedIndex].name,
-                            onTap:() => model.setLayerCallback(reversedIndex),
-                            onAddAbove: () => model.addLayerCallback(reversedIndex+1),
-                            onAddBelow: () => model.addLayerCallback(reversedIndex),
+                          return Dismissible(
+                            key: Key('${model.layers[reversedIndex].name}$reversedIndex'),
+                            onDismissed: (direction) => model.removeLayerCallback(reversedIndex),
+                            child: LayerListItem(
+                              layerCanvas: model.layers[reversedIndex].canvas,
+                              selected: (model.currentLayerIndex == reversedIndex),
+                              label: model.layers[reversedIndex].name,
+                              onTap:() => model.setLayerCallback(reversedIndex),
+                              onAddAbove: () => model.addLayerCallback(reversedIndex+1),
+                              onAddBelow: () => model.addLayerCallback(reversedIndex),
+                            ),
                           );
                         }
                       )

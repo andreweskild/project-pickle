@@ -40,10 +40,8 @@ class ColorCardModel {
 class ColorCard extends StatelessWidget {
   const ColorCard({
     Key key,
-    @required this.sizeMode,
   }) : super(key: key);
 
-  final DrawerSizeMode sizeMode;
 
   @override
   Widget build(BuildContext context) {

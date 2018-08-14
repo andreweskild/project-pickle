@@ -52,10 +52,7 @@ Color _getContrastingColor(Color color) {
 class PaletteSelectorCard extends StatelessWidget {
   const PaletteSelectorCard({
     Key key,
-    @required this.sizeMode,
   }) : super(key: key);
-
-  final DrawerSizeMode sizeMode;
 
 
   @override

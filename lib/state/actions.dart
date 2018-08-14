@@ -2,6 +2,7 @@ import 'package:flutter/rendering.dart';
 
 import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/data_objects/tool_types.dart';
+import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 
 class AddCurrentColorToPaletteAction {
   AddCurrentColorToPaletteAction();
@@ -60,14 +61,27 @@ class SetCurrentToolTypeAction {
   final ToolType toolType;
 }
 
-class SetSelectionPath {
-  SetSelectionPath(this.path);
+class SetLeftDrawerSizeModeAction {
+  SetLeftDrawerSizeModeAction(DrawerSizeMode this.sizeMode);
+  final DrawerSizeMode sizeMode;
+}
+
+class SetSelectionPathAction {
+  SetSelectionPathAction(this.path);
   final Path path;
 }
 
+class SetRightDrawerSizeModeAction {
+  SetRightDrawerSizeModeAction(DrawerSizeMode this.sizeMode);
+  final DrawerSizeMode sizeMode;
+}
+
 class RemovePixelAction {
-  RemovePixelAction(
-      this. pos,
-      );
+  RemovePixelAction(this.pos);
   final Offset pos;
+}
+
+class RemoveLayerAction {
+  RemoveLayerAction(this.index);
+  final int index;
 }

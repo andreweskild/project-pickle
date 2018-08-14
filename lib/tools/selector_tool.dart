@@ -21,7 +21,7 @@ class SelectorTool extends Tool {
   }
 
   void setSelectionPath(Path path) {
-    _store.dispatch(SetSelectionPath(path));
+    _store.dispatch(SetSelectionPathAction(path));
   }
 
   void deselectPath() {

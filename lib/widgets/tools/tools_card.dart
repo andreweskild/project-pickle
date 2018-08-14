@@ -9,11 +9,9 @@ import 'package:project_pickle/widgets/tools/tools_list_item.dart';
 class ToolsCard extends StatelessWidget {
   const ToolsCard({
     Key key,
-    @required this.sizeMode,
   }) : super(key: key);
 
 
-  final DrawerSizeMode sizeMode;
 
   @override
   Widget build(BuildContext context) {

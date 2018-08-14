@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/data_objects/tool_types.dart';
+import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 import 'package:project_pickle/widgets/pixels/pixel_canvas_layer.dart';
 
 class AppState {
@@ -12,8 +12,10 @@ class AppState {
     @required this.currentColor,
     this.currentLayerIndex = 0,
     @required this.layers,
+    this.leftDrawerSizeMode = DrawerSizeMode.Medium,
     @required this.palette,
     @required this.previewLayer,
+    this.rightDrawerSizeMode = DrawerSizeMode.Medium,
     this.selectionPath,
   });
 
@@ -23,8 +25,10 @@ class AppState {
     int currentLayerIndex,
     ToolType currentToolType,
     List<PixelCanvasLayer> layers,
+    DrawerSizeMode leftDrawerSizeMode,
     List<HSLColor> palette,
     PixelCanvasLayer previewLayer,
+    DrawerSizeMode rightDrawerSizeMode,
     Path selectionPath,
   }) {
     return AppState(
@@ -33,8 +37,10 @@ class AppState {
       currentLayerIndex: currentLayerIndex ?? this.currentLayerIndex,
       currentToolType: currentToolType ?? this.currentToolType,
       layers: layers ?? this.layers,
+      leftDrawerSizeMode: leftDrawerSizeMode ?? this.leftDrawerSizeMode,
       palette: palette ?? this.palette,
       previewLayer: previewLayer ?? this.previewLayer,
+      rightDrawerSizeMode: rightDrawerSizeMode ?? this.rightDrawerSizeMode,
       selectionPath: selectionPath ?? this.selectionPath,
     );
   }
@@ -45,90 +51,12 @@ class AppState {
   int currentLayerIndex;
   ToolType currentToolType;
   List<PixelCanvasLayer> layers;
+  DrawerSizeMode leftDrawerSizeMode;
   final PixelCanvasLayer previewLayer;
   var palette = new List<HSLColor>();
+  DrawerSizeMode rightDrawerSizeMode;
   Path selectionPath;
 }
 
-AppState stateReducer(AppState state, dynamic action) {
 
-  if (action is AddCurrentColorToPaletteAction) {
-    List<HSLColor> newPalette = List.from(state.palette);
-    if (!newPalette.contains(state.currentColor)) {
-      newPalette.add(state.currentColor);
-    }
-    return state.copyWith(
-    palette: newPalette,
-    );
-  }
-  else if (action is AddNewLayerAction) {
-    state.layers.insert(
-      action.index,
-      new PixelCanvasLayer(
-        name: action.name,
-        height: 32,
-        width: 32,
-      )
-    );
-    state.currentLayerIndex = action.index;
-    return state;
-  }
-  else if (action is AddPixelAction) {
-    state.previewLayer.setPixel(action.pos, state.currentColor.toColor());
-    return state;
-  }
-  else if (action is ClearPreviewAction) {
-    state.previewLayer.clearPixels();
-    return state;
-  }
-  else if (action is DeselectAction) {
-    state.selectionPath = null;
-    return state;
-  }
-  else if (action is FillAreaAction) {
-    state.currentLayer.fillArea(
-        action.pos,
-        state.currentColor.toColor()
-    );
-    return state;
-  }
-  else if (action is FinalizePixelsAction) {
-    state.currentLayer.setPixelsFromMap(state.previewLayer.rawPixels);
-    state.previewLayer.clearPixels();
-    return state;
-  }
-  else if (action is SetCanvasScaleAction) {
-    return state.copyWith(
-      canvasScale: action.scale
-    );
-  }
-  else if (action is SetCurrentColorAction) {
-    return state.copyWith(
-      currentColor: HSLColor.from(action.color),
-    );
-  }
-  else if (action is SetCurrentLayerIndexAction) {
-    if (action.currentLayerIndex < state.layers.length) {
-      state.currentLayerIndex = action.currentLayerIndex;
-    }
-    return state;
-  }
-  else if (action is SetCurrentToolTypeAction) {
-    return state.copyWith(
-      currentToolType: action.toolType,
-    );
-  }
-  else if(action is SetSelectionPath) {
-    return state.copyWith(
-      selectionPath: action.path
-    );
-  }
-  else if (action is RemovePixelAction) {
-    state.currentLayer.removePixel(action.pos);
-    return state;
-  }
-  else {
-    return state;
-  }
-}
 

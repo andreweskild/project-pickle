@@ -39,10 +39,8 @@ class _PreviewModel {
 class PreviewToolbox extends StatelessWidget {
   const PreviewToolbox({
     Key key,
-    @required this.sizeMode,
   }) : super(key: key);
 
-  final DrawerSizeMode sizeMode;
 
   @override
   Widget build(BuildContext context) {
