@@ -118,6 +118,16 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
             child: Material(
               elevation: 0.0,
               color: Theme.of(context).cardColor,
+              shape: Border(
+                right: (widget.alignment == DrawerAlignment.start) ?
+                BorderSide(
+                  color: Colors.black38
+                ) : BorderSide.none,
+                left: (widget.alignment == DrawerAlignment.end) ?
+                BorderSide(
+                    color: Colors.black38
+                ) : BorderSide.none,
+              ),
               child: widget.child,
             ),
           ),
@@ -213,7 +223,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                 child: AnimatedContainer(
                   curve: Curves.ease,
                   duration: Duration(milliseconds: 150),
-                  color: _drawerDragging ? Colors.black : Colors.black12,
+                  color: _drawerDragging ? Colors.black : Colors.transparent,
                   child: AnimatedPadding(
                     curve: Curves.ease,
                     duration: Duration(milliseconds: 50),
@@ -225,7 +235,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                           height: (_drawerDragging) ? 10.0 : 24.0,
                           width: (_drawerDragging) ? 10.0 : 3.0,
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: _drawerDragging ? Colors.white : Colors.black38,
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                         )

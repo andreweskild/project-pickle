@@ -17,14 +17,16 @@ AppState stateReducer(AppState state, dynamic action) {
     );
   }
   else if (action is AddNewLayerAction) {
+    int nameCount = state.layerNamingCounter + 1;
     state.layers.insert(
         action.index,
         new PixelCanvasLayer(
-          name: action.name,
+          name: 'Layer $nameCount',
           height: 32,
           width: 32,
         )
     );
+    state.layerNamingCounter = nameCount;
     state.currentLayerIndex = action.index;
     return state;
   }
@@ -96,7 +98,7 @@ AppState stateReducer(AppState state, dynamic action) {
   else if (action is RemoveLayerAction) {
     state.layers.removeAt(action.index);
     if(action.index <= state.currentLayerIndex &&
-        action.index != 0) {
+        state.currentLayerIndex != 0) {
       state.currentLayerIndex = state.currentLayerIndex - 1;
     }
     return state;

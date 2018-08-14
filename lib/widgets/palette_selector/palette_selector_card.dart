@@ -80,14 +80,14 @@ class PaletteSelectorCard extends StatelessWidget {
                       primary: false,
                       crossAxisSpacing: 12.0,
                       maxCrossAxisExtent: 64.0,
-                      childAspectRatio: 1.0,
+                      childAspectRatio: 1.61,
                       shrinkWrap: false,
                       children: paletteModel.palette.map(
                         (hslColor) => new RaisedButton(
                           elevation: 2.0,
                           color: hslColor.toColor(),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
                             side: BorderSide(color: Colors.black38),
                           ),
                           onPressed: () {

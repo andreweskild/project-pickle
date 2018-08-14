@@ -80,7 +80,7 @@ class _LayerListItemState extends State<LayerListItem> {
                     elevation: 0.0,
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6.0),
+                      borderRadius: BorderRadius.circular(8.0),
                       side: BorderSide(
                         color: widget.selected ? Theme.of(context).accentColor : Colors.black38,
                         width: widget.selected ? 3.0 : 1.0,

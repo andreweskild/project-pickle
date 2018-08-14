@@ -11,6 +11,7 @@ class AppState {
     this.currentToolType = ToolType.pencil,
     @required this.currentColor,
     this.currentLayerIndex = 0,
+    this.layerNamingCounter = 1,
     @required this.layers,
     this.leftDrawerSizeMode = DrawerSizeMode.Medium,
     @required this.palette,
@@ -24,6 +25,7 @@ class AppState {
     HSLColor currentColor,
     int currentLayerIndex,
     ToolType currentToolType,
+    int layerNamingCounter,
     List<PixelCanvasLayer> layers,
     DrawerSizeMode leftDrawerSizeMode,
     List<HSLColor> palette,
@@ -36,6 +38,7 @@ class AppState {
       currentColor: currentColor ?? this.currentColor,
       currentLayerIndex: currentLayerIndex ?? this.currentLayerIndex,
       currentToolType: currentToolType ?? this.currentToolType,
+      layerNamingCounter: layerNamingCounter ?? this.layerNamingCounter,
       layers: layers ?? this.layers,
       leftDrawerSizeMode: leftDrawerSizeMode ?? this.leftDrawerSizeMode,
       palette: palette ?? this.palette,
@@ -45,6 +48,7 @@ class AppState {
     );
   }
 
+  int layerNamingCounter;
   double canvasScale;
   HSLColor currentColor;
   PixelCanvasLayer get currentLayer => layers[currentLayerIndex];

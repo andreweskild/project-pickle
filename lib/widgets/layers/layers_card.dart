@@ -62,7 +62,7 @@ class LayersCard extends StatelessWidget {
       converter: (store) => LayerListModel(
         layers: store.state.layers,
         currentLayerIndex: store.state.currentLayerIndex,
-        addLayerCallback: (index) => store.dispatch(AddNewLayerAction('Layer ${store.state.layers.length + 1}', index)),
+        addLayerCallback: (index) => store.dispatch(AddNewLayerAction(index)),
         setLayerCallback: (index) => store.dispatch(SetCurrentLayerIndexAction(index)),
         removeLayerCallback: (index) => store.dispatch(RemoveLayerAction(index)),
       ),
@@ -76,7 +76,6 @@ class LayersCard extends StatelessWidget {
                   ),
                   Expanded(
                     child: ListView(
-                      padding: EdgeInsets.only(top: 6.0, bottom: 6.0),
                       children: List<Widget>.generate(
                         model.layers.length,
                         (index) {

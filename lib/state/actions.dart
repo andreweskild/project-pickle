@@ -17,8 +17,7 @@ class AddPixelAction {
 }
 
 class AddNewLayerAction {
-  AddNewLayerAction(this.name, this.index);
-  final String name;
+  AddNewLayerAction(this.index);
   final int index;
 }
 
@@ -62,7 +61,7 @@ class SetCurrentToolTypeAction {
 }
 
 class SetLeftDrawerSizeModeAction {
-  SetLeftDrawerSizeModeAction(DrawerSizeMode this.sizeMode);
+  SetLeftDrawerSizeModeAction(this.sizeMode);
   final DrawerSizeMode sizeMode;
 }
 
@@ -72,7 +71,7 @@ class SetSelectionPathAction {
 }
 
 class SetRightDrawerSizeModeAction {
-  SetRightDrawerSizeModeAction(DrawerSizeMode this.sizeMode);
+  SetRightDrawerSizeModeAction(this.sizeMode);
   final DrawerSizeMode sizeMode;
 }
 

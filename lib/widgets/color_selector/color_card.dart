@@ -56,12 +56,26 @@ class ColorCard extends StatelessWidget {
           );
         },
         builder: (context, model) {
-          return SizedBox(
-            width: 190.0,
-            child: ColorMenuButton(
-              color: HSLColor.from(model.color),
-              onColorChanged: model.setColorCallback,
-            ),
+          return Column(
+            children: <Widget>[
+              SizedBox(
+                width: 190.0,
+                child: ColorMenuButton(
+                  color: HSLColor.from(model.color),
+                  onColorChanged: model.setColorCallback,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 12.0),
+                child: SizedBox(
+                  width: 190.0,
+                  child: ColorMenuButton(
+                    color: HSLColor.from(model.color),
+                    onColorChanged: model.setColorCallback,
+                  ),
+                ),
+              ),
+            ],
           );
         }
       ),

@@ -34,7 +34,6 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
           return new Scaffold(
             appBar: new AppBar(
               elevation: 0.5,
-              title: new Text(widget.name),
               primary: true,
             ),
             body: widget.body,
@@ -47,8 +46,47 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
           return new Scaffold(
             appBar: new AppBar(
               elevation: 1.0,
-              title: new Text(widget.name),
               primary: true,
+              title: Row(
+                children: <Widget>[
+                  FlatButton(
+                    child: Text(
+                      'Project',
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                    padding: const EdgeInsets.all(8.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                    onPressed: (){},
+                  ),
+                  Text(
+                    '>',
+                    style: Theme.of(context).textTheme.title,
+                  ),
+                  FlatButton(
+                    child: Text(
+                      'Current Canvas',
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                    padding: const EdgeInsets.all(8.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                    onPressed: (){},
+                  )
+                ],
+              ),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.launch),
+                  onPressed: (){},
+                ),
+                IconButton(
+                  icon: Icon(Icons.settings),
+                  onPressed: (){},
+                ),
+              ],
             ),
             body: new Stack(
               children: <Widget>[

@@ -41,8 +41,8 @@ class MyApp extends StatelessWidget {
         theme: new ThemeData(
           accentColor: new Color(0xFF8bac0f),
           cardColor: Colors.grey.shade100,
-          dividerColor: Colors.grey.shade500,
-          primarySwatch: new MaterialColor(0xFF222222, const <int, Color> {50 : const Color(0xFFFFF8E1), 100 : const Color(0xFFFFECB3), 200 : const Color(0xFFFFE082), 300 : const Color(0xFFFFD54F), 400 : const Color(0xFFFFCA28), 500 : const Color(0xFFFFC107), 600 : const Color(0xFFFFB300), 700 : const Color(0xFFFFA000), 800 : const Color(0xFFFF8F00), 900 : const Color(0xFFFF6F00)}),
+          dividerColor: Colors.black38,
+          primarySwatch: new MaterialColor(Colors.grey.shade100.value, const <int, Color> {50 : const Color(0xFFFFF8E1), 100 : const Color(0xFFFFECB3), 200 : const Color(0xFFFFE082), 300 : const Color(0xFFFFD54F), 400 : const Color(0xFFFFCA28), 500 : const Color(0xFFFFC107), 600 : const Color(0xFFFFB300), 700 : const Color(0xFFFFA000), 800 : const Color(0xFFFF8F00), 900 : const Color(0xFFFF6F00)}),
           splashColor: new Color(0xFF9bbc0f),
           highlightColor: new Color(0xFFcadc9f),
           accentTextTheme: Theme.of(context).accentTextTheme.copyWith(
@@ -52,6 +52,11 @@ class MyApp extends StatelessWidget {
             minWidth: 12.0,
           ),
           scaffoldBackgroundColor: Colors.grey.shade300,
+          textTheme: Theme.of(context).textTheme.copyWith(
+            title: Theme.of(context).textTheme.title.copyWith(
+              fontSize: 16.0,
+            ),
+          )
         ),
 
         // GBA Theme 2
