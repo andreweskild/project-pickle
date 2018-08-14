@@ -56,7 +56,7 @@ class SelectToolOverlayPainter extends CustomPainter {
 //      );
       canvas.drawPath(_selectionPath, Paint()
         ..style = PaintingStyle.stroke
-        ..color = Theme.of(context).primaryColor
+        ..color = Theme.of(context).highlightColor
         ..strokeWidth = 3.0 / _canvasScale
         ..strokeCap = StrokeCap.round
         ..strokeJoin = StrokeJoin.round

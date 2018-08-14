@@ -46,7 +46,7 @@ class ColorCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 12.0, bottom: 12.0, left: 12.0, right: 12.0),
+      padding: const EdgeInsets.all(8.0),
       child: StoreConnector<AppState, ColorCardModel>(
         distinct: true,
         converter: (store) {
@@ -58,17 +58,17 @@ class ColorCard extends StatelessWidget {
         builder: (context, model) {
           return Column(
             children: <Widget>[
-              SizedBox(
-                width: 190.0,
+              ConstrainedBox(
+                constraints: BoxConstraints.expand(height: 44.0),
                 child: ColorMenuButton(
                   color: HSLColor.from(model.color),
                   onColorChanged: model.setColorCallback,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 12.0),
-                child: SizedBox(
-                  width: 190.0,
+                padding: const EdgeInsets.only(top: 8.0),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints.expand(height: 44.0),
                   child: ColorMenuButton(
                     color: HSLColor.from(model.color),
                     onColorChanged: model.setColorCallback,

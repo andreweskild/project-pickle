@@ -39,12 +39,13 @@ class MyApp extends StatelessWidget {
         
         // GBA Theme 1
         theme: new ThemeData(
-          accentColor: new Color(0xFF8bac0f),
+          accentColor: Colors.grey.shade700,
           cardColor: Colors.grey.shade100,
-          dividerColor: Colors.black38,
+          buttonColor: Colors.grey.shade300,
+          dividerColor: Colors.black26,
           primarySwatch: new MaterialColor(Colors.grey.shade100.value, const <int, Color> {50 : const Color(0xFFFFF8E1), 100 : const Color(0xFFFFECB3), 200 : const Color(0xFFFFE082), 300 : const Color(0xFFFFD54F), 400 : const Color(0xFFFFCA28), 500 : const Color(0xFFFFC107), 600 : const Color(0xFFFFB300), 700 : const Color(0xFFFFA000), 800 : const Color(0xFFFF8F00), 900 : const Color(0xFFFF6F00)}),
-          splashColor: new Color(0xFF9bbc0f),
-          highlightColor: new Color(0xFFcadc9f),
+          splashColor: Colors.black38,
+          highlightColor: Colors.black26,
           accentTextTheme: Theme.of(context).accentTextTheme.copyWith(
             button: Theme.of(context).accentTextTheme.button.copyWith(color: new Color(0xFF0f380f)),
           ),

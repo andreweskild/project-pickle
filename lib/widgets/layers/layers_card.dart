@@ -69,13 +69,12 @@ class LayersCard extends StatelessWidget {
       builder: (context, model) {
             return Material(
               color: Colors.grey.shade200,
-              child: Column(
+              child: Stack(
                 children: <Widget>[
-                  Divider(
-                    height: 1.0,
-                  ),
-                  Expanded(
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 40.0),
                     child: ListView(
+                      padding: const EdgeInsets.only(top: 6.0, bottom: 12.0),
                       children: List<Widget>.generate(
                         model.layers.length,
                         (index) {
@@ -96,86 +95,35 @@ class LayersCard extends StatelessWidget {
                       )
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: FloatingActionButton(
-                        elevation: 4.0,
-                        isExtended: true,
-                        backgroundColor: Colors.grey.shade700,
-                        foregroundColor: Colors.white,
-                        mini: true,
-                        child: Icon(Icons.add),
+                  Divider(
+                    height: 1.0,
+                  ),
+                  Positioned(
+                    bottom: 0.0,
+                    left: 0.0,
+                    right: 0.0,
+                    child: SizedBox(
+                      height: 48.0,
+                      child: RaisedButton.icon(
+                        elevation: 0.0,
+//                        isExtended: true,
+//                        backgroundColor: Colors.grey.shade700,
+//                        foregroundColor: Colors.white,
+//                        mini: true,
+                        icon: Icon(Icons.add),
+                        label: Text('New Layer'),
                         onPressed: () {
                           model.addLayerCallback(model.currentLayerIndex+1);
                         },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          side: BorderSide(
+                            color: Colors.black26
+                          )
+                        ),
                       ),
-                    )
-//                    child: RaisedButton(
-//                      padding: const EdgeInsets.all(0.0),
-//                      elevation: 2.0,
-//                      color: Colors.white,
-//                      child: Padding(
-//                        padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
-//                        child: Row(
-//                          mainAxisSize: MainAxisSize.max,
-//                          children: <Widget>[
-//                            Padding(
-//                              padding: const EdgeInsets.only(right: 3.0),
-//                              child: Icon(Icons.add),
-//                            ),
-//                            Padding(
-//                              padding: const EdgeInsets.only(left: 3.0),
-//                              child: Text('New Layer'),
-//                            ),
-//                          ],
-//                        ),
-//                      ),
-//                      onPressed: () {
-//                        model.addLayerCallback(model.currentLayerIndex+1);
-//                      },
-//                      shape: RoundedRectangleBorder(
-//                      side: BorderSide(
-//                        color: Colors.black38,
-//                      ),
-//                      borderRadius: BorderRadius.circular(6.0),
-//                      ),
-//                    ),
+                    ),
                   ),
-//                Divider(
-//                  height: 1.0,
-//                ),
-//                Material(
-//                  child: ListTile(
-//                    contentPadding: EdgeInsets.all(0.0),
-//                    leading: IconButton(
-//                      icon: Icon(Icons.add),
-//                      onPressed: () {
-//                        model.addLayerCallback(model.currentLayerIndex+1);
-//                      },
-//                    ),
-//                  ),
-//                ),
-//                  Align(
-//                    alignment: Alignment.bottomCenter,
-//                    child: Padding(
-//                      padding: const EdgeInsets.all(12.0),
-//                      child: RaisedButton(
-//                        child: SizedBox(
-//                          height: 40.0,
-//                          width: 104.0,
-//                          child: Center(
-//                            child: Icon(Icons.add),
-//                          ),
-//                        ),
-//                        onPressed: model.addLayerCallback,
-//                        shape: RoundedRectangleBorder(
-//                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
-//                        ),
-//                      ),
-//                    ),
-//                  ),
                 ],
               ),
         );

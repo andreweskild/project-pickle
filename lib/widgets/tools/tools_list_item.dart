@@ -53,11 +53,14 @@ class ToolsListItem extends StatelessWidget {
         ); 
       },
       builder: (context, toolModel) {
-        return new ListItem(
-          icon: icon,
-          label: Text(label),
-          isHighlighted: toolModel.currentToolType == toolType,
-          onTap: toolModel.callback,
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+          child: new ListItem(
+            icon: icon,
+            label: Text(label),
+            isHighlighted: toolModel.currentToolType == toolType,
+            onTap: toolModel.callback,
+          ),
         );
       },
     );

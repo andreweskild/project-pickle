@@ -72,30 +72,55 @@ class PaletteSelectorCard extends StatelessWidget {
           builder: (context, paletteModel) {
             return Material(
               color: Colors.grey.shade200,
-              child: Column(
+              child: Stack(
                 children: <Widget>[
-                  Expanded(
-                    child: GridView.extent(
-                      padding: EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 12.0),
-                      primary: false,
-                      crossAxisSpacing: 12.0,
-                      maxCrossAxisExtent: 64.0,
-                      childAspectRatio: 1.61,
-                      shrinkWrap: false,
-                      children: paletteModel.palette.map(
-                        (hslColor) => new RaisedButton(
-                          elevation: 2.0,
-                          color: hslColor.toColor(),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                            side: BorderSide(color: Colors.black38),
-                          ),
-                          onPressed: () {
-                            paletteModel.setCurrentColor(HSLColor.from(hslColor));
-                          },
-                        )
-                      ).toList(),
-                      mainAxisSpacing: 12.0,
+                  GridView.extent(
+                    padding: EdgeInsets.all(8.0),
+                    primary: false,
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
+                    maxCrossAxisExtent: 48.0,
+                    childAspectRatio: 1.0,
+                    shrinkWrap: false,
+                    children: paletteModel.palette.map(
+                      (hslColor) => new RaisedButton(
+                        elevation: 2.0,
+                        color: hslColor.toColor(),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                          side: BorderSide(color: Colors.black38),
+                        ),
+                        onPressed: () {
+                          paletteModel.setCurrentColor(HSLColor.from(hslColor));
+                        },
+                      )
+                    ).toList(),
+                  ),
+                  Positioned(
+                    bottom: 0.0,
+                    left: 0.0,
+                    right: 0.0,
+                    child: AnimatedContainer(
+                      curve: Curves.ease,
+                      duration: Duration(milliseconds: 150),
+                      height: (paletteModel.palette.contains(paletteModel.currentColor)) ? 0.0 : 48.0,
+                      child: RaisedButton.icon(
+                        elevation: 0.0,
+//                        isExtended: true,
+//                        backgroundColor: Colors.grey.shade700,
+//                        foregroundColor: Colors.white,
+//                        mini: true,
+                        color: paletteModel.currentColor.toColor(),
+                        icon: Icon(Icons.add),
+                        label: Text('Add Color'),
+                        onPressed: paletteModel.addToPalette,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            side: BorderSide(
+                              color: Colors.black26,
+                            )
+                        ),
+                      ),
                     ),
                   ),
 //                  Padding(

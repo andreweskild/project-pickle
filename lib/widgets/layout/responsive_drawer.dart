@@ -37,10 +37,14 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
   double _splitPos;
   double _dragPos;
 
+  final _smallSizeWidth = 72.0;
+  final _mediumSizeWidth = 128.0;
+  final _largeSizeWidth = 224.0;
+
   @override
   void initState() {
-    _minWidth = 64.0;
-    _maxWidth = 200.0;
+    _minWidth = _smallSizeWidth;
+    _maxWidth = _largeSizeWidth;
     _sizeMode = widget.sizeMode;
     _previousSizeMode = _sizeMode;
     _splitPos = widthFromSizeMode(_sizeMode);
@@ -51,23 +55,23 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
   double widthFromSizeMode(DrawerSizeMode mode) {
     switch(mode) {
       case DrawerSizeMode.Small:
-        return 64.0;
+        return _smallSizeWidth;
         break;
       case DrawerSizeMode.Medium:
-        return 128.0;
+        return _mediumSizeWidth;
         break;
       case DrawerSizeMode.Large:
-        return 200.0;
+        return _largeSizeWidth;
         break;
       default:
-        return 128.0;
+        return _mediumSizeWidth;
     }
   }
 
   DrawerSizeMode sizeModeFromWidth(double width) {
-    double distanceToSmall = (width - 64.0).abs();
-    double distanceToMedium = (width - 148.0).abs();
-    double distanceToLarge = (width - 200.0).abs();
+    double distanceToSmall = (width - _smallSizeWidth).abs();
+    double distanceToMedium = (width - _mediumSizeWidth).abs();
+    double distanceToLarge = (width - _largeSizeWidth).abs();
     if(distanceToSmall < distanceToMedium
         && distanceToSmall < distanceToLarge) {
       return DrawerSizeMode.Small;
@@ -88,16 +92,16 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
   double getWidthOfNewSizeMode(double width) {
     switch(sizeModeFromWidth(width)) {
       case DrawerSizeMode.Small:
-        return 64.0;
+        return _smallSizeWidth;
         break;
       case DrawerSizeMode.Medium:
-        return 128.0;
+        return _mediumSizeWidth;
         break;
       case DrawerSizeMode.Large:
-        return 200.0;
+        return _largeSizeWidth;
         break;
       default:
-        return 128.0;
+        return _mediumSizeWidth;
         break;
     }
   }
@@ -114,19 +118,18 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
             alignment: Alignment.centerLeft,
             curve: Curves.ease,
             duration: Duration(milliseconds: 200),
+            padding: (widget.alignment == DrawerAlignment.start) ?
+              const EdgeInsets.fromLTRB(12.0, 12.0, 0.0, 12.0) :
+              const EdgeInsets.fromLTRB(0.0, 12.0, 12.0, 12.0),
             width: widthFromSizeMode(_sizeMode),
             child: Material(
-              elevation: 0.0,
+              elevation: 2.0,
               color: Theme.of(context).cardColor,
-              shape: Border(
-                right: (widget.alignment == DrawerAlignment.start) ?
-                BorderSide(
-                  color: Colors.black38
-                ) : BorderSide.none,
-                left: (widget.alignment == DrawerAlignment.end) ?
-                BorderSide(
-                    color: Colors.black38
-                ) : BorderSide.none,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                side: BorderSide(
+                  color: Colors.black26,
+                )
               ),
               child: widget.child,
             ),
@@ -214,6 +217,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                     _drawerDragging = false;
                     _sizeMode = sizeModeFromWidth(_splitPos);
                     _splitPos = widthFromSizeMode(_sizeMode);
+                    _dragPos = _splitPos;
                   });
                   if(_sizeMode != _previousSizeMode) {
                     widget.onSizeModeChanged(_sizeMode);
@@ -235,7 +239,7 @@ class _ResponsiveDrawerState extends State<ResponsiveDrawer> {
                           height: (_drawerDragging) ? 10.0 : 24.0,
                           width: (_drawerDragging) ? 10.0 : 3.0,
                           decoration: BoxDecoration(
-                            color: _drawerDragging ? Colors.white : Colors.black38,
+                            color: _drawerDragging ? Colors.white : Colors.black26,
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                         )
