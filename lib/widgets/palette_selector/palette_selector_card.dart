@@ -115,7 +115,7 @@ class PaletteSelectorCard extends StatelessWidget {
                         label: Text('Add Color'),
                         onPressed: paletteModel.addToPalette,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
+                            borderRadius: BorderRadius.circular(8.0),
                             side: BorderSide(
                               color: Colors.black26,
                             )

@@ -20,7 +20,7 @@ class LeftDrawer extends StatelessWidget {
     return StoreBuilder<AppState>(
       rebuildOnChange: false,
       builder: (context, store) {
-        return ResponsiveDrawer(
+        return ResizableDrawer(
           alignment: DrawerAlignment.start,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:project_pickle/widgets/tools/tool_options_panel.dart';
+
 class ResponsiveScaffold extends StatefulWidget {
   ResponsiveScaffold({
     Key key,
@@ -92,13 +94,22 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
               children: <Widget>[
                 widget.body,
                 new Align(
-                  alignment: Alignment(-1.0, 0.0),
+                  alignment: Alignment.centerLeft,
                   child: widget.drawer,
                 ),
                 new Align(
-                  alignment: Alignment(1.0, 0.0),
+                  alignment: Alignment.centerRight,
                   child: widget.endDrawer,
                 ),
+                new Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: ToolOptionsPanel(
+
+                    ),
+                  ),
+                )
               ],
             ),
           );

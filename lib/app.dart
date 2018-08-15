@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
           splashColor: Colors.black38,
           highlightColor: Colors.black26,
           accentTextTheme: Theme.of(context).accentTextTheme.copyWith(
-            button: Theme.of(context).accentTextTheme.button.copyWith(color: new Color(0xFF0f380f)),
+            button: Theme.of(context).accentTextTheme.button.copyWith(color: Colors.grey.shade800),
           ),
           buttonTheme: ButtonTheme.of(context).copyWith(
             minWidth: 12.0,
