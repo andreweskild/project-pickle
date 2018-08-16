@@ -4,7 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
-import 'package:project_pickle/widgets/pixels/pixel_canvas_layer.dart';
+import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 
 class _PreviewModel {
   _PreviewModel({

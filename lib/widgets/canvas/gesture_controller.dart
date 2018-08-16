@@ -4,7 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
-import 'package:project_pickle/widgets/pixels/canvas_controller.dart';
+import 'package:project_pickle/widgets/canvas/canvas_controller.dart';
 
 int _widthBreakpoint = 992;
 

@@ -16,7 +16,7 @@ class SelectorTool extends Tool {
   void handleSelectionPosUpdate(Offset pos) => {};
   void handleSelectionEnd() => {};
 
-  SelectorTool(context) : super(context) {
+  SelectorTool(context) : super(context, null) {
     _store = StoreProvider.of<AppState>(context);
   }
 

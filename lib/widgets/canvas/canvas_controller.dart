@@ -7,7 +7,7 @@ import 'package:project_pickle/tools/tool_controller.dart';
 import 'package:project_pickle/tools/select_tool_overlay.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
-import 'package:project_pickle/widgets/pixels/pixel_canvas_layer.dart';
+import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 
 class CanvasController extends StatefulWidget {
   CanvasController({

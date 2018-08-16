@@ -1,25 +1,21 @@
-import 'dart:ui';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:redux/redux.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/tool.dart';
+import 'package:project_pickle/tools/pixel_based_tool.dart';
 
-class DrawingTool extends Tool {
-  VoidCallback onDrawFinished;
+class BaseDrawingTool extends PixelBasedTool {
+  BaseDrawingTool({
+    Key key,
+    BuildContext context,
+    Widget overlay
+  }) : super(context, overlay);
+
   Store<AppState> _store;
-
-  void handleDrawPosUpdate(Offset pos) => {};
-  void handleDrawEnd() => {};
-  
-  DrawingTool(context) : super(context, null) {
-    _store = StoreProvider.of<AppState>(context);
-  }
 
   void drawPreviewPixel(Offset pos) {
     _store.dispatch(new AddPixelAction(pos));

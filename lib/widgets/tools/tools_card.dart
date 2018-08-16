@@ -36,6 +36,11 @@ class ToolsCard extends StatelessWidget {
             toolType: ToolType.fill,
           ),
           ToolsListItem(
+            icon: Icon(Icons.gradient),
+            label: 'Gradient',
+            toolType: ToolType.shape,
+          ),
+          ToolsListItem(
             icon: Icon(Icons.brightness_1),
             label: 'Path',
             toolType: ToolType.line,

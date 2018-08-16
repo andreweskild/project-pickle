@@ -18,10 +18,6 @@ import 'package:project_pickle/tools/shape_tool.dart';
 import 'package:project_pickle/tools/selector_tool.dart';
 import 'package:project_pickle/tools/marquee_selector_tool.dart';
 
-class LayerChangeNotifier extends ChangeNotifier {
-  LayerChangeNotifier();
-}
-
 class ToolController {
   ToolController(this._canvasContext) {
     _store = StoreProvider.of<AppState>(_canvasContext);

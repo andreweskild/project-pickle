@@ -148,8 +148,10 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
                       decoration: BoxDecoration(
                           color: Colors.black54,
                           borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(8.0),
-                            bottomLeft: Radius.circular(8.0),
+                            topLeft: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
+                            bottomLeft: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
+                            topRight: (widget.alignment == DrawerAlignment.end) ? Radius.circular(8.0) : Radius.zero,
+                            bottomRight: (widget.alignment == DrawerAlignment.end) ? Radius.circular(8.0) : Radius.zero,
                           )
                       ),
                     ),
@@ -233,8 +235,10 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
                     decoration: BoxDecoration(
                         color: _drawerDragging ? Colors.black54 : Colors.transparent,
                         borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(8.0),
-                          bottomRight: Radius.circular(8.0),
+                          topLeft: (widget.alignment == DrawerAlignment.end) ? Radius.circular(8.0) : Radius.zero,
+                          bottomLeft: (widget.alignment == DrawerAlignment.end) ? Radius.circular(8.0) : Radius.zero,
+                          topRight: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
+                          bottomRight: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
                         )
                     ),
                     child: AnimatedPadding(

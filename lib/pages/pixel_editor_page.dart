@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:project_pickle/widgets/layout/responsive_scaffold.dart';
-import 'package:project_pickle/widgets/pixels/canvas_gesture_container.dart';
-import 'package:project_pickle/widgets/pixels/canvas_controller.dart';
+import 'package:project_pickle/widgets/canvas/gesture_controller.dart';
+import 'package:project_pickle/widgets/canvas/canvas_controller.dart';
 import 'package:project_pickle/widgets/layout/left_drawer.dart';
 import 'package:project_pickle/widgets/layout/right_drawer.dart';
 
