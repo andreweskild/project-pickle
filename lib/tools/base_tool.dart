@@ -1,20 +1,23 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
-import 'package:project_pickle/tools/tool.dart';
+import 'package:project_pickle/tools/tool_old.dart';
+import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 
 typedef PixelInputCallback = void Function(Offset);
 
-abstract class PixelBasedTool extends Tool {
-  PixelBasedTool(
-    BuildContext context,
-    Widget overlay
-  ) : super(context, overlay);
+abstract class BaseTool<T extends Widget> {
+  BaseTool(
+    this.context,
+  );
 
+  final BuildContext context;
+  T overlay;
   Offset _lastInputPos;
 
-  void _onPixelInputUpdate(Offset pos) {}
-  void _onPixelInputUp() {}
+  void onPixelInputUpdate(Offset pos) {}
+  void onPixelInputUp() {}
 
   void handlePointerMove(details) {
     RenderBox box = context.findRenderObject();
@@ -29,7 +32,7 @@ abstract class PixelBasedTool extends Tool {
   }
 
   void handlePointerUp(details) {
-    _onPixelInputUp();
+    onPixelInputUp();
   }
 
   void updateInputPosition(Offset pos) {
@@ -38,7 +41,7 @@ abstract class PixelBasedTool extends Tool {
     Offset snappedPos = Offset(snappedX, snappedY);
     if (_lastInputPos == null ||
         snappedPos != _lastInputPos) {
-      _onPixelInputUpdate(pos);
+      onPixelInputUpdate(snappedPos);
     }
     _lastInputPos = snappedPos;
   }

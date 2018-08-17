@@ -30,10 +30,6 @@ AppState stateReducer(AppState state, dynamic action) {
     state.currentLayerIndex = action.index;
     return state;
   }
-  else if (action is AddPixelAction) {
-    state.previewLayer.setPixel(action.pos, state.currentColor.toColor());
-    return state;
-  }
   else if (action is ClearPreviewAction) {
     state.previewLayer.clearPixels();
     return state;
@@ -52,6 +48,10 @@ AppState stateReducer(AppState state, dynamic action) {
   else if (action is FinalizePixelsAction) {
     state.currentLayer.setPixelsFromMap(state.previewLayer.rawPixels);
     state.previewLayer.clearPixels();
+    return state;
+  }
+  else if (action is SaveOverlayToLayerAction) {
+    state.currentLayer.setPixelsFromMap(action.overlay.rawPixels);
     return state;
   }
   else if (action is SetCanvasScaleAction) {

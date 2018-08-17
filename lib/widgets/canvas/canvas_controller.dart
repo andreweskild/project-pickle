@@ -9,6 +9,9 @@ import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 
+import 'package:project_pickle/tools/base_tool.dart';
+import 'package:project_pickle/tools/pixel_tool.dart';
+
 class CanvasController extends StatefulWidget {
   CanvasController({
     Key key,
@@ -31,10 +34,10 @@ class _CanvasControllerState extends State<CanvasController> {
   ToolType _currentToolType;
 
 
-  List<PixelCanvasLayer> _populateLayerList(AppState state) {
+  List<PixelCanvasLayer> _populateLayerList(AppState state, BaseTool currentTool) {
     // layer pixellayers correctly so drawing of pixels is done in the correct order
     List<PixelCanvasLayer> layers = state.layers.getRange(0, state.currentLayerIndex + 1).toList();
-    layers.add(state.previewLayer);
+    layers.add(currentTool.overlay);
     layers.addAll(state.layers.getRange(state.currentLayerIndex + 1, state.layers.length));
 
     return layers;
@@ -70,7 +73,6 @@ class _CanvasControllerState extends State<CanvasController> {
                   _currentToolType = state.currentToolType;
                 });
               }
-
             }
         );
 
@@ -82,13 +84,14 @@ class _CanvasControllerState extends State<CanvasController> {
 
         int maxPointerCount = 0;
 
-        var layers = _populateLayerList(store.state);
+        var layers = _populateLayerList(store.state, _toolController.currentTool);
 
 
         return Listener(
           onPointerMove: (details) {
             if (maxPointerCount == 1) {
-              _toolController.handlePointerMove(details);
+              _toolController.currentTool.handlePointerMove(details);
+//              _currentTool.handlePointerMove(details);
             }
           },
           onPointerDown: (details) {
@@ -97,7 +100,8 @@ class _CanvasControllerState extends State<CanvasController> {
               maxPointerCount = currentPointerCount;
             }
             if (currentPointerCount <= 1) {
-              _toolController.handlePointerDown(details);
+              _toolController.currentTool.handlePointerDown(details);
+//              _currentTool.handlePointerDown(details);
             } else {
               store.dispatch(ClearPreviewAction());
             }
@@ -108,7 +112,8 @@ class _CanvasControllerState extends State<CanvasController> {
               maxPointerCount = 0;
             }
             if (currentPointerCount == 0) {
-              _toolController.handlePointerUp(details);
+              _toolController.currentTool.handlePointerUp(details);
+//              _currentTool.handlePointerUp(details);
             }
           },
           child: Material(
@@ -122,7 +127,7 @@ class _CanvasControllerState extends State<CanvasController> {
                   Stack(
                     children: layers
                   ),
-                  SelectToolOverlay(),
+//                  SelectToolOverlay(),
                 ],
               ),
             ),

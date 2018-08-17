@@ -1,27 +1,33 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
-import 'package:project_pickle/tools/tool.dart';
-import 'package:project_pickle/tools/pixel_based_tool.dart';
+import 'package:project_pickle/tools/base_tool.dart';
+import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 
-class BaseDrawingTool extends PixelBasedTool {
-  BaseDrawingTool({
-    Key key,
-    BuildContext context,
-    Widget overlay
-  }) : super(context, overlay);
-
-  Store<AppState> _store;
-
-  void drawPreviewPixel(Offset pos) {
-    _store.dispatch(new AddPixelAction(pos));
+/// Mixin providing common operations for use with drawing tools.
+///
+/// Each function performs a specific operation, then sends the relevant data
+/// to the store.
+///
+/// Use of this mixin requires the consuming class to initiate [store] and [overlay]
+/// in its constructor.
+class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
+  BaseDrawingTool(context) : super(context) {
+    store = StoreProvider.of<AppState>(context);
+    overlay = PixelCanvasLayer(height: 32, width: 32);
   }
 
-  void drawPreviewPixelLine(Offset p1, Offset p2) {
+  Store<AppState> store;
+
+  void drawOverlayPixel(Offset pos) {
+    overlay.setPixel(pos, store.state.currentColor.toColor());
+  }
+
+  void drawOverlayPixelLine(Offset p1, Offset p2) {
     var horizontalMovement = (p1.dx - p2.dx).abs();
     var verticalMovement = (p1.dy - p2.dy).abs();
 
@@ -37,7 +43,7 @@ class BaseDrawingTool extends PixelBasedTool {
       var slope = (p2.dy - p1.dy) / (p2.dx - p1.dx);
       var crossAxisPosition = p1.dy;
       for (double i = p1.dx; i <= p2.dx; i++) {
-        drawPreviewPixel(new Offset(i, crossAxisPosition.round().toDouble()));
+        drawOverlayPixel(new Offset(i, crossAxisPosition.round().toDouble()));
         crossAxisPosition = crossAxisPosition + slope;
       }
     }
@@ -52,14 +58,14 @@ class BaseDrawingTool extends PixelBasedTool {
       var slope = (p2.dx - p1.dx) / (p2.dy - p1.dy);
       var crossAxisPosition = p1.dx;
       for (double i = p1.dy; i >= p2.dy; i--) {
-        drawPreviewPixel(new Offset(crossAxisPosition.round().toDouble(), i));
+        drawOverlayPixel(new Offset(crossAxisPosition.round().toDouble(), i));
         crossAxisPosition = crossAxisPosition - slope;
       }
     }
   }
 
   Color getPixelColor(Offset pos) {
-    for (var layer in _store.state.layers.reversed) {
+    for (var layer in store.state.layers.reversed) {
       if (layer.rawPixels.containsKey(pos)) {
         return layer.rawPixels[pos];
       }
@@ -70,11 +76,11 @@ class BaseDrawingTool extends PixelBasedTool {
 
   void updateCurrentColor(Color color) {
     HSLColor hslColor = HSLColor.fromRGB(color);
-    _store.dispatch(SetCurrentColorAction(hslColor));
+    store.dispatch(SetCurrentColorAction(hslColor));
   }
 
   void removePixel(Offset pos) {
-    _store.dispatch(new RemovePixelAction(pos));
+    store.dispatch(new RemovePixelAction(pos));
   }
 
   void removePixelLine(Offset p1, Offset p2) {
@@ -115,15 +121,16 @@ class BaseDrawingTool extends PixelBasedTool {
   }
 
   void fillArea(Offset pos) {
-    _store.dispatch(new FillAreaAction(pos));
+    overlay.fillArea(pos, store.state.currentColor.toColor());
   }
 
-  void resetPreview() {
-    _store.dispatch(new ClearPreviewAction());
+  void resetOverlay() {
+    overlay.clearPixels();
   }
 
   void finalizePreview() {
-    _store.dispatch(new FinalizePixelsAction());
+    store.dispatch(new SaveOverlayToLayerAction(overlay));
+    resetOverlay();
   }
 
 }

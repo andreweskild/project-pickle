@@ -7,7 +7,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
-import 'package:project_pickle/tools/tool.dart';
+import 'package:project_pickle/tools/tool_old.dart';
 
 class SelectorTool extends Tool {
   VoidCallback onSelectionFinished;
