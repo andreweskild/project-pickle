@@ -90,21 +90,21 @@ class ToolController {
 //      case ToolType.color_picker:
 //        _currentTool = ColorPickerTool(_canvasContext);
 //        break;
-//      case ToolType.eraser:
-//        _currentTool = EraserTool(_canvasContext);
-//        break;
-//      case ToolType.fill:
-//        _currentTool = FillTool(_canvasContext);
-//        break;
-//      case ToolType.line:
-//        _currentTool = LineTool(_canvasContext);
-//        break;
+      case ToolType.eraser:
+        currentTool = EraserTool(_canvasContext);
+        break;
+      case ToolType.fill:
+        currentTool = FillTool(_canvasContext);
+        break;
+      case ToolType.line:
+        currentTool = LineTool(_canvasContext);
+        break;
       case ToolType.pencil:
         currentTool = PixelTool(_canvasContext);
         break;
-//      case ToolType.shape:
-//        _currentTool = ShapeTool(_canvasContext);
-//        break;
+      case ToolType.shape:
+        currentTool = ShapeTool(_canvasContext);
+        break;
 //      case ToolType.marquee_selector:
 //        _currentTool = MarqueeSelectorTool(_canvasContext);
 //        break;

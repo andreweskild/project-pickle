@@ -17,14 +17,14 @@ import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 /// in its constructor.
 class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
   BaseDrawingTool(context) : super(context) {
-    store = StoreProvider.of<AppState>(context);
+    _store = StoreProvider.of<AppState>(context);
     overlay = PixelCanvasLayer(height: 32, width: 32);
   }
 
-  Store<AppState> store;
+  Store<AppState> _store;
 
   void drawOverlayPixel(Offset pos) {
-    overlay.setPixel(pos, store.state.currentColor.toColor());
+    overlay.setPixel(pos, _store.state.currentColor.toColor());
   }
 
   void drawOverlayPixelLine(Offset p1, Offset p2) {
@@ -65,7 +65,7 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
   }
 
   Color getPixelColor(Offset pos) {
-    for (var layer in store.state.layers.reversed) {
+    for (var layer in _store.state.layers.reversed) {
       if (layer.rawPixels.containsKey(pos)) {
         return layer.rawPixels[pos];
       }
@@ -76,11 +76,11 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
 
   void updateCurrentColor(Color color) {
     HSLColor hslColor = HSLColor.fromRGB(color);
-    store.dispatch(SetCurrentColorAction(hslColor));
+    _store.dispatch(SetCurrentColorAction(hslColor));
   }
 
   void removePixel(Offset pos) {
-    store.dispatch(new RemovePixelAction(pos));
+    _store.dispatch(new RemovePixelAction(pos));
   }
 
   void removePixelLine(Offset p1, Offset p2) {
@@ -121,15 +121,15 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
   }
 
   void fillArea(Offset pos) {
-    overlay.fillArea(pos, store.state.currentColor.toColor());
+    _store.dispatch(new FillAreaAction(pos));
   }
 
   void resetOverlay() {
     overlay.clearPixels();
   }
 
-  void finalizePreview() {
-    store.dispatch(new SaveOverlayToLayerAction(overlay));
+  void saveOverlayToLayer() {
+    _store.dispatch(new SaveOverlayToLayerAction(overlay));
     resetOverlay();
   }
 

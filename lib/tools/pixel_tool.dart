@@ -4,13 +4,9 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/base_drawing_tool.dart';
-import 'package:project_pickle/tools/base_tool.dart';
-import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 
 class PixelTool extends BaseDrawingTool {
-  PixelTool(context) : super(context) {
-    store = StoreProvider.of<AppState>(context);
-  }
+  PixelTool(context) : super(context);
 
   Offset _lastPoint;
 
@@ -30,7 +26,7 @@ class PixelTool extends BaseDrawingTool {
 
   @override
   void onPixelInputUp() {
-    finalizePreview();
+    saveOverlayToLayer();
     _lastPoint = null;
   }
 

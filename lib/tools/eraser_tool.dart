@@ -1,16 +1,20 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:project_pickle/tools/drawing_tool_old.dart';
+import 'package:project_pickle/state/app_state.dart';
+import 'package:project_pickle/tools/base_drawing_tool.dart';
 
-class EraserTool extends DrawingTool {
+
+/// Erases pixels from the currently selected layer.
+class EraserTool extends BaseDrawingTool {
   EraserTool(context) : super(context);
 
   Offset _lastPoint;
 
 
   @override
-  void handleDrawPosUpdate(Offset pos) {
+  void onPixelInputUpdate(Offset pos) {
     if ( _lastPoint != null &&
         ((_lastPoint.dx - pos.dx).abs() > 1 || 
         (_lastPoint.dy - pos.dy).abs() > 1)) {
@@ -23,7 +27,7 @@ class EraserTool extends DrawingTool {
   }
 
   @override
-  void handleDrawEnd() {
+  void onPixelInputUp() {
     _lastPoint = null;
   }
 

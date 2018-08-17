@@ -1,23 +1,23 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
-import 'package:project_pickle/tools/drawing_tool_old.dart';
+import 'package:project_pickle/tools/base_drawing_tool.dart';
 
-class ShapeTool extends DrawingTool {
+class ShapeTool extends BaseDrawingTool {
   ShapeTool(context) : super(context);
 
   Offset _startPoint;
   Offset _endPoint;
 
   @override
-  void handleDrawPosUpdate(Offset pos) {
+  void onPixelInputUpdate(Offset pos) {
     if (_startPoint == null) {
       _startPoint = pos;
-      drawPreviewPixel(pos);
+      drawOverlayPixel(pos);
     }
     else {
       if (_endPoint != null) {
-        resetPreview();
+        resetOverlay();
       }
       _endPoint = pos;
       var topLeftPoint = _startPoint;
@@ -25,16 +25,16 @@ class ShapeTool extends DrawingTool {
       var bottomLeftPoint = Offset(_startPoint.dx, _endPoint.dy);
       var bottomRightPoint = _endPoint;
 
-      drawPreviewPixelLine(topLeftPoint, topRightPoint);
-      drawPreviewPixelLine(topRightPoint, bottomRightPoint);
-      drawPreviewPixelLine(bottomRightPoint, bottomLeftPoint);
-      drawPreviewPixelLine(bottomLeftPoint, topLeftPoint);
+      drawOverlayPixelLine(topLeftPoint, topRightPoint);
+      drawOverlayPixelLine(topRightPoint, bottomRightPoint);
+      drawOverlayPixelLine(bottomRightPoint, bottomLeftPoint);
+      drawOverlayPixelLine(bottomLeftPoint, topLeftPoint);
     }
   }
 
   @override
-  void handleDrawEnd() {
-    finalizePreview();
+  void onPixelInputUp() {
+    saveOverlayToLayer();
     resetLinePoints();
   }
 
