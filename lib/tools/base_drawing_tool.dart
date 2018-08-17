@@ -1,30 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:redux/redux.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/state/actions.dart';
-import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/base_tool.dart';
 import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 
-/// Mixin providing common operations for use with drawing tools.
-///
-/// Each function performs a specific operation, then sends the relevant data
-/// to the store.
-///
-/// Use of this mixin requires the consuming class to initiate [store] and [overlay]
-/// in its constructor.
 class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
-  BaseDrawingTool(context) : super(context) {
-    _store = StoreProvider.of<AppState>(context);
-    overlay = PixelCanvasLayer(height: 32, width: 32);
-  }
-
-  Store<AppState> _store;
+  BaseDrawingTool(context)
+    : super(
+      context,
+      PixelCanvasLayer(
+        height: 32,
+        width: 32
+      )
+    );
 
   void drawOverlayPixel(Offset pos) {
-    overlay.setPixel(pos, _store.state.currentColor.toColor());
+    overlay.setPixel(pos, store.state.currentColor.toColor());
   }
 
   void drawOverlayPixelLine(Offset p1, Offset p2) {
@@ -64,23 +55,9 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
     }
   }
 
-  Color getPixelColor(Offset pos) {
-    for (var layer in _store.state.layers.reversed) {
-      if (layer.rawPixels.containsKey(pos)) {
-        return layer.rawPixels[pos];
-      }
-    }
-
-    return Colors.white;
-  }
-
-  void updateCurrentColor(Color color) {
-    HSLColor hslColor = HSLColor.fromRGB(color);
-    _store.dispatch(SetCurrentColorAction(hslColor));
-  }
 
   void removePixel(Offset pos) {
-    _store.dispatch(new RemovePixelAction(pos));
+    store.dispatch(new RemovePixelAction(pos));
   }
 
   void removePixelLine(Offset p1, Offset p2) {
@@ -121,7 +98,7 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
   }
 
   void fillArea(Offset pos) {
-    _store.dispatch(new FillAreaAction(pos));
+    store.dispatch(new FillAreaAction(pos));
   }
 
   void resetOverlay() {
@@ -129,7 +106,7 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
   }
 
   void saveOverlayToLayer() {
-    _store.dispatch(new SaveOverlayToLayerAction(overlay));
+    store.dispatch(new SaveOverlayToLayerAction(overlay));
     resetOverlay();
   }
 

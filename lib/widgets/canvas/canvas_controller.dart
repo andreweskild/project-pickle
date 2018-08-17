@@ -9,8 +9,8 @@ import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 
+import 'package:project_pickle/tools/base_drawing_tool.dart';
 import 'package:project_pickle/tools/base_tool.dart';
-import 'package:project_pickle/tools/pixel_tool.dart';
 
 class CanvasController extends StatefulWidget {
   CanvasController({
@@ -37,7 +37,9 @@ class _CanvasControllerState extends State<CanvasController> {
   List<PixelCanvasLayer> _populateLayerList(AppState state, BaseTool currentTool) {
     // layer pixellayers correctly so drawing of pixels is done in the correct order
     List<PixelCanvasLayer> layers = state.layers.getRange(0, state.currentLayerIndex + 1).toList();
-    layers.add(currentTool.overlay);
+    if(currentTool is BaseDrawingTool) {
+      layers.add(currentTool.overlay);
+    }
     layers.addAll(state.layers.getRange(state.currentLayerIndex + 1, state.layers.length));
 
     return layers;

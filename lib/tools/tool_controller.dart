@@ -87,9 +87,9 @@ class ToolController {
     _lastInputPos = null;
 
     switch (toolType) {
-//      case ToolType.color_picker:
-//        _currentTool = ColorPickerTool(_canvasContext);
-//        break;
+      case ToolType.color_picker:
+        currentTool = ColorPickerTool(_canvasContext);
+        break;
       case ToolType.eraser:
         currentTool = EraserTool(_canvasContext);
         break;
