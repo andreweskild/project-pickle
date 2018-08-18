@@ -64,76 +64,96 @@ class _LayerListItemState extends State<LayerListItem> {
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
-      child: RaisedButton(
-        color: widget.selected ? Theme.of(context).highlightColor : Colors.grey.shade300,
-        elevation: 0.0,
-        padding: const EdgeInsets.all(0.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6.0),
-        ),
-        onPressed: widget.onTap,
-        child: Stack(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.topLeft,
-                child: AnimatedContainer(
-                  curve: Curves.ease,
-                  duration: Duration(milliseconds: 150),
-                  width: (_sizeMode == DrawerSizeMode.Large) ? 64.0 : 124.0,
-                  child: AspectRatio(
-                    aspectRatio: 1.0,
-                    child: Material(
-                      elevation: 0.0,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0),
-                        side: BorderSide(
-                          color: widget.selected ? Theme.of(context).accentColor : Colors.black38,
-                          width: widget.selected ? 3.0 : 1.0,
+      child: Stack(
+        children: <Widget>[
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: widget.selected ? Theme.of(context).highlightColor : Colors.grey.shade300,
+              borderRadius: BorderRadius.circular(6.0),
+            ),
+            child: Stack(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: AnimatedContainer(
+                      curve: Curves.ease,
+                      duration: Duration(milliseconds: 150),
+                      width: (_sizeMode == DrawerSizeMode.Large) ? 64.0 : 124.0,
+                      child: AspectRatio(
+                        aspectRatio: 1.0,
+                        child: Container(
+                          foregroundDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6.0),
+                            border: Border.all(
+                              color: widget.selected ? Theme.of(context).accentColor : Colors.black38,
+                              width: widget.selected ? 3.0 : 1.0,
+                            ),
+                          ),
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(6.0),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(6.0),
+                              child: Transform.scale(
+                                alignment: Alignment.topLeft,
+                                scale: (_sizeMode == DrawerSizeMode.Large) ? 64.0 / 32.0 :
+                                (_sizeMode == DrawerSizeMode.Medium) ? 104.0 /32.0 : 40.0 / 32.0,
+                                child: widget.layerCanvas,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                      child: Transform.scale(
-                        alignment: Alignment.topLeft,
-                        scale: (_sizeMode == DrawerSizeMode.Large) ? 64.0 / 32.0 :
-                        (_sizeMode == DrawerSizeMode.Medium) ? 104.0 /32.0 : 40.0 / 32.0,
-                        child: widget.layerCanvas,
-                      ),
                     ),
                   ),
-                ),
-              ),
-              Positioned(
-                  left: 64.0, top: 0.0, bottom: 0.0,
-                  child: AnimatedOpacity(
-                    curve: Curves.ease,
-                    duration: Duration(milliseconds: 150),
-                    opacity: (_sizeMode == DrawerSizeMode.Large) ? 1.0 : 0.0,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 12.0),
-                      child: Center(child: Text(widget.label)),
+                  Positioned(
+                      left: 64.0, top: 0.0, bottom: 0.0,
+                      child: AnimatedOpacity(
+                        curve: Curves.ease,
+                        duration: Duration(milliseconds: 150),
+                        opacity: (_sizeMode == DrawerSizeMode.Large) ? 1.0 : 0.0,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 12.0),
+                          child: Center(child: Text(widget.label)),
+                        ),
+                      )
+                  ),
+                  Positioned(
+                    right: 0.0, top: 0.0, bottom: 0.0,
+                    child: IgnorePointer(
+                      ignoring: (_sizeMode != DrawerSizeMode.Large),
+                      child: AnimatedOpacity(
+                        curve: Curves.ease,
+                        duration: Duration(milliseconds: 150),
+                        opacity: (_sizeMode == DrawerSizeMode.Large) ? 1.0 : 0.0,
+                        child: Center(
+                          child: IconButton(
+                            padding: const EdgeInsets.all(0.0),
+                            icon: Icon(Icons.adjust),
+                            onPressed: (){},
+                          ),
+                        ),
+                      ),
                     ),
                   )
+                ]
+            ),
+          ),
+          Positioned.fill(
+            child: RaisedButton(
+              color: Colors.transparent,
+              elevation: 0.0,
+              highlightElevation: 0.0,
+              padding: const EdgeInsets.all(0.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6.0),
               ),
-              Positioned(
-                right: 0.0, top: 0.0, bottom: 0.0,
-                child: IgnorePointer(
-                  ignoring: (_sizeMode != DrawerSizeMode.Large),
-                  child: AnimatedOpacity(
-                    curve: Curves.ease,
-                    duration: Duration(milliseconds: 150),
-                    opacity: (_sizeMode == DrawerSizeMode.Large) ? 1.0 : 0.0,
-                    child: Center(
-                      child: IconButton(
-                        padding: const EdgeInsets.all(0.0),
-                        icon: Icon(Icons.adjust),
-                        onPressed: (){},
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            ]
-        ),
+              onPressed: widget.onTap,
+            ),
+          ),
+        ],
       ),
     );
   }
