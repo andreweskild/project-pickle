@@ -7,25 +7,21 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
-import 'package:project_pickle/tools/tool_old.dart';
+import 'package:project_pickle/tools/base_tool.dart';
 
-class SelectorTool extends Tool {
+class SelectorTool extends BaseTool<Null> {
   VoidCallback onSelectionFinished;
-  Store<AppState> _store;
 
-  void handleSelectionPosUpdate(Offset pos) => {};
-  void handleSelectionEnd() => {};
-
-  SelectorTool(context) : super(context, null) {
-    _store = StoreProvider.of<AppState>(context);
-  }
+  SelectorTool(context) : super(
+    context, null
+  );
 
   void setSelectionPath(Path path) {
-    _store.dispatch(SetSelectionPathAction(path));
+    store.dispatch(SetSelectionPathAction(path));
   }
 
   void deselectPath() {
-    _store.dispatch(DeselectAction());
+    store.dispatch(DeselectAction());
   }
 
 }

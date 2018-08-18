@@ -12,7 +12,7 @@ class MarqueeSelectorTool extends SelectorTool {
   Offset _endPoint;
 
   @override
-  void handleSelectionPosUpdate(Offset pos) {
+  void onPixelInputUpdate(Offset pos) {
     if(_startPoint == null) {
       _startPoint = pos;
     }
@@ -41,7 +41,7 @@ class MarqueeSelectorTool extends SelectorTool {
   }
 
   @override
-  void handleSelectionEnd() {
+  void onPixelInputUp() {
     if (_startPoint == null ||
         _endPoint == null) {
       deselectPath();
