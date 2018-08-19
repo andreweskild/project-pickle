@@ -28,7 +28,7 @@ class ColorPickerTool extends BaseTool<Widget> {
 
 
   Color getPixelColor(Offset pos) {
-    for (var layer in store.state.layers.reversed) {
+    for (var layer in store.state.layers.reversed.where((layer) => !layer.hidden)) {
       if (layer.rawPixels.containsKey(pos)) {
         return layer.rawPixels[pos];
       }

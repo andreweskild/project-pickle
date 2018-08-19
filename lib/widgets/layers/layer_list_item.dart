@@ -100,8 +100,8 @@ class _LayerListItemState extends State<LayerListItem> {
                               borderRadius: BorderRadius.circular(6.0),
                               child: Transform.scale(
                                 alignment: Alignment.topLeft,
-                                scale: (_sizeMode == DrawerSizeMode.Large) ? 62.0 / 32.0 :
-                                (_sizeMode == DrawerSizeMode.Medium) ? 104.0 /32.0 : 40.0 / 32.0,
+                                scale: (_sizeMode == DrawerSizeMode.Large) ? 64.0 / 32.0 :
+                                (_sizeMode == DrawerSizeMode.Medium) ? 112.0 /32.0 : 48.0 / 32.0,
                                 child: widget.layerCanvas,
                               ),
                             ),
