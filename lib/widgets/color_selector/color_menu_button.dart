@@ -1,8 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/data_objects/hsl_color.dart';
+import 'package:project_pickle/data_objects/tool_types.dart';
+import 'package:project_pickle/state/actions.dart';
+import 'package:project_pickle/state/app_state.dart';
+import 'package:project_pickle/widgets/color_selector/color_slider_thumb.dart';
+import 'package:project_pickle/widgets/color_selector/color_slider_value_indicator.dart';
+import 'package:project_pickle/widgets/common/toggle_icon_button.dart';
 
 const double _kMenuScreenPadding = 8.0;
+
+class _ColorPickerModel {
+  _ColorPickerModel({this.currentToolType, this.callback});
+
+  final ToolType currentToolType;
+  final VoidCallback callback;
+
+
+  @override
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + currentToolType.hashCode;
+    return result;
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    if (other is! _ColorPickerModel) return false;
+    _ColorPickerModel model = other;
+    return (model.currentToolType == currentToolType);
+  }
+}
 
 class _ColorPopupRouteLayout extends SingleChildLayoutDelegate {
   _ColorPopupRouteLayout(this.position);
@@ -112,7 +141,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
   @override
   Widget build(BuildContext context) {
     final Animation<BorderRadius> borderRadius = BorderRadiusTween(
-      begin: BorderRadius.circular(16.0),
+      begin: BorderRadius.circular(6.0),
       end: BorderRadius.circular(8.0),
     ).animate(
       CurvedAnimation(
@@ -186,6 +215,30 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                             onPressed: widget.onAccept,
                           ),
                         ),
+                      ),
+                      Positioned(
+                        left: 0.0,
+                        top: 0.0,
+                        bottom: 0.0,
+                        child: StoreConnector<AppState, _ColorPickerModel>(
+                          converter: (store) => _ColorPickerModel(currentToolType: store.state.currentToolType, callback: () => store.dispatch(SetCurrentToolTypeAction(ToolType.color_picker))),
+                          builder: (context, model) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ToggleIconButton(
+                                icon: Icon(
+                                  Icons.colorize,
+                                  color: _getContrastingColor(_currentColor.toColor()),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  model.callback();
+                                },
+                                selected: model.currentToolType == ToolType.color_picker,
+                              ),
+                            );
+                          }
+                        ),
                       )
                     ],
                   )
@@ -204,7 +257,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                             child: Row(
                               children: <Widget>[
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 12.0),
+                                  padding: const EdgeInsets.only(left: 6.0, right: 6.0),
                                   child: Text('H'),
                                 ),
                                 Expanded(
@@ -212,7 +265,11 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                     data: SliderTheme.of(context).copyWith(
                                       activeTrackColor: Colors.transparent,
                                       inactiveTrackColor: Colors.transparent,
-                                      thumbColor: _getContrastingColor(_currentColor.toColor()),
+                                      thumbColor: Colors.white,
+                                      thumbShape: ColorSliderThumbShape(),
+                                      showValueIndicator: ShowValueIndicator.always,
+                                      valueIndicatorColor: _currentColor.copyWith(s: 1.0, l: 0.5).toColor(),
+                                      valueIndicatorShape: ColorSliderValueIndicatorShape(),
                                     ),
                                     child: Stack(
                                       children: <Widget>[
@@ -222,7 +279,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                           bottom: 0.0,
                                           right: 0.0,
                                           child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(12.0, 6.0, 6.0, 6.0),
+                                            padding: const EdgeInsets.fromLTRB(6.0, 6.0, 6.0, 6.0),
                                             child: DecoratedBox(
                                               decoration: BoxDecoration(
                                                 gradient: LinearGradient(
@@ -266,7 +323,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                             child: Row(
                               children: <Widget>[
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 12.0),
+                                  padding: const EdgeInsets.only(left: 6.0, right: 6.0),
                                   child: Text('S'),
                                 ),
                                 Expanded(
@@ -274,7 +331,11 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                     data: SliderTheme.of(context).copyWith(
                                       activeTrackColor: Colors.transparent,
                                       inactiveTrackColor: Colors.transparent,
-                                      thumbColor: _getContrastingColor(_currentColor.toColor()),
+                                      thumbColor: Colors.white,
+                                      thumbShape: ColorSliderThumbShape(),
+                                      showValueIndicator: ShowValueIndicator.always,
+                                      valueIndicatorColor: _currentColor.toColor(),
+                                      valueIndicatorShape: ColorSliderValueIndicatorShape(),
                                     ),
                                     child: Stack(
                                       children: <Widget>[
@@ -284,7 +345,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                           bottom: 0.0,
                                           right: 0.0,
                                           child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(12.0, 6.0, 6.0, 6.0),
+                                            padding: const EdgeInsets.fromLTRB(6.0, 6.0, 6.0, 6.0),
                                             child: DecoratedBox(
                                               decoration: BoxDecoration(
                                                 gradient: LinearGradient(
@@ -328,7 +389,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                             child: Row(
                               children: <Widget>[
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 12.0),
+                                  padding: const EdgeInsets.only(left: 6.0, right: 6.0),
                                   child: Text('L'),
                                 ),
                                 Expanded(
@@ -336,7 +397,11 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                     data: SliderTheme.of(context).copyWith(
                                       activeTrackColor: Colors.transparent,
                                       inactiveTrackColor: Colors.transparent,
-                                      thumbColor: _getContrastingColor(_currentColor.toColor()),
+                                      thumbColor: Colors.white,
+                                      thumbShape: ColorSliderThumbShape(),
+                                      showValueIndicator: ShowValueIndicator.always,
+                                      valueIndicatorColor: _currentColor.toColor(),
+                                      valueIndicatorShape: ColorSliderValueIndicatorShape(),
                                     ),
                                     child: Stack(
                                       children: <Widget>[
@@ -346,7 +411,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                           bottom: 0.0,
                                           right: 0.0,
                                           child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(12.0, 6.0, 6.0, 6.0),
+                                            padding: const EdgeInsets.fromLTRB(6.0, 6.0, 6.0, 6.0),
                                             child: DecoratedBox(
                                               decoration: BoxDecoration(
                                                 gradient: LinearGradient(
@@ -499,7 +564,8 @@ class ColorMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    return RaisedButton(
+      elevation: 2.0,
       color: color.toColor(),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -507,7 +573,7 @@ class ColorMenuButton extends StatelessWidget {
       ),
       padding: EdgeInsets.all(0.0),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
+        borderRadius: BorderRadius.circular(6.0),
         side: BorderSide(
           color: Colors.black38,
         ),

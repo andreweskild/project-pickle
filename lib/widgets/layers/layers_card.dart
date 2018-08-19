@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
+import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/layers/layer_list_item.dart';
-import 'package:project_pickle/widgets/layout/drawer_card.dart';
-import 'package:project_pickle/widgets/pixels/pixel_canvas_layer.dart';
+import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 
-typedef SetLayerIndexCallback = void Function(int);
+typedef LayerIndexCallback = void Function(int);
 
 class LayerListModel {
   LayerListModel({
@@ -15,6 +16,8 @@ class LayerListModel {
     this.currentLayerIndex,
     this.addLayerCallback,
     this.setLayerCallback,
+    this.removeLayerCallback,
+    this.toggleLayerHiddenCallback
   }) {
     layerCount = layers.length;
   }
@@ -24,8 +27,10 @@ class LayerListModel {
   int currentLayerIndex;
   int layerCount;
 
-  VoidCallback addLayerCallback;
-  SetLayerIndexCallback setLayerCallback;
+  LayerIndexCallback addLayerCallback;
+  LayerIndexCallback setLayerCallback;
+  LayerIndexCallback removeLayerCallback;
+  LayerIndexCallback toggleLayerHiddenCallback;
 
   @override
   int get hashCode {
@@ -59,105 +64,72 @@ class LayersCard extends StatelessWidget {
       converter: (store) => LayerListModel(
         layers: store.state.layers,
         currentLayerIndex: store.state.currentLayerIndex,
-        addLayerCallback: () => store.dispatch(AddNewLayerAction('Layer ${store.state.layers.length + 1}')),
+        addLayerCallback: (index) => store.dispatch(AddNewLayerAction(index)),
         setLayerCallback: (index) => store.dispatch(SetCurrentLayerIndexAction(index)),
+        removeLayerCallback: (index) => store.dispatch(RemoveLayerAction(index)),
+        toggleLayerHiddenCallback: (index) => store.dispatch(ToggleLayerHiddenAction(index)),
       ),
       builder: (context, model) {
-        return DrawerCard(
-          alignment: DrawerAlignment.end,
-          title: 'Layers',
-          builder: (context, collapsed) {
-            return Expanded(
+            return Material(
+              color: Colors.grey.shade200,
               child: Stack(
                 children: <Widget>[
-                  ListView(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 58.0),
-                    children: List<Widget>.generate(
-                      model.layers.length, 
-                      (index) {
-                        int reversedIndex = model.layers.length - 1 - index;
-                        return LayerListItem(
-                          icon: AnimatedContainer(
-                            curve: Curves.ease,
-                            duration: Duration(milliseconds: 150),
-                            height: (collapsed) ? 96.0 : 48.0,
-                            child: AspectRatio(
-                              aspectRatio: 1.0,
-                              child: Material(
-                                color: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16.0),
-                                  side: BorderSide(
-                                    color: Colors.black38,
-                                  ),
-                                ),
-                                child: AnimatedContainer(
-                                    curve: Curves.ease,
-                                    duration: Duration(milliseconds: 150),
-                                    transform: (collapsed) ? Matrix4.diagonal3Values(96.0 / 32.0, 96.0 / 32.0, 96.0 / 32.0) :
-                                    Matrix4.diagonal3Values(48.0 / 32.0, 48.0 / 32.0, 48.0 / 32.0),
-                                  child: model.layers[reversedIndex].canvas
-                                ),
-                              )
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 40.0),
+                    child: ListView(
+                      padding: const EdgeInsets.only(top: 6.0, bottom: 12.0),
+                      children: List<Widget>.generate(
+                        model.layers.length,
+                        (index) {
+                          int reversedIndex = model.layers.length - 1 - index;
+                          return Dismissible(
+                            key: Key('${model.layers[reversedIndex].name}$reversedIndex'),
+                            onDismissed: (direction) => model.removeLayerCallback(reversedIndex),
+                            child: LayerListItem(
+                              layerCanvas: model.layers[reversedIndex].canvas,
+                              selected: (model.currentLayerIndex == reversedIndex),
+                              label: model.layers[reversedIndex].name,
+                              onTap: () => model.setLayerCallback(reversedIndex),
+                              onAddAbove: () => model.addLayerCallback(reversedIndex+1),
+                              onAddBelow: () => model.addLayerCallback(reversedIndex),
+                              onToggleHidden: () => model.toggleLayerHiddenCallback(reversedIndex),
                             ),
-                          ),
-                          isHighlighted: (model.currentLayerIndex == reversedIndex),
-                          label: AnimatedOpacity(
-                            curve: Curves.ease,
-                            duration: Duration(milliseconds: 150),
-                            opacity: (collapsed) ? 0.0 : 1.0,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 24.0),
-                              child: Text(model.layers[reversedIndex].name),
-                            ),
-                          ),
-                          onTap:() => model.setLayerCallback(reversedIndex),
-                        );
-                      }
-                    )
+                          );
+                        }
+                      )
+                    ),
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: RaisedButton(
-                        child: SizedBox(
-                          height: 40.0,
-                          width: 104.0,
-                          child: Stack(
-                            children: <Widget>[
-                              AnimatedAlign(
-                                duration: Duration(milliseconds: 150),
-                                alignment: (collapsed) ? Alignment.center : Alignment.centerLeft, 
-                                child: Icon(Icons.add)
-                              ),
-                              Positioned(
-                                left: 32.0, 
-                                bottom: 0.0,
-                                top: 0.0,
-                                child: Center(
-                                  child: AnimatedOpacity(
-                                    duration: Duration(milliseconds: 150),
-                                    opacity: (collapsed) ? 0.0 : 1.0,
-                                    child: Text('New Layer')
-                                  )
-                                )
-                              )
-                            ]
-                          ),
-                        ),
-                        onPressed: model.addLayerCallback,
-                        shape: RoundedRectangleBorder( 
-                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                  Divider(
+                    height: 1.0,
+                  ),
+                  Positioned(
+                    bottom: 0.0,
+                    left: 0.0,
+                    right: 0.0,
+                    child: SizedBox(
+                      height: 48.0,
+                      child: RaisedButton.icon(
+                        elevation: 0.0,
+//                        isExtended: true,
+//                        backgroundColor: Colors.grey.shade700,
+//                        foregroundColor: Colors.white,
+//                        mini: true,
+                        icon: Icon(Icons.add),
+                        label: Text('New Layer'),
+                        onPressed: () {
+                          model.addLayerCallback(model.currentLayerIndex+1);
+                        },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          side: BorderSide(
+                            color: Colors.black26
+                          )
                         ),
                       ),
                     ),
                   ),
                 ],
               ),
-            );
-          }
         );
       }
     );

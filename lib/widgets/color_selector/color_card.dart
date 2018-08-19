@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/data_objects/hsl_color.dart';
-import 'package:project_pickle/data_objects/tool_types.dart';
 import 'package:project_pickle/widgets/color_selector/color_menu_button.dart';
-import 'package:project_pickle/widgets/layout/drawer_card.dart';
-import 'package:project_pickle/widgets/common/outline_icon_button.dart';
-import 'package:project_pickle/widgets/tools/tools_list_item.dart';
+import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 
 typedef SetColorCallback = void Function(HSLColor);
 
@@ -45,46 +43,42 @@ class ColorCard extends StatelessWidget {
   }) : super(key: key);
 
 
-
   @override
   Widget build(BuildContext context) {
-    return DrawerCard(
-        title: 'Color',
-        builder: (context, collapsed) {
-          return Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: StoreConnector<AppState, ColorCardModel>(
-              converter: (store) {
-                return ColorCardModel(
-                  color: store.state.currentColor,
-                  setColorCallback: (newColor) => store.dispatch(SetCurrentColorAction(newColor)),
-                );
-              },
-              builder: (context, model) {
-                return Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: SizedBox(
-                        width: 190.0,
-                        child: ColorMenuButton(
-                          color: model.color,
-                          onColorChanged: model.setColorCallback,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 12.0),
-                      child: OutlineIconButton(
-                        icon: Icons.colorize,
-                        onPressed: () {},
-                      ),
-                    ),
-                  ],
-                );
-              }
-            ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: StoreConnector<AppState, ColorCardModel>(
+        distinct: true,
+        converter: (store) {
+          return ColorCardModel(
+            color: HSLColor.from(store.state.currentColor),
+            setColorCallback: (newColor) => store.dispatch(SetCurrentColorAction(HSLColor.from(newColor))),
+          );
+        },
+        builder: (context, model) {
+          return Column(
+            children: <Widget>[
+              ConstrainedBox(
+                constraints: BoxConstraints.expand(height: 44.0),
+                child: ColorMenuButton(
+                  color: HSLColor.from(model.color),
+                  onColorChanged: model.setColorCallback,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints.expand(height: 44.0),
+                  child: ColorMenuButton(
+                    color: HSLColor.from(model.color),
+                    onColorChanged: model.setColorCallback,
+                  ),
+                ),
+              ),
+            ],
           );
         }
+      ),
     );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:project_pickle/widgets/tools/tool_options_panel.dart';
+
 class ResponsiveScaffold extends StatefulWidget {
   ResponsiveScaffold({
     Key key,
@@ -34,10 +36,8 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
           return new Scaffold(
             appBar: new AppBar(
               elevation: 0.5,
-              title: new Text(widget.name),
               primary: true,
             ),
-            backgroundColor: Colors.grey.shade300,
             body: widget.body,
             drawer: widget.drawer,
             endDrawer: widget.endDrawer,
@@ -48,21 +48,68 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
           return new Scaffold(
             appBar: new AppBar(
               elevation: 1.0,
-              title: new Text(widget.name),
               primary: true,
+              title: Row(
+                children: <Widget>[
+                  FlatButton(
+                    child: Text(
+                      'Project',
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                    padding: const EdgeInsets.all(8.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                    onPressed: (){},
+                  ),
+                  Text(
+                    '>',
+                    style: Theme.of(context).textTheme.title,
+                  ),
+                  FlatButton(
+                    child: Text(
+                      'Current Canvas',
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                    padding: const EdgeInsets.all(8.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                    onPressed: (){},
+                  )
+                ],
+              ),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.launch),
+                  onPressed: (){},
+                ),
+                IconButton(
+                  icon: Icon(Icons.settings),
+                  onPressed: (){},
+                ),
+              ],
             ),
-            backgroundColor: Colors.grey.shade300,
             body: new Stack(
               children: <Widget>[
                 widget.body,
                 new Align(
-                  alignment: Alignment(-1.0, 0.0),
+                  alignment: Alignment.centerLeft,
                   child: widget.drawer,
                 ),
                 new Align(
-                  alignment: Alignment(1.0, 0.0),
+                  alignment: Alignment.centerRight,
                   child: widget.endDrawer,
                 ),
+                new Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: ToolOptionsPanel(
+
+                    ),
+                  ),
+                )
               ],
             ),
           );

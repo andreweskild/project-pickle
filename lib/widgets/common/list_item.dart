@@ -17,18 +17,21 @@ class ListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 6.0, bottom: 6.0),
+    return AnimatedContainer(
+      curve: Curves.ease,
+      duration: Duration(milliseconds: 150),
+      height: isHighlighted ? 124.0 : 48.0,
       child: FlatButton(
         color: isHighlighted ? Theme.of(context).highlightColor : Colors.transparent,
         textColor: isHighlighted ? Theme.of(context).accentTextTheme.button.color : Colors.black,
         padding: EdgeInsets.all(8.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
-          side: BorderSide(
-            color: isHighlighted ? Theme.of(context).accentColor : Colors.transparent,
-          )
-        ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(6.0),
+//          side: BorderSide(
+//            color: isHighlighted ? Theme.of(context).accentColor : Colors.transparent,
+//            width: 2.0,
+//          )
+          ),
         child: Stack(
           children: <Widget>[
             Align(alignment: Alignment.centerLeft, child: icon),

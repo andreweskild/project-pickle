@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
-import 'package:project_pickle/tools/drawing_tool.dart';
+import 'package:project_pickle/tools/drawing_tool_old.dart';
 
 class PencilTool extends DrawingTool {
   PencilTool(context) : super(context);
@@ -14,10 +14,10 @@ class PencilTool extends DrawingTool {
     if ( _lastPoint != null &&
         ((_lastPoint.dx - pos.dx).abs() > 1 || 
         (_lastPoint.dy - pos.dy).abs() > 1)) {
-        addPixelLine(_lastPoint, pos);
+      drawPreviewPixelLine(_lastPoint, pos);
     }
     else {
-      addPixel(pos);
+      drawPreviewPixel(pos);
     }
     _lastPoint = pos;
   }
