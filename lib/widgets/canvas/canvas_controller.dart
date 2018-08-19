@@ -29,14 +29,17 @@ class CanvasController extends StatefulWidget {
 
 class _CanvasControllerState extends State<CanvasController> {
   ToolController _toolController;
-  int _layerCount;
+  int _visibleLayerCount;
   int _currentLayerIndex;
   ToolType _currentToolType;
 
 
   List<PixelCanvasLayer> _populateLayerList(AppState state, BaseTool currentTool) {
     // layer pixellayers correctly so drawing of pixels is done in the correct order
-    List<PixelCanvasLayer> layers = state.layers.getRange(0, state.currentLayerIndex + 1).toList();
+    List<PixelCanvasLayer> layers = state.layers
+        .getRange(0, state.currentLayerIndex + 1)
+        .where((layer) => !layer.hidden)
+        .toList();
     if(currentTool is BaseDrawingTool) {
       layers.add(currentTool.overlay);
     }
@@ -54,8 +57,8 @@ class _CanvasControllerState extends State<CanvasController> {
         if(_toolController == null) {
           _toolController = ToolController(context);
         }
-        if(_layerCount == null) {
-          _layerCount = store.state.layers.length;
+        if(_visibleLayerCount == null) {
+          _visibleLayerCount = store.state.layers.where((layer) => !layer.hidden).length;
         }
         if(_currentLayerIndex == null) {
           _currentLayerIndex = store.state.currentLayerIndex;
@@ -66,11 +69,13 @@ class _CanvasControllerState extends State<CanvasController> {
 
         store.onChange.listen(
             (state) {
-              if(state.layers.length != _layerCount ||
+              var newLayerCount = state.layers.where((layer) => !layer.hidden).length;
+              if( newLayerCount != _visibleLayerCount ||
                   state.currentLayerIndex != _currentLayerIndex ||
-                  state.currentToolType != _currentToolType) {
+                  state.currentToolType != _currentToolType
+              ) {
                 setState(() {
-                  _layerCount = state.layers.length;
+                  _visibleLayerCount = newLayerCount;
                   _currentLayerIndex = state.currentLayerIndex;
                   _currentToolType = state.currentToolType;
                 });

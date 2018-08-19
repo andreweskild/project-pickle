@@ -39,6 +39,12 @@ class FinalizePixelsAction {
   FinalizePixelsAction();
 }
 
+
+class ToggleLayerHiddenAction {
+  ToggleLayerHiddenAction(this.index);
+  final int index;
+}
+
 class SaveOverlayToLayerAction {
   SaveOverlayToLayerAction(this.overlay);
   PixelCanvasLayer overlay;

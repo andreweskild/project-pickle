@@ -39,6 +39,7 @@ class PixelCanvasLayer extends StatelessWidget {
     this.name,
     @required this.width,
     @required this.height,
+    this.hidden = false,
   }) : super(key: key) {
     canvas = new CustomPaint(
       willChange: true,
@@ -49,11 +50,24 @@ class PixelCanvasLayer extends StatelessWidget {
   String name;
   final int width;
   final int height;
+  bool hidden;
 
   final _repaintNotifier = LayerChangeNotifier();
   final _pixels = HashMap<Offset, Color>();
 
   get rawPixels => _pixels;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+        child: canvas
+    );
+  }
+
+  void toggleHidden() {
+    hidden = !hidden;
+  }
 
   void setPixel(Offset pos, Color color) {
     if (pos.dx >= 0 && pos.dx < width &&
@@ -91,12 +105,6 @@ class PixelCanvasLayer extends StatelessWidget {
     _repaintNotifier.notifyListeners();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Positioned.fill(
-      child: canvas
-    );
-  }
 
   void fillArea(Offset pos, Color color) {
     if(_pixels.containsKey(pos)) {

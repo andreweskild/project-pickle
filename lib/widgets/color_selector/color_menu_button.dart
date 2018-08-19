@@ -1,10 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/data_objects/hsl_color.dart';
+import 'package:project_pickle/data_objects/tool_types.dart';
+import 'package:project_pickle/state/actions.dart';
+import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/color_selector/color_slider_thumb.dart';
 import 'package:project_pickle/widgets/color_selector/color_slider_value_indicator.dart';
+import 'package:project_pickle/widgets/common/toggle_icon_button.dart';
 
 const double _kMenuScreenPadding = 8.0;
+
+class _ColorPickerModel {
+  _ColorPickerModel({this.currentToolType, this.callback});
+
+  final ToolType currentToolType;
+  final VoidCallback callback;
+
+
+  @override
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + currentToolType.hashCode;
+    return result;
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    if (other is! _ColorPickerModel) return false;
+    _ColorPickerModel model = other;
+    return (model.currentToolType == currentToolType);
+  }
+}
 
 class _ColorPopupRouteLayout extends SingleChildLayoutDelegate {
   _ColorPopupRouteLayout(this.position);
@@ -193,15 +220,24 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                         left: 0.0,
                         top: 0.0,
                         bottom: 0.0,
-                        child: AspectRatio(
-                          aspectRatio: 1.0,
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.colorize,
-                              color: _getContrastingColor(_currentColor.toColor()),
-                            ),
-                            onPressed: (){},
-                          ),
+                        child: StoreConnector<AppState, _ColorPickerModel>(
+                          converter: (store) => _ColorPickerModel(currentToolType: store.state.currentToolType, callback: () => store.dispatch(SetCurrentToolTypeAction(ToolType.color_picker))),
+                          builder: (context, model) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ToggleIconButton(
+                                icon: Icon(
+                                  Icons.colorize,
+                                  color: _getContrastingColor(_currentColor.toColor()),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  model.callback();
+                                },
+                                selected: model.currentToolType == ToolType.color_picker,
+                              ),
+                            );
+                          }
                         ),
                       )
                     ],

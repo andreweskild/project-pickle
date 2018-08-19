@@ -3,6 +3,7 @@ enum ToolType {
   eraser,
   fill,
   line,
+  gradient,
   pencil,
   shape,
   marquee_selector

@@ -50,6 +50,10 @@ AppState stateReducer(AppState state, dynamic action) {
     state.previewLayer.clearPixels();
     return state;
   }
+  else if (action is ToggleLayerHiddenAction) {
+    state.layers[action.index].toggleHidden();
+    return state;
+  }
   else if (action is SaveOverlayToLayerAction) {
     state.currentLayer.setPixelsFromMap(action.overlay.rawPixels);
     return state;

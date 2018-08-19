@@ -15,11 +15,13 @@ class LayerListItem extends StatefulWidget {
     this.onAddAbove,
     this.onAddBelow,
     this.onTap,
+    this.onToggleHidden,
   }) : super(key: key);
 
   final VoidCallback onTap;
   final VoidCallback onAddAbove;
   final VoidCallback onAddBelow;
+  final VoidCallback onToggleHidden;
 
   final Widget layerCanvas;
   final String label;
@@ -98,7 +100,7 @@ class _LayerListItemState extends State<LayerListItem> {
                               borderRadius: BorderRadius.circular(6.0),
                               child: Transform.scale(
                                 alignment: Alignment.topLeft,
-                                scale: (_sizeMode == DrawerSizeMode.Large) ? 64.0 / 32.0 :
+                                scale: (_sizeMode == DrawerSizeMode.Large) ? 62.0 / 32.0 :
                                 (_sizeMode == DrawerSizeMode.Medium) ? 104.0 /32.0 : 40.0 / 32.0,
                                 child: widget.layerCanvas,
                               ),
@@ -120,24 +122,7 @@ class _LayerListItemState extends State<LayerListItem> {
                         ),
                       )
                   ),
-                  Positioned(
-                    right: 0.0, top: 0.0, bottom: 0.0,
-                    child: IgnorePointer(
-                      ignoring: (_sizeMode != DrawerSizeMode.Large),
-                      child: AnimatedOpacity(
-                        curve: Curves.ease,
-                        duration: Duration(milliseconds: 150),
-                        opacity: (_sizeMode == DrawerSizeMode.Large) ? 1.0 : 0.0,
-                        child: Center(
-                          child: IconButton(
-                            padding: const EdgeInsets.all(0.0),
-                            icon: Icon(Icons.adjust),
-                            onPressed: (){},
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
+
                 ]
             ),
           ),
@@ -153,6 +138,24 @@ class _LayerListItemState extends State<LayerListItem> {
               onPressed: widget.onTap,
             ),
           ),
+          Positioned(
+            right: 0.0, top: 0.0, bottom: 0.0,
+            child: IgnorePointer(
+              ignoring: (_sizeMode != DrawerSizeMode.Large),
+              child: AnimatedOpacity(
+                curve: Curves.ease,
+                duration: Duration(milliseconds: 150),
+                opacity: (_sizeMode == DrawerSizeMode.Large) ? 1.0 : 0.0,
+                child: Center(
+                  child: IconButton(
+                    padding: const EdgeInsets.all(0.0),
+                    icon: Icon(Icons.adjust),
+                    onPressed: widget.onToggleHidden,
+                  ),
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );

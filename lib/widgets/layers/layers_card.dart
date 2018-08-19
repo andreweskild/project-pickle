@@ -16,7 +16,8 @@ class LayerListModel {
     this.currentLayerIndex,
     this.addLayerCallback,
     this.setLayerCallback,
-    this.removeLayerCallback
+    this.removeLayerCallback,
+    this.toggleLayerHiddenCallback
   }) {
     layerCount = layers.length;
   }
@@ -29,6 +30,7 @@ class LayerListModel {
   LayerIndexCallback addLayerCallback;
   LayerIndexCallback setLayerCallback;
   LayerIndexCallback removeLayerCallback;
+  LayerIndexCallback toggleLayerHiddenCallback;
 
   @override
   int get hashCode {
@@ -65,6 +67,7 @@ class LayersCard extends StatelessWidget {
         addLayerCallback: (index) => store.dispatch(AddNewLayerAction(index)),
         setLayerCallback: (index) => store.dispatch(SetCurrentLayerIndexAction(index)),
         removeLayerCallback: (index) => store.dispatch(RemoveLayerAction(index)),
+        toggleLayerHiddenCallback: (index) => store.dispatch(ToggleLayerHiddenAction(index)),
       ),
       builder: (context, model) {
             return Material(
@@ -86,9 +89,10 @@ class LayersCard extends StatelessWidget {
                               layerCanvas: model.layers[reversedIndex].canvas,
                               selected: (model.currentLayerIndex == reversedIndex),
                               label: model.layers[reversedIndex].name,
-                              onTap:() => model.setLayerCallback(reversedIndex),
+                              onTap: () => model.setLayerCallback(reversedIndex),
                               onAddAbove: () => model.addLayerCallback(reversedIndex+1),
                               onAddBelow: () => model.addLayerCallback(reversedIndex),
+                              onToggleHidden: () => model.toggleLayerHiddenCallback(reversedIndex),
                             ),
                           );
                         }

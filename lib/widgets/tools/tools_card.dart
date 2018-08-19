@@ -38,7 +38,7 @@ class ToolsCard extends StatelessWidget {
           ToolsListItem(
             icon: Icon(Icons.gradient),
             label: 'Gradient',
-            toolType: ToolType.color_picker,
+            toolType: ToolType.gradient,
           ),
           ToolsListItem(
             icon: Icon(Icons.brightness_1),

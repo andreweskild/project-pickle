@@ -100,19 +100,16 @@ class PaletteSelectorCard extends StatelessWidget {
                     bottom: 0.0,
                     left: 0.0,
                     right: 0.0,
-                    child: AnimatedContainer(
-                      curve: Curves.ease,
-                      duration: Duration(milliseconds: 150),
-                      height: (paletteModel.palette.contains(paletteModel.currentColor)) ? 0.0 : 48.0,
+                    child: SizedBox(
+                      height: 48.0,
                       child: RaisedButton.icon(
                         elevation: 0.0,
-//                        isExtended: true,
-//                        backgroundColor: Colors.grey.shade700,
-//                        foregroundColor: Colors.white,
-//                        mini: true,
                         color: paletteModel.currentColor.toColor(),
-                        icon: Icon(Icons.add),
-                        label: Text('Add Color'),
+                        icon: Icon(Icons.add, color: _getContrastingColor(paletteModel.currentColor.toColor())),
+                        label: Text('Add Color',
+                          style: TextStyle(
+                            color: _getContrastingColor(paletteModel.currentColor.toColor()),
+                          ),),
                         onPressed: paletteModel.addToPalette,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
@@ -123,47 +120,6 @@ class PaletteSelectorCard extends StatelessWidget {
                       ),
                     ),
                   ),
-//                  Padding(
-//                    padding: const EdgeInsets.all(12.0),
-//                    child: RaisedButton(
-//                      padding: const EdgeInsets.all(0.0),
-//                      elevation: 2.0,
-//                      color: paletteModel.currentColor.toColor(),
-//                      child: Padding(
-//                        padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
-//                        child: Row(
-//                          mainAxisSize: MainAxisSize.max,
-//                          children: <Widget>[
-//                            Padding(
-//                              padding: const EdgeInsets.only(right: 3.0),
-//                              child: Icon(Icons.add),
-//                            ),
-//                            Padding(
-//                              padding: const EdgeInsets.only(left: 3.0),
-//                              child: Text('Add Color'),
-//                            ),
-//                          ],
-//                        ),
-//                      ),
-//                      onPressed: paletteModel.addToPalette,
-//                      shape: RoundedRectangleBorder(
-//                        side: BorderSide(
-//                          color: Colors.black38,
-//                        ),
-//                        borderRadius: BorderRadius.circular(6.0),
-//                      ),
-//                    ),
-//                  ),
-//                Material(
-//                  color: paletteModel.currentColor.toColor(),
-//                  child: ListTile(
-//                    contentPadding: EdgeInsets.all(0.0),
-//                    trailing: IconButton(
-//                      icon: Icon(Icons.add),
-//                      onPressed: paletteModel.addToPalette,
-//                    ),
-//                  ),
-//                ),
                 ]
               ),
             );
