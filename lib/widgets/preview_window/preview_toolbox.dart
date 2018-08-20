@@ -45,40 +45,70 @@ class PreviewToolbox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
       return Padding(
-        padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 16.0),
         child: AspectRatio(
             aspectRatio: 1.0,
-            child: StoreConnector<AppState, _PreviewModel>(
-                distinct: true,
-                converter: (store) {
-                  return _PreviewModel(
-                    layers: store.state.layers,
-                  );
-                },
-                builder: (context, model) {
-                  return UnconstrainedBox(
-                    child: Transform.scale(
-                      alignment: Alignment.topLeft,
-                      origin: Offset(16.0, 16.0),
-                      scale: 3.1,
-                      child: Container(
-                        height: 32.0,
-                        width: 32.0,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                            color: Colors.black38,
-                            width: 1.0 / 3.1,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return StoreConnector<AppState, _PreviewModel>(
+                    distinct: true,
+                    converter: (store) {
+                      return _PreviewModel(
+                        layers: store.state.layers.where((layer) => !layer.hidden).toList(),
+                      );
+                    },
+                    builder: (context, model) {
+                      return Material(
+                        color: Colors.grey.shade200,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6.0),
+                            side: BorderSide(
+                                color: Colors.black38
+                            )
+                        ),
+                        child: UnconstrainedBox(
+                          child: Transform.scale(
+                            scale: constraints.maxHeight / 32.0,
+                            child: Container(
+                              height: 32.0,
+                              width: 32.0,
+                              padding: EdgeInsets.all(0.0),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(6.0 / 3.1)
+                              ),
+                              child: Stack(
+                                children: model.layers,
+                              ),
+                            ),
                           ),
-                          borderRadius: BorderRadius.circular(6.0 / 3.1)
                         ),
-                        child: Stack(
-                          children: model.layers,
-                        ),
-                      ),
-                    ),
-                  );
-                }
+                      );
+//                  return UnconstrainedBox(
+//                    child: Transform.scale(
+//                      alignment: Alignment.topLeft,
+//                      origin: Offset(16.0, 16.0),
+//                      scale: 3.5,
+//                      child: Container(
+//                        height: 32.0,
+//                        width: 32.0,
+//                        decoration: BoxDecoration(
+//                          color: Colors.white,
+//                          border: Border.all(
+//                            color: Colors.black38,
+//                            width: 1.0 / 3.1,
+//                          ),
+//                          borderRadius: BorderRadius.circular(6.0 / 3.1)
+//                        ),
+//                        child: Stack(
+//                          children: model.layers,
+//                        ),
+//                      ),
+//                    ),
+//                  );
+                    }
+                );
+              }
             )
         ),
     );

@@ -57,7 +57,8 @@ class MyApp extends StatelessWidget {
             title: Theme.of(context).textTheme.title.copyWith(
               fontSize: 16.0,
             ),
-          )
+          ),
+          splashFactory: InkRipple.splashFactory,
         ),
 
         // GBA Theme 2

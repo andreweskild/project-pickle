@@ -5,13 +5,15 @@ import 'package:redux/redux.dart';
 
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
+import 'package:project_pickle/widgets/common/toggle_icon_button.dart';
 
-class LayerListItem extends StatefulWidget {
+class LayerListItem extends StatelessWidget {
   const LayerListItem({
     Key key,
     this.layerCanvas,
     this.selected = false,
     this.label,
+    this.hidden = false,
     this.onAddAbove,
     this.onAddBelow,
     this.onTap,
@@ -23,140 +25,124 @@ class LayerListItem extends StatefulWidget {
   final VoidCallback onAddBelow;
   final VoidCallback onToggleHidden;
 
+  final bool hidden;
   final Widget layerCanvas;
   final String label;
   final bool selected;
 
-  _LayerListItemState createState() => _LayerListItemState();
-}
-
-class _LayerListItemState extends State<LayerListItem> {
-  Store<AppState> _store;
-  StreamSubscription<AppState> _subscription;
-  DrawerSizeMode _sizeMode;
-
-  void _prebuildInit(BuildContext context) {
-    if(_store == null) {
-      _store = StoreProvider.of<AppState>(context);
-      _subscription = _store.onChange.listen(
-        (state) {
-          if(_sizeMode != state.rightDrawerSizeMode) {
-            setState(() {
-              _sizeMode = state.rightDrawerSizeMode;
-            });
-          }
-        }
-      );
-    }
-
-    if(_sizeMode == null) {
-      _sizeMode = _store.state.rightDrawerSizeMode;
-    }
-  }
-
-  @override
-  void dispose() {
-    _subscription.cancel();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    _prebuildInit(context);
-
     return Padding(
       padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
-      child: Stack(
-        children: <Widget>[
-          DecoratedBox(
-            decoration: BoxDecoration(
-              color: widget.selected ? Theme.of(context).highlightColor : Colors.grey.shade300,
-              borderRadius: BorderRadius.circular(6.0),
-            ),
-            child: Stack(
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: AnimatedContainer(
-                      curve: Curves.ease,
-                      duration: Duration(milliseconds: 150),
-                      width: (_sizeMode == DrawerSizeMode.Large) ? 64.0 : 124.0,
-                      child: AspectRatio(
-                        aspectRatio: 1.0,
-                        child: Container(
-                          foregroundDecoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6.0),
-                            border: Border.all(
-                              color: widget.selected ? Theme.of(context).accentColor : Colors.black38,
-                              width: widget.selected ? 3.0 : 1.0,
-                            ),
-                          ),
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(6.0),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(6.0),
-                              child: Transform.scale(
-                                alignment: Alignment.topLeft,
-                                scale: (_sizeMode == DrawerSizeMode.Large) ? 64.0 / 32.0 :
-                                (_sizeMode == DrawerSizeMode.Medium) ? 112.0 /32.0 : 48.0 / 32.0,
-                                child: widget.layerCanvas,
+      child: StoreConnector<AppState, DrawerSizeMode>(
+        converter: (store) => store.state.rightDrawerSizeMode,
+        builder: (context, sizeMode) {
+          return Stack(
+            children: <Widget>[
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: selected ? Theme
+                      .of(context)
+                      .highlightColor : Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+                child: Stack(
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: AnimatedContainer(
+                          curve: Curves.ease,
+                          duration: Duration(milliseconds: 150),
+                          width: (sizeMode == DrawerSizeMode.Large)
+                              ? 64.0
+                              : 124.0,
+                          child: AspectRatio(
+                            aspectRatio: 1.0,
+                            child: Container(
+                              foregroundDecoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(6.0),
+                                border: Border.all(
+                                  color: selected ? Theme
+                                      .of(context)
+                                      .accentColor : Colors.black38,
+                                  width: selected ? 3.0 : 1.0,
+                                ),
+                              ),
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(6.0),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(6.0),
+                                  child: Transform.scale(
+                                    alignment: Alignment.topLeft,
+                                    scale: (sizeMode == DrawerSizeMode.Large)
+                                        ? 64.0 / 32.0
+                                        :
+                                    (sizeMode == DrawerSizeMode.Medium)
+                                        ? 112.0 / 32.0
+                                        : 48.0 / 32.0,
+                                    child: layerCanvas,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  Positioned(
-                      left: 64.0, top: 0.0, bottom: 0.0,
-                      child: AnimatedOpacity(
-                        curve: Curves.ease,
-                        duration: Duration(milliseconds: 150),
-                        opacity: (_sizeMode == DrawerSizeMode.Large) ? 1.0 : 0.0,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 12.0),
-                          child: Center(child: Text(widget.label)),
-                        ),
-                      )
-                  ),
+                      Positioned(
+                          left: 64.0, top: 0.0, bottom: 0.0,
+                          child: AnimatedOpacity(
+                            curve: Curves.ease,
+                            duration: Duration(milliseconds: 150),
+                            opacity: (sizeMode == DrawerSizeMode.Large)
+                                ? 1.0
+                                : 0.0,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 12.0),
+                              child: Center(child: Text(label)),
+                            ),
+                          )
+                      ),
 
-                ]
-            ),
-          ),
-          Positioned.fill(
-            child: RaisedButton(
-              color: Colors.transparent,
-              elevation: 0.0,
-              highlightElevation: 0.0,
-              padding: const EdgeInsets.all(0.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6.0),
-              ),
-              onPressed: widget.onTap,
-            ),
-          ),
-          Positioned(
-            right: 0.0, top: 0.0, bottom: 0.0,
-            child: IgnorePointer(
-              ignoring: (_sizeMode != DrawerSizeMode.Large),
-              child: AnimatedOpacity(
-                curve: Curves.ease,
-                duration: Duration(milliseconds: 150),
-                opacity: (_sizeMode == DrawerSizeMode.Large) ? 1.0 : 0.0,
-                child: Center(
-                  child: IconButton(
-                    padding: const EdgeInsets.all(0.0),
-                    icon: Icon(Icons.adjust),
-                    onPressed: widget.onToggleHidden,
-                  ),
+                    ]
                 ),
               ),
-            ),
-          )
-        ],
+              Positioned.fill(
+                child: RaisedButton(
+                  color: Colors.transparent,
+                  elevation: 0.0,
+                  highlightElevation: 0.0,
+                  padding: const EdgeInsets.all(0.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6.0),
+                  ),
+                  onPressed: onTap,
+                ),
+              ),
+              Positioned(
+                right: 0.0, top: 0.0, bottom: 0.0,
+                child: IgnorePointer(
+                  ignoring: (sizeMode != DrawerSizeMode.Large),
+                  child: AnimatedOpacity(
+                    curve: Curves.ease,
+                    duration: Duration(milliseconds: 150),
+                    opacity: (sizeMode == DrawerSizeMode.Large) ? 1.0 : 0.0,
+                    child: Center(
+                      child: IconButton(
+                        padding: const EdgeInsets.all(0.0),
+                        icon: Icon(
+                            (hidden) ? Icons.remove : Icons.adjust),
+                        onPressed: onToggleHidden,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          );
+        }
       ),
     );
   }

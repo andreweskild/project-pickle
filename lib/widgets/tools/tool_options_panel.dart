@@ -38,7 +38,7 @@ class ToolOptionsPanel extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 4.0, right: 4.0),
                 child: ToggleIconButton(
                   icon: Icon(Icons.dehaze),
-                  selected: false,
+                  toggled: false,
                   onPressed: (){},
                 ),
               ),
@@ -46,7 +46,7 @@ class ToolOptionsPanel extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 4.0, right: 4.0),
                 child: ToggleIconButton(
                   icon: Icon(Icons.assessment),
-                  selected: true,
+                  toggled: true,
                   onPressed: (){},
                 ),
               ),
@@ -59,7 +59,7 @@ class ToolOptionsPanel extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 4.0, right: 4.0),
                 child: ToggleIconButton(
                   icon: Icon(Icons.line_style),
-                  selected: false,
+                  toggled: false,
                   onPressed: (){},
                 ),
               ),

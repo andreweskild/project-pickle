@@ -20,6 +20,7 @@ class LayerListModel {
     this.toggleLayerHiddenCallback
   }) {
     layerCount = layers.length;
+    _visibleLayerCount = layers.where((layer) => !layer.hidden).length;
   }
 
   List<PixelCanvasLayer> layers;
@@ -32,11 +33,14 @@ class LayerListModel {
   LayerIndexCallback removeLayerCallback;
   LayerIndexCallback toggleLayerHiddenCallback;
 
+  int _visibleLayerCount;
+
   @override
   int get hashCode {
     int result = 17;
     result = 37 * result + layerCount.hashCode;
     result = 37 * result + currentLayerIndex.hashCode;
+    result = 37 * result + _visibleLayerCount.hashCode;
     return result;
   }
 
@@ -47,7 +51,8 @@ class LayerListModel {
     if (other is! LayerListModel) return false;
     LayerListModel model = other;
     return (model.layerCount == layerCount &&
-            model.currentLayerIndex == currentLayerIndex);
+            model.currentLayerIndex == currentLayerIndex &&
+            model._visibleLayerCount == _visibleLayerCount);
   }
 }
 
@@ -85,10 +90,23 @@ class LayersCard extends StatelessWidget {
                           return Dismissible(
                             key: Key('${model.layers[reversedIndex].name}$reversedIndex'),
                             onDismissed: (direction) => model.removeLayerCallback(reversedIndex),
+                            background: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: AnimatedContainer(
+                                curve: Curves.ease,
+                                duration: Duration(milliseconds: 150),
+                                child: Center(child: Icon(Icons.delete, color: Colors.white)),
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(6.0),
+                                ),
+                              ),
+                            ),
                             child: LayerListItem(
                               layerCanvas: model.layers[reversedIndex].canvas,
                               selected: (model.currentLayerIndex == reversedIndex),
                               label: model.layers[reversedIndex].name,
+                              hidden: model.layers[reversedIndex].hidden,
                               onTap: () => model.setLayerCallback(reversedIndex),
                               onAddAbove: () => model.addLayerCallback(reversedIndex+1),
                               onAddBelow: () => model.addLayerCallback(reversedIndex),

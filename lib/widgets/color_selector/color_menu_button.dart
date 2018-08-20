@@ -234,7 +234,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                   Navigator.pop(context);
                                   model.callback();
                                 },
-                                selected: model.currentToolType == ToolType.color_picker,
+                                toggled: model.currentToolType == ToolType.color_picker,
                               ),
                             );
                           }
