@@ -100,22 +100,25 @@ class PaletteSelectorCard extends StatelessWidget {
                     bottom: 0.0,
                     left: 0.0,
                     right: 0.0,
-                    child: SizedBox(
-                      height: 48.0,
-                      child: RaisedButton.icon(
-                        elevation: 0.0,
-                        color: paletteModel.currentColor.toColor(),
-                        icon: Icon(Icons.add, color: _getContrastingColor(paletteModel.currentColor.toColor())),
-                        label: Text('Add Color',
-                          style: TextStyle(
-                            color: _getContrastingColor(paletteModel.currentColor.toColor()),
-                          ),),
-                        onPressed: paletteModel.addToPalette,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            side: BorderSide(
-                              color: Colors.black26,
-                            )
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        height: 48.0,
+                        child: RaisedButton.icon(
+                          elevation: 4.0,
+                          color: paletteModel.currentColor.toColor(),
+                          icon: Icon(Icons.add, color: _getContrastingColor(paletteModel.currentColor.toColor())),
+                          label: Text('Add Color',
+                            style: TextStyle(
+                              color: _getContrastingColor(paletteModel.currentColor.toColor()),
+                            ),),
+                          onPressed: (paletteModel.palette.contains(paletteModel.currentColor)) ? null : paletteModel.addToPalette,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              side: BorderSide(
+                                color: Colors.black26,
+                              )
+                          ),
                         ),
                       ),
                     ),

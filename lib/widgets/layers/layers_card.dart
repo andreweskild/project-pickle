@@ -79,41 +79,38 @@ class LayersCard extends StatelessWidget {
               color: Colors.grey.shade200,
               child: Stack(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 40.0),
-                    child: ListView(
-                      padding: const EdgeInsets.only(top: 6.0, bottom: 12.0),
-                      children: List<Widget>.generate(
-                        model.layers.length,
-                        (index) {
-                          int reversedIndex = model.layers.length - 1 - index;
-                          return Dismissible(
-                            key: Key('${model.layers[reversedIndex].name}$reversedIndex'),
-                            onDismissed: (direction) => model.removeLayerCallback(reversedIndex),
-                            background: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: AnimatedContainer(
-                                curve: Curves.ease,
-                                duration: Duration(milliseconds: 150),
-                                child: Center(child: Icon(Icons.delete, color: Colors.white)),
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(6.0),
-                                ),
+                  ListView(
+                    padding: const EdgeInsets.only(top: 6.0, bottom: 60.0),
+                    children: List<Widget>.generate(
+                      model.layers.length,
+                      (index) {
+                        int reversedIndex = model.layers.length - 1 - index;
+                        return Dismissible(
+                          key: Key('${model.layers[reversedIndex].name}$reversedIndex'),
+                          onDismissed: (direction) => model.removeLayerCallback(reversedIndex),
+                          background: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: AnimatedContainer(
+                              curve: Curves.ease,
+                              duration: Duration(milliseconds: 150),
+                              child: Center(child: Icon(Icons.delete, color: Colors.white)),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(6.0),
                               ),
                             ),
-                            child: LayerListItem(
-                              layerCanvas: model.layers[reversedIndex].canvas,
-                              selected: (model.currentLayerIndex == reversedIndex),
-                              label: model.layers[reversedIndex].name,
-                              hidden: model.layers[reversedIndex].hidden,
-                              onTap: () => model.setLayerCallback(reversedIndex),
-                              onToggleHidden: () => model.toggleLayerHiddenCallback(reversedIndex),
-                            ),
-                          );
-                        }
-                      )
-                    ),
+                          ),
+                          child: LayerListItem(
+                            layerCanvas: model.layers[reversedIndex].canvas,
+                            selected: (model.currentLayerIndex == reversedIndex),
+                            label: model.layers[reversedIndex].name,
+                            hidden: model.layers[reversedIndex].hidden,
+                            onTap: () => model.setLayerCallback(reversedIndex),
+                            onToggleHidden: () => model.toggleLayerHiddenCallback(reversedIndex),
+                          ),
+                        );
+                      }
+                    )
                   ),
                   Divider(
                     height: 1.0,
@@ -122,24 +119,28 @@ class LayersCard extends StatelessWidget {
                     bottom: 0.0,
                     left: 0.0,
                     right: 0.0,
-                    child: SizedBox(
-                      height: 48.0,
-                      child: RaisedButton.icon(
-                        elevation: 0.0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        height: 48.0,
+                        child: RaisedButton.icon(
+                          elevation: 4.0,
+                          color: Colors.grey.shade400,
 //                        isExtended: true,
 //                        backgroundColor: Colors.grey.shade700,
 //                        foregroundColor: Colors.white,
 //                        mini: true,
-                        icon: Icon(Icons.add),
-                        label: Text('New Layer'),
-                        onPressed: () {
-                          model.addLayerCallback();
-                        },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          side: BorderSide(
-                            color: Colors.black26
-                          )
+                          icon: Icon(Icons.add),
+                          label: Text('New Layer'),
+                          onPressed: () {
+                            model.addLayerCallback();
+                          },
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6.0),
+                            side: BorderSide(
+                              color: Colors.black26
+                            )
+                          ),
                         ),
                       ),
                     ),

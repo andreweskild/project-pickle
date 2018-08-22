@@ -27,10 +27,8 @@ class CanvasController extends StatefulWidget {
 }
 
 class _CanvasControllerState extends State<CanvasController> {
-//  ToolController _toolController;
   int _visibleLayerCount;
   int _currentLayerIndex;
-//  ToolType _currentToolType;
   Type _currentToolType;
 
 
@@ -62,18 +60,12 @@ class _CanvasControllerState extends State<CanvasController> {
     return StoreBuilder<AppState>(
       rebuildOnChange: false,
       builder: (context, store) {
-//        if(_toolController == null) {
-//          _toolController = ToolController(context);
-//        }
         if(_visibleLayerCount == null) {
           _visibleLayerCount = store.state.layers.where((layer) => !layer.hidden).length;
         }
         if(_currentLayerIndex == null) {
           _currentLayerIndex = store.state.currentLayerIndex;
         }
-//        if(_currentToolType == null) {
-//          _currentToolType = store.state.currentToolType;
-//        }
         if(_currentToolType== null) {
           _currentToolType = store.state.currentTool.runtimeType;
         }
@@ -109,7 +101,6 @@ class _CanvasControllerState extends State<CanvasController> {
           onPointerMove: (details) {
             if (maxPointerCount == 1) {
               store.state.currentTool.handlePointerMove(details, context);
-//              _currentTool.handlePointerMove(details);
             }
           },
           onPointerDown: (details) {
@@ -119,7 +110,6 @@ class _CanvasControllerState extends State<CanvasController> {
             }
             if (currentPointerCount <= 1) {
               store.state.currentTool.handlePointerDown(details, context);
-//              _currentTool.handlePointerDown(details);
             } else {
               store.dispatch(ClearPreviewAction());
             }
@@ -131,7 +121,6 @@ class _CanvasControllerState extends State<CanvasController> {
             }
             if (currentPointerCount == 0) {
               store.state.currentTool.handlePointerUp(details, context);
-//              _currentTool.handlePointerUp(details);
             }
           },
           child: Material(

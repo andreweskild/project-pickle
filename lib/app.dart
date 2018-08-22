@@ -45,9 +45,9 @@ class MyApp extends StatelessWidget {
           dividerColor: Colors.black26,
           primarySwatch: MaterialColor(Colors.grey.shade100.value, const <int, Color> {50 : const Color(0xFFFFF8E1), 100 : const Color(0xFFFFECB3), 200 : const Color(0xFFFFE082), 300 : const Color(0xFFFFD54F), 400 : const Color(0xFFFFCA28), 500 : const Color(0xFFFFC107), 600 : const Color(0xFFFFB300), 700 : const Color(0xFFFFA000), 800 : const Color(0xFFFF8F00), 900 : const Color(0xFFFF6F00)}),
           splashColor: Colors.black38,
-          highlightColor: Colors.black26,
+          highlightColor: Colors.black54,
           accentTextTheme: Theme.of(context).accentTextTheme.copyWith(
-            button: Theme.of(context).accentTextTheme.button.copyWith(color: Colors.grey.shade800),
+            button: Theme.of(context).accentTextTheme.button.copyWith(color: Colors.white),
           ),
           buttonTheme: ButtonTheme.of(context).copyWith(
             minWidth: 12.0,

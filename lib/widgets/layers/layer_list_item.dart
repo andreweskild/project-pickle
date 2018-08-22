@@ -101,7 +101,14 @@ class LayerListItem extends StatelessWidget {
                                 : 0.0,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 12.0),
-                              child: Center(child: Text(label)),
+                              child: Center(
+                                  child: Text(
+                                      label,
+                                    style: TextStyle(
+                                      color: selected ? Theme.of(context).accentTextTheme.button.color : Theme.of(context).primaryTextTheme.button.color
+                                    ),
+                                  )
+                              ),
                             ),
                           )
                       ),
@@ -130,11 +137,15 @@ class LayerListItem extends StatelessWidget {
                     duration: Duration(milliseconds: 150),
                     opacity: (sizeMode == DrawerSizeMode.Large) ? 1.0 : 0.0,
                     child: Center(
-                      child: IconButton(
-                        padding: const EdgeInsets.all(0.0),
-                        icon: Icon(
-                            (hidden) ? Icons.remove : Icons.adjust),
-                        onPressed: onToggleHidden,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ToggleIconButton(
+                          icon: Icon(
+                              (hidden) ? Icons.remove : Icons.adjust,
+                            color: selected ? Theme.of(context).accentTextTheme.button.color : Theme.of(context).primaryTextTheme.button.color,
+                          ),
+                          onPressed: onToggleHidden,
+                        ),
                       ),
                     ),
                   ),
