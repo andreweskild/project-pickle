@@ -28,7 +28,7 @@ class LayerListModel {
   int currentLayerIndex;
   int layerCount;
 
-  LayerIndexCallback addLayerCallback;
+  VoidCallback addLayerCallback;
   LayerIndexCallback setLayerCallback;
   LayerIndexCallback removeLayerCallback;
   LayerIndexCallback toggleLayerHiddenCallback;
@@ -69,7 +69,7 @@ class LayersCard extends StatelessWidget {
       converter: (store) => LayerListModel(
         layers: store.state.layers,
         currentLayerIndex: store.state.currentLayerIndex,
-        addLayerCallback: (index) => store.dispatch(AddNewLayerAction(index)),
+        addLayerCallback: () => store.dispatch(AddNewLayerAction()),
         setLayerCallback: (index) => store.dispatch(SetCurrentLayerIndexAction(index)),
         removeLayerCallback: (index) => store.dispatch(RemoveLayerAction(index)),
         toggleLayerHiddenCallback: (index) => store.dispatch(ToggleLayerHiddenAction(index)),
@@ -108,8 +108,6 @@ class LayersCard extends StatelessWidget {
                               label: model.layers[reversedIndex].name,
                               hidden: model.layers[reversedIndex].hidden,
                               onTap: () => model.setLayerCallback(reversedIndex),
-                              onAddAbove: () => model.addLayerCallback(reversedIndex+1),
-                              onAddBelow: () => model.addLayerCallback(reversedIndex),
                               onToggleHidden: () => model.toggleLayerHiddenCallback(reversedIndex),
                             ),
                           );
@@ -135,7 +133,7 @@ class LayersCard extends StatelessWidget {
                         icon: Icon(Icons.add),
                         label: Text('New Layer'),
                         onPressed: () {
-                          model.addLayerCallback(model.currentLayerIndex+1);
+                          model.addLayerCallback();
                         },
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),

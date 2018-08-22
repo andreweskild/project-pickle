@@ -3,6 +3,13 @@ import 'package:flutter/widgets.dart';
 
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 import 'package:project_pickle/data_objects/tool_types.dart';
+import 'package:project_pickle/tools/color_picker_tool.dart';
+import 'package:project_pickle/tools/eraser_tool.dart';
+import 'package:project_pickle/tools/fill_tool.dart';
+import 'package:project_pickle/tools/line_tool.dart';
+import 'package:project_pickle/tools/pixel_tool.dart';
+import 'package:project_pickle/tools/shape_tool.dart';
+import 'package:project_pickle/tools/marquee_selector_tool.dart';
 import 'package:project_pickle/widgets/tools/tools_list_item.dart';
 
 
@@ -20,40 +27,40 @@ class ToolsCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          ToolsListItem(
+          ToolsListItem<PixelTool>(
             icon: Icon(Icons.brush),
             label: 'Pencil',
-            toolType: ToolType.pencil,
+            onToggled: () => PixelTool(context),
           ),
-          ToolsListItem(
+          ToolsListItem<EraserTool>(
             icon: Icon(Icons.brightness_1),
             label: 'Eraser',
-            toolType: ToolType.eraser,
+            onToggled: () => EraserTool(context),
           ),
-          ToolsListItem(
+          ToolsListItem<FillTool>(
             icon: Icon(Icons.brush),
             label: 'Fill',
-            toolType: ToolType.fill,
+            onToggled: () => FillTool(context),
           ),
-          ToolsListItem(
+          ToolsListItem<FillTool>(
             icon: Icon(Icons.gradient),
             label: 'Gradient',
-            toolType: ToolType.gradient,
+            onToggled: () => FillTool(context),
           ),
-          ToolsListItem(
+          ToolsListItem<LineTool>(
             icon: Icon(Icons.brightness_1),
             label: 'Path',
-            toolType: ToolType.line,
+            onToggled: () => LineTool(context),
           ),
-          ToolsListItem(
+          ToolsListItem<ShapeTool>(
             icon: Icon(Icons.brush),
             label: 'Shape',
-            toolType: ToolType.shape,
+            onToggled: () => ShapeTool(context),
           ),
-          ToolsListItem(
+          ToolsListItem<MarqueeSelectorTool>(
             icon: Icon(Icons.brightness_1),
             label: 'Select',
-            toolType: ToolType.marquee_selector,
+            onToggled: () => MarqueeSelectorTool(context),
           ),
 
         ],

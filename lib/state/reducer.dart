@@ -2,6 +2,13 @@ import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/data_objects/tool_types.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
+import 'package:project_pickle/tools/color_picker_tool.dart';
+import 'package:project_pickle/tools/eraser_tool.dart';
+import 'package:project_pickle/tools/fill_tool.dart';
+import 'package:project_pickle/tools/line_tool.dart';
+import 'package:project_pickle/tools/pixel_tool.dart';
+import 'package:project_pickle/tools/shape_tool.dart';
+import 'package:project_pickle/tools/marquee_selector_tool.dart';
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 
@@ -18,8 +25,15 @@ AppState stateReducer(AppState state, dynamic action) {
   }
   else if (action is AddNewLayerAction) {
     int nameCount = state.layerNamingCounter + 1;
+    int newIndex;
+    if(state.currentLayerIndex == -1) {
+      newIndex = 0;
+    }
+    else {
+      newIndex = state.currentLayerIndex + 1;
+    }
     state.layers.insert(
-        action.index,
+        newIndex,
         new PixelCanvasLayer(
           name: 'Layer $nameCount',
           height: 32,
@@ -27,7 +41,7 @@ AppState stateReducer(AppState state, dynamic action) {
         )
     );
     state.layerNamingCounter = nameCount;
-    state.currentLayerIndex = action.index;
+    state.currentLayerIndex = newIndex;
     return state;
   }
   else if (action is ClearPreviewAction) {
@@ -75,10 +89,9 @@ AppState stateReducer(AppState state, dynamic action) {
     print(action.currentLayerIndex.toString());
     return state;
   }
-  else if (action is SetCurrentToolTypeAction) {
-    return state.copyWith(
-      currentToolType: action.toolType,
-    );
+  else if (action is SetCurrentToolAction) {
+    state.currentTool = action.tool;
+    return state;
   }
   else if(action is SetLeftDrawerSizeModeAction) {
     return state.copyWith(
@@ -101,7 +114,10 @@ AppState stateReducer(AppState state, dynamic action) {
   }
   else if (action is RemoveLayerAction) {
     state.layers.removeAt(action.index);
-    if(action.index <= state.currentLayerIndex &&
+    if(state.layers.length == 0) {
+      state.currentLayerIndex = -1;
+    }
+    else if(action.index <= state.currentLayerIndex &&
         state.currentLayerIndex != 0) {
       state.currentLayerIndex = state.currentLayerIndex - 1;
     }

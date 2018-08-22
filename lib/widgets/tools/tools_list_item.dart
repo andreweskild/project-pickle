@@ -4,20 +4,24 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:project_pickle/data_objects/tool_types.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
+import 'package:project_pickle/tools/base_tool.dart';
+
+typedef _ToolCreationCallback = void Function(BaseTool tool);
+typedef _ToolToggleCallback = BaseTool Function();
 
 class _ToolModel {
-  VoidCallback callback;
-  ToolType currentToolType;
+  _ToolCreationCallback callback;
+  BaseTool currentTool;
   
   _ToolModel({
     this.callback,
-    this.currentToolType
+    this.currentTool
   });
 
   @override
   int get hashCode {
     int result = 17;
-    result = 37 * result + currentToolType.hashCode;
+    result = 37 * result + currentTool.hashCode;
     return result;
   }
   
@@ -25,21 +29,21 @@ class _ToolModel {
   bool operator ==(dynamic other) {
     if (other is! _ToolModel) return false;
     _ToolModel model = other;
-    return (model.currentToolType == currentToolType);
+    return (model.currentTool.runtimeType == currentTool.runtimeType);
   }
 }
 
-class ToolsListItem extends StatelessWidget {
+class ToolsListItem<T> extends StatelessWidget {
   const ToolsListItem({
     Key key,
     this.icon,
     this.label,
-    this.toolType,
+    this.onToggled
   }) : super(key: key);
 
   final Widget icon;
   final String label;
-  final ToolType toolType;
+  final _ToolToggleCallback onToggled;
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +51,12 @@ class ToolsListItem extends StatelessWidget {
       distinct: true,
       converter: (store) {
         return new _ToolModel(
-          callback: () => store.dispatch(new SetCurrentToolTypeAction(toolType)),
-          currentToolType: store.state.currentToolType,
+          callback: (tool) => store.dispatch(new SetCurrentToolAction(tool)),
+          currentTool: store.state.currentTool,
         ); 
       },
       builder: (context, toolModel) {
-        final _selected = toolModel.currentToolType == toolType;
+        final _selected = toolModel.currentTool is T;
         return Padding(
           padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
           child: FlatButton(
@@ -76,7 +80,7 @@ class ToolsListItem extends StatelessWidget {
                 )
               ],
             ),
-            onPressed: toolModel.callback,
+            onPressed: () => toolModel.callback(onToggled()),
           ),
         );
       },

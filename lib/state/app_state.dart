@@ -4,11 +4,12 @@ import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/data_objects/tool_types.dart';
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
+import 'package:project_pickle/tools/base_tool.dart';
 
 class AppState {
   AppState({
     this.canvasScale = 1.0,
-    this.currentToolType = ToolType.pencil,
+    this.currentTool,
     @required this.currentColor,
     this.currentLayerIndex = 0,
     this.layerNamingCounter = 1,
@@ -24,7 +25,7 @@ class AppState {
     double canvasScale,
     HSLColor currentColor,
     int currentLayerIndex,
-    ToolType currentToolType,
+    BaseTool currentTool,
     int layerNamingCounter,
     List<PixelCanvasLayer> layers,
     DrawerSizeMode leftDrawerSizeMode,
@@ -37,7 +38,7 @@ class AppState {
       canvasScale: canvasScale ?? this.canvasScale,
       currentColor: currentColor ?? this.currentColor,
       currentLayerIndex: currentLayerIndex ?? this.currentLayerIndex,
-      currentToolType: currentToolType ?? this.currentToolType,
+      currentTool: currentTool ?? this.currentTool,
       layerNamingCounter: layerNamingCounter ?? this.layerNamingCounter,
       layers: layers ?? this.layers,
       leftDrawerSizeMode: leftDrawerSizeMode ?? this.leftDrawerSizeMode,
@@ -53,7 +54,7 @@ class AppState {
   HSLColor currentColor;
   PixelCanvasLayer get currentLayer => layers[currentLayerIndex];
   int currentLayerIndex;
-  ToolType currentToolType;
+  BaseTool currentTool;
   List<PixelCanvasLayer> layers;
   DrawerSizeMode leftDrawerSizeMode;
   final PixelCanvasLayer previewLayer;

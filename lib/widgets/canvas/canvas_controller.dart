@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/data_objects/tool_types.dart';
-import 'package:project_pickle/tools/tool_controller.dart';
 import 'package:project_pickle/widgets/tools/select_tool_overlay.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
@@ -28,22 +27,31 @@ class CanvasController extends StatefulWidget {
 }
 
 class _CanvasControllerState extends State<CanvasController> {
-  ToolController _toolController;
+//  ToolController _toolController;
   int _visibleLayerCount;
   int _currentLayerIndex;
-  ToolType _currentToolType;
+//  ToolType _currentToolType;
+  Type _currentToolType;
 
 
   List<PixelCanvasLayer> _populateLayerList(AppState state, BaseTool currentTool) {
     // layer pixellayers correctly so drawing of pixels is done in the correct order
-    List<PixelCanvasLayer> layers = state.layers
-        .getRange(0, state.currentLayerIndex + 1)
-        .where((layer) => !layer.hidden)
-        .toList();
-    if(currentTool is BaseDrawingTool) {
-      layers.add(currentTool.overlay);
+    List<PixelCanvasLayer> layers;
+
+    if (state.layers.length > 0) {
+      layers = state.layers
+          .getRange(0, state.currentLayerIndex + 1)
+          .where((layer) => !layer.hidden)
+          .toList();
+      if (currentTool is BaseDrawingTool) {
+        layers.add(currentTool.overlay);
+      }
+      layers.addAll(state.layers.getRange(
+          state.currentLayerIndex + 1, state.layers.length));
     }
-    layers.addAll(state.layers.getRange(state.currentLayerIndex + 1, state.layers.length));
+    else {
+      layers = List<PixelCanvasLayer>();
+    }
 
     return layers;
   }
@@ -54,17 +62,20 @@ class _CanvasControllerState extends State<CanvasController> {
     return StoreBuilder<AppState>(
       rebuildOnChange: false,
       builder: (context, store) {
-        if(_toolController == null) {
-          _toolController = ToolController(context);
-        }
+//        if(_toolController == null) {
+//          _toolController = ToolController(context);
+//        }
         if(_visibleLayerCount == null) {
           _visibleLayerCount = store.state.layers.where((layer) => !layer.hidden).length;
         }
         if(_currentLayerIndex == null) {
           _currentLayerIndex = store.state.currentLayerIndex;
         }
-        if(_currentToolType == null) {
-          _currentToolType = store.state.currentToolType;
+//        if(_currentToolType == null) {
+//          _currentToolType = store.state.currentToolType;
+//        }
+        if(_currentToolType== null) {
+          _currentToolType = store.state.currentTool.runtimeType;
         }
 
         store.onChange.listen(
@@ -72,12 +83,12 @@ class _CanvasControllerState extends State<CanvasController> {
               var newLayerCount = state.layers.where((layer) => !layer.hidden).length;
               if( newLayerCount != _visibleLayerCount ||
                   state.currentLayerIndex != _currentLayerIndex ||
-                  state.currentToolType != _currentToolType
+                  state.currentTool.runtimeType != _currentToolType
               ) {
                 setState(() {
                   _visibleLayerCount = newLayerCount;
                   _currentLayerIndex = state.currentLayerIndex;
-                  _currentToolType = state.currentToolType;
+                  _currentToolType = state.currentTool.runtimeType;
                 });
               }
             }
@@ -91,13 +102,13 @@ class _CanvasControllerState extends State<CanvasController> {
 
         int maxPointerCount = 0;
 
-        var layers = _populateLayerList(store.state, _toolController.currentTool);
+        var layers = _populateLayerList(store.state, store.state.currentTool);
 
 
         return Listener(
           onPointerMove: (details) {
             if (maxPointerCount == 1) {
-              _toolController.currentTool.handlePointerMove(details);
+              store.state.currentTool.handlePointerMove(details, context);
 //              _currentTool.handlePointerMove(details);
             }
           },
@@ -107,7 +118,7 @@ class _CanvasControllerState extends State<CanvasController> {
               maxPointerCount = currentPointerCount;
             }
             if (currentPointerCount <= 1) {
-              _toolController.currentTool.handlePointerDown(details);
+              store.state.currentTool.handlePointerDown(details, context);
 //              _currentTool.handlePointerDown(details);
             } else {
               store.dispatch(ClearPreviewAction());
@@ -119,7 +130,7 @@ class _CanvasControllerState extends State<CanvasController> {
               maxPointerCount = 0;
             }
             if (currentPointerCount == 0) {
-              _toolController.currentTool.handlePointerUp(details);
+              store.state.currentTool.handlePointerUp(details, context);
 //              _currentTool.handlePointerUp(details);
             }
           },
@@ -134,7 +145,7 @@ class _CanvasControllerState extends State<CanvasController> {
                   Stack(
                     children: layers
                   ),
-                  _toolController.selectionOverlay,
+//                  _toolController.selectionOverlay,
                 ],
               ),
             ),

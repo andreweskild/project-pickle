@@ -5,6 +5,8 @@ import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/data_objects/tool_types.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
+import 'package:project_pickle/tools/base_tool.dart';
+import 'package:project_pickle/tools/color_picker_tool.dart';
 import 'package:project_pickle/widgets/color_selector/color_slider_thumb.dart';
 import 'package:project_pickle/widgets/color_selector/color_slider_value_indicator.dart';
 import 'package:project_pickle/widgets/common/toggle_icon_button.dart';
@@ -12,16 +14,16 @@ import 'package:project_pickle/widgets/common/toggle_icon_button.dart';
 const double _kMenuScreenPadding = 8.0;
 
 class _ColorPickerModel {
-  _ColorPickerModel({this.currentToolType, this.callback});
+  _ColorPickerModel({this.currentTool, this.callback});
 
-  final ToolType currentToolType;
+  final BaseTool currentTool;
   final VoidCallback callback;
 
 
   @override
   int get hashCode {
     int result = 17;
-    result = 37 * result + currentToolType.hashCode;
+    result = 37 * result + currentTool.hashCode;
     return result;
   }
 
@@ -29,7 +31,7 @@ class _ColorPickerModel {
   bool operator ==(dynamic other) {
     if (other is! _ColorPickerModel) return false;
     _ColorPickerModel model = other;
-    return (model.currentToolType == currentToolType);
+    return (model.currentTool.runtimeType == currentTool.runtimeType);
   }
 }
 
@@ -221,7 +223,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                         top: 0.0,
                         bottom: 0.0,
                         child: StoreConnector<AppState, _ColorPickerModel>(
-                          converter: (store) => _ColorPickerModel(currentToolType: store.state.currentToolType, callback: () => store.dispatch(SetCurrentToolTypeAction(ToolType.color_picker))),
+                          converter: (store) => _ColorPickerModel(currentTool: store.state.currentTool, callback: () => store.dispatch(SetCurrentToolAction(ColorPickerTool(context)))),
                           builder: (context, model) {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -234,7 +236,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                   Navigator.pop(context);
                                   model.callback();
                                 },
-                                toggled: model.currentToolType == ToolType.color_picker,
+                                toggled: model.currentTool is ColorPickerTool,
                               ),
                             );
                           }

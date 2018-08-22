@@ -22,6 +22,7 @@ class PixelTool extends BaseDrawingTool {
       drawOverlayPixel(pos);
     }
     _lastPoint = pos;
+    print('pixel drawn at $pos');
   }
 
   @override

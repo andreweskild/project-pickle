@@ -2,6 +2,7 @@ import 'package:flutter/rendering.dart';
 
 import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/data_objects/tool_types.dart';
+import 'package:project_pickle/tools/base_tool.dart';
 import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 
@@ -18,8 +19,7 @@ class AddPixelAction {
 }
 
 class AddNewLayerAction {
-  AddNewLayerAction(this.index);
-  final int index;
+  AddNewLayerAction();
 }
 
 class ClearPreviewAction {
@@ -67,9 +67,9 @@ class SetCurrentLayerIndexAction {
   final int currentLayerIndex;
 }
 
-class SetCurrentToolTypeAction {
-  SetCurrentToolTypeAction(this.toolType);
-  final ToolType toolType;
+class SetCurrentToolAction {
+  SetCurrentToolAction(this.tool);
+  final BaseTool tool;
 }
 
 class SetLeftDrawerSizeModeAction {

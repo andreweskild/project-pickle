@@ -144,15 +144,16 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
                     duration: Duration(milliseconds: 150),
                     opacity: _drawerDragging ? 1.0 : 0.0,
                     child: Container(
-                      width: _splitPos,
+                      width: _splitPos + 18.0,
                       decoration: BoxDecoration(
                           color: Colors.black54,
-                          borderRadius: BorderRadius.only(
-                            topLeft: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
-                            bottomLeft: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
-                            topRight: (widget.alignment == DrawerAlignment.end) ? Radius.circular(8.0) : Radius.zero,
-                            bottomRight: (widget.alignment == DrawerAlignment.end) ? Radius.circular(8.0) : Radius.zero,
-                          )
+                          borderRadius: BorderRadius.circular(8.0),
+//                          borderRadius: BorderRadius.only(
+//                            topLeft: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
+//                            bottomLeft: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
+//                            topRight: (widget.alignment == DrawerAlignment.end) ? Radius.circular(8.0) : Radius.zero,
+//                            bottomRight: (widget.alignment == DrawerAlignment.end) ? Radius.circular(8.0) : Radius.zero,
+//                          )
                       ),
                     ),
                   ),
@@ -233,13 +234,14 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
                     curve: Curves.ease,
                     duration: Duration(milliseconds: 150),
                     decoration: BoxDecoration(
-                        color: _drawerDragging ? Colors.black54 : Colors.transparent,
-                        borderRadius: BorderRadius.only(
-                          topLeft: (widget.alignment == DrawerAlignment.end) ? Radius.circular(8.0) : Radius.zero,
-                          bottomLeft: (widget.alignment == DrawerAlignment.end) ? Radius.circular(8.0) : Radius.zero,
-                          topRight: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
-                          bottomRight: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
-                        )
+                        color: _drawerDragging ? Colors.black87 : Colors.transparent,
+                        borderRadius: BorderRadius.circular(8.0),
+//                        borderRadius: BorderRadius.only(
+//                          topLeft: (widget.alignment == DrawerAlignment.end) ? Radius.circular(8.0) : Radius.zero,
+//                          bottomLeft: (widget.alignment == DrawerAlignment.end) ? Radius.circular(8.0) : Radius.zero,
+//                          topRight: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
+//                          bottomRight: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
+//                        )
                     ),
                     child: AnimatedPadding(
                       curve: Curves.ease,
@@ -259,34 +261,6 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
                       ),
                     ),
                   ),
-//                  child: AnimatedContainer(
-//                    curve: Curves.ease,
-//                    duration: Duration(milliseconds: 150),
-//                    decoration: BoxDecoration(
-//                      color: _drawerDragging ? Colors.black54 : Colors.transparent,
-//                        borderRadius: BorderRadius.only(
-//                          topRight: Radius.circular(8.0),
-//                          bottomRight: Radius.circular(8.0),
-//                        )
-//                    ),
-//                    child: AnimatedPadding(
-//                      curve: Curves.ease,
-//                      duration: Duration(milliseconds: 150),
-//                      padding: const EdgeInsets.all(4.0),
-//                      child: Center(
-//                          child: AnimatedContainer(
-//                            curve: Curves.ease,
-//                            duration: Duration(milliseconds: 150),
-//                            height: (_drawerDragging) ? 10.0 : 24.0,
-//                            width: (_drawerDragging) ? 10.0 : 3.0,
-//                            decoration: BoxDecoration(
-//                              color: _drawerDragging ? Colors.white : Colors.black26,
-//                              borderRadius: BorderRadius.circular(12.0),
-//                            ),
-//                          )
-//                      ),
-//                    ),
-//                  ),
                 ),
               ),
             ]
