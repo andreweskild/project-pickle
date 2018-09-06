@@ -13,6 +13,7 @@ class SelectorTool extends BaseTool<Null> {
     context, null
   );
 
+
   void setSelectionPath(Path path) {
     store.dispatch(SetSelectionPathAction(path));
   }

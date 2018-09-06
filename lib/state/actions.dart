@@ -1,7 +1,6 @@
 import 'package:flutter/rendering.dart';
 
 import 'package:project_pickle/data_objects/hsl_color.dart';
-import 'package:project_pickle/data_objects/tool_types.dart';
 import 'package:project_pickle/tools/base_tool.dart';
 import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';

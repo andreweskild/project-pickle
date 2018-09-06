@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/data_objects/hsl_color.dart';
-import 'package:project_pickle/data_objects/tool_types.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/base_tool.dart';
@@ -567,7 +566,7 @@ class ColorMenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-      elevation: 2.0,
+      elevation: 0.0,
       color: color.toColor(),
       child: Padding(
         padding: const EdgeInsets.all(12.0),

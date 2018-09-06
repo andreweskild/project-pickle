@@ -12,11 +12,15 @@ typedef SetColorCallback = void Function(HSLColor);
 
 class ColorCardModel {
   ColorCardModel({
+    this.addToPalette,
     this.color,
+    this.palette,
     this.setColorCallback,
   });
 
   final HSLColor color;
+  VoidCallback addToPalette;
+  final List<HSLColor> palette;
   final SetColorCallback setColorCallback;
 
 
@@ -24,6 +28,7 @@ class ColorCardModel {
   int get hashCode {
     int result = 17;
     result = 37 * result + color.hashCode;
+    result = 37 * result + palette.hashCode;
     return result;
   }
 
@@ -33,7 +38,18 @@ class ColorCardModel {
   bool operator ==(dynamic other) {
     if (other is! ColorCardModel) return false;
     ColorCardModel model = other;
-    return (model.color == color);
+    return (model.palette.length == palette.length &&
+        model.color == color);
+  }
+}
+
+
+Color _getContrastingColor(Color color) {
+  if (color.computeLuminance() > 0.5) {
+    return Colors.black;
+  }
+  else {
+    return Colors.white;
   }
 }
 
@@ -45,34 +61,77 @@ class ColorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return Card(
+      color: Colors.grey.shade200,
+      elevation: 4.0,
+      margin: EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 4.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       child: StoreConnector<AppState, ColorCardModel>(
         distinct: true,
         converter: (store) {
           return ColorCardModel(
             color: HSLColor.from(store.state.currentColor),
             setColorCallback: (newColor) => store.dispatch(SetCurrentColorAction(HSLColor.from(newColor))),
+            palette: store.state.palette,
           );
         },
         builder: (context, model) {
           return Column(
             children: <Widget>[
-              ConstrainedBox(
-                constraints: BoxConstraints.expand(height: 44.0),
-                child: ColorMenuButton(
-                  color: HSLColor.from(model.color),
-                  onColorChanged: model.setColorCallback,
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.circular(10.0)
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    children: <Widget>[
+                      ConstrainedBox(
+                        constraints: BoxConstraints.expand(height: 44.0),
+                        child: ColorMenuButton(
+                          color: HSLColor.from(model.color),
+                          onColorChanged: model.setColorCallback,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints.expand(height: 44.0),
+                          child: ColorMenuButton(
+                            color: HSLColor.from(model.color),
+                            onColorChanged: model.setColorCallback,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints.expand(height: 44.0),
-                  child: ColorMenuButton(
-                    color: HSLColor.from(model.color),
-                    onColorChanged: model.setColorCallback,
-                  ),
+              Expanded(
+                child: GridView.extent(
+                  padding: EdgeInsets.all(12.0),
+                  primary: false,
+                  crossAxisSpacing: 8.0,
+                  mainAxisSpacing: 8.0,
+                  maxCrossAxisExtent: 48.0,
+                  childAspectRatio: 1.0,
+                  shrinkWrap: false,
+                  children: model.palette.map(
+                          (hslColor) => new RaisedButton(
+                        elevation: 0.0,
+                        color: hslColor.toColor(),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                          side: BorderSide(color: Colors.black38),
+                        ),
+                        onPressed: () {
+                          model.setColorCallback(HSLColor.from(hslColor));
+                        },
+                      )
+                  ).toList(),
                 ),
               ),
             ],

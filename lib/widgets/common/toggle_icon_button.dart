@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:project_pickle/data_objects/tool_types.dart';
-
 /// Icon Button that shows a rounded background when [selected] is true
 class ToggleIconButton extends StatelessWidget {
   ToggleIconButton({

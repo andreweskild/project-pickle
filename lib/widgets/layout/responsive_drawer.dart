@@ -116,7 +116,7 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
           Align(
             alignment: (widget.alignment == DrawerAlignment.start) ? Alignment.topLeft : Alignment.topRight,
             child: AnimatedContainer(
-              alignment: Alignment.centerLeft,
+              alignment: Alignment.topLeft,
               curve: Curves.ease,
               duration: Duration(milliseconds: 200),
               width: _widthFromSizeMode(_sizeMode),

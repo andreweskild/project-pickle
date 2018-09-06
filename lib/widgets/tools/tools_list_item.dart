@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:project_pickle/data_objects/tool_types.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/base_tool.dart';
@@ -64,7 +63,7 @@ class ToolsListItem<T> extends StatelessWidget {
             textColor: _selected ? Theme.of(context).accentTextTheme.button.color : Colors.black,
             padding: EdgeInsets.all(8.0),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6.0),
+              borderRadius: BorderRadius.circular(8.0),
             ),
             child: Stack(
               children: <Widget>[

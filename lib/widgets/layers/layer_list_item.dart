@@ -64,7 +64,7 @@ class LayerListItem extends StatelessWidget {
                                 border: Border.all(
                                   color: selected ? Theme
                                       .of(context)
-                                      .accentColor : Colors.black38,
+                                      .accentColor : Colors.black26,
                                   width: selected ? 3.0 : 1.0,
                                 ),
                               ),

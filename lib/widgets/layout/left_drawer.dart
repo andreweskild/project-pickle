@@ -20,22 +20,26 @@ class LeftDrawer extends StatelessWidget {
     return StoreBuilder<AppState>(
       rebuildOnChange: false,
       builder: (context, store) {
-        return ResizableDrawer(
-          alignment: DrawerAlignment.start,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ToolsCard(),
-              ColorCard(),
-              Divider(height: 1.0),
-              Expanded(
-                  child: PaletteSelectorCard()
-              ),
-            ],
+        return SizedBox(
+          width: 192.0,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ToolsCard(),
+                Expanded(child: ColorCard()),
+//                Divider(height: 1.0),
+//                Expanded(
+//                    child: PaletteSelectorCard()
+//                ),
+              ],
+            ),
           ),
-          onSizeModeChanged: (sizeMode) {
-            store.dispatch(SetLeftDrawerSizeModeAction(sizeMode));
-          },
+//          onSizeModeChanged: (sizeMode) {
+//            store.dispatch(SetLeftDrawerSizeModeAction(sizeMode));
+//          },
         );
       },
     );

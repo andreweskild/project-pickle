@@ -63,7 +63,7 @@ class PreviewToolbox extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6.0),
                             side: BorderSide(
-                                color: Colors.black38
+                                color: Colors.black26
                             )
                         ),
                         child: UnconstrainedBox(

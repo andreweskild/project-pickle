@@ -14,6 +14,7 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
       )
     );
 
+
   void drawOverlayPixel(Offset pos) {
     overlay.setPixel(pos, store.state.currentColor.toColor());
   }

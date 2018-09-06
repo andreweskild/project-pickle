@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
-import 'package:project_pickle/data_objects/tool_types.dart';
 import 'package:project_pickle/tools/color_picker_tool.dart';
 import 'package:project_pickle/tools/eraser_tool.dart';
 import 'package:project_pickle/tools/fill_tool.dart';
@@ -22,48 +21,55 @@ class ToolsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 4.0, bottom: 12.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ToolsListItem<PixelTool>(
-            icon: Icon(Icons.brush),
-            label: 'Pencil',
-            onToggled: () => PixelTool(context),
-          ),
-          ToolsListItem<EraserTool>(
-            icon: Icon(Icons.brightness_1),
-            label: 'Eraser',
-            onToggled: () => EraserTool(context),
-          ),
-          ToolsListItem<FillTool>(
-            icon: Icon(Icons.brush),
-            label: 'Fill',
-            onToggled: () => FillTool(context),
-          ),
-          ToolsListItem<FillTool>(
-            icon: Icon(Icons.gradient),
-            label: 'Gradient',
-            onToggled: () => FillTool(context),
-          ),
-          ToolsListItem<LineTool>(
-            icon: Icon(Icons.brightness_1),
-            label: 'Path',
-            onToggled: () => LineTool(context),
-          ),
-          ToolsListItem<ShapeTool>(
-            icon: Icon(Icons.brush),
-            label: 'Shape',
-            onToggled: () => ShapeTool(context),
-          ),
-          ToolsListItem<MarqueeSelectorTool>(
-            icon: Icon(Icons.brightness_1),
-            label: 'Select',
-            onToggled: () => MarqueeSelectorTool(context),
-          ),
+    return Card(
+      elevation: 4.0,
+      margin: EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 4.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ToolsListItem<PixelTool>(
+              icon: Icon(Icons.brush),
+              label: 'Pencil',
+              onToggled: () => PixelTool(context),
+            ),
+            ToolsListItem<EraserTool>(
+              icon: Icon(Icons.brightness_1),
+              label: 'Eraser',
+              onToggled: () => EraserTool(context),
+            ),
+            ToolsListItem<FillTool>(
+              icon: Icon(Icons.brush),
+              label: 'Fill',
+              onToggled: () => FillTool(context),
+            ),
+            ToolsListItem<FillTool>(
+              icon: Icon(Icons.gradient),
+              label: 'Gradient',
+              onToggled: () => FillTool(context),
+            ),
+            ToolsListItem<LineTool>(
+              icon: Icon(Icons.brightness_1),
+              label: 'Path',
+              onToggled: () => LineTool(context),
+            ),
+            ToolsListItem<ShapeTool>(
+              icon: Icon(Icons.brush),
+              label: 'Shape',
+              onToggled: () => ShapeTool(context),
+            ),
+            ToolsListItem<MarqueeSelectorTool>(
+              icon: Icon(Icons.brightness_1),
+              label: 'Select',
+              onToggled: () => MarqueeSelectorTool(context),
+            ),
 
-        ],
+          ],
+        ),
       ),
     );
   }

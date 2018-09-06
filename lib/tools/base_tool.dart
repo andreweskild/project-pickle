@@ -24,6 +24,8 @@ abstract class BaseTool<T extends Widget> {
 
   Offset _lastInputPos;
 
+  List<Widget> options;
+
   void onPixelInputUpdate(Offset pos) {}
   void onPixelInputUp() {}
 

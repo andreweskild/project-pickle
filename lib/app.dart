@@ -3,7 +3,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 import 'package:project_pickle/data_objects/hsl_color.dart';
-import 'package:project_pickle/data_objects/tool_types.dart';
 import 'package:project_pickle/pages/pixel_editor_page.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/state/reducer.dart';
@@ -40,7 +39,7 @@ class MyApp extends StatelessWidget {
         // GBA Theme 1
         theme: ThemeData(
           accentColor: Colors.grey.shade700,
-          cardColor: Colors.grey.shade100,
+          cardColor: Colors.grey.shade50,
           buttonColor: Colors.grey.shade300,
           dividerColor: Colors.black26,
           primarySwatch: MaterialColor(Colors.grey.shade100.value, const <int, Color> {50 : const Color(0xFFFFF8E1), 100 : const Color(0xFFFFECB3), 200 : const Color(0xFFFFE082), 300 : const Color(0xFFFFD54F), 400 : const Color(0xFFFFCA28), 500 : const Color(0xFFFFC107), 600 : const Color(0xFFFFB300), 700 : const Color(0xFFFFA000), 800 : const Color(0xFFFF8F00), 900 : const Color(0xFFFF6F00)}),
@@ -59,6 +58,12 @@ class MyApp extends StatelessWidget {
             ),
           ),
           splashFactory: InkRipple.splashFactory,
+          sliderTheme: Theme.of(context).sliderTheme.copyWith(
+            activeTrackColor: Colors.grey.shade600,
+            inactiveTrackColor: Colors.grey.shade300,
+            thumbColor: Colors.grey.shade900,
+            overlayColor: Colors.grey.shade600,
+          )
         ),
 
         // GBA Theme 2
