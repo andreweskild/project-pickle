@@ -61,12 +61,13 @@ class ColorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.grey.shade200,
-      elevation: 4.0,
-      margin: EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 4.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+          color: Colors.grey.shade300,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(10.0),
+            bottomRight: Radius.circular(10.0),
+          )
       ),
       child: StoreConnector<AppState, ColorCardModel>(
         distinct: true,
@@ -83,7 +84,10 @@ class ColorCard extends StatelessWidget {
               DecoratedBox(
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(10.0)
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10.0),
+                    bottomRight: Radius.circular(10.0),
+                  )
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),

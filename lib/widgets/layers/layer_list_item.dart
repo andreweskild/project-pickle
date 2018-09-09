@@ -33,7 +33,7 @@ class LayerListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+      padding: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 4.0),
       child: StoreConnector<AppState, DrawerSizeMode>(
         converter: (store) => store.state.rightDrawerSizeMode,
         builder: (context, sizeMode) {
@@ -43,8 +43,8 @@ class LayerListItem extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: selected ? Theme
                       .of(context)
-                      .highlightColor : Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(6.0),
+                      .highlightColor : Colors.grey.shade400,
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Stack(
                     children: <Widget>[
@@ -54,20 +54,15 @@ class LayerListItem extends StatelessWidget {
                           curve: Curves.ease,
                           duration: Duration(milliseconds: 150),
                           width: (sizeMode == DrawerSizeMode.Large)
-                              ? 64.0
+                              ? 48.0
                               : 124.0,
                           child: AspectRatio(
                             aspectRatio: 1.0,
                             child: Container(
                               foregroundDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6.0),
-                                border: Border.all(
-                                  color: selected ? Theme
-                                      .of(context)
-                                      .accentColor : Colors.black26,
-                                  width: selected ? 3.0 : 1.0,
-                                ),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
+                              padding: EdgeInsets.all(4.0),
                               child: DecoratedBox(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -78,7 +73,7 @@ class LayerListItem extends StatelessWidget {
                                   child: Transform.scale(
                                     alignment: Alignment.topLeft,
                                     scale: (sizeMode == DrawerSizeMode.Large)
-                                        ? 64.0 / 32.0
+                                        ? 48.0 / 32.0
                                         :
                                     (sizeMode == DrawerSizeMode.Medium)
                                         ? 112.0 / 32.0
@@ -92,7 +87,7 @@ class LayerListItem extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                          left: 64.0, top: 0.0, bottom: 0.0,
+                          left: 48.0, top: 0.0, bottom: 0.0,
                           child: AnimatedOpacity(
                             curve: Curves.ease,
                             duration: Duration(milliseconds: 150),

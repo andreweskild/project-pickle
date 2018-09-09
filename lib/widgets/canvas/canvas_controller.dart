@@ -124,7 +124,7 @@ class _CanvasControllerState extends State<CanvasController> {
           },
           child: Material(
             color: Colors.white,
-            elevation: 1.0,
+            elevation: 2.0,
             child: SizedBox(
               width: 32.0,
               height: 32.0,

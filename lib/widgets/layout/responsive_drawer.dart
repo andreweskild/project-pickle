@@ -50,7 +50,7 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
 
   final _smallSizeWidth = 64.0;
   final _mediumSizeWidth = 128.0;
-  final _largeSizeWidth = 224.0;
+  final _largeSizeWidth = 192.0;
 
   @override
   void initState() {
@@ -113,26 +113,7 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
         const EdgeInsets.fromLTRB(0.0, 12.0, 12.0, 12.0),
       child: Stack(
         children: <Widget>[
-          Align(
-            alignment: (widget.alignment == DrawerAlignment.start) ? Alignment.topLeft : Alignment.topRight,
-            child: AnimatedContainer(
-              alignment: Alignment.topLeft,
-              curve: Curves.ease,
-              duration: Duration(milliseconds: 200),
-              width: _widthFromSizeMode(_sizeMode),
-              child: Material(
-                elevation: 2.0,
-                color: Theme.of(context).cardColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  side: BorderSide(
-                    color: Colors.black26,
-                  )
-                ),
-                child: widget.child,
-              ),
-            ),
-          ),
+
           Stack(
             children: <Widget> [
               Align(
@@ -146,38 +127,14 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
                     child: Container(
                       width: _splitPos + 18.0,
                       decoration: BoxDecoration(
-                          color: Colors.black54,
-                          borderRadius: BorderRadius.circular(8.0),
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(10.0),
 //                          borderRadius: BorderRadius.only(
 //                            topLeft: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
 //                            bottomLeft: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
 //                            topRight: (widget.alignment == DrawerAlignment.end) ? Radius.circular(8.0) : Radius.zero,
 //                            bottomRight: (widget.alignment == DrawerAlignment.end) ? Radius.circular(8.0) : Radius.zero,
 //                          )
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              AnimatedPositioned(
-                duration: Duration(milliseconds: _drawerDragging ? 0 : 150),
-                left: (widget.alignment == DrawerAlignment.start) ? 0.0 : null,
-                right: (widget.alignment == DrawerAlignment.end) ? 0.0 : null,
-                top: 0.0,
-                bottom: 0.0,
-                child: IgnorePointer(
-                  ignoring: true,
-                  child: AnimatedOpacity(
-                    curve: Curves.ease,
-                    duration: Duration(milliseconds: 200),
-                    opacity: _drawerDragging ? 1.0 : 0.0,
-                    child: AnimatedContainer(
-                      curve: Curves.ease,
-                      duration: Duration(milliseconds: 150),
-                      width: _widthOfNewSizeMode(_splitPos),
-                      decoration: BoxDecoration(
-                        color: Colors.black38,
-                        borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
                   ),
@@ -249,8 +206,8 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
                       child: Center(
                           child: AnimatedContainer(
                             curve: Curves.ease,
-                            duration: Duration(milliseconds: 150),
-                            height: (_drawerDragging) ? 10.0 : 24.0,
+                            duration: Duration(milliseconds: 200),
+                            height: (_drawerDragging) ? 10.0 : 48.0,
                             width: (_drawerDragging) ? 10.0 : 4.0,
                             decoration: BoxDecoration(
                               color: _drawerDragging ? Colors.white : Colors.black26,
@@ -263,7 +220,27 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
                 ),
               ),
             ]
-          )
+          ),
+          Align(
+            alignment: (widget.alignment == DrawerAlignment.start) ? Alignment.topLeft : Alignment.topRight,
+            child: AnimatedContainer(
+              alignment: Alignment.topLeft,
+              curve: Curves.ease,
+              duration: Duration(milliseconds: 200),
+              width: _widthFromSizeMode(_sizeMode),
+              child: Material(
+                elevation: 2.0,
+                color: Theme.of(context).cardColor,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    side: BorderSide(
+                      color: Colors.black26,
+                    )
+                ),
+                child: widget.child,
+              ),
+            ),
+          ),
         ]
       ),
     );

@@ -20,7 +20,7 @@ class ToggleIconButton extends StatelessWidget {
       color: toggled ? Theme.of(context).highlightColor : Colors.transparent,
       textColor: toggled ? Theme.of(context).accentTextTheme.button.color : Colors.black,
       child: icon,
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(4.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(6.0),
       ),

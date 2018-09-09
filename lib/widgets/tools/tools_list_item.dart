@@ -57,27 +57,30 @@ class ToolsListItem<T> extends StatelessWidget {
       builder: (context, toolModel) {
         final _selected = toolModel.currentTool is T;
         return Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+          padding: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 4.0),
           child: FlatButton(
-            color: _selected ? Theme.of(context).highlightColor : Colors.transparent,
+            color: _selected ? Theme.of(context).highlightColor : Colors.grey.shade400,
             textColor: _selected ? Theme.of(context).accentTextTheme.button.color : Colors.black,
             padding: EdgeInsets.all(8.0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
-            child: Stack(
-              children: <Widget>[
-                Align(alignment: Alignment.centerLeft, child: icon),
-                Positioned(
-                  left: 24.0,
-                  top: 0.0,
-                  bottom: 0.0,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 12.0),
-                    child: Center(child: Text(label)),
-                  ),
-                )
-              ],
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+              child: Stack(
+                children: <Widget>[
+                  Align(alignment: Alignment.centerLeft, child: icon),
+                  Positioned(
+                    left: 24.0,
+                    top: 0.0,
+                    bottom: 0.0,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Center(child: Text(label)),
+                    ),
+                  )
+                ],
+              ),
             ),
             onPressed: () => toolModel.callback(onToggled()),
           ),

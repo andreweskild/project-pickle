@@ -29,13 +29,10 @@ class ToolOptionsPanel extends StatelessWidget {
           return SizedBox(
             height: 56.0,
             child: Material(
-              elevation: 2.0,
+              elevation: 4.0,
               color: Theme.of(context).cardColor,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  side: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                  )
+                  borderRadius: BorderRadius.circular(10.0),
               ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 0.0),

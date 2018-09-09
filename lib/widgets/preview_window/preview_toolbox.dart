@@ -45,45 +45,46 @@ class PreviewToolbox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
       return Padding(
-        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 16.0),
-        child: AspectRatio(
-            aspectRatio: 1.0,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return StoreConnector<AppState, _PreviewModel>(
-                    distinct: true,
-                    converter: (store) {
-                      return _PreviewModel(
-                        layers: store.state.layers.where((layer) => !layer.hidden).toList(),
-                      );
-                    },
-                    builder: (context, model) {
-                      return Material(
-                        color: Colors.grey.shade200,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.0),
-                            side: BorderSide(
-                                color: Colors.black26
-                            )
-                        ),
-                        child: UnconstrainedBox(
-                          child: Transform.scale(
-                            scale: constraints.maxHeight / 32.0,
-                            child: Container(
-                              height: 32.0,
-                              width: 32.0,
-                              padding: EdgeInsets.all(0.0),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(6.0 / 3.1)
-                              ),
-                              child: Stack(
-                                children: model.layers,
+        padding: const EdgeInsets.all(12.0),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+              color: Colors.grey.shade300,
+              borderRadius: BorderRadius.circular(8.0)
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: AspectRatio(
+                aspectRatio: 1.0,
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return StoreConnector<AppState, _PreviewModel>(
+                        distinct: true,
+                        converter: (store) {
+                          return _PreviewModel(
+                            layers: store.state.layers.where((layer) => !layer.hidden).toList(),
+                          );
+                        },
+                        builder: (context, model) {
+                          return Material(
+                            elevation: 2.0,
+                            color: Colors.grey.shade200,
+                            child: UnconstrainedBox(
+                              child: Transform.scale(
+                                scale: constraints.maxHeight / 32.0,
+                                child: Container(
+                                  height: 32.0,
+                                  width: 32.0,
+                                  padding: EdgeInsets.all(0.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                  ),
+                                  child: Stack(
+                                    children: model.layers,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      );
+                          );
 //                  return UnconstrainedBox(
 //                    child: Transform.scale(
 //                      alignment: Alignment.topLeft,
@@ -106,10 +107,12 @@ class PreviewToolbox extends StatelessWidget {
 //                      ),
 //                    ),
 //                  );
-                    }
-                );
-              }
-            )
+                        }
+                    );
+                  }
+                )
+            ),
+          ),
         ),
     );
   }
