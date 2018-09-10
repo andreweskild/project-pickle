@@ -8,7 +8,7 @@ import 'package:project_pickle/widgets/palette_selector/palette_selector_card.da
 typedef SizeModeChangeCallback = void Function(DrawerSizeMode sizeMode);
 
 enum DrawerSizeMode {
-  Small, Medium, Large,
+  Mini, Normal,
 }
 
 /// A Drawer that can be resized to [DrawerSizeMode.Small], [DrawerSizeMode.Medium], or [DrawerSizeMode.Large]
@@ -20,7 +20,7 @@ class ResizableDrawer extends StatefulWidget {
     Key key,
     this.alignment = DrawerAlignment.start,
     this.child,
-    this.sizeMode = DrawerSizeMode.Medium,
+    this.sizeMode = DrawerSizeMode.Normal,
     this.onSizeModeChanged,
   }) : super(key: key);
 
@@ -48,62 +48,54 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
   double _splitPos;
   double _dragPos;
 
-  final _smallSizeWidth = 64.0;
-  final _mediumSizeWidth = 128.0;
-  final _largeSizeWidth = 192.0;
+  final _miniSizeWidth = 64.0;
+  final _sizeModeBreakpoint = 180.0;
+  final _normalSizeMaxWidth = 240.0;
 
   @override
   void initState() {
-    _minWidth = _smallSizeWidth;
-    _maxWidth = _largeSizeWidth;
+    _minWidth = _miniSizeWidth;
+    _maxWidth = _normalSizeMaxWidth;
     _sizeMode = widget.sizeMode;
     _previousSizeMode = _sizeMode;
-    _splitPos = _widthFromSizeMode(_sizeMode);
+    _splitPos = _sizeModeBreakpoint;
     _dragPos = _splitPos;
     super.initState();
   }
 
-  /// Returns the size to set the drawer when give [mode]
-  double _widthFromSizeMode(DrawerSizeMode mode) {
-    switch(mode) {
-      case DrawerSizeMode.Small:
-        return _smallSizeWidth;
-        break;
-      case DrawerSizeMode.Medium:
-        return _mediumSizeWidth;
-        break;
-      case DrawerSizeMode.Large:
-        return _largeSizeWidth;
-        break;
-      default:
-        return _mediumSizeWidth;
-    }
-  }
-
-  /// Returns size mode closest to [pos]
-  DrawerSizeMode _nearestSizeMode(double pos) {
-    double distanceToSmall = (pos - _smallSizeWidth).abs();
-    double distanceToMedium = (pos - _mediumSizeWidth).abs();
-    double distanceToLarge = (pos - _largeSizeWidth).abs();
-    if(distanceToSmall < distanceToMedium
-        && distanceToSmall < distanceToLarge) {
-      return DrawerSizeMode.Small;
-    }
-    else if(distanceToMedium < distanceToSmall
-        && distanceToMedium < distanceToLarge) {
-      return DrawerSizeMode.Medium;
-    }
-    else if(distanceToLarge < distanceToSmall
-        && distanceToLarge < distanceToMedium) {
-      return DrawerSizeMode.Large;
+  DrawerSizeMode _sizeModeFromWidth(double width) {
+    if(width < _sizeModeBreakpoint) {
+      return DrawerSizeMode.Mini;
     }
     else {
-      return DrawerSizeMode.Medium;
+      return DrawerSizeMode.Normal;
     }
   }
 
-  /// Returns new size of drawer from [pos].
-  double _widthOfNewSizeMode(double pos) => _widthFromSizeMode(_nearestSizeMode(pos));
+//  /// Returns size mode closest to [pos]
+//  DrawerSizeMode _nearestSizeMode(double pos) {
+//    double distanceToSmall = (pos - _smallSizeWidth).abs();
+//    double distanceToMedium = (pos - _mediumSizeWidth).abs();
+//    double distanceToLarge = (pos - _largeSizeWidth).abs();
+//    if(distanceToSmall < distanceToMedium
+//        && distanceToSmall < distanceToLarge) {
+//      return DrawerSizeMode.Small;
+//    }
+//    else if(distanceToMedium < distanceToSmall
+//        && distanceToMedium < distanceToLarge) {
+//      return DrawerSizeMode.Medium;
+//    }
+//    else if(distanceToLarge < distanceToSmall
+//        && distanceToLarge < distanceToMedium) {
+//      return DrawerSizeMode.Large;
+//    }
+//    else {
+//      return DrawerSizeMode.Medium;
+//    }
+//  }
+//
+//  /// Returns new size of drawer from [pos].
+//  double _widthOfNewSizeMode(double pos) => _widthFromSizeMode(_nearestSizeMode(pos));
 
   @override
   Widget build(BuildContext context) {
@@ -125,16 +117,15 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
                     duration: Duration(milliseconds: 150),
                     opacity: _drawerDragging ? 1.0 : 0.0,
                     child: Container(
-                      width: _splitPos + 18.0,
+                      width: _dragPos,
                       decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(10.0),
-//                          borderRadius: BorderRadius.only(
-//                            topLeft: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
-//                            bottomLeft: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
-//                            topRight: (widget.alignment == DrawerAlignment.end) ? Radius.circular(8.0) : Radius.zero,
-//                            bottomRight: (widget.alignment == DrawerAlignment.end) ? Radius.circular(8.0) : Radius.zero,
-//                          )
+                          color: Colors.black87,
+                          borderRadius: BorderRadius.only(
+                            topLeft: (widget.alignment == DrawerAlignment.start) ? Radius.circular(10.0) : Radius.zero,
+                            bottomLeft: (widget.alignment == DrawerAlignment.start) ? Radius.circular(10.0) : Radius.zero,
+                            topRight: (widget.alignment == DrawerAlignment.end) ? Radius.circular(10.0) : Radius.zero,
+                            bottomRight: (widget.alignment == DrawerAlignment.end) ? Radius.circular(10.0) : Radius.zero,
+                          )
                       ),
                     ),
                   ),
@@ -143,8 +134,8 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
               Positioned(
                 top: 0.0,
                 bottom: 0.0,
-                left: (widget.alignment == DrawerAlignment.start) ? _splitPos : null,
-                right: (widget.alignment == DrawerAlignment.end) ? _splitPos : null,
+                left: (widget.alignment == DrawerAlignment.start) ? _dragPos : null,
+                right: (widget.alignment == DrawerAlignment.end) ? _dragPos : null,
                 child: GestureDetector(
                   onTapDown: (details) {
                     setState(() {
@@ -162,34 +153,38 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
                     });
                   },
                   onHorizontalDragUpdate: (details) {
+                    var tempPos;
                     if (widget.alignment == DrawerAlignment.start) {
-                      _dragPos = _dragPos + details.delta.dx;
+                      tempPos = _dragPos + details.delta.dx;
                     }
                     else {
-                      _dragPos = _dragPos - details.delta.dx;
+                      tempPos = _dragPos - details.delta.dx;
                     }
-                    if(_dragPos <= _maxWidth
-                        && _dragPos >= _minWidth) {
-                      setState(() {
-                        _splitPos = _dragPos;
+                    if(tempPos <= _maxWidth
+                        && tempPos >= _minWidth) {
+//                      setState(() {
+//                        _splitPos = _dragPos;
+//                      });
+                      setState((){
+                        _dragPos = tempPos;
+                        _sizeMode = _sizeModeFromWidth(_dragPos);
+                        if(_sizeMode == DrawerSizeMode.Mini) {
+                          _splitPos = _miniSizeWidth;
+                        }
+                        else {
+                          _splitPos = _dragPos;
+                        }
                       });
                     }
+
                   },
                   onHorizontalDragEnd: (details) {
                     setState(() {
                       _drawerDragging = false;
-                      _sizeMode = _nearestSizeMode(_splitPos);
-                      _splitPos = _widthFromSizeMode(_sizeMode);
                       _dragPos = _splitPos;
                     });
-                    if(_sizeMode != _previousSizeMode) {
-                      widget.onSizeModeChanged(_sizeMode);
-                      _previousSizeMode = _sizeMode;
-                    }
                   },
-                  child: AnimatedContainer(
-                    curve: Curves.ease,
-                    duration: Duration(milliseconds: 150),
+                  child: Container(
                     decoration: BoxDecoration(
                         color: _drawerDragging ? Colors.black87 : Colors.transparent,
                         borderRadius: BorderRadius.only(
@@ -199,10 +194,8 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
                           bottomRight: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
                         )
                     ),
-                    child: AnimatedPadding(
-                      curve: Curves.ease,
-                      duration: Duration(milliseconds: 150),
-                      padding: const EdgeInsets.all(4.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(6.0),
                       child: Center(
                           child: AnimatedContainer(
                             curve: Curves.ease,
@@ -226,16 +219,15 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
             child: AnimatedContainer(
               alignment: Alignment.topLeft,
               curve: Curves.ease,
-              duration: Duration(milliseconds: 200),
-              width: _widthFromSizeMode(_sizeMode),
+              duration: Duration(
+                milliseconds: (_sizeMode != _previousSizeMode) ? 200 : 0
+              ),
+              width: _splitPos,
               child: Material(
                 elevation: 2.0,
                 color: Theme.of(context).cardColor,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
-                    side: BorderSide(
-                      color: Colors.black26,
-                    )
                 ),
                 child: widget.child,
               ),

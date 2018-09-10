@@ -13,10 +13,10 @@ class AppState {
     this.currentLayerIndex = 0,
     this.layerNamingCounter = 1,
     @required this.layers,
-    this.leftDrawerSizeMode = DrawerSizeMode.Medium,
+    this.leftDrawerSizeMode = DrawerSizeMode.Normal,
     @required this.palette,
     @required this.previewLayer,
-    this.rightDrawerSizeMode = DrawerSizeMode.Medium,
+    this.rightDrawerSizeMode = DrawerSizeMode.Normal,
     this.selectionPath,
   });
 

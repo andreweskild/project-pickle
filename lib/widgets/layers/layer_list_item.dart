@@ -53,7 +53,7 @@ class LayerListItem extends StatelessWidget {
                         child: AnimatedContainer(
                           curve: Curves.ease,
                           duration: Duration(milliseconds: 150),
-                          width: (sizeMode == DrawerSizeMode.Large)
+                          width: (sizeMode == DrawerSizeMode.Normal)
                               ? 48.0
                               : 124.0,
                           child: AspectRatio(
@@ -72,12 +72,7 @@ class LayerListItem extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(6.0),
                                   child: Transform.scale(
                                     alignment: Alignment.topLeft,
-                                    scale: (sizeMode == DrawerSizeMode.Large)
-                                        ? 48.0 / 32.0
-                                        :
-                                    (sizeMode == DrawerSizeMode.Medium)
-                                        ? 112.0 / 32.0
-                                        : 48.0 / 32.0,
+                                    scale: 48.0 / 32.0,
                                     child: layerCanvas,
                                   ),
                                 ),
@@ -91,7 +86,7 @@ class LayerListItem extends StatelessWidget {
                           child: AnimatedOpacity(
                             curve: Curves.ease,
                             duration: Duration(milliseconds: 150),
-                            opacity: (sizeMode == DrawerSizeMode.Large)
+                            opacity: (sizeMode == DrawerSizeMode.Normal)
                                 ? 1.0
                                 : 0.0,
                             child: Padding(
@@ -126,11 +121,11 @@ class LayerListItem extends StatelessWidget {
               Positioned(
                 right: 0.0, top: 0.0, bottom: 0.0,
                 child: IgnorePointer(
-                  ignoring: (sizeMode != DrawerSizeMode.Large),
+                  ignoring: (sizeMode != DrawerSizeMode.Normal),
                   child: AnimatedOpacity(
                     curve: Curves.ease,
                     duration: Duration(milliseconds: 150),
-                    opacity: (sizeMode == DrawerSizeMode.Large) ? 1.0 : 0.0,
+                    opacity: (sizeMode == DrawerSizeMode.Normal) ? 1.0 : 0.0,
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
