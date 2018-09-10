@@ -53,9 +53,7 @@ class LayerListItem extends StatelessWidget {
                         child: AnimatedContainer(
                           curve: Curves.ease,
                           duration: Duration(milliseconds: 150),
-                          width: (sizeMode == DrawerSizeMode.Normal)
-                              ? 48.0
-                              : 124.0,
+                          width: 48.0,
                           child: AspectRatio(
                             aspectRatio: 1.0,
                             child: Container(

@@ -94,7 +94,7 @@ class ColorCard extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       ConstrainedBox(
-                        constraints: BoxConstraints.expand(height: 44.0),
+                        constraints: BoxConstraints.expand(height: 40.0),
                         child: ColorMenuButton(
                           color: HSLColor.from(model.color),
                           onColorChanged: model.setColorCallback,
@@ -103,7 +103,7 @@ class ColorCard extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: ConstrainedBox(
-                          constraints: BoxConstraints.expand(height: 44.0),
+                          constraints: BoxConstraints.expand(height: 40.0),
                           child: ColorMenuButton(
                             color: HSLColor.from(model.color),
                             onColorChanged: model.setColorCallback,
@@ -128,8 +128,8 @@ class ColorCard extends StatelessWidget {
                         elevation: 0.0,
                         color: hslColor.toColor(),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                          side: BorderSide(color: Colors.black38),
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          side: BorderSide(color: Colors.black26),
                         ),
                         onPressed: () {
                           model.setColorCallback(HSLColor.from(hslColor));

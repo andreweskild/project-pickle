@@ -11,7 +11,7 @@ enum DrawerSizeMode {
   Mini, Normal,
 }
 
-/// A Drawer that can be resized to [DrawerSizeMode.Small], [DrawerSizeMode.Medium], or [DrawerSizeMode.Large]
+/// A Drawer that can be resized.
 ///
 /// The storage and management of state is mostly delegated to the
 /// user of the class, using the [onSizeModeChanged] callback.
@@ -72,31 +72,6 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
     }
   }
 
-//  /// Returns size mode closest to [pos]
-//  DrawerSizeMode _nearestSizeMode(double pos) {
-//    double distanceToSmall = (pos - _smallSizeWidth).abs();
-//    double distanceToMedium = (pos - _mediumSizeWidth).abs();
-//    double distanceToLarge = (pos - _largeSizeWidth).abs();
-//    if(distanceToSmall < distanceToMedium
-//        && distanceToSmall < distanceToLarge) {
-//      return DrawerSizeMode.Small;
-//    }
-//    else if(distanceToMedium < distanceToSmall
-//        && distanceToMedium < distanceToLarge) {
-//      return DrawerSizeMode.Medium;
-//    }
-//    else if(distanceToLarge < distanceToSmall
-//        && distanceToLarge < distanceToMedium) {
-//      return DrawerSizeMode.Large;
-//    }
-//    else {
-//      return DrawerSizeMode.Medium;
-//    }
-//  }
-//
-//  /// Returns new size of drawer from [pos].
-//  double _widthOfNewSizeMode(double pos) => _widthFromSizeMode(_nearestSizeMode(pos));
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -105,7 +80,6 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
         const EdgeInsets.fromLTRB(0.0, 12.0, 12.0, 12.0),
       child: Stack(
         children: <Widget>[
-
           Stack(
             children: <Widget> [
               Align(
@@ -116,27 +90,27 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
                     curve: Curves.ease,
                     duration: Duration(milliseconds: 150),
                     opacity: _drawerDragging ? 1.0 : 0.0,
-                    child: Container(
-                      width: _dragPos,
+                    child: AnimatedContainer(
+                      curve: Curves.ease,
+                      duration: Duration(milliseconds: (_drawerDragging) ? 0 : 150),
+                      width: _dragPos + 22.0,
                       decoration: BoxDecoration(
                           color: Colors.black87,
-                          borderRadius: BorderRadius.only(
-                            topLeft: (widget.alignment == DrawerAlignment.start) ? Radius.circular(10.0) : Radius.zero,
-                            bottomLeft: (widget.alignment == DrawerAlignment.start) ? Radius.circular(10.0) : Radius.zero,
-                            topRight: (widget.alignment == DrawerAlignment.end) ? Radius.circular(10.0) : Radius.zero,
-                            bottomRight: (widget.alignment == DrawerAlignment.end) ? Radius.circular(10.0) : Radius.zero,
-                          )
+                          borderRadius: BorderRadius.circular(10.0)
                       ),
                     ),
                   ),
                 ),
               ),
-              Positioned(
+              AnimatedPositioned(
+                curve: Curves.ease,
+                duration: Duration(milliseconds: (_drawerDragging) ? 0 : 150),
                 top: 0.0,
                 bottom: 0.0,
                 left: (widget.alignment == DrawerAlignment.start) ? _dragPos : null,
                 right: (widget.alignment == DrawerAlignment.end) ? _dragPos : null,
                 child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTapDown: (details) {
                     setState(() {
                       _drawerDragging = true;
@@ -162,21 +136,27 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
                     }
                     if(tempPos <= _maxWidth
                         && tempPos >= _minWidth) {
-//                      setState(() {
-//                        _splitPos = _dragPos;
-//                      });
                       setState((){
                         _dragPos = tempPos;
                         _sizeMode = _sizeModeFromWidth(_dragPos);
+                        if(_sizeMode != _previousSizeMode) {
+                          widget.onSizeModeChanged(_sizeMode);
+                          _previousSizeMode = _sizeMode;
+                        }
                         if(_sizeMode == DrawerSizeMode.Mini) {
                           _splitPos = _miniSizeWidth;
                         }
                         else {
-                          _splitPos = _dragPos;
+                          if(_dragPos >= _sizeModeBreakpoint - 25 &&
+                              _dragPos <= _sizeModeBreakpoint + 25) {
+                            _splitPos = _sizeModeBreakpoint;
+                          }
+                          else {
+                            _splitPos = _dragPos;
+                          }
                         }
                       });
                     }
-
                   },
                   onHorizontalDragEnd: (details) {
                     setState(() {
@@ -185,15 +165,6 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
                     });
                   },
                   child: Container(
-                    decoration: BoxDecoration(
-                        color: _drawerDragging ? Colors.black87 : Colors.transparent,
-                        borderRadius: BorderRadius.only(
-                          topLeft: (widget.alignment == DrawerAlignment.end) ? Radius.circular(8.0) : Radius.zero,
-                          bottomLeft: (widget.alignment == DrawerAlignment.end) ? Radius.circular(8.0) : Radius.zero,
-                          topRight: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
-                          bottomRight: (widget.alignment == DrawerAlignment.start) ? Radius.circular(8.0) : Radius.zero,
-                        )
-                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(6.0),
                       child: Center(
@@ -220,7 +191,7 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
               alignment: Alignment.topLeft,
               curve: Curves.ease,
               duration: Duration(
-                milliseconds: (_sizeMode != _previousSizeMode) ? 200 : 0
+                milliseconds: (_sizeMode == DrawerSizeMode.Mini || _splitPos == _sizeModeBreakpoint) ? 200 : 0
               ),
               width: _splitPos,
               child: Material(

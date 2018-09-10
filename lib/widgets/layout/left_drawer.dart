@@ -29,12 +29,11 @@ class LeftDrawer extends StatelessWidget {
               ToolsCard(),
               Divider(height: 1.0),
               Expanded(child: ColorCard()),
-//                Divider(height: 1.0),
-//                Expanded(
-//                    child: PaletteSelectorCard()
-//                ),
             ],
           ),
+          onSizeModeChanged: (sizeMode) {
+            store.dispatch(SetLeftDrawerSizeModeAction(sizeMode));
+          },
         );
       },
     );
