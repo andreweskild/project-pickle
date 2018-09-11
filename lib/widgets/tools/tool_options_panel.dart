@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/state/app_state.dart';
+import 'package:project_pickle/widgets/common/value_slider.dart';
 
 /// Presents options and settings to customize the currently selected tool
 ///
@@ -38,7 +39,12 @@ class ToolOptionsPanel extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 0.0),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: options ?? <Widget>[],
+                  children: <Widget> [
+                    ValueSlider(
+                      value: 0.5,
+                      onChanged: (value){},
+                    )
+                  ]
                 ),
               ),
             ),

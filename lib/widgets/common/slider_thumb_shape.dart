@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class ColorSliderThumbShape extends SliderComponentShape {
+class SliderThumbShape extends SliderComponentShape {
   /// Create a slider thumb that draws a circle.
-  const ColorSliderThumbShape();
+  const SliderThumbShape();
 
   static const double _thumbHeight = 10.0;
   static const double _disabledThumbHeight = 10.0;
@@ -34,6 +34,15 @@ class ColorSliderThumbShape extends SliderComponentShape {
       begin: sliderTheme.disabledThumbColor,
       end: sliderTheme.thumbColor,
     );
+//    canvas.drawShadow(Path()..addRRect(
+//      RRect.fromLTRBR(
+//          thumbCenter.dx - heightTween.evaluate(enableAnimation),
+//          thumbCenter.dy - heightTween.evaluate(enableAnimation),
+//          thumbCenter.dx + heightTween.evaluate(enableAnimation),
+//          thumbCenter.dy + heightTween.evaluate(enableAnimation),
+//          Radius.circular(8.0)
+//      ),
+//    ), Colors.black, 2.0, false);
     canvas.drawRRect(
       RRect.fromLTRBR(
           thumbCenter.dx - heightTween.evaluate(enableAnimation),
@@ -44,18 +53,18 @@ class ColorSliderThumbShape extends SliderComponentShape {
       ),
       new Paint()..color = colorTween.evaluate(enableAnimation),
     );
-    canvas.drawRRect(
-      RRect.fromLTRBR(
-          thumbCenter.dx - heightTween.evaluate(enableAnimation),
-          thumbCenter.dy - heightTween.evaluate(enableAnimation),
-          thumbCenter.dx + heightTween.evaluate(enableAnimation),
-          thumbCenter.dy + heightTween.evaluate(enableAnimation),
-          Radius.circular(8.0)
-      ),
-      new Paint()
-        ..style = PaintingStyle.stroke
-        ..color = Colors.black26
-        ..strokeWidth = 1.0,
-    );
+//    canvas.drawRRect(
+//      RRect.fromLTRBR(
+//          thumbCenter.dx - heightTween.evaluate(enableAnimation),
+//          thumbCenter.dy - heightTween.evaluate(enableAnimation),
+//          thumbCenter.dx + heightTween.evaluate(enableAnimation),
+//          thumbCenter.dy + heightTween.evaluate(enableAnimation),
+//          Radius.circular(8.0)
+//      ),
+//      new Paint()
+//        ..style = PaintingStyle.stroke
+//        ..color = Colors.black26
+//        ..strokeWidth = 1.0,
+//    );
   }
 }

@@ -8,6 +8,7 @@ import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/state/reducer.dart';
 import 'package:project_pickle/tools/pixel_tool.dart';
 import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
+import 'package:project_pickle/widgets/common/slider_thumb_shape.dart';
 
 final store = Store<AppState>(
   stateReducer,
@@ -60,7 +61,8 @@ class MyApp extends StatelessWidget {
           sliderTheme: Theme.of(context).sliderTheme.copyWith(
             activeTrackColor: Colors.grey.shade600,
             inactiveTrackColor: Colors.grey.shade300,
-            thumbColor: Colors.grey.shade900,
+            thumbColor: Colors.grey.shade400,
+            thumbShape: SliderThumbShape(),
             overlayColor: Colors.grey.shade600,
           )
         ),
