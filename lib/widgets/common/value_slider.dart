@@ -21,7 +21,7 @@ import 'package:project_pickle/widgets/common/slider_thumb_shape.dart';
 ///   * [Slider.semanticFormatterCallback], which shows an example use case.
 typedef String SemanticFormatterCallback(double value);
 
-/// A Material Design slider.
+/// A modified version of the Material Design slider.
 ///
 /// Used to select from a range of values.
 ///
@@ -575,7 +575,7 @@ class _RenderSlider extends RenderBox {
   }
 
   static const Duration _positionAnimationDuration = Duration(milliseconds: 75);
-  static const double _overlayRadius = 16.0;
+  static const double _overlayRadius = 12.0;
   static const double _overlayDiameter = _overlayRadius * 2.0;
   static const double _trackHeight = 12.0;
   static const double _preferredTrackWidth = 144.0;
@@ -1024,12 +1024,12 @@ class _RenderSlider extends RenderBox {
     final double trackActiveLeft = math.max(0.0 + 2.0, trackActive - thumbRadius - thumbGap * (1.0 - _enableAnimation.value) + 2.0);
     final double trackActiveRight = math.min(trackActive + thumbRadius + thumbGap * (1.0 - _enableAnimation.value), trackRight);
     final RRect trackLeftRect = RRect.fromRectAndCorners(
-      Rect.fromLTRB(trackLeft, trackTop, trackActiveLeft, trackBottom),
+      Rect.fromLTRB(trackLeft - thumbRadius, trackTop, trackActiveLeft, trackBottom),
       topLeft: Radius.circular(_trackHeight / 2.0),
       bottomLeft: Radius.circular(_trackHeight / 2.0),
     );
     final RRect trackRightRect = RRect.fromRectAndCorners(
-      Rect.fromLTRB(trackActiveRight, trackTop, trackRight, trackBottom),
+      Rect.fromLTRB(trackActiveRight, trackTop, trackRight + thumbRadius, trackBottom),
       topRight: Radius.circular(_trackHeight / 2.0),
       bottomRight: Radius.circular(_trackHeight / 2.0),
     );
