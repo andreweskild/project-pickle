@@ -94,27 +94,33 @@ class PreviewToolbox extends StatelessWidget {
             ),
           );
         }
-        return Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              AnimatedOpacity(
-                curve: Curves.ease,
-                duration: Duration(milliseconds: 150),
-                opacity: (model.sizeMode == DrawerSizeMode.Mini) ? 0.0 : 1.0,
-                child: _cachedPreview,
-              ),
-              AnimatedOpacity(
-                curve: Curves.ease,
-                duration: Duration(milliseconds: 150),
-                opacity: (model.sizeMode == DrawerSizeMode.Mini) ? 1.0 : 0.0,
-                child: PopupButton(
-                  child: Icon(Icons.crop),
-                  popupContent: _cachedPreview,
+        return DecoratedBox(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0)
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                AnimatedOpacity(
+                  curve: Curves.ease,
+                  duration: Duration(milliseconds: 150),
+                  opacity: (model.sizeMode == DrawerSizeMode.Mini) ? 0.0 : 1.0,
+                  child: _cachedPreview,
                 ),
-              ),
-            ],
+                AnimatedOpacity(
+                  curve: Curves.ease,
+                  duration: Duration(milliseconds: 150),
+                  opacity: (model.sizeMode == DrawerSizeMode.Mini) ? 1.0 : 0.0,
+                  child: PopupButton(
+                    child: Icon(Icons.crop),
+                    popupContent: _cachedPreview,
+                  ),
+                ),
+              ],
+            ),
           ),
         );
 //        if(model.sizeMode == DrawerSizeMode.Mini) {

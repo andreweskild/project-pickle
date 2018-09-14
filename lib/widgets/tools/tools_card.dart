@@ -21,48 +21,54 @@ class ToolsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ToolsListItem<PixelTool>(
-            icon: Icon(Icons.brush),
-            label: 'Pencil',
-            onToggled: () => PixelTool(context),
-          ),
-          ToolsListItem<EraserTool>(
-            icon: Icon(Icons.brightness_1),
-            label: 'Eraser',
-            onToggled: () => EraserTool(context),
-          ),
-          ToolsListItem<FillTool>(
-            icon: Icon(Icons.brush),
-            label: 'Fill',
-            onToggled: () => FillTool(context),
-          ),
-          ToolsListItem<FillTool>(
-            icon: Icon(Icons.gradient),
-            label: 'Gradient',
-            onToggled: () => FillTool(context),
-          ),
-          ToolsListItem<LineTool>(
-            icon: Icon(Icons.brightness_1),
-            label: 'Path',
-            onToggled: () => LineTool(context),
-          ),
-          ToolsListItem<ShapeTool>(
-            icon: Icon(Icons.brush),
-            label: 'Shape',
-            onToggled: () => ShapeTool(context),
-          ),
-          ToolsListItem<MarqueeSelectorTool>(
-            icon: Icon(Icons.brightness_1),
-            label: 'Select',
-            onToggled: () => MarqueeSelectorTool(context),
-          ),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0)
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ToolsListItem<PixelTool>(
+              icon: Icon(Icons.brush),
+              label: 'Pencil',
+              onToggled: () => PixelTool(context),
+            ),
+            ToolsListItem<EraserTool>(
+              icon: Icon(Icons.brightness_1),
+              label: 'Eraser',
+              onToggled: () => EraserTool(context),
+            ),
+            ToolsListItem<FillTool>(
+              icon: Icon(Icons.brush),
+              label: 'Fill',
+              onToggled: () => FillTool(context),
+            ),
+            ToolsListItem<FillTool>(
+              icon: Icon(Icons.gradient),
+              label: 'Gradient',
+              onToggled: () => FillTool(context),
+            ),
+            ToolsListItem<LineTool>(
+              icon: Icon(Icons.brightness_1),
+              label: 'Path',
+              onToggled: () => LineTool(context),
+            ),
+            ToolsListItem<ShapeTool>(
+              icon: Icon(Icons.brush),
+              label: 'Shape',
+              onToggled: () => ShapeTool(context),
+            ),
+            ToolsListItem<MarqueeSelectorTool>(
+              icon: Icon(Icons.brightness_1),
+              label: 'Select',
+              onToggled: () => MarqueeSelectorTool(context),
+            ),
 
-        ],
+          ],
+        ),
       ),
     );
   }

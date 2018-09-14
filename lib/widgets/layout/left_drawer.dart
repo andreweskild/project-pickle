@@ -27,7 +27,6 @@ class LeftDrawer extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ToolsCard(),
-              Divider(height: 1.0),
               Expanded(child: ColorCard()),
             ],
           ),
