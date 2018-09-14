@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
-import 'package:project_pickle/data_objects/hsl_color.dart';
+//import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/tools/base_tool.dart';
 
@@ -38,7 +38,7 @@ class ColorPickerTool extends BaseTool<Widget> {
   }
 
   void updateCurrentColor(Color color) {
-    HSLColor hslColor = HSLColor.fromRGB(color);
+    HSLColor hslColor = HSLColor.fromColor(color);
     store.dispatch(SetCurrentColorAction(hslColor));
   }
 

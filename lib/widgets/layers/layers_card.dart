@@ -7,6 +7,7 @@ import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/layers/layer_list_item.dart';
 import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
+import 'package:project_pickle/widgets/common/collapsible_button.dart';
 
 typedef LayerIndexCallback = void Function(int);
 
@@ -17,7 +18,8 @@ class LayerListModel {
     this.addLayerCallback,
     this.setLayerCallback,
     this.removeLayerCallback,
-    this.toggleLayerHiddenCallback
+    this.toggleLayerHiddenCallback,
+    this.sizeMode,
   }) {
     layerCount = layers.length;
     _visibleLayerCount = layers.where((layer) => !layer.hidden).length;
@@ -27,6 +29,7 @@ class LayerListModel {
 
   int currentLayerIndex;
   int layerCount;
+  DrawerSizeMode sizeMode;
 
   VoidCallback addLayerCallback;
   LayerIndexCallback setLayerCallback;
@@ -41,6 +44,7 @@ class LayerListModel {
     result = 37 * result + layerCount.hashCode;
     result = 37 * result + currentLayerIndex.hashCode;
     result = 37 * result + _visibleLayerCount.hashCode;
+    result = 37 * result + sizeMode.hashCode;
     return result;
   }
 
@@ -52,7 +56,8 @@ class LayerListModel {
     LayerListModel model = other;
     return (model.layerCount == layerCount &&
             model.currentLayerIndex == currentLayerIndex &&
-            model._visibleLayerCount == _visibleLayerCount);
+            model._visibleLayerCount == _visibleLayerCount &&
+            model.sizeMode == sizeMode);
   }
 }
 
@@ -73,6 +78,7 @@ class LayersCard extends StatelessWidget {
         setLayerCallback: (index) => store.dispatch(SetCurrentLayerIndexAction(index)),
         removeLayerCallback: (index) => store.dispatch(RemoveLayerAction(index)),
         toggleLayerHiddenCallback: (index) => store.dispatch(ToggleLayerHiddenAction(index)),
+        sizeMode: store.state.rightDrawerSizeMode,
       ),
       builder: (context, model) {
             return Material(
@@ -134,21 +140,13 @@ class LayersCard extends StatelessWidget {
                         padding: const EdgeInsets.all(12.0),
                         child: SizedBox(
                           height: 36.0,
-                          child: RaisedButton.icon(
-                            elevation: 0.0,
-                            color: Colors.grey.shade400,
-//                        isExtended: true,
-//                        backgroundColor: Colors.grey.shade700,
-//                        foregroundColor: Colors.white,
-//                        mini: true,
+                          child: CollapsibleButton(
+                            collapsed: model.sizeMode == DrawerSizeMode.Mini,
                             icon: Icon(Icons.add),
                             label: Text('New Layer'),
                             onPressed: () {
                               model.addLayerCallback();
                             },
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6.0),
-                            ),
                           ),
                         ),
                       ),

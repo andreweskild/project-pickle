@@ -16,15 +16,18 @@ class ToggleIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      color: toggled ? Theme.of(context).highlightColor : Colors.transparent,
-      textColor: toggled ? Theme.of(context).accentTextTheme.button.color : Colors.black,
-      child: icon,
-      padding: const EdgeInsets.all(4.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(6.0),
+    return AspectRatio(
+      aspectRatio: 1.0,
+      child: FlatButton(
+        color: toggled ? Theme.of(context).highlightColor : Colors.transparent,
+        textColor: toggled ? Theme.of(context).accentTextTheme.button.color : Colors.black,
+        child: icon,
+        padding: const EdgeInsets.all(4.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(6.0),
+        ),
+        onPressed: onPressed,
       ),
-      onPressed: onPressed,
     );
   }
 }

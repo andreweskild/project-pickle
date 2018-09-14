@@ -63,9 +63,9 @@ class ToolsListItem<T> extends StatelessWidget {
       builder: (context, toolModel) {
         final _selected = toolModel.currentTool is T;
         return Padding(
-          padding: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 4.0),
+          padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
           child: FlatButton(
-            color: _selected ? Theme.of(context).highlightColor : Colors.grey.shade400,
+            color: _selected ? Theme.of(context).highlightColor : Theme.of(context).buttonColor,
             textColor: _selected ? Theme.of(context).accentTextTheme.button.color : Colors.black,
             padding: EdgeInsets.all(8.0),
             shape: RoundedRectangleBorder(

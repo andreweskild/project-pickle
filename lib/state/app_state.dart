@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:project_pickle/data_objects/hsl_color.dart';
+//import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 import 'package:project_pickle/tools/base_tool.dart';
@@ -18,6 +18,8 @@ class AppState {
     @required this.previewLayer,
     this.rightDrawerSizeMode = DrawerSizeMode.Normal,
     this.selectionPath,
+    this.toolOpacity = 1.0,
+    this.toolSize = 1.0,
   });
 
   AppState copyWith({
@@ -32,6 +34,8 @@ class AppState {
     PixelCanvasLayer previewLayer,
     DrawerSizeMode rightDrawerSizeMode,
     Path selectionPath,
+    double toolOpacity,
+    double toolSize,
   }) {
     return AppState(
       canvasScale: canvasScale ?? this.canvasScale,
@@ -45,6 +49,8 @@ class AppState {
       previewLayer: previewLayer ?? this.previewLayer,
       rightDrawerSizeMode: rightDrawerSizeMode ?? this.rightDrawerSizeMode,
       selectionPath: selectionPath ?? this.selectionPath,
+      toolOpacity: toolOpacity ?? this.toolOpacity,
+      toolSize: toolSize ?? this.toolSize,
     );
   }
 
@@ -60,6 +66,8 @@ class AppState {
   var palette = new List<HSLColor>();
   DrawerSizeMode rightDrawerSizeMode;
   Path selectionPath;
+  double toolSize;
+  double toolOpacity;
 }
 
 

@@ -1,6 +1,6 @@
 import 'package:flutter/rendering.dart';
 
-import 'package:project_pickle/data_objects/hsl_color.dart';
+//import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/tools/base_tool.dart';
 import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
@@ -76,14 +76,24 @@ class SetLeftDrawerSizeModeAction {
   final DrawerSizeMode sizeMode;
 }
 
+class SetRightDrawerSizeModeAction {
+  SetRightDrawerSizeModeAction(this.sizeMode);
+  final DrawerSizeMode sizeMode;
+}
+
 class SetSelectionPathAction {
   SetSelectionPathAction(this.path);
   final Path path;
 }
 
-class SetRightDrawerSizeModeAction {
-  SetRightDrawerSizeModeAction(this.sizeMode);
-  final DrawerSizeMode sizeMode;
+class SetToolOpacityAction {
+  SetToolOpacityAction(this.opacity);
+  final double opacity;
+}
+
+class SetToolSizeAction {
+  SetToolSizeAction(this.size);
+  final double size;
 }
 
 class RemovePixelAction {

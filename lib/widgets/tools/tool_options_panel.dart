@@ -3,9 +3,43 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/state/app_state.dart';
+import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/widgets/common/value_slider.dart';
 
-/// Presents options and settings to customize the currently selected tool
+class _ToolOptionsModel {
+  _ToolOptionsModel({
+    this.size,
+    this.opacity,
+    this.sizeCallback,
+    this.opacityCallback,
+  });
+
+  final double size;
+  final double opacity;
+  ValueChanged<double> sizeCallback;
+  ValueChanged<double> opacityCallback;
+
+
+  @override
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + size.hashCode;
+    result = 37 * result + opacity.hashCode;
+    return result;
+  }
+
+  // You should generally implement operator == if you
+  // override hashCode.
+  @override
+  bool operator ==(dynamic other) {
+    if (other is! _ToolOptionsModel) return false;
+    _ToolOptionsModel model = other;
+    return (model.size == size &&
+        model.opacity == opacity);
+  }
+}
+
+/// Small panel with controls for adjusting tool opacity and size.
 ///
 ///
 class ToolOptionsPanel extends StatefulWidget {
@@ -17,21 +51,20 @@ class ToolOptionsPanel extends StatefulWidget {
 }
 
 class ToolOptionsPanelState extends State<ToolOptionsPanel> {
-  double value1 = 0.0;
-  double value2 = 0.3;
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, List<Widget>>(
+    return StoreConnector<AppState, _ToolOptionsModel>(
+      distinct: true,
       converter: (store) {
-        if(store.state.currentTool != null) {
-          return store.state.currentTool.options;
-        }
-        else {
-          return null;
-        }
+        return _ToolOptionsModel(
+          size: store.state.toolSize,
+          opacity: store.state.toolOpacity,
+          sizeCallback: (value) => store.dispatch(SetToolSizeAction(value)),
+          opacityCallback: (value) => store.dispatch(SetToolOpacityAction(value)),
+        );
       },
-      builder: (context, options) {
+      builder: (context, model) {
         return SizedBox(
           height: 64.0,
           child: Material(
@@ -55,10 +88,12 @@ class ToolOptionsPanelState extends State<ToolOptionsPanel> {
                       Padding(
                         padding: const EdgeInsets.only(left: 10.0),
                         child: ValueSlider(
-                          value: value1,
+                          value: model.size,
+                          min: 1.0,
+                          max: 100.0,
                           onChanged: (value){
                             setState((){
-                              value1 = value;
+                              model.sizeCallback(value);
                             });
                           },
                         ),
@@ -75,10 +110,10 @@ class ToolOptionsPanelState extends State<ToolOptionsPanel> {
                       Padding(
                         padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                         child: ValueSlider(
-                          value: value2,
+                          value: model.opacity,
                           onChanged: (value){
                             setState((){
-                              value2 = value;
+                              model.opacityCallback(value);
                             });
                           },
                         ),

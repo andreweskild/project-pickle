@@ -4,7 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
-import 'package:project_pickle/data_objects/hsl_color.dart';
+//import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/widgets/color_selector/color_menu_button.dart';
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 
@@ -73,8 +73,8 @@ class ColorCard extends StatelessWidget {
         distinct: true,
         converter: (store) {
           return ColorCardModel(
-            color: HSLColor.from(store.state.currentColor),
-            setColorCallback: (newColor) => store.dispatch(SetCurrentColorAction(HSLColor.from(newColor))),
+            color: store.state.currentColor,
+            setColorCallback: (newColor) => store.dispatch(SetCurrentColorAction(newColor)),
             palette: store.state.palette,
           );
         },
@@ -96,7 +96,7 @@ class ColorCard extends StatelessWidget {
                       ConstrainedBox(
                         constraints: BoxConstraints.expand(height: 40.0),
                         child: ColorMenuButton(
-                          color: HSLColor.from(model.color),
+                          color: model.color,
                           onColorChanged: model.setColorCallback,
                         ),
                       ),
@@ -105,7 +105,7 @@ class ColorCard extends StatelessWidget {
                         child: ConstrainedBox(
                           constraints: BoxConstraints.expand(height: 40.0),
                           child: ColorMenuButton(
-                            color: HSLColor.from(model.color),
+                            color: model.color,
                             onColorChanged: model.setColorCallback,
                           ),
                         ),
@@ -132,7 +132,7 @@ class ColorCard extends StatelessWidget {
                           side: BorderSide(color: Colors.black26),
                         ),
                         onPressed: () {
-                          model.setColorCallback(HSLColor.from(hslColor));
+                          model.setColorCallback(hslColor);
                         },
                       )
                   ).toList(),

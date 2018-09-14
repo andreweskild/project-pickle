@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:project_pickle/data_objects/hsl_color.dart';
+//import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/base_tool.dart';
@@ -104,7 +104,7 @@ class ColorPopupContent extends StatefulWidget {
   final HSLColor color;
   final Size initialSize;
   final Animation<double> parentAnimation;
-  final VoidCallback onAccept;
+  final ValueChanged<HSLColor> onAccept;
 
 
   @override
@@ -125,9 +125,9 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
 
   void updateColorWith({double h, double s, double l}) {
     setState(() {
-      if (h != null) _currentColor.h = h;
-      if (s != null) _currentColor.s = s;
-      if (l != null) _currentColor.l = l;
+      if (h != null) _currentColor = _currentColor.withHue(h);
+      if (s != null) _currentColor = _currentColor.withSaturation(s);
+      if (l != null) _currentColor = _currentColor.withLightness(l);
     });
   }
 
@@ -215,7 +215,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                               Icons.check,
                               color: _getContrastingColor(_currentColor.toColor()),
                             ),
-                            onPressed: widget.onAccept,
+                            onPressed: () => widget.onAccept(_currentColor),
                           ),
                         ),
                       ),
@@ -268,14 +268,14 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                     data: SliderTheme.of(context).copyWith(
                                       activeTrackColor: Colors.transparent,
                                       inactiveTrackColor: Colors.transparent,
-                                      thumbColor: _currentColor.copyWith(s: 1.0, l: 0.5).toColor(),
+                                      thumbColor: _currentColor.withSaturation(1.0).withLightness(0.5).toColor(),
                                       thumbShape: ColorSliderThumbShape(),
-                                      overlayColor: _currentColor.copyWith(s: 1.0, l: 0.5).toColor().withOpacity(0.33),
+                                      overlayColor: _currentColor.withAlpha(0.3).withSaturation(1.0).withLightness(0.5).toColor(),
                                       showValueIndicator: ShowValueIndicator.always,
-                                      valueIndicatorColor: _currentColor.copyWith(s: 1.0, l: 0.5).toColor(),
+                                      valueIndicatorColor: _currentColor.withSaturation(1.0).withLightness(0.5).toColor(),
                                       valueIndicatorShape: ColorSliderValueIndicatorShape(),
                                       valueIndicatorTextStyle: TextStyle(
-                                        color: _getContrastingColor(_currentColor.copyWith(s: 1.0, l: 0.5).toColor()),
+                                        color: _getContrastingColor(_currentColor.withSaturation(1.0).withLightness(0.5).toColor()),
                                       )
                                     ),
                                     child: Stack(
@@ -318,10 +318,10 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                             onChanged: (value) {
                                               updateColorWith(h: value);
                                             },
-                                            label: (_currentColor.h * 255.0).toStringAsFixed(0),
-                                            value: _currentColor.h,
+                                            label: (_currentColor.hue).toStringAsFixed(0),
+                                            value: _currentColor.hue,
                                             min: 0.0,
-                                            max: 1.0,
+                                            max: 360.0,
                                           ),
                                         ),
                                       ],
@@ -370,7 +370,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                                     gradient: LinearGradient(
                                                       begin: Alignment.centerLeft,
                                                       end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
-                                                      colors: [_currentColor.copyWith(s: 0.0).toColor(), _currentColor.copyWith(s: 1.0).toColor()], // whitish to gray
+                                                      colors: [_currentColor.withSaturation(0.0).toColor(), _currentColor.withSaturation(1.0).toColor()], // whitish to gray
                                                       tileMode: TileMode.clamp, // repeats the gradient over the canvas
                                                     ),
                                                     borderRadius: BorderRadius.circular(_sliderTrackHeight / 2.0),
@@ -393,8 +393,8 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                             onChanged: (value) {
                                               updateColorWith(s: value);
                                             },
-                                            label: (_currentColor.s * 255.0).toStringAsFixed(0),
-                                            value: _currentColor.s,
+                                            label: (_currentColor.saturation * 255.0).toStringAsFixed(0),
+                                            value: _currentColor.saturation,
                                             min: 0.0,
                                             max: 1.0,
                                           ),
@@ -445,7 +445,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                                     gradient: LinearGradient(
                                                       begin: Alignment.centerLeft,
                                                       end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
-                                                      colors: [const Color(0xFF000000), _currentColor.copyWith(l: 0.5).toColor(), const Color(0xFFFFFFFF)], // whitish to gray
+                                                      colors: [const Color(0xFF000000), _currentColor.withLightness(0.5).toColor(), const Color(0xFFFFFFFF)], // whitish to gray
                                                       tileMode: TileMode.clamp, // repeats the gradient over the canvas
                                                     ),
                                                     borderRadius: BorderRadius.circular(_sliderTrackHeight / 2.0),
@@ -468,8 +468,8 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                             onChanged: (value) {
                                               updateColorWith(l: value);
                                             },
-                                            label: (_currentColor.l * 255.0).toStringAsFixed(0),
-                                            value: _currentColor.l,
+                                            label: (_currentColor.lightness * 255.0).toStringAsFixed(0),
+                                            value: _currentColor.lightness,
                                             min: 0.0,
                                             max: 1.0,
                                           ),
@@ -550,8 +550,8 @@ class _ColorPopupRoute extends PopupRoute<HSLColor> {
               color: color,
               initialSize: initialSize,
               parentAnimation: parentAnimation,
-              onAccept: () {
-                Navigator.pop(context);
+              onAccept: (newColor) {
+                Navigator.pop(context, newColor);
               },
             )
           );

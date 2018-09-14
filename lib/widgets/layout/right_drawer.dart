@@ -32,7 +32,6 @@ class RightDrawer extends StatelessWidget {
           ),
           onSizeModeChanged: (sizeMode) {
             store.dispatch(SetRightDrawerSizeModeAction(sizeMode));
-            print(sizeMode);
           },
         );
       },

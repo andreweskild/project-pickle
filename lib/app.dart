@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
-import 'package:project_pickle/data_objects/hsl_color.dart';
+//import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/pages/pixel_editor_page.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/state/reducer.dart';
@@ -13,17 +13,17 @@ import 'package:project_pickle/widgets/common/slider_thumb_shape.dart';
 final store = Store<AppState>(
   stateReducer,
   initialState: AppState(
-    currentColor: HSLColor(),
+    currentColor: HSLColor.fromAHSL(1.0, 1.0, 1.0, 1.0),
     layers: <PixelCanvasLayer>[PixelCanvasLayer(
       name: 'Layer 1',
       width: 32,
       height: 32,
     )],
     palette: <HSLColor>[
-      HSLColor(h: 1.0, s: 0.5, l: 0.4),
-      HSLColor(h: 0.1, s: 0.8, l: 0.4),
-      HSLColor(h: 0.4, s: 0.6, l: 0.6),
-      HSLColor(h: 0.8, s: 0.9, l: 0.7),
+      HSLColor.fromAHSL(1.0, 34.0, 0.5, 0.4),
+      HSLColor.fromAHSL(1.0, 25.0, 0.8, 0.4),
+      HSLColor.fromAHSL(1.0, 155.4, 0.6, 0.6),
+      HSLColor.fromAHSL(1.0, 300.8, 0.9, 0.7),
     ],
     previewLayer: PixelCanvasLayer(width: 32, height: 32),
   ),
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           accentColor: Colors.grey.shade700,
           cardColor: Colors.grey.shade100,
-          buttonColor: Colors.grey.shade300,
+          buttonColor: Colors.grey.shade400,
           dividerColor: Colors.grey.shade400,
           primarySwatch: MaterialColor(Colors.grey.shade100.value, const <int, Color> {50 : const Color(0xFFFFF8E1), 100 : const Color(0xFFFFECB3), 200 : const Color(0xFFFFE082), 300 : const Color(0xFFFFD54F), 400 : const Color(0xFFFFCA28), 500 : const Color(0xFFFFC107), 600 : const Color(0xFFFFB300), 700 : const Color(0xFFFFA000), 800 : const Color(0xFFFF8F00), 900 : const Color(0xFFFF6F00)}),
           splashColor: Colors.black38,

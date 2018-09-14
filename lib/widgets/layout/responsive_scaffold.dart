@@ -47,7 +47,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
           // return Desktop Scaffold
           return new Scaffold(
             appBar: new AppBar(
-              elevation: 1.0,
+              elevation: 4.0,
               primary: true,
               title: Row(
                 children: <Widget>[
@@ -62,9 +62,12 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                     ),
                     onPressed: (){},
                   ),
-                  Text(
-                    '>',
-                    style: Theme.of(context).textTheme.title,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4.0, right: 4.0,),
+                    child: Text(
+                      '>',
+                      style: Theme.of(context).textTheme.title,
+                    ),
                   ),
                   FlatButton(
                     child: Text(
@@ -106,7 +109,6 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: ToolOptionsPanel(
-
                     ),
                   ),
                 )

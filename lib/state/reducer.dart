@@ -1,4 +1,5 @@
-import 'package:project_pickle/data_objects/hsl_color.dart';
+//import 'package:project_pickle/data_objects/hsl_color.dart';
+import 'package:flutter/painting.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/color_picker_tool.dart';
@@ -78,14 +79,18 @@ AppState stateReducer(AppState state, dynamic action) {
   }
   else if (action is SetCurrentColorAction) {
     return state.copyWith(
-      currentColor: HSLColor.from(action.color),
+      currentColor: HSLColor.fromAHSL(
+        1.0,
+        action.color.hue,
+        action.color.saturation,
+        action.color.lightness,
+      ),
     );
   }
   else if (action is SetCurrentLayerIndexAction) {
     if (action.currentLayerIndex < state.layers.length) {
       state.currentLayerIndex = action.currentLayerIndex;
     }
-    print(action.currentLayerIndex.toString());
     return state;
   }
   else if (action is SetCurrentToolAction) {
@@ -97,14 +102,24 @@ AppState stateReducer(AppState state, dynamic action) {
       leftDrawerSizeMode: action.sizeMode,
     );
   }
+  else if(action is SetRightDrawerSizeModeAction) {
+    return state.copyWith(
+      rightDrawerSizeMode: action.sizeMode,
+    );
+  }
   else if(action is SetSelectionPathAction) {
     return state.copyWith(
         selectionPath: action.path
     );
   }
-  else if(action is SetRightDrawerSizeModeAction) {
+  else if(action is SetToolOpacityAction) {
     return state.copyWith(
-      rightDrawerSizeMode: action.sizeMode,
+      toolOpacity: action.opacity
+    );
+  }
+  else if (action is SetToolSizeAction) {
+    return state.copyWith(
+      toolSize: action.size
     );
   }
   else if (action is RemovePixelAction) {

@@ -581,7 +581,7 @@ class _RenderSlider extends RenderBox {
   static const double _preferredTrackWidth = 144.0;
   static const double _preferredTotalWidth = _preferredTrackWidth + _overlayDiameter;
   static const Duration _minimumInteractionTime = Duration(milliseconds: 500);
-  static final Tween<double> _overlayRadiusTween = new Tween<double>(begin: 0.0, end: _overlayRadius);
+  static final Tween<double> _overlayRadiusTween = new Tween<double>(begin: 0.0, end: _overlayRadius + 4.0);
 
   _ValueSliderState _state;
   Animation<double> _overlayAnimation;
