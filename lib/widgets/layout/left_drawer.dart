@@ -7,7 +7,6 @@ import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/color_selector/color_card.dart';
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 import 'package:project_pickle/widgets/tools/tools_card.dart';
-import 'package:project_pickle/widgets/palette_selector/palette_selector_card.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({

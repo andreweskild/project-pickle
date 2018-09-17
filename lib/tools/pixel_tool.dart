@@ -1,15 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/base_drawing_tool.dart';
-import 'package:project_pickle/widgets/common/vertical_divider.dart';
 
 class PixelTool extends BaseDrawingTool {
-  PixelTool(context) : super(context) {
-
-  }
+  PixelTool(context) : super(context);
 
   Offset _lastPoint;
 

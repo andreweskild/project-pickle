@@ -1,15 +1,6 @@
-//import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:flutter/painting.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
-import 'package:project_pickle/tools/color_picker_tool.dart';
-import 'package:project_pickle/tools/eraser_tool.dart';
-import 'package:project_pickle/tools/fill_tool.dart';
-import 'package:project_pickle/tools/line_tool.dart';
-import 'package:project_pickle/tools/pixel_tool.dart';
-import 'package:project_pickle/tools/shape_tool.dart';
-import 'package:project_pickle/tools/marquee_selector_tool.dart';
-import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 
 AppState stateReducer(AppState state, dynamic action) {
@@ -44,10 +35,6 @@ AppState stateReducer(AppState state, dynamic action) {
     state.currentLayerIndex = newIndex;
     return state;
   }
-  else if (action is ClearPreviewAction) {
-    state.previewLayer.clearPixels();
-    return state;
-  }
   else if (action is DeselectAction) {
     state.selectionPath = null;
     return state;
@@ -55,13 +42,9 @@ AppState stateReducer(AppState state, dynamic action) {
   else if (action is FillAreaAction) {
     state.currentLayer.fillArea(
         action.pos,
-        state.currentColor.toColor()
+        state.currentColor.toColor(),
+        state.selectionPath
     );
-    return state;
-  }
-  else if (action is FinalizePixelsAction) {
-    state.currentLayer.setPixelsFromMap(state.previewLayer.rawPixels);
-    state.previewLayer.clearPixels();
     return state;
   }
   else if (action is ToggleLayerHiddenAction) {
@@ -69,17 +52,32 @@ AppState stateReducer(AppState state, dynamic action) {
     return state;
   }
   else if (action is SaveOverlayToLayerAction) {
-    state.currentLayer.setPixelsFromMap(action.overlay.rawPixels);
+    state.currentLayer.setPixelsFromMap(action.overlay.pixels);
     return state;
+  }
+  else if (action is SetActiveColorTypeAction) {
+    return state.copyWith(
+        activeColorType: action.colorType,
+    );
   }
   else if (action is SetCanvasScaleAction) {
     return state.copyWith(
         canvasScale: action.scale
     );
   }
-  else if (action is SetCurrentColorAction) {
+  else if (action is SetPrimaryColorAction) {
     return state.copyWith(
-      currentColor: HSLColor.fromAHSL(
+      primaryColor: HSLColor.fromAHSL(
+        1.0,
+        action.color.hue,
+        action.color.saturation,
+        action.color.lightness,
+      ),
+    );
+  }
+  else if (action is SetSecondaryColorAction) {
+    return state.copyWith(
+      secondaryColor: HSLColor.fromAHSL(
         1.0,
         action.color.hue,
         action.color.saturation,

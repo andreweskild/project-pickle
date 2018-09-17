@@ -16,7 +16,9 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
 
 
   void drawOverlayPixel(Offset pos) {
-    overlay.setPixel(pos, store.state.currentColor.toColor());
+    if(pixelInSelection(pos)) {
+      overlay.setPixel(pos, store.state.currentColor.toColor());
+    }
   }
 
   void drawOverlayPixelLine(Offset p1, Offset p2) {
@@ -58,7 +60,9 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
 
 
   void removePixel(Offset pos) {
-    store.dispatch(new RemovePixelAction(pos));
+    if(pixelInSelection(pos)) {
+      store.dispatch(new RemovePixelAction(pos));
+    }
   }
 
   void removePixelLine(Offset p1, Offset p2) {
@@ -99,7 +103,7 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
   }
 
   void fillArea(Offset pos) {
-    store.dispatch(new FillAreaAction(pos));
+    if (pixelInSelection(pos)) store.dispatch(new FillAreaAction(pos));
   }
 
   void resetOverlay() {

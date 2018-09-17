@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
-//import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/pages/pixel_editor_page.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/state/reducer.dart';
-import 'package:project_pickle/tools/pixel_tool.dart';
 import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 import 'package:project_pickle/widgets/common/slider_thumb_shape.dart';
 
 final store = Store<AppState>(
   stateReducer,
   initialState: AppState(
-    currentColor: HSLColor.fromAHSL(1.0, 1.0, 1.0, 1.0),
+    primaryColor: HSLColor.fromAHSL(1.0, 1.0, 1.0, 1.0),
+    secondaryColor: HSLColor.fromAHSL(1.0, 100.0, 1.0, 0.5),
     layers: <PixelCanvasLayer>[PixelCanvasLayer(
       name: 'Layer 1',
       width: 32,
@@ -25,7 +24,6 @@ final store = Store<AppState>(
       HSLColor.fromAHSL(1.0, 155.4, 0.6, 0.6),
       HSLColor.fromAHSL(1.0, 300.8, 0.9, 0.7),
     ],
-    previewLayer: PixelCanvasLayer(width: 32, height: 32),
   ),
 );
 

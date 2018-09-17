@@ -1,7 +1,5 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';

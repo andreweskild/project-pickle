@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:project_pickle/widgets/color_selector/color_card.dart';
-import 'package:project_pickle/widgets/tools/tools_card.dart';
-import 'package:project_pickle/widgets/palette_selector/palette_selector_card.dart';
-
 typedef SizeModeChangeCallback = void Function(DrawerSizeMode sizeMode);
 
 enum DrawerSizeMode {

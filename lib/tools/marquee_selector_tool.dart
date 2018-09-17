@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:project_pickle/tools/selector_tool.dart';
 
+/// Tool for selecting pixels in a rectangle selection.
 class MarqueeSelectorTool extends SelectorTool {
   MarqueeSelectorTool(context) : super(context);
 

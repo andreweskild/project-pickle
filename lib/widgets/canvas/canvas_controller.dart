@@ -133,7 +133,7 @@ class _CanvasControllerState extends State<CanvasController> {
                   Stack(
                     children: layers
                   ),
-//                  _toolController.selectionOverlay,
+                  SelectToolOverlay(),
                 ],
               ),
             ),

@@ -1,14 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-
-import 'package:project_pickle/data_objects/hsl_color.dart';
-import 'package:project_pickle/state/actions.dart';
-import 'package:project_pickle/state/app_state.dart';
-import 'package:project_pickle/tools/base_tool.dart';
-import 'package:project_pickle/tools/color_picker_tool.dart';
-import 'package:project_pickle/widgets/color_selector/color_slider_thumb.dart';
-import 'package:project_pickle/widgets/color_selector/color_slider_value_indicator.dart';
-import 'package:project_pickle/widgets/common/toggle_icon_button.dart';
 
 const double _kMenuScreenPadding = 8.0;
 
@@ -170,7 +160,7 @@ class _PopupButtonRoute extends PopupRoute<Null> {
   Duration get transitionDuration => const Duration(milliseconds: 400);
 
   @override
-  bool get barrierDismissible => false;
+  bool get barrierDismissible => true;
 
   @override
   Color get barrierColor => null;

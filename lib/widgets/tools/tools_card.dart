@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
-import 'package:project_pickle/tools/color_picker_tool.dart';
 import 'package:project_pickle/tools/eraser_tool.dart';
 import 'package:project_pickle/tools/fill_tool.dart';
 import 'package:project_pickle/tools/line_tool.dart';

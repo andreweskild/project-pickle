@@ -55,7 +55,7 @@ class PixelCanvasLayer extends StatelessWidget {
   final _repaintNotifier = LayerChangeNotifier();
   final _pixels = HashMap<Offset, Color>();
 
-  get rawPixels => _pixels;
+  get pixels => _pixels;
 
 
   @override
@@ -106,21 +106,27 @@ class PixelCanvasLayer extends StatelessWidget {
   }
 
 
-  void fillArea(Offset pos, Color color) {
+  void fillArea(Offset pos, Color color, Path selection) {
     if(_pixels.containsKey(pos)) {
       _coloredAreaFill(
         pos,
         _pixels[pos],
-        color
+        color,
+        selection
       );
     }
     else {
-      _nullAreaFill(pos, color);
+      _nullAreaFill(pos, color, selection);
     }
     _repaintNotifier.notifyListeners();
   }
 
-  void _coloredAreaFill(Offset targetPos, Color targetColor, Color newColor) {
+  bool pixelInSelection(Offset pos, Path selection) {
+    if(selection == null) return true;
+    else return selection.contains(pos.translate(0.5, 0.5));
+  }
+
+  void _coloredAreaFill(Offset targetPos, Color targetColor, Color newColor, Path selection) {
     var uncheckedPixels = <Offset>[];
     var checkedPixels = <Offset>[];
     var tempPixels = <Offset>[];
@@ -133,7 +139,8 @@ class PixelCanvasLayer extends StatelessWidget {
             (adjacentPixel) {
               if( !tempPixels.contains(adjacentPixel) &&
                   !checkedPixels.contains(adjacentPixel) &&
-                  !uncheckedPixels.contains(adjacentPixel)) {
+                  !uncheckedPixels.contains(adjacentPixel) &&
+                  pixelInSelection(adjacentPixel, selection)) {
                     tempPixels.add(adjacentPixel);
                   }
             }
@@ -207,7 +214,7 @@ class PixelCanvasLayer extends StatelessWidget {
   }
 
 
-  void _nullAreaFill(Offset targetPos, Color newColor) {
+  void _nullAreaFill(Offset targetPos, Color newColor, Path selection) {
     var uncheckedPixels = <Offset>[];
     var checkedPixels = <Offset>[];
     var tempPixels = <Offset>[];
@@ -220,7 +227,8 @@ class PixelCanvasLayer extends StatelessWidget {
             (adjacentPixel) {
               if( !tempPixels.contains(adjacentPixel) &&
                   !checkedPixels.contains(adjacentPixel) &&
-                  !uncheckedPixels.contains(adjacentPixel)) {
+                  !uncheckedPixels.contains(adjacentPixel) &&
+                  pixelInSelection(adjacentPixel, selection)) {
                 tempPixels.add(adjacentPixel);
               }
             }

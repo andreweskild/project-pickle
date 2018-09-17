@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 //import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/state/actions.dart';
+import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/base_tool.dart';
 
 class ColorPickerTool extends BaseTool<Widget> {
@@ -29,8 +30,8 @@ class ColorPickerTool extends BaseTool<Widget> {
 
   Color getPixelColor(Offset pos) {
     for (var layer in store.state.layers.reversed.where((layer) => !layer.hidden)) {
-      if (layer.rawPixels.containsKey(pos)) {
-        return layer.rawPixels[pos];
+      if (layer.pixels.containsKey(pos)) {
+        return layer.pixels[pos];
       }
     }
 
@@ -39,7 +40,12 @@ class ColorPickerTool extends BaseTool<Widget> {
 
   void updateCurrentColor(Color color) {
     HSLColor hslColor = HSLColor.fromColor(color);
-    store.dispatch(SetCurrentColorAction(hslColor));
+    if(store.state.activeColorType == ColorType.Primary) {
+      store.dispatch(SetPrimaryColorAction(hslColor));
+    }
+    else {
+      store.dispatch(SetSecondaryColorAction(hslColor));
+    }
   }
 
 }

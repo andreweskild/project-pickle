@@ -4,30 +4,39 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
-//import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/widgets/color_selector/color_menu_button.dart';
-import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 
 typedef SetColorCallback = void Function(HSLColor);
+typedef SetColorTypeCallback = void Function(ColorType);
 
 class ColorCardModel {
   ColorCardModel({
+    this.activeColorType,
     this.addToPalette,
-    this.color,
+    this.primaryColor,
+    this.secondaryColor,
     this.palette,
-    this.setColorCallback,
+    this.setActiveColorTypeCallback,
+    this.setPrimaryColorCallback,
+    this.setSecondaryColorCallback,
   });
 
-  final HSLColor color;
+  final ColorType activeColorType;
+  final HSLColor primaryColor;
+  final HSLColor secondaryColor;
   VoidCallback addToPalette;
   final List<HSLColor> palette;
-  final SetColorCallback setColorCallback;
+  final SetColorTypeCallback setActiveColorTypeCallback;
+  final SetColorCallback setPrimaryColorCallback;
+  final SetColorCallback setSecondaryColorCallback;
 
 
   @override
   int get hashCode {
     int result = 17;
-    result = 37 * result + color.hashCode;
+    result = 37 * result + activeColorType.hashCode;
+    result = 37 * result + primaryColor.hashCode;
+    result = 37 * result + secondaryColor.hashCode;
     result = 37 * result + palette.hashCode;
     return result;
   }
@@ -39,7 +48,9 @@ class ColorCardModel {
     if (other is! ColorCardModel) return false;
     ColorCardModel model = other;
     return (model.palette.length == palette.length &&
-        model.color == color);
+        model.activeColorType == activeColorType &&
+        model.primaryColor == primaryColor &&
+        model.secondaryColor == secondaryColor);
   }
 }
 
@@ -73,8 +84,12 @@ class ColorCard extends StatelessWidget {
         distinct: true,
         converter: (store) {
           return ColorCardModel(
-            color: store.state.currentColor,
-            setColorCallback: (newColor) => store.dispatch(SetCurrentColorAction(newColor)),
+            activeColorType: store.state.activeColorType,
+            primaryColor: store.state.primaryColor,
+            secondaryColor: store.state.secondaryColor,
+            setActiveColorTypeCallback: (colorType) => store.dispatch(SetActiveColorTypeAction(colorType)),
+            setPrimaryColorCallback: (newColor) => store.dispatch(SetPrimaryColorAction(newColor)),
+            setSecondaryColorCallback: (newColor) => store.dispatch(SetSecondaryColorAction(newColor)),
             palette: store.state.palette,
           );
         },
@@ -95,18 +110,125 @@ class ColorCard extends StatelessWidget {
                     children: <Widget>[
                       ConstrainedBox(
                         constraints: BoxConstraints.expand(height: 40.0),
-                        child: ColorMenuButton(
-                          color: model.color,
-                          onColorChanged: model.setColorCallback,
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            if(model.activeColorType == ColorType.Secondary) {
+                              model.setActiveColorTypeCallback(ColorType.Primary);
+                            }
+                          },
+                          child: IgnorePointer(
+                            ignoring: (model.activeColorType == ColorType.Secondary),
+                            child: Stack(
+                              children: <Widget>[
+                                Positioned.fill(
+                                  child: ColorMenuButton(
+                                    color: model.primaryColor,
+                                    onColorChanged: model.setPrimaryColorCallback,
+                                  ),
+                                ),
+                                Positioned.fill(
+                                  child: IgnorePointer(
+                                    ignoring: true,
+                                    child: AnimatedContainer(
+                                        curve: Curves.ease,
+                                        duration: Duration(milliseconds: 200),
+                                        foregroundDecoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Color.alphaBlend(Colors.black38, model.primaryColor.toColor()),
+                                              width: (model.activeColorType == ColorType.Primary) ? 4.0 : 1.0
+                                          ),
+                                          borderRadius: BorderRadius.circular(8.0),
+                                        ),
+                                        child: Align(
+                                            alignment: Alignment.bottomRight,
+                                            child: AnimatedOpacity(
+                                              curve: Curves.ease,
+                                              duration: Duration(milliseconds: 200),
+                                              opacity: (model.activeColorType == ColorType.Primary) ? 1.0 : 0.0,
+                                              child: DecoratedBox(
+                                                decoration: BoxDecoration(
+                                                  color: Color.alphaBlend(Colors.black38, model.primaryColor.toColor()),
+                                                  borderRadius: BorderRadius.only(
+                                                      topLeft: Radius.circular(8.0),
+                                                      bottomRight: Radius.circular(8.0)
+                                                  ),
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(4.0),
+                                                  child: Icon(Icons.check, color: Colors.white, size: 16.0,),
+                                                ),
+                                              ),
+                                            )
+                                        )
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: ConstrainedBox(
                           constraints: BoxConstraints.expand(height: 40.0),
-                          child: ColorMenuButton(
-                            color: model.color,
-                            onColorChanged: model.setColorCallback,
+                          child: InkWell(
+                            onTap: () {
+                              if(model.activeColorType == ColorType.Primary) {
+                                model.setActiveColorTypeCallback(ColorType.Secondary);
+                              }
+                            },
+                            child: IgnorePointer(
+                              ignoring: (model.activeColorType == ColorType.Primary),
+                              child: Stack(
+                                children: <Widget>[
+                                  Positioned.fill(
+                                    child: ColorMenuButton(
+                                      color: model.secondaryColor,
+                                      onColorChanged: model.setSecondaryColorCallback,
+                                    ),
+                                  ),
+                                  Positioned.fill(
+                                    child: IgnorePointer(
+                                      ignoring: true,
+                                      child: AnimatedContainer(
+                                        curve: Curves.ease,
+                                        duration: Duration(milliseconds: 200),
+                                        foregroundDecoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Color.alphaBlend(Colors.black38, model.secondaryColor.toColor()),
+                                              width: (model.activeColorType == ColorType.Secondary) ? 4.0 : 1.0
+                                          ),
+                                          borderRadius: BorderRadius.circular(8.0),
+                                        ),
+                                        child: Align(
+                                          alignment: Alignment.bottomRight,
+                                          child: AnimatedOpacity(
+                                            curve: Curves.ease,
+                                            duration: Duration(milliseconds: 200),
+                                            opacity: (model.activeColorType == ColorType.Secondary) ? 1.0 : 0.0,
+                                            child: DecoratedBox(
+                                              decoration: BoxDecoration(
+                                                color: Color.alphaBlend(Colors.black38, model.secondaryColor.toColor()),
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(8.0),
+                                                  bottomRight: Radius.circular(8.0)
+                                                ),
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(4.0),
+                                                child: Icon(Icons.check, color: Colors.white, size: 16.0,),
+                                              ),
+                                            ),
+                                          )
+                                        )
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -132,7 +254,12 @@ class ColorCard extends StatelessWidget {
                           side: BorderSide(color: Colors.black26),
                         ),
                         onPressed: () {
-                          model.setColorCallback(hslColor);
+                          if(model.activeColorType == ColorType.Primary) {
+                            model.setPrimaryColorCallback(hslColor);
+                          }
+                          else {
+                            model.setSecondaryColorCallback(hslColor);
+                          }
                         },
                       )
                   ).toList(),
