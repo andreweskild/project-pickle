@@ -52,10 +52,7 @@ abstract class BaseTool<T extends Widget> {
     double snappedX = pos.dx.floorToDouble();
     double snappedY = pos.dy.floorToDouble();
     Offset snappedPos = Offset(snappedX, snappedY);
-    if (_lastInputPos == null ||
-        snappedPos != _lastInputPos) {
       onPixelInputUpdate(snappedPos);
-    }
     _lastInputPos = snappedPos;
   }
 }

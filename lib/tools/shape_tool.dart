@@ -9,6 +9,40 @@ class ShapeTool extends BaseDrawingTool {
   Offset _startPoint;
   Offset _endPoint;
 
+  get options => <Widget>[
+    Padding(
+      padding: const EdgeInsets.fromLTRB(12.0, 8.0, 16.0, 8.0),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0.0, 8.0, 8.0, 8.0),
+            child: Text('Size'),
+          ),
+          Slider(
+            min: 0.0,
+            max: 1.0,
+            value: 0.0,
+            onChanged: (value){},
+          ),
+          SizedBox(
+            width: 20.0,
+            child: Center(
+              child: TextField(
+                  maxLength: 3,
+                  decoration: null
+              ),
+            ),
+          )
+        ],
+      ),
+    ),
+    Padding(
+        padding: const EdgeInsets.fromLTRB(16.0, 4.0, 8.0, 4.0),
+        child: Text('Shape')
+    ),
+  ];
+
   @override
   void onPixelInputUpdate(Offset pos) {
     if (_startPoint == null) {

@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:project_pickle/tools/eraser_tool.dart';
 import 'package:project_pickle/tools/fill_tool.dart';
+import 'package:project_pickle/tools/gradient_tool.dart';
 import 'package:project_pickle/tools/line_tool.dart';
 import 'package:project_pickle/tools/pixel_tool.dart';
 import 'package:project_pickle/tools/shape_tool.dart';
@@ -31,7 +32,7 @@ class ToolsCard extends StatelessWidget {
           children: <Widget>[
             ToolsListItem<PixelTool>(
               icon: Icon(Icons.brush),
-              label: 'Pencil',
+              label: 'Pixel',
               onToggled: () => PixelTool(context),
             ),
             ToolsListItem<EraserTool>(
@@ -44,18 +45,13 @@ class ToolsCard extends StatelessWidget {
               label: 'Fill',
               onToggled: () => FillTool(context),
             ),
-            ToolsListItem<FillTool>(
-              icon: Icon(Icons.gradient),
-              label: 'Gradient',
-              onToggled: () => FillTool(context),
-            ),
             ToolsListItem<LineTool>(
               icon: Icon(Icons.brightness_1),
-              label: 'Path',
+              label: 'Line',
               onToggled: () => LineTool(context),
             ),
             ToolsListItem<ShapeTool>(
-              icon: Icon(Icons.brush),
+              icon: Icon(Icons.crop_square),
               label: 'Shape',
               onToggled: () => ShapeTool(context),
             ),

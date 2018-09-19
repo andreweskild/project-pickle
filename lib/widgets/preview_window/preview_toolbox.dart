@@ -45,7 +45,40 @@ class PreviewToolbox extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
-  Widget _cachedPreview;
+  Widget _cachedPreview(BuildContext Context, List<PixelCanvasLayer> layers) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+          color: Colors.grey.shade300,
+          borderRadius: BorderRadius.circular(8.0)
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: AspectRatio(
+            aspectRatio: 1.0,
+            child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return Material(
+                    elevation: 2.0,
+                    color: Colors.white,
+                    child: UnconstrainedBox(
+                      child: Transform.scale(
+                        scale: constraints.maxHeight / 32.0,
+                        child: SizedBox(
+                          height: 32.0,
+                          width: 32.0,
+                          child: Stack(
+                            children: layers,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+            )
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,40 +92,6 @@ class PreviewToolbox extends StatelessWidget {
         );
       },
       builder: (context, model) {
-        if (_cachedPreview == null) {
-          _cachedPreview = DecoratedBox(
-            decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(8.0)
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: AspectRatio(
-                  aspectRatio: 1.0,
-                  child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        return Material(
-                          elevation: 2.0,
-                          color: Colors.white,
-                          child: UnconstrainedBox(
-                            child: Transform.scale(
-                              scale: constraints.maxHeight / 32.0,
-                              child: SizedBox(
-                                height: 32.0,
-                                width: 32.0,
-                                child: Stack(
-                                  children: model.layers,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                  )
-              ),
-            ),
-          );
-        }
         return DecoratedBox(
           decoration: BoxDecoration(
               color: Colors.white,
@@ -107,30 +106,55 @@ class PreviewToolbox extends StatelessWidget {
                   curve: Curves.ease,
                   duration: Duration(milliseconds: 150),
                   opacity: (model.sizeMode == DrawerSizeMode.Mini) ? 0.0 : 1.0,
-                  child: _cachedPreview,
+                  child: _cachedPreview(context, model.layers),
                 ),
                 AnimatedOpacity(
                   curve: Curves.ease,
                   duration: Duration(milliseconds: 150),
                   opacity: (model.sizeMode == DrawerSizeMode.Mini) ? 1.0 : 0.0,
-                  child: PopupButton(
-                    child: Icon(Icons.crop),
-                    popupContent: _cachedPreview,
+                  child: AspectRatio(
+                    aspectRatio: 1.0,
+                    child: PopupButton(
+                      child: Icon(Icons.crop),
+                      popupBuilder: (context, animation) {
+                        final Animation<BorderRadius> borderRadius = BorderRadiusTween(
+                          begin: BorderRadius.circular(6.0),
+                          end: BorderRadius.circular(8.0),
+                        ).animate(
+                          CurvedAnimation(
+                            parent: animation,
+                            curve: Interval(
+                              0.0, 1.0,
+                              curve: Curves.ease,
+                            ),
+                          ),
+                        );
+                        return Material(
+                          elevation: 6.0,
+                          color: Theme.of(context).cardColor,
+                          animationDuration: Duration.zero,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: borderRadius.value,
+                            side: BorderSide(
+                              color: Colors.black26,
+                            ),
+                          ),
+                          child: Opacity(
+                            opacity: animation.value,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: _cachedPreview(context, model.layers),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],
             ),
           ),
         );
-//        if(model.sizeMode == DrawerSizeMode.Mini) {
-//          return ToggleIconButton(
-//            icon: Icon(Icons.crop),
-//            onPressed: (){},
-//          );
-//        }
-//        else {
-//          return _cachedPreview;
-//        }
       }
     );
   }

@@ -110,126 +110,86 @@ class ColorCard extends StatelessWidget {
                     children: <Widget>[
                       ConstrainedBox(
                         constraints: BoxConstraints.expand(height: 40.0),
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: () {
-                            if(model.activeColorType == ColorType.Secondary) {
+                          child: ColorMenuButton(
+                            color: model.primaryColor,
+                            active: model.activeColorType == ColorType.Primary,
+                            label: 'Primary',
+                            onColorChanged: model.setPrimaryColorCallback,
+                            onToggled: () {
                               model.setActiveColorTypeCallback(ColorType.Primary);
                             }
-                          },
-                          child: IgnorePointer(
-                            ignoring: (model.activeColorType == ColorType.Secondary),
-                            child: Stack(
-                              children: <Widget>[
-                                Positioned.fill(
-                                  child: ColorMenuButton(
-                                    color: model.primaryColor,
-                                    onColorChanged: model.setPrimaryColorCallback,
-                                  ),
-                                ),
-                                Positioned.fill(
-                                  child: IgnorePointer(
-                                    ignoring: true,
-                                    child: AnimatedContainer(
-                                        curve: Curves.ease,
-                                        duration: Duration(milliseconds: 200),
-                                        foregroundDecoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Color.alphaBlend(Colors.black38, model.primaryColor.toColor()),
-                                              width: (model.activeColorType == ColorType.Primary) ? 4.0 : 1.0
-                                          ),
-                                          borderRadius: BorderRadius.circular(8.0),
-                                        ),
-                                        child: Align(
-                                            alignment: Alignment.bottomRight,
-                                            child: AnimatedOpacity(
-                                              curve: Curves.ease,
-                                              duration: Duration(milliseconds: 200),
-                                              opacity: (model.activeColorType == ColorType.Primary) ? 1.0 : 0.0,
-                                              child: DecoratedBox(
-                                                decoration: BoxDecoration(
-                                                  color: Color.alphaBlend(Colors.black38, model.primaryColor.toColor()),
-                                                  borderRadius: BorderRadius.only(
-                                                      topLeft: Radius.circular(8.0),
-                                                      bottomRight: Radius.circular(8.0)
-                                                  ),
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(4.0),
-                                                  child: Icon(Icons.check, color: Colors.white, size: 16.0,),
-                                                ),
-                                              ),
-                                            )
-                                        )
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                          )
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: ConstrainedBox(
                           constraints: BoxConstraints.expand(height: 40.0),
-                          child: InkWell(
-                            onTap: () {
-                              if(model.activeColorType == ColorType.Primary) {
+                            child: ColorMenuButton(
+                              color: model.secondaryColor,
+                              active: model.activeColorType == ColorType.Secondary,
+                              label: 'Secondary',
+                              onColorChanged: model.setSecondaryColorCallback,
+                              onToggled: () {
                                 model.setActiveColorTypeCallback(ColorType.Secondary);
                               }
-                            },
-                            child: IgnorePointer(
-                              ignoring: (model.activeColorType == ColorType.Primary),
-                              child: Stack(
-                                children: <Widget>[
-                                  Positioned.fill(
-                                    child: ColorMenuButton(
-                                      color: model.secondaryColor,
-                                      onColorChanged: model.setSecondaryColorCallback,
-                                    ),
-                                  ),
-                                  Positioned.fill(
-                                    child: IgnorePointer(
-                                      ignoring: true,
-                                      child: AnimatedContainer(
-                                        curve: Curves.ease,
-                                        duration: Duration(milliseconds: 200),
-                                        foregroundDecoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Color.alphaBlend(Colors.black38, model.secondaryColor.toColor()),
-                                              width: (model.activeColorType == ColorType.Secondary) ? 4.0 : 1.0
-                                          ),
-                                          borderRadius: BorderRadius.circular(8.0),
-                                        ),
-                                        child: Align(
-                                          alignment: Alignment.bottomRight,
-                                          child: AnimatedOpacity(
-                                            curve: Curves.ease,
-                                            duration: Duration(milliseconds: 200),
-                                            opacity: (model.activeColorType == ColorType.Secondary) ? 1.0 : 0.0,
-                                            child: DecoratedBox(
-                                              decoration: BoxDecoration(
-                                                color: Color.alphaBlend(Colors.black38, model.secondaryColor.toColor()),
-                                                borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(8.0),
-                                                  bottomRight: Radius.circular(8.0)
-                                                ),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(4.0),
-                                                child: Icon(Icons.check, color: Colors.white, size: 16.0,),
-                                              ),
-                                            ),
-                                          )
-                                        )
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                            )
+//                          child: InkWell(
+//                            onTap: () {
+//                              if(model.activeColorType == ColorType.Primary) {
+//                                model.setActiveColorTypeCallback(ColorType.Secondary);
+//                              }
+//                            },
+//                            child: IgnorePointer(
+//                              ignoring: (model.activeColorType == ColorType.Primary),
+//                              child: Stack(
+//                                children: <Widget>[
+//                                  Positioned.fill(
+//                                    child: ColorMenuButton(
+//                                      color: model.secondaryColor,
+//                                      onColorChanged: model.setSecondaryColorCallback,
+//                                    ),
+//                                  ),
+//                                  Positioned.fill(
+//                                    child: IgnorePointer(
+//                                      ignoring: true,
+//                                      child: AnimatedContainer(
+//                                        curve: Curves.ease,
+//                                        duration: Duration(milliseconds: 200),
+//                                        foregroundDecoration: BoxDecoration(
+//                                          border: Border.all(
+//                                              color: Color.alphaBlend(Colors.black38, model.secondaryColor.toColor()),
+//                                              width: (model.activeColorType == ColorType.Secondary) ? 4.0 : 1.0
+//                                          ),
+//                                          borderRadius: BorderRadius.circular(8.0),
+//                                        ),
+//                                        child: Align(
+//                                          alignment: Alignment.bottomRight,
+//                                          child: AnimatedOpacity(
+//                                            curve: Curves.ease,
+//                                            duration: Duration(milliseconds: 200),
+//                                            opacity: (model.activeColorType == ColorType.Secondary) ? 1.0 : 0.0,
+//                                            child: DecoratedBox(
+//                                              decoration: BoxDecoration(
+//                                                color: Color.alphaBlend(Colors.black38, model.secondaryColor.toColor()),
+//                                                borderRadius: BorderRadius.only(
+//                                                  topLeft: Radius.circular(8.0),
+//                                                  bottomRight: Radius.circular(8.0)
+//                                                ),
+//                                              ),
+//                                              child: Padding(
+//                                                padding: const EdgeInsets.all(4.0),
+//                                                child: Icon(Icons.check, color: Colors.white, size: 16.0,),
+//                                              ),
+//                                            ),
+//                                          )
+//                                        )
+//                                      ),
+//                                    ),
+//                                  ),
+//                                ],
+//                              ),
+//                            ),
+//                          ),
                         ),
                       ),
                     ],

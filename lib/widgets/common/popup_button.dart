@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 const double _kMenuScreenPadding = 8.0;
 
+typedef PopupContentBuilder = Widget Function(BuildContext context, Animation<double> parentAnimation);
+
 class _ColorPopupRouteLayout extends SingleChildLayoutDelegate {
   _ColorPopupRouteLayout(this.position);
 
@@ -63,13 +65,13 @@ class _ColorPopupRouteLayout extends SingleChildLayoutDelegate {
 class PopupContent extends StatefulWidget {
   PopupContent({
     Key key,
-    this.child,
+    this.builder,
     @required this.initialSize,
     @required this.parentAnimation,
     @required this.onAccept,
   }) : super(key: key);
 
-  final Widget child;
+  final PopupContentBuilder builder;
   final Size initialSize;
   final Animation<double> parentAnimation;
   final VoidCallback onAccept;
@@ -125,21 +127,7 @@ class _PopupContentState extends State<PopupContent> {
     return SizedBox(
       height: size.value.height,
       width: size.value.width,
-      child: Material(
-          elevation: 6.0,
-          color: Theme.of(context).cardColor,
-          animationDuration: Duration.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: borderRadius.value,
-            side: BorderSide(
-              color: Colors.black26,
-            ),
-          ),
-          child: Opacity(
-            opacity: opacity.value,
-            child: widget.child,
-          ),
-      ),
+      child: widget.builder(context, widget.parentAnimation),
     );
   }
 }
@@ -147,12 +135,12 @@ class _PopupContentState extends State<PopupContent> {
 
 class _PopupButtonRoute extends PopupRoute<Null> {
   _PopupButtonRoute({
-    @required this.child,
+    @required this.builder,
     @required this.initialSize,
     @required this.position,
   });
 
-  final Widget child;
+  final PopupContentBuilder builder;
   final Size initialSize;
   final RelativeRect position;
 
@@ -185,7 +173,7 @@ class _PopupButtonRoute extends PopupRoute<Null> {
               delegate: new _ColorPopupRouteLayout(
                 position,
               ),
-              child: child,
+              child: builder(context, animation),
           );
         },
       ),
@@ -213,7 +201,7 @@ class _PopupButtonRoute extends PopupRoute<Null> {
                 position,
               ),
               child: PopupContent(
-                child: child,
+                builder: builder,
                 initialSize: initialSize,
                 parentAnimation: parentAnimation,
                 onAccept: () {
@@ -227,15 +215,18 @@ class _PopupButtonRoute extends PopupRoute<Null> {
   }
 }
 
+
 class PopupButton extends StatelessWidget {
   PopupButton({
     Key key,
     @required this.child,
-    @required this.popupContent,
+    this.popupColor,
+    @required this.popupBuilder,
   }) : super(key: key);
 
   final Widget child;
-  final Widget popupContent;
+  final PopupContentBuilder popupBuilder;
+  final Color popupColor;
 
   _showPopup(BuildContext context) async {
     final RenderBox button = context.findRenderObject();
@@ -248,7 +239,7 @@ class PopupButton extends StatelessWidget {
       Offset.zero & overlay.size,
     );
     await Navigator.of(context).push(new _PopupButtonRoute(
-      child: popupContent,
+      builder: popupBuilder,
       initialSize: button.size,
       position: position,
     ));
@@ -256,17 +247,14 @@ class PopupButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.0,
-      child: RaisedButton(
-        elevation: 0.0,
-        child: child,
-        padding: EdgeInsets.all(0.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        onPressed: () => _showPopup(context),
+    return RaisedButton(
+      elevation: 0.0,
+      child: child,
+      padding: EdgeInsets.all(0.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
       ),
+      onPressed: () => _showPopup(context),
     );
   }
 }

@@ -9,6 +9,7 @@ import 'package:project_pickle/tools/color_picker_tool.dart';
 import 'package:project_pickle/widgets/color_selector/color_slider_thumb.dart';
 import 'package:project_pickle/widgets/color_selector/color_slider_value_indicator.dart';
 import 'package:project_pickle/widgets/common/toggle_icon_button.dart';
+import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 
 const double _kMenuScreenPadding = 8.0;
 
@@ -145,7 +146,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
   Widget build(BuildContext context) {
     final Animation<BorderRadius> borderRadius = BorderRadiusTween(
       begin: BorderRadius.circular(8.0),
-      end: BorderRadius.circular(10.0),
+      end: BorderRadius.circular(8.0),
     ).animate(
       CurvedAnimation(
         parent: widget.parentAnimation,
@@ -199,7 +200,13 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                 height: widget.initialSize.height * 1.33, //stylistic decision to make color header 33% larger than color button.
                 child: Material(
                   color: _currentColor.toColor(),
-                  borderRadius: BorderRadius.circular(10.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: borderRadius.value,
+                    side: BorderSide(
+                      width: 1.0,
+                      color: Colors.black12,
+                    ),
+                  ),
                   child: Opacity(
                     opacity: opacity.value,
                     child: Stack(
@@ -562,12 +569,18 @@ typedef ColorChangeCallback = void Function(HSLColor);
 class ColorMenuButton extends StatelessWidget {
   ColorMenuButton({
     Key key,
+    this.active = false,
+    this.onToggled,
     @required this.color,
-    @required this.onColorChanged
+    @required this.onColorChanged,
+    @required this.label,
   }) : super(key: key);
 
   final HSLColor color;
+  final bool active;
   final ColorChangeCallback onColorChanged;
+  final VoidCallback onToggled;
+  final String label;
 
   _showColorMenu(BuildContext context) async {
     final RenderBox button = context.findRenderObject();
@@ -590,18 +603,97 @@ class ColorMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      elevation: 0.0,
+    return Material(
       color: color.toColor(),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Text(''),
-      ),
-      padding: EdgeInsets.all(0.0),
-      shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8.0),
+      child: InkWell(
         borderRadius: BorderRadius.circular(8.0),
+        onTap: () {
+          if(!active) {
+            onToggled();
+          }
+        },
+        child: IgnorePointer(
+          ignoring: !active,
+          child: Stack(
+            children: <Widget>[
+              Positioned.fill(
+                child: InkWell(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text(''),
+                  ),
+                  borderRadius: BorderRadius.circular(8.0),
+                  onTap: () => _showColorMenu(context),
+                ),
+              ),
+              Positioned.fill(
+                child: IgnorePointer(
+                  ignoring: true,
+                  child: AnimatedContainer(
+                      curve: Curves.ease,
+                      duration: Duration(milliseconds: 200),
+                      foregroundDecoration: BoxDecoration(
+                        border: Border.all(
+                            color: Colors.black12,
+                            width: 1.0
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: AnimatedOpacity(
+                              curve: Curves.ease,
+                              duration: Duration(milliseconds: 200),
+                              opacity: active ? 1.0 : 0.0,
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade800,
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+                                  child: StoreConnector<AppState, DrawerSizeMode>(
+                                    converter: (store) => store.state.leftDrawerSizeMode,
+                                    builder: (context, sizeMode) => AnimatedSwitcher(
+                                      switchInCurve: Curves.ease,
+                                      switchOutCurve: Curves.ease,
+                                      duration: const Duration(milliseconds: 200),
+                                      transitionBuilder: (Widget child, Animation<double> animation) {
+                                        return ScaleTransition(child: child, scale: animation);
+                                      },
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        heightFactor: 1.0,
+                                        widthFactor: 1.0,
+                                        child: Text(
+                                          (sizeMode == DrawerSizeMode.Mini) ? label.substring(0,1) : label,
+                                          // This key causes the AnimatedSwitcher to interpret this as a "new"
+                                          // child each time the count changes, so that it will begin its animation
+                                          // when the count changes.
+                                          textAlign: TextAlign.start,
+                                          overflow: TextOverflow.clip,
+                                          softWrap: false,
+                                          key: ValueKey<DrawerSizeMode>(sizeMode),
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                      )
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-      onPressed: () => _showColorMenu(context),
     );
   }
 }

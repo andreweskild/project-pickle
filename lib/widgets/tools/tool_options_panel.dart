@@ -83,7 +83,7 @@ class ToolOptionsPanelState extends State<ToolOptionsPanel> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(top: 12.0, left: 12.0, bottom: 4.0),
-                        child: Text('Size'),
+                        child: Text('Stroke Width'),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 10.0),
