@@ -113,7 +113,6 @@ class ColorCard extends StatelessWidget {
                           child: ColorMenuButton(
                             color: model.primaryColor,
                             active: model.activeColorType == ColorType.Primary,
-                            label: 'Primary',
                             onColorChanged: model.setPrimaryColorCallback,
                             onToggled: () {
                               model.setActiveColorTypeCallback(ColorType.Primary);
@@ -127,7 +126,6 @@ class ColorCard extends StatelessWidget {
                             child: ColorMenuButton(
                               color: model.secondaryColor,
                               active: model.activeColorType == ColorType.Secondary,
-                              label: 'Secondary',
                               onColorChanged: model.setSecondaryColorCallback,
                               onToggled: () {
                                 model.setActiveColorTypeCallback(ColorType.Secondary);

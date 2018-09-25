@@ -11,35 +11,44 @@ class ShapeTool extends BaseDrawingTool {
 
   get options => <Widget>[
     Padding(
-      padding: const EdgeInsets.fromLTRB(12.0, 8.0, 16.0, 8.0),
+      padding: const EdgeInsets.fromLTRB(12.0, 4.0, 8.0, 4.0),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 8.0, 8.0, 8.0),
-            child: Text('Size'),
+            padding: const EdgeInsets.fromLTRB(0.0, 4.0, 8.0, 4.0),
+            child: Text('Shape'),
           ),
-          Slider(
-            min: 0.0,
-            max: 1.0,
-            value: 0.0,
-            onChanged: (value){},
-          ),
-          SizedBox(
-            width: 20.0,
-            child: Center(
-              child: TextField(
-                  maxLength: 3,
-                  decoration: null
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Switch(
+                value: false,
+                onChanged: (value){},
               ),
             ),
-          )
+          ),
         ],
       ),
     ),
     Padding(
-        padding: const EdgeInsets.fromLTRB(16.0, 4.0, 8.0, 4.0),
-        child: Text('Shape')
+        padding: const EdgeInsets.fromLTRB(12.0, 4.0, 8.0, 4.0),
+        child: Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0.0, 4.0, 8.0, 4.0),
+              child: Text('Filled'),
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Switch(
+                  value: false,
+                  onChanged: (value){},
+                ),
+              ),
+            ),
+          ],
+        ),
     ),
   ];
 

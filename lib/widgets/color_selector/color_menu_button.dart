@@ -573,14 +573,12 @@ class ColorMenuButton extends StatelessWidget {
     this.onToggled,
     @required this.color,
     @required this.onColorChanged,
-    @required this.label,
   }) : super(key: key);
 
   final HSLColor color;
   final bool active;
   final ColorChangeCallback onColorChanged;
   final VoidCallback onToggled;
-  final String label;
 
   _showColorMenu(BuildContext context) async {
     final RenderBox button = context.findRenderObject();
@@ -654,34 +652,8 @@ class ColorMenuButton extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
-                                  child: StoreConnector<AppState, DrawerSizeMode>(
-                                    converter: (store) => store.state.leftDrawerSizeMode,
-                                    builder: (context, sizeMode) => AnimatedSwitcher(
-                                      switchInCurve: Curves.ease,
-                                      switchOutCurve: Curves.ease,
-                                      duration: const Duration(milliseconds: 200),
-                                      transitionBuilder: (Widget child, Animation<double> animation) {
-                                        return ScaleTransition(child: child, scale: animation);
-                                      },
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        heightFactor: 1.0,
-                                        widthFactor: 1.0,
-                                        child: Text(
-                                          (sizeMode == DrawerSizeMode.Mini) ? label.substring(0,1) : label,
-                                          // This key causes the AnimatedSwitcher to interpret this as a "new"
-                                          // child each time the count changes, so that it will begin its animation
-                                          // when the count changes.
-                                          textAlign: TextAlign.start,
-                                          overflow: TextOverflow.clip,
-                                          softWrap: false,
-                                          key: ValueKey<DrawerSizeMode>(sizeMode),
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Icon(Icons.check, size: 16.0, color: Colors.white),
                                 ),
                               ),
                             ),
