@@ -60,24 +60,24 @@ class ToolsListItem<T> extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 4.0),
           child: TwoStagePopupButton(
-            child: AnimatedPadding(
+            header: AnimatedPadding(
               curve: Curves.ease,
               duration: Duration(milliseconds: 150),
               padding: const EdgeInsets.all(0.0),
               child: Stack(
-                  children: <Widget>[
-                    Align(alignment: Alignment.centerLeft, child: icon),
-                    Positioned(
-                      left: 24.0,
-                      top: 0.0,
-                      bottom: 0.0,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 12.0),
-                        child: Center(child: Text(label)),
-                      ),
-                    )
-                  ],
-                ),
+                children: <Widget>[
+                  Align(alignment: Alignment.centerLeft, child: icon),
+                  Positioned(
+                    left: 24.0,
+                    top: 0.0,
+                    bottom: 0.0,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Center(child: Text(label)),
+                    ),
+                  ),
+                ],
+              ),
             ),
             popupContent: (_selected && toolModel.currentTool.options != null) ?
               Column(children: toolModel.currentTool.options) : Placeholder(),

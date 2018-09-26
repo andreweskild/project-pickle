@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_pickle/widgets/common/transparent_routes.dart';
+import 'package:project_pickle/widgets/common/toggle_icon_button.dart';
 const double _kMenuScreenPadding = 8.0;
 
 class _TwoStagePopupRouteLayout extends SingleChildLayoutDelegate {
@@ -76,7 +77,7 @@ class TwoStagePopupContent extends StatefulWidget {
   final ValueChanged<double> onHeightUpdated;
   final Size initialSize;
   final Animation<double> parentAnimation;
-  final ValueChanged<HSLColor> onAccept;
+  final VoidCallback onAccept;
 
 
   @override
@@ -106,18 +107,6 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
 
   @override
   Widget build(BuildContext context) {
-    final Animation<BorderRadius> borderRadius = BorderRadiusTween(
-      begin: BorderRadius.circular(8.0),
-      end: BorderRadius.circular(8.0),
-    ).animate(
-      CurvedAnimation(
-        parent: widget.parentAnimation,
-        curve: Interval(
-          0.0, 1.0,
-          curve: Curves.ease,
-        ),
-      ),
-    );
 
     final Animation<Size> size = SizeTween(
       begin: widget.initialSize,
@@ -132,6 +121,7 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
       ),
     );
     size.addListener(() => widget.onHeightUpdated(size.value.height));
+
 
     final Animation<double> opacity = Tween<double>(
       begin: 0.0,
@@ -154,33 +144,47 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
         animationDuration: Duration.zero,
         color: Colors.grey.shade100,
         shape: RoundedRectangleBorder(
-          borderRadius: borderRadius.value,
+          borderRadius: BorderRadius.circular(8.0),
         ),
         child: Column(
           children: <Widget>[
             SizedBox(
               height: widget.initialSize.height,
               child: Material(
-                elevation: 0.0,
-                animationDuration: Duration.zero,
-                color: Theme.of(context).highlightColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: borderRadius.value,
+                  elevation: 0.0,
+                  animationDuration: Duration.zero,
+                  color: Theme.of(context).highlightColor,
+                  shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Padding(
-              padding: const EdgeInsets.all(8.0),
-                child: IconTheme(
-                  data: IconThemeData(
-                    color: Colors.white,
-                  ),
-                  child: DefaultTextStyle(
-                      style: TextStyle(
-                        color: Colors.white,
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Stack(
+                    children: <Widget>[
+                      IconTheme(
+                        data: IconThemeData(
+                          color: Colors.white,
+                        ),
+                        child: DefaultTextStyle(
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                            child: widget.headerContent
+                        ),
                       ),
-                      child: widget.headerContent
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Opacity(
+                          opacity: opacity.value,
+                          child: ToggleIconButton(
+                            icon: Icon(Icons.close, color: Colors.white,),
+                            onPressed: widget.onAccept,
+                          ),
+                        )
+                      )
+                    ],
                   ),
                 ),
-              ),
               ),
             ),
             Expanded(child: widget.child),
@@ -191,21 +195,22 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
   }
 }
 
+typedef HeaderBuilder = Widget Function(BuildContext, Animation<double>);
 
-class _TwoStagePopupRoute extends TransparentPopupRoute<HSLColor> {
+class _TwoStagePopupRoute extends TransparentPopupRoute<bool> {
   _TwoStagePopupRoute({
-    @required this.headerContent,
+    @required this.buttonContext,
+    @required this.header,
     @required this.initialSize,
-    @required this.position,
     @required this.popupContent,
     @required this.onHeightUpdated,
   });
 
   final ValueChanged<double> onHeightUpdated;
-  final Widget headerContent;
-  final Widget popupContent;
+  final BuildContext buttonContext;
+  final Widget header;
   final Size initialSize;
-  final RelativeRect position;
+  final Widget popupContent;
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 400);
@@ -220,6 +225,12 @@ class _TwoStagePopupRoute extends TransparentPopupRoute<HSLColor> {
   String get barrierLabel => '';
 
   @override
+  bool get currentResult => false;
+
+  @override
+  RouteSettings get settings => RouteSettings(name: '/tool-options');
+
+  @override
   Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> forwardAnimation) {
     return SizedBox();
   }
@@ -229,6 +240,16 @@ class _TwoStagePopupRoute extends TransparentPopupRoute<HSLColor> {
     final Animation<double> parentAnimation = new CurvedAnimation(
         parent: animation,
         curve: Curves.ease
+    );
+
+    final RenderBox button = buttonContext.findRenderObject();
+    final RenderBox overlay = Overlay.of(buttonContext).context.findRenderObject();
+    final RelativeRect buttonPosition = new RelativeRect.fromRect(
+      new Rect.fromPoints(
+        button.localToGlobal(Offset.zero, ancestor: overlay),
+        button.localToGlobal(button.size.bottomRight(Offset.zero), ancestor: overlay),
+      ),
+      Offset.zero & overlay.size,
     );
 
 
@@ -242,16 +263,14 @@ class _TwoStagePopupRoute extends TransparentPopupRoute<HSLColor> {
         builder: (BuildContext context) {
           return new CustomSingleChildLayout(
               delegate: new _TwoStagePopupRouteLayout(
-                position,
+                buttonPosition,
               ),
               child: TwoStagePopupContent(
-                headerContent: headerContent,
+                headerContent: header,
                 initialSize: initialSize,
                 parentAnimation: parentAnimation,
                 child: popupContent,
-                onAccept: (newColor) {
-                  Navigator.pop(context, newColor);
-                },
+                onAccept: () => Navigator.pop(context),
                 onHeightUpdated: onHeightUpdated,
               )
           );
@@ -261,20 +280,18 @@ class _TwoStagePopupRoute extends TransparentPopupRoute<HSLColor> {
   }
 }
 
-typedef ColorChangeCallback = void Function(HSLColor);
-
 /// Creates a button that on first click toggles the button, and on second click
 /// opens the popup menu for additional related options.
 class TwoStagePopupButton extends StatefulWidget {
   TwoStagePopupButton({
     Key key,
-    this.child,
+    this.header,
     this.active = false,
     this.onToggled,
     @required this.popupContent,
   }) : super(key: key);
 
-  final Widget child;
+  final Widget header;
   final Widget popupContent;
   final bool active;
   final VoidCallback onToggled;
@@ -287,19 +304,11 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
 
   _showPopupMenu(BuildContext context) async {
     final RenderBox button = context.findRenderObject();
-    final RenderBox overlay = Overlay.of(context).context.findRenderObject();
-    final RelativeRect position = new RelativeRect.fromRect(
-      new Rect.fromPoints(
-        button.localToGlobal(Offset.zero, ancestor: overlay),
-        button.localToGlobal(button.size.bottomRight(Offset.zero), ancestor: overlay),
-      ),
-      Offset.zero & overlay.size,
-    );
     await Navigator.of(context).push(new _TwoStagePopupRoute(
-      headerContent: widget.child,
-      popupContent: widget.popupContent,
       initialSize: button.size,
-      position: position,
+      buttonContext: context,
+      header: widget.header,
+      popupContent: widget.popupContent,
       onHeightUpdated: (newHeight) {
         setState(() {
           _height = newHeight;
@@ -313,12 +322,15 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
     return SizedBox(
       height: _height,
       child: Material(
-        color: (widget.active) ? Theme.of(context).highlightColor : Theme.of(context).buttonColor,
+        color: (widget.active) ? Theme.of(context).highlightColor : Colors.transparent,
         borderRadius: BorderRadius.circular(8.0),
         child: InkWell(
           borderRadius: BorderRadius.circular(8.0),
           onTap: () {
             if(!widget.active) {
+              Navigator.of(context).popUntil(
+                  (route) => route.settings.name != '/tool-options'
+              );
               widget.onToggled();
             }
           },
@@ -335,7 +347,7 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
                     style: TextStyle(
                       color: (widget.active) ? Colors.white : Theme.of(context).textTheme.button.color,
                     ),
-                    child: widget.child
+                    child: widget.header,
                   ),
                 ),
               ),

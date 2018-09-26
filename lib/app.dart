@@ -34,7 +34,6 @@ class MyApp extends StatelessWidget {
       store: store,
       child: MaterialApp(
         title: 'Project pickle',
-
         theme: ThemeData(
           accentColor: Colors.grey.shade700,
           cardColor: Colors.grey.shade100,
