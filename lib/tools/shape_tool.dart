@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter/material.dart';
 
 import 'package:project_pickle/tools/base_drawing_tool.dart';
+import 'package:project_pickle/widgets/common/switch.dart';
 
 class ShapeTool extends BaseDrawingTool {
   ShapeTool(context) : super(context);
@@ -10,55 +10,54 @@ class ShapeTool extends BaseDrawingTool {
   Offset _endPoint;
 
   get options => <Widget>[
-    Padding(
-      padding: const EdgeInsets.fromLTRB(12.0, 4.0, 8.0, 4.0),
-      child: Row(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 4.0, 8.0, 4.0),
-            child: Text('Shape'),
-          ),
-          Expanded(
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: Switch(
-                value: false,
-                onChanged: (value){},
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 4.0),
+          child: Row(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0.0, 4.0, 8.0, 4.0),
+                child: Text('Shape'),
               ),
-            ),
-          ),
-        ],
-      ),
-    ),
-    Padding(
-        padding: const EdgeInsets.fromLTRB(12.0, 4.0, 8.0, 4.0),
-        child: Row(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 4.0, 8.0, 4.0),
-              child: Text('Filled'),
-            ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Switch(
-                  value: false,
-                  onChanged: (value){},
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Switch(
+                    value: false,
+                    onChanged: (value) {},
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-    ),
-  ];
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 4.0),
+          child: Row(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0.0, 4.0, 8.0, 4.0),
+                child: Text('Filled'),
+              ),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Switch(
+                    value: false,
+                    onChanged: (value) {},
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ];
 
   @override
   void onPixelInputUpdate(Offset pos) {
     if (_startPoint == null) {
       _startPoint = pos;
       drawOverlayPixel(pos);
-    }
-    else {
+    } else {
       if (_endPoint != null) {
         resetOverlay();
       }
@@ -85,5 +84,4 @@ class ShapeTool extends BaseDrawingTool {
     _startPoint = null;
     _endPoint = null;
   }
-
 }

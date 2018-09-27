@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_pickle/widgets/common/transparent_routes.dart';
 import 'package:project_pickle/widgets/common/toggle_icon_button.dart';
+
 const double _kMenuScreenPadding = 8.0;
 
 class _TwoStagePopupRouteLayout extends SingleChildLayoutDelegate {
@@ -8,7 +9,6 @@ class _TwoStagePopupRouteLayout extends SingleChildLayoutDelegate {
 
   // Rectangle of underlying button, relative to the overlay's dimensions.
   final RelativeRect position;
-
 
   // We put the child wherever position specifies, so long as it will fit within
   // the specified parent size padded (inset) by 8. If necessary, we adjust the
@@ -18,7 +18,8 @@ class _TwoStagePopupRouteLayout extends SingleChildLayoutDelegate {
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
     // The menu can be at most the size of the overlay minus 8.0 pixels in each
     // direction.
-    return new BoxConstraints.loose(constraints.biggest - const Offset(_kMenuScreenPadding * 2.0, _kMenuScreenPadding * 2.0));
+    return new BoxConstraints.loose(constraints.biggest -
+        const Offset(_kMenuScreenPadding * 2.0, _kMenuScreenPadding * 2.0));
   }
 
   @override
@@ -79,14 +80,11 @@ class TwoStagePopupContent extends StatefulWidget {
   final Animation<double> parentAnimation;
   final VoidCallback onAccept;
 
-
   @override
   _TwoStagePopupContentState createState() => _TwoStagePopupContentState();
 }
 
 class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
-
-
   final double _sliderTrackHeight = 12.0;
 
   @override
@@ -94,20 +92,16 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
     super.initState();
   }
 
-
-
   Color _getContrastingColor(Color color) {
     if (color.computeLuminance() > 0.5) {
       return Colors.black;
-    }
-    else {
+    } else {
       return Colors.white;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     final Animation<Size> size = SizeTween(
       begin: widget.initialSize,
       end: Size(196.0, 156.0),
@@ -115,13 +109,13 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
       CurvedAnimation(
         parent: widget.parentAnimation,
         curve: Interval(
-          0.0, 1.0,
+          0.0,
+          1.0,
           curve: Curves.ease,
         ),
       ),
     );
     size.addListener(() => widget.onHeightUpdated(size.value.height));
-
 
     final Animation<double> opacity = Tween<double>(
       begin: 0.0,
@@ -130,7 +124,8 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
       CurvedAnimation(
         parent: widget.parentAnimation,
         curve: Interval(
-          0.2, 1.0,
+          0.2,
+          1.0,
           curve: Curves.ease,
         ),
       ),
@@ -138,7 +133,9 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
 
     return SizedBox(
       height: size.value.height,
-      width: (widget.initialSize.width < 100) ? size.value.width : widget.initialSize.width,
+      width: (widget.initialSize.width < 100)
+          ? size.value.width
+          : widget.initialSize.width,
       child: Material(
         elevation: 0.0,
         animationDuration: Duration.zero,
@@ -151,38 +148,40 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
             SizedBox(
               height: widget.initialSize.height,
               child: Material(
-                  elevation: 0.0,
-                  animationDuration: Duration.zero,
-                  color: Theme.of(context).highlightColor,
-                  shape: RoundedRectangleBorder(
+                elevation: 0.0,
+                animationDuration: Duration.zero,
+                color: Theme.of(context).highlightColor,
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Stack(
-                    children: <Widget>[
-                      IconTheme(
-                        data: IconThemeData(
-                          color: Colors.white,
-                        ),
-                        child: DefaultTextStyle(
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                            child: widget.headerContent
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Opacity(
-                          opacity: opacity.value,
-                          child: ToggleIconButton(
-                            icon: Icon(Icons.close, color: Colors.white,),
-                            onPressed: widget.onAccept,
+                child: InkWell(
+                  onTap: widget.onAccept,
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Stack(
+                      children: <Widget>[
+                        IconTheme(
+                          data: IconThemeData(
+                            color: Colors.white,
                           ),
-                        )
-                      )
-                    ],
+                          child: DefaultTextStyle(
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                              child: widget.headerContent),
+                        ),
+                        Align(
+                            alignment: Alignment.centerRight,
+                            child: Opacity(
+                              opacity: opacity.value,
+                              child: Icon(
+                                Icons.arrow_drop_up,
+                                color: Colors.white,
+                              ),
+                            ))
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -231,27 +230,28 @@ class _TwoStagePopupRoute extends TransparentPopupRoute<bool> {
   RouteSettings get settings => RouteSettings(name: '/tool-options');
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> forwardAnimation) {
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> forwardAnimation) {
     return SizedBox();
   }
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> forwardAnimation, Widget child) {
-    final Animation<double> parentAnimation = new CurvedAnimation(
-        parent: animation,
-        curve: Curves.ease
-    );
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> forwardAnimation, Widget child) {
+    final Animation<double> parentAnimation =
+        new CurvedAnimation(parent: animation, curve: Curves.ease);
 
     final RenderBox button = buttonContext.findRenderObject();
-    final RenderBox overlay = Overlay.of(buttonContext).context.findRenderObject();
+    final RenderBox overlay =
+        Overlay.of(buttonContext).context.findRenderObject();
     final RelativeRect buttonPosition = new RelativeRect.fromRect(
       new Rect.fromPoints(
         button.localToGlobal(Offset.zero, ancestor: overlay),
-        button.localToGlobal(button.size.bottomRight(Offset.zero), ancestor: overlay),
+        button.localToGlobal(button.size.bottomRight(Offset.zero),
+            ancestor: overlay),
       ),
       Offset.zero & overlay.size,
     );
-
 
     return new MediaQuery.removePadding(
       context: context,
@@ -272,8 +272,7 @@ class _TwoStagePopupRoute extends TransparentPopupRoute<bool> {
                 child: popupContent,
                 onAccept: () => Navigator.pop(context),
                 onHeightUpdated: onHeightUpdated,
-              )
-          );
+              ));
         },
       ),
     );
@@ -301,36 +300,39 @@ class TwoStagePopupButton extends StatefulWidget {
 
 class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
   double _height = 40.0;
+  bool _opened = false;
 
   _showPopupMenu(BuildContext context) async {
     final RenderBox button = context.findRenderObject();
-    await Navigator.of(context).push(new _TwoStagePopupRoute(
-      initialSize: button.size,
-      buttonContext: context,
-      header: widget.header,
-      popupContent: widget.popupContent,
-      onHeightUpdated: (newHeight) {
-        setState(() {
-          _height = newHeight;
-        });
-      }
-    ));
+    _opened = true;
+    _opened = await Navigator.of(context).push(new _TwoStagePopupRoute(
+        initialSize: button.size,
+        buttonContext: context,
+        header: widget.header,
+        popupContent: widget.popupContent,
+        onHeightUpdated: (newHeight) {
+          setState(() {
+            _height = newHeight;
+          });
+        }));
   }
 
   @override
   Widget build(BuildContext context) {
+    final RenderBox button = context.findRenderObject();
     return SizedBox(
       height: _height,
       child: Material(
-        color: (widget.active) ? Theme.of(context).highlightColor : Colors.transparent,
+        color: (widget.active && !_opened)
+            ? Theme.of(context).highlightColor
+            : Colors.transparent,
         borderRadius: BorderRadius.circular(8.0),
         child: InkWell(
           borderRadius: BorderRadius.circular(8.0),
           onTap: () {
-            if(!widget.active) {
-              Navigator.of(context).popUntil(
-                  (route) => route.settings.name != '/tool-options'
-              );
+            if (!widget.active) {
+              Navigator.of(context)
+                  .popUntil((route) => route.settings.name != '/tool-options');
               widget.onToggled();
             }
           },
@@ -339,16 +341,40 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
             child: InkWell(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: IconTheme(
-                  data: IconThemeData(
-                    color: (widget.active) ? Colors.white : Theme.of(context).textTheme.button.color,
-                  ),
-                  child: DefaultTextStyle(
-                    style: TextStyle(
-                      color: (widget.active) ? Colors.white : Theme.of(context).textTheme.button.color,
+                child: Stack(
+                  children: <Widget>[
+                    IconTheme(
+                      data: IconThemeData(
+                        color: (widget.active)
+                            ? Colors.white
+                            : Theme.of(context).textTheme.button.color,
+                      ),
+                      child: DefaultTextStyle(
+                        style: TextStyle(
+                          color: (widget.active)
+                              ? Colors.white
+                              : Theme.of(context).textTheme.button.color,
+                        ),
+                        child: widget.header,
+                      ),
                     ),
-                    child: widget.header,
-                  ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 32.0),
+                        child: ClipRect(
+                          child: AnimatedOpacity(
+                              curve: Curves.ease,
+                              duration: Duration(milliseconds: 150),
+                              opacity: widget.active ? 1.0 : 0.0,
+                              child: Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.white,
+                              )),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
               borderRadius: BorderRadius.circular(8.0),
