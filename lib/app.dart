@@ -13,11 +13,13 @@ final store = Store<AppState>(
   initialState: AppState(
     primaryColor: HSLColor.fromAHSL(1.0, 1.0, 1.0, 1.0),
     secondaryColor: HSLColor.fromAHSL(1.0, 100.0, 1.0, 0.5),
-    layers: <PixelCanvasLayer>[PixelCanvasLayer(
-      name: 'Layer 1',
-      width: 32,
-      height: 32,
-    )],
+    layers: <PixelCanvasLayer>[
+      PixelCanvasLayer(
+        name: 'Layer 1',
+        width: 32,
+        height: 32,
+      )
+    ],
     palette: <HSLColor>[
       HSLColor.fromAHSL(1.0, 34.0, 0.5, 0.4),
       HSLColor.fromAHSL(1.0, 25.0, 0.8, 0.4),
@@ -35,34 +37,51 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Project pickle',
         theme: ThemeData(
-          accentColor: Colors.grey.shade700,
-          cardColor: Colors.grey.shade100,
-          buttonColor: Colors.grey.shade400,
-          dividerColor: Colors.grey.shade400,
-          primarySwatch: MaterialColor(Colors.grey.shade100.value, const <int, Color> {50 : const Color(0xFFFFF8E1), 100 : const Color(0xFFFFECB3), 200 : const Color(0xFFFFE082), 300 : const Color(0xFFFFD54F), 400 : const Color(0xFFFFCA28), 500 : const Color(0xFFFFC107), 600 : const Color(0xFFFFB300), 700 : const Color(0xFFFFA000), 800 : const Color(0xFFFF8F00), 900 : const Color(0xFFFF6F00)}),
-          splashColor: Colors.black38,
-          highlightColor: Colors.black54,
-          accentTextTheme: Theme.of(context).accentTextTheme.copyWith(
-            button: Theme.of(context).accentTextTheme.button.copyWith(color: Colors.white),
-          ),
-          buttonTheme: ButtonTheme.of(context).copyWith(
-            minWidth: 12.0,
-          ),
-          scaffoldBackgroundColor: Colors.grey.shade400,
-          textTheme: Theme.of(context).textTheme.copyWith(
-            title: Theme.of(context).textTheme.title.copyWith(
-              fontSize: 16.0,
+            accentColor: const Color(0xFFCFFF93),
+            cardColor: const Color(0xFFFBFBFB),
+            buttonColor: const Color(0xFFCFFF93),
+            dividerColor: const Color(0xFFEEEEEE),
+            primarySwatch:
+                MaterialColor(const Color(0xFFA0DA58).value, const <int, Color>{
+              50: const Color(0xFFFFF8E1),
+              100: const Color(0xFFFFECB3),
+              200: const Color(0xFFFFE082),
+              300: const Color(0xFFFFD54F),
+              400: const Color(0xFFFFCA28),
+              500: const Color(0xFFFFC107),
+              600: const Color(0xFFFFB300),
+              700: const Color(0xFFFFA000),
+              800: const Color(0xFFFF8F00),
+              900: const Color(0xFFFF6F00)
+            }),
+            splashColor: const Color(0x9986C040),
+            highlightColor: const Color(0x999CDE4B),
+            accentTextTheme: Theme.of(context).accentTextTheme.copyWith(
+                  button: Theme.of(context)
+                      .accentTextTheme
+                      .button
+                      .copyWith(color: const Color(0xFF599212)),
+                ),
+            buttonTheme: ButtonTheme.of(context).copyWith(
+              minWidth: 12.0,
             ),
-          ),
-          splashFactory: InkRipple.splashFactory,
-          sliderTheme: Theme.of(context).sliderTheme.copyWith(
-            activeTrackColor: Colors.grey.shade600,
-            inactiveTrackColor: Colors.grey.shade300,
-            thumbColor: Colors.grey.shade400,
-            thumbShape: SliderThumbShape(),
-            overlayColor: Colors.grey.shade600,
-          )
-        ),
+            scaffoldBackgroundColor: const Color(0xFFE3E3E3),
+            textTheme: Theme.of(context).textTheme.copyWith(
+                  title: Theme.of(context).textTheme.title.copyWith(
+                        fontSize: 16.0,
+                      ),
+                  button: Theme.of(context).textTheme.button.copyWith(
+                    color: Colors.grey.shade800,
+                  )
+                ),
+            splashFactory: InkRipple.splashFactory,
+            sliderTheme: Theme.of(context).sliderTheme.copyWith(
+                  activeTrackColor: Colors.grey.shade600,
+                  inactiveTrackColor: Colors.grey.shade300,
+                  thumbColor: Colors.grey.shade400,
+                  thumbShape: SliderThumbShape(),
+                  overlayColor: Colors.grey.shade600,
+                )),
 
         // GBA Theme 2
         // theme: new ThemeData(
@@ -75,9 +94,7 @@ class MyApp extends StatelessWidget {
         //   )
         // ),
 
-        home: PixelEditorPage(
-          name: 'Pickle Editor'
-        ),
+        home: PixelEditorPage(name: 'Pickle Editor'),
       ),
     );
   }

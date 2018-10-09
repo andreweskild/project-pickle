@@ -139,7 +139,7 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
       child: Material(
         elevation: 0.0,
         animationDuration: Duration.zero,
-        color: Colors.grey.shade100,
+        color: Theme.of(context).dividerColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
@@ -148,9 +148,10 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
             SizedBox(
               height: widget.initialSize.height,
               child: Material(
-                elevation: 0.0,
+                elevation: 6.0,
+                shadowColor: Theme.of(context).buttonColor.withAlpha(100),
                 animationDuration: Duration.zero,
-                color: Theme.of(context).highlightColor,
+                color: Theme.of(context).buttonColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
@@ -163,11 +164,11 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
                       children: <Widget>[
                         IconTheme(
                           data: IconThemeData(
-                            color: Colors.white,
+                            color: Theme.of(context).accentTextTheme.button.color,
                           ),
                           child: DefaultTextStyle(
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).accentTextTheme.button.color,
                               ),
                               child: widget.headerContent),
                         ),
@@ -177,7 +178,7 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
                               opacity: opacity.value,
                               child: Icon(
                                 Icons.arrow_drop_up,
-                                color: Colors.white,
+                                color: Theme.of(context).accentTextTheme.button.color,
                               ),
                             ))
                       ],
@@ -324,7 +325,7 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
       height: _height,
       child: Material(
         color: (widget.active && !_opened)
-            ? Theme.of(context).highlightColor
+            ? Theme.of(context).buttonColor
             : Colors.transparent,
         borderRadius: BorderRadius.circular(8.0),
         child: InkWell(
@@ -346,13 +347,13 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
                     IconTheme(
                       data: IconThemeData(
                         color: (widget.active)
-                            ? Colors.white
+                            ? Theme.of(context).accentTextTheme.button.color
                             : Theme.of(context).textTheme.button.color,
                       ),
                       child: DefaultTextStyle(
                         style: TextStyle(
                           color: (widget.active)
-                              ? Colors.white
+                              ? Theme.of(context).accentTextTheme.button.color
                               : Theme.of(context).textTheme.button.color,
                         ),
                         child: widget.header,
@@ -369,7 +370,7 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
                               opacity: widget.active ? 1.0 : 0.0,
                               child: Icon(
                                 Icons.arrow_drop_down,
-                                color: Colors.white,
+                                color: Theme.of(context).accentTextTheme.button.color,
                               )),
                         ),
                       ),

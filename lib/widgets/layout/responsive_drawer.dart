@@ -4,7 +4,8 @@ import 'package:flutter/widgets.dart';
 typedef SizeModeChangeCallback = void Function(DrawerSizeMode sizeMode);
 
 enum DrawerSizeMode {
-  Mini, Normal,
+  Mini,
+  Normal,
 }
 
 /// A Drawer that can be resized.
@@ -45,163 +46,176 @@ class _ResizableDrawerState extends State<ResizableDrawer> {
   double _dragPos;
 
   final _miniSizeWidth = 64.0;
-  final _sizeModeBreakpoint = 180.0;
-  final _normalSizeMaxWidth = 240.0;
+  final _normalSizeWidth = 200.0;
 
   @override
   void initState() {
     _minWidth = _miniSizeWidth;
-    _maxWidth = _normalSizeMaxWidth;
+    _maxWidth = _normalSizeWidth + 10.0;
     _sizeMode = widget.sizeMode;
     _previousSizeMode = _sizeMode;
-    _splitPos = _sizeModeBreakpoint;
+    _splitPos = _normalSizeWidth;
     _dragPos = _splitPos;
     super.initState();
   }
 
   DrawerSizeMode _sizeModeFromWidth(double width) {
-    if(width < _sizeModeBreakpoint) {
+    if ((width - _miniSizeWidth).abs() < (width - _normalSizeWidth).abs()) {
       return DrawerSizeMode.Mini;
-    }
-    else {
+    } else {
       return DrawerSizeMode.Normal;
+    }
+  }
+
+  double widthFromSizeMode(DrawerSizeMode sizeMode) {
+    if (sizeMode == DrawerSizeMode.Mini) {
+      return _miniSizeWidth;
+    } else {
+      return _normalSizeWidth;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: (widget.alignment == DrawerAlignment.start) ?
-        const EdgeInsets.fromLTRB(12.0, 12.0, 0.0, 12.0) :
-        const EdgeInsets.fromLTRB(0.0, 12.0, 12.0, 12.0),
-      child: Stack(
-        children: <Widget>[
-          Stack(
-            children: <Widget> [
-              Align(
-                alignment: (widget.alignment == DrawerAlignment.start) ? Alignment.topLeft : Alignment.topRight,
-                child: IgnorePointer(
-                  ignoring: true,
-                  child: AnimatedOpacity(
-                    curve: Curves.ease,
-                    duration: Duration(milliseconds: 150),
-                    opacity: _drawerDragging ? 1.0 : 0.0,
-                    child: AnimatedContainer(
-                      curve: Curves.ease,
-                      duration: Duration(milliseconds: (_drawerDragging) ? 0 : 150),
-                      width: _dragPos + 22.0,
-                      decoration: BoxDecoration(
-                          color: Colors.black87,
-                          borderRadius: BorderRadius.circular(10.0)
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              AnimatedPositioned(
+    return Stack(children: <Widget>[
+      Align(
+        alignment: (widget.alignment == DrawerAlignment.start)
+            ? Alignment.topLeft
+            : Alignment.topRight,
+        child: AnimatedContainer(
+          alignment: Alignment.topLeft,
+          curve: Curves.ease,
+          duration: Duration(milliseconds: 200),
+          width: _splitPos,
+          child: Material(
+            elevation: 3.0,
+            color: Theme.of(context).cardColor,
+            child: widget.child,
+          ),
+        ),
+      ),
+      Stack(children: <Widget>[
+        Align(
+          alignment: (widget.alignment == DrawerAlignment.start)
+              ? Alignment.topLeft
+              : Alignment.topRight,
+          child: IgnorePointer(
+            ignoring: true,
+            child: AnimatedOpacity(
+              curve: Curves.ease,
+              duration: Duration(milliseconds: 150),
+              opacity: _drawerDragging ? 1.0 : 0.0,
+              child: AnimatedContainer(
                 curve: Curves.ease,
                 duration: Duration(milliseconds: (_drawerDragging) ? 0 : 150),
-                top: 0.0,
-                bottom: 0.0,
-                left: (widget.alignment == DrawerAlignment.start) ? _dragPos : null,
-                right: (widget.alignment == DrawerAlignment.end) ? _dragPos : null,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTapDown: (details) {
-                    setState(() {
-                      _drawerDragging = true;
-                    });
-                  },
-                  onTapUp: (details) {
-                    setState(() {
-                      _drawerDragging = false;
-                    });
-                  },
-                  onHorizontalDragStart: (details) {
-                    setState(() {
-                      _drawerDragging = true;
-                    });
-                  },
-                  onHorizontalDragUpdate: (details) {
-                    var tempPos;
-                    if (widget.alignment == DrawerAlignment.start) {
-                      tempPos = _dragPos + details.delta.dx;
-                    }
-                    else {
-                      tempPos = _dragPos - details.delta.dx;
-                    }
-                    if(tempPos <= _maxWidth
-                        && tempPos >= _minWidth) {
-                      setState((){
-                        _dragPos = tempPos;
-                        _sizeMode = _sizeModeFromWidth(_dragPos);
-                        if(_sizeMode != _previousSizeMode) {
-                          widget.onSizeModeChanged(_sizeMode);
-                          _previousSizeMode = _sizeMode;
-                        }
-                        if(_sizeMode == DrawerSizeMode.Mini) {
-                          _splitPos = _miniSizeWidth;
-                        }
-                        else {
-                          if(_dragPos >= _sizeModeBreakpoint - 25 &&
-                              _dragPos <= _sizeModeBreakpoint + 25) {
-                            _splitPos = _sizeModeBreakpoint;
-                          }
-                          else {
-                            _splitPos = _dragPos;
-                          }
-                        }
-                      });
-                    }
-                  },
-                  onHorizontalDragEnd: (details) {
-                    setState(() {
-                      _drawerDragging = false;
-                      _dragPos = _splitPos;
-                    });
-                  },
-                  child: Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Center(
-                          child: AnimatedContainer(
-                            curve: Curves.ease,
-                            duration: Duration(milliseconds: 200),
-                            height: (_drawerDragging) ? 10.0 : 48.0,
-                            width: (_drawerDragging) ? 10.0 : 4.0,
-                            decoration: BoxDecoration(
-                              color: _drawerDragging ? Colors.white : Colors.black26,
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                          )
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ]
-          ),
-          Align(
-            alignment: (widget.alignment == DrawerAlignment.start) ? Alignment.topLeft : Alignment.topRight,
-            child: AnimatedContainer(
-              alignment: Alignment.topLeft,
-              curve: Curves.ease,
-              duration: Duration(
-                milliseconds: (_sizeMode == DrawerSizeMode.Mini || _splitPos == _sizeModeBreakpoint) ? 200 : 0
-              ),
-              width: _splitPos,
-              child: Material(
-                elevation: 2.0,
-                color: Theme.of(context).cardColor,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: widget.child,
+                width: _dragPos + 22.0,
+                color: Colors.black54,
               ),
             ),
           ),
-        ]
-      ),
-    );
+        ),
+        Align(
+          alignment: (widget.alignment == DrawerAlignment.start)
+              ? Alignment.topLeft
+              : Alignment.topRight,
+          child: IgnorePointer(
+            ignoring: true,
+            child: AnimatedOpacity(
+              curve: Curves.ease,
+              duration: Duration(milliseconds: 150),
+              opacity: _drawerDragging ? 1.0 : 0.0,
+              child: AnimatedContainer(
+                curve: Curves.ease,
+                duration: Duration(milliseconds: 150),
+                width: widthFromSizeMode(_sizeModeFromWidth(_dragPos)),
+                color: Colors.black54,
+              ),
+            ),
+          ),
+        ),
+        AnimatedPositioned(
+          curve: Curves.ease,
+          duration: Duration(milliseconds: (_drawerDragging) ? 0 : 150),
+          top: 0.0,
+          bottom: 0.0,
+          left: (widget.alignment == DrawerAlignment.start) ? _dragPos : null,
+          right: (widget.alignment == DrawerAlignment.end) ? _dragPos : null,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTapDown: (details) {
+              setState(() {
+                _drawerDragging = true;
+              });
+            },
+            onTapUp: (details) {
+              setState(() {
+                _drawerDragging = false;
+              });
+            },
+            onHorizontalDragStart: (details) {
+              setState(() {
+                _drawerDragging = true;
+              });
+            },
+            onHorizontalDragUpdate: (details) {
+              var tempPos;
+              if (widget.alignment == DrawerAlignment.start) {
+                tempPos = _dragPos + details.delta.dx;
+              } else {
+                tempPos = _dragPos - details.delta.dx;
+              }
+              if (tempPos <= _maxWidth && tempPos >= _minWidth) {
+                setState(() {
+                  _dragPos = tempPos;
+                  if (_sizeMode != _previousSizeMode) {
+                    widget.onSizeModeChanged(_sizeMode);
+                    _previousSizeMode = _sizeMode;
+                  }
+                  if (_sizeMode == DrawerSizeMode.Mini) {
+                    _splitPos = _miniSizeWidth;
+                  } else {
+                    _splitPos = _normalSizeWidth;
+                  }
+                });
+              }
+            },
+            onHorizontalDragEnd: (details) {
+              setState(() {
+                setState(() {
+                  _sizeMode = _sizeModeFromWidth(_dragPos);
+                  if (_sizeMode != _previousSizeMode) {
+                    widget.onSizeModeChanged(_sizeMode);
+                    _previousSizeMode = _sizeMode;
+                  }
+                  if (_sizeMode == DrawerSizeMode.Mini) {
+                    _splitPos = _miniSizeWidth;
+                  } else {
+                    _splitPos = _normalSizeWidth;
+                  }
+                });
+                _drawerDragging = false;
+                _dragPos = _splitPos;
+              });
+            },
+            child: Container(
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: Center(
+                    child: AnimatedContainer(
+                  curve: Curves.ease,
+                  duration: Duration(milliseconds: 200),
+                  height: (_drawerDragging) ? 10.0 : 48.0,
+                  width: (_drawerDragging) ? 10.0 : 4.0,
+                  decoration: BoxDecoration(
+                    color: _drawerDragging ? Colors.white : Colors.black26,
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                )),
+              ),
+            ),
+          ),
+        ),
+      ]),
+    ]);
   }
 }

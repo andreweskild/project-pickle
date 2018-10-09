@@ -24,6 +24,10 @@ class RightDrawer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               PreviewToolbox(),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                child: Divider(height: 1.0),
+              ),
               Expanded(
                 child: LayersCard(),
               ),

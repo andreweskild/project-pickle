@@ -20,7 +20,6 @@ class _PreviewModel {
   int currentLayerIndex;
   int layerCount;
 
-
   @override
   int get hashCode {
     int result = 17;
@@ -35,8 +34,7 @@ class _PreviewModel {
   bool operator ==(dynamic other) {
     if (other is! _PreviewModel) return false;
     _PreviewModel model = other;
-    return (model.layerCount == layerCount &&
-        model.sizeMode == sizeMode);
+    return (model.layerCount == layerCount && model.sizeMode == sizeMode);
   }
 }
 
@@ -49,33 +47,29 @@ class PreviewToolbox extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
           color: Colors.grey.shade300,
-          borderRadius: BorderRadius.circular(8.0)
-      ),
+          borderRadius: BorderRadius.circular(6.0)),
       child: Padding(
         padding: const EdgeInsets.all(18.0),
         child: AspectRatio(
             aspectRatio: 1.0,
-            child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return Material(
-                    elevation: 2.0,
-                    color: Colors.white,
-                    child: UnconstrainedBox(
-                      child: Transform.scale(
-                        scale: constraints.maxHeight / 32.0,
-                        child: SizedBox(
-                          height: 32.0,
-                          width: 32.0,
-                          child: Stack(
-                            children: layers,
-                          ),
-                        ),
+            child: LayoutBuilder(builder: (context, constraints) {
+              return Material(
+                elevation: 2.0,
+                color: Colors.white,
+                child: UnconstrainedBox(
+                  child: Transform.scale(
+                    scale: constraints.maxHeight / 32.0,
+                    child: SizedBox(
+                      height: 32.0,
+                      width: 32.0,
+                      child: Stack(
+                        children: layers,
                       ),
                     ),
-                  );
-                }
-            )
-        ),
+                  ),
+                ),
+              );
+            })),
       ),
     );
   }
@@ -83,22 +77,16 @@ class PreviewToolbox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _PreviewModel>(
-      distinct: true,
-      converter: (store) {
-        return _PreviewModel(
-          layers: store.state.layers.where((
-              layer) => !layer.hidden).toList(),
-          sizeMode: store.state.rightDrawerSizeMode,
-        );
-      },
-      builder: (context, model) {
-        return DecoratedBox(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0)
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
+        distinct: true,
+        converter: (store) {
+          return _PreviewModel(
+            layers: store.state.layers.where((layer) => !layer.hidden).toList(),
+            sizeMode: store.state.rightDrawerSizeMode,
+          );
+        },
+        builder: (context, model) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
@@ -117,14 +105,16 @@ class PreviewToolbox extends StatelessWidget {
                     child: PopupButton(
                       child: Icon(Icons.crop),
                       popupBuilder: (context, animation) {
-                        final Animation<BorderRadius> borderRadius = BorderRadiusTween(
+                        final Animation<BorderRadius> borderRadius =
+                            BorderRadiusTween(
                           begin: BorderRadius.circular(6.0),
                           end: BorderRadius.circular(8.0),
                         ).animate(
                           CurvedAnimation(
                             parent: animation,
                             curve: Interval(
-                              0.0, 1.0,
+                              0.0,
+                              1.0,
                               curve: Curves.ease,
                             ),
                           ),
@@ -153,9 +143,7 @@ class PreviewToolbox extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-        );
-      }
-    );
+          );
+        });
   }
 }

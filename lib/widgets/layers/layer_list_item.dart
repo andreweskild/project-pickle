@@ -31,116 +31,133 @@ class LayerListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 4.0),
+      padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
       child: StoreConnector<AppState, DrawerSizeMode>(
-        converter: (store) => store.state.rightDrawerSizeMode,
-        builder: (context, sizeMode) {
-          return Stack(
-            children: <Widget>[
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  color: selected ? Theme
-                      .of(context)
-                      .highlightColor : Colors.grey.shade400,
+          converter: (store) => store.state.rightDrawerSizeMode,
+          builder: (context, sizeMode) {
+            return Stack(
+              children: <Widget>[
+                Material(
+                  elevation: selected ? 6.0 : 0.0,
+                  color: selected
+                      ? Theme.of(context).buttonColor
+                      : Theme.of(context).dividerColor,
+                  shadowColor: Theme.of(context).buttonColor.withAlpha(100),
                   borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Stack(
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: AnimatedContainer(
-                          curve: Curves.ease,
-                          duration: Duration(milliseconds: 150),
-                          width: 48.0,
-                          child: AspectRatio(
-                            aspectRatio: 1.0,
-                            child: Container(
-                              foregroundDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8.0),
+                  child: Stack(children: <Widget>[
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: AnimatedContainer(
+                        curve: Curves.ease,
+                        duration: Duration(milliseconds: 150),
+                        width: 48.0,
+                        child: AspectRatio(
+                          aspectRatio: 1.0,
+                          child: Container(
+                            foregroundDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            padding: EdgeInsets.all(8.0),
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(6.0),
+                                border: Border.all(
+                                  color: (selected) ? Theme.of(context).accentTextTheme.button.color.withAlpha(100) : Colors.transparent,
+                                )
                               ),
-                              padding: EdgeInsets.all(4.0),
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(6.0),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(6.0),
-                                  child: Transform.scale(
-                                    alignment: Alignment.topLeft,
-                                    scale: 48.0 / 32.0,
-                                    child: layerCanvas,
-                                  ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(6.0),
+                                child: Transform.scale(
+                                  alignment: Alignment.topLeft,
+                                  scale: 48.0 / 32.0,
+                                  child: layerCanvas,
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                      Positioned(
-                          left: 48.0, top: 0.0, bottom: 0.0,
-                          child: AnimatedOpacity(
-                            curve: Curves.ease,
-                            duration: Duration(milliseconds: 150),
-                            opacity: (sizeMode == DrawerSizeMode.Normal)
-                                ? 1.0
-                                : 0.0,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 12.0),
-                              child: Center(
-                                  child: Text(
-                                      label,
-                                    style: TextStyle(
-                                      color: selected ? Theme.of(context).accentTextTheme.button.color : Theme.of(context).primaryTextTheme.button.color
-                                    ),
-                                  )
+                    ),
+                    Positioned(
+                        left: 40.0,
+                        top: 0.0,
+                        bottom: 0.0,
+                        child: AnimatedOpacity(
+                          curve: Curves.ease,
+                          duration: Duration(milliseconds: 150),
+                          opacity:
+                              (sizeMode == DrawerSizeMode.Normal) ? 1.0 : 0.0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 12.0),
+                            child: Center(
+                                child: Text(
+                              label,
+                              style: TextStyle(
+                                color: selected
+                                    ? Theme.of(context)
+                                        .accentTextTheme
+                                        .button
+                                        .color
+                                    : Theme.of(context)
+                                        .textTheme
+                                        .button
+                                        .color,
+                                fontWeight: (selected) ? FontWeight.w500 : FontWeight.normal,
                               ),
-                            ),
-                          )
-                      ),
-
-                    ]
-                ),
-              ),
-              Positioned.fill(
-                child: RaisedButton(
-                  color: Colors.transparent,
-                  elevation: 0.0,
-                  highlightElevation: 0.0,
-                  padding: const EdgeInsets.all(0.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6.0),
-                  ),
-                  onPressed: onTap,
-                ),
-              ),
-              Positioned(
-                right: 0.0, top: 0.0, bottom: 0.0,
-                child: IgnorePointer(
-                  ignoring: (sizeMode != DrawerSizeMode.Normal),
-                  child: AnimatedOpacity(
-                    curve: Curves.ease,
-                    duration: Duration(milliseconds: 150),
-                    opacity: (sizeMode == DrawerSizeMode.Normal) ? 1.0 : 0.0,
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ToggleIconButton(
-                          icon: Icon(
-                              (hidden) ? Icons.remove : Icons.adjust,
-                            color: selected ? Theme.of(context).accentTextTheme.button.color : Theme.of(context).primaryTextTheme.button.color,
+                            )),
                           ),
-                          onPressed: onToggleHidden,
+                        )),
+                  ]),
+                ),
+                Positioned.fill(
+                  child: RaisedButton(
+                    color: Colors.transparent,
+                    elevation: 0.0,
+                    highlightElevation: 0.0,
+                    padding: const EdgeInsets.all(0.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                    onPressed: onTap,
+                  ),
+                ),
+                Positioned(
+                  right: 0.0,
+                  top: 0.0,
+                  bottom: 0.0,
+                  child: IgnorePointer(
+                    ignoring: (sizeMode != DrawerSizeMode.Normal),
+                    child: AnimatedOpacity(
+                      curve: Curves.ease,
+                      duration: Duration(milliseconds: 150),
+                      opacity: (sizeMode == DrawerSizeMode.Normal) ? 1.0 : 0.0,
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ToggleIconButton(
+                            icon: Icon(
+                              (hidden) ? Icons.remove : Icons.adjust,
+                              color: selected
+                                  ? Theme.of(context)
+                                      .accentTextTheme
+                                      .button
+                                      .color
+                                  : Theme.of(context)
+                                      .primaryTextTheme
+                                      .button
+                                      .color,
+                            ),
+                            onPressed: onToggleHidden,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              )
-            ],
-          );
-        }
-      ),
+                )
+              ],
+            );
+          }),
     );
   }
 }

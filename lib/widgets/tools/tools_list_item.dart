@@ -12,7 +12,7 @@ typedef _ToolToggleCallback = BaseTool Function();
 class _ToolModel {
   _ToolCreationCallback callback;
   BaseTool currentTool;
-  
+
   _ToolModel({
     this.callback,
     this.currentTool,
@@ -24,7 +24,7 @@ class _ToolModel {
     result = 37 * result + currentTool.hashCode;
     return result;
   }
-  
+
   @override
   bool operator ==(dynamic other) {
     if (other is! _ToolModel) return false;
@@ -34,12 +34,8 @@ class _ToolModel {
 }
 
 class ToolsListItem<T> extends StatelessWidget {
-  const ToolsListItem({
-    Key key,
-    this.icon,
-    this.label,
-    this.onToggled
-  }) : super(key: key);
+  const ToolsListItem({Key key, this.icon, this.label, this.onToggled})
+      : super(key: key);
 
   final Widget icon;
   final String label;
@@ -53,37 +49,45 @@ class ToolsListItem<T> extends StatelessWidget {
         return new _ToolModel(
           callback: (tool) => store.dispatch(new SetCurrentToolAction(tool)),
           currentTool: store.state.currentTool,
-        ); 
+        );
       },
       builder: (context, toolModel) {
         final _selected = toolModel.currentTool is T;
         return Padding(
-          padding: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 4.0),
-          child: TwoStagePopupButton(
-            header: AnimatedPadding(
-              curve: Curves.ease,
-              duration: Duration(milliseconds: 150),
-              padding: const EdgeInsets.all(0.0),
-              child: Stack(
-                children: <Widget>[
-                  Align(alignment: Alignment.centerLeft, child: icon),
-                  Positioned(
-                    left: 24.0,
-                    top: 0.0,
-                    bottom: 0.0,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 12.0),
-                      child: Center(child: Text(label)),
+            padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+            child: TwoStagePopupButton(
+              header: AnimatedPadding(
+                curve: Curves.ease,
+                duration: Duration(milliseconds: 150),
+                padding: const EdgeInsets.all(0.0),
+                child: Stack(
+                  children: <Widget>[
+                    Align(alignment: Alignment.centerLeft, child: icon),
+                    Positioned(
+                      left: 24.0,
+                      top: 0.0,
+                      bottom: 0.0,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 12.0),
+                        child: Center(
+                          child: Text(
+                              label,
+                            style: TextStyle(
+                              fontWeight: (_selected) ? FontWeight.w500 : FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            popupContent: (_selected && toolModel.currentTool.options != null) ?
-              Column(children: toolModel.currentTool.options) : Placeholder(),
-            onToggled: () => toolModel.callback(onToggled()),
-            active: _selected,
-          )
+              popupContent: (_selected && toolModel.currentTool.options != null)
+                  ? Column(children: toolModel.currentTool.options)
+                  : Placeholder(),
+              onToggled: () => toolModel.callback(onToggled()),
+              active: _selected,
+            )
 //          child: FlatButton(
 //            color: _selected ? Theme.of(context).highlightColor : Theme.of(context).buttonColor,
 //            textColor: _selected ? Theme.of(context).accentTextTheme.button.color : Colors.black,
@@ -114,7 +118,7 @@ class ToolsListItem<T> extends StatelessWidget {
 //            ),
 //            onPressed: () => toolModel.callback(onToggled()),
 //          ),
-        );
+            );
       },
     );
   }

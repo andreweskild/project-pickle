@@ -23,7 +23,7 @@ class ListItem extends StatelessWidget {
       height: isHighlighted ? 124.0 : 48.0,
       child: FlatButton(
         color: isHighlighted ? Theme.of(context).highlightColor : Colors.transparent,
-        textColor: isHighlighted ? Theme.of(context).accentTextTheme.button.color : Colors.black,
+        textColor: isHighlighted ? Theme.of(context).accentTextTheme.button.color : Colors.grey.shade400,
         padding: EdgeInsets.all(8.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(6.0),

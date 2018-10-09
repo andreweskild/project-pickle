@@ -30,7 +30,6 @@ class ColorCardModel {
   final SetColorCallback setPrimaryColorCallback;
   final SetColorCallback setSecondaryColorCallback;
 
-
   @override
   int get hashCode {
     int result = 17;
@@ -54,12 +53,10 @@ class ColorCardModel {
   }
 }
 
-
 Color _getContrastingColor(Color color) {
   if (color.computeLuminance() > 0.5) {
     return Colors.black;
-  }
-  else {
+  } else {
     return Colors.white;
   }
 }
@@ -69,68 +66,64 @@ class ColorCard extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-          color: Colors.grey.shade300,
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10.0),
-            bottomRight: Radius.circular(10.0),
-          )
+        color: Theme.of(context).dividerColor,
       ),
       child: StoreConnector<AppState, ColorCardModel>(
-        distinct: true,
-        converter: (store) {
-          return ColorCardModel(
-            activeColorType: store.state.activeColorType,
-            primaryColor: store.state.primaryColor,
-            secondaryColor: store.state.secondaryColor,
-            setActiveColorTypeCallback: (colorType) => store.dispatch(SetActiveColorTypeAction(colorType)),
-            setPrimaryColorCallback: (newColor) => store.dispatch(SetPrimaryColorAction(newColor)),
-            setSecondaryColorCallback: (newColor) => store.dispatch(SetSecondaryColorAction(newColor)),
-            palette: store.state.palette,
-          );
-        },
-        builder: (context, model) {
-          return Column(
-            children: <Widget>[
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(10.0),
-                    bottomRight: Radius.circular(10.0),
-                  )
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    children: <Widget>[
-                      ConstrainedBox(
-                        constraints: BoxConstraints.expand(height: 40.0),
-                          child: ColorMenuButton(
-                            color: model.primaryColor,
-                            active: model.activeColorType == ColorType.Primary,
-                            onColorChanged: model.setPrimaryColorCallback,
-                            onToggled: () {
-                              model.setActiveColorTypeCallback(ColorType.Primary);
-                            }
-                          )
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints.expand(height: 40.0),
+          distinct: true,
+          converter: (store) {
+            return ColorCardModel(
+              activeColorType: store.state.activeColorType,
+              primaryColor: store.state.primaryColor,
+              secondaryColor: store.state.secondaryColor,
+              setActiveColorTypeCallback: (colorType) =>
+                  store.dispatch(SetActiveColorTypeAction(colorType)),
+              setPrimaryColorCallback: (newColor) =>
+                  store.dispatch(SetPrimaryColorAction(newColor)),
+              setSecondaryColorCallback: (newColor) =>
+                  store.dispatch(SetSecondaryColorAction(newColor)),
+              palette: store.state.palette,
+            );
+          },
+          builder: (context, model) {
+            return Column(
+              children: <Widget>[
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: <Widget>[
+                        ConstrainedBox(
+                            constraints: BoxConstraints.expand(height: 40.0),
                             child: ColorMenuButton(
-                              color: model.secondaryColor,
-                              active: model.activeColorType == ColorType.Secondary,
-                              onColorChanged: model.setSecondaryColorCallback,
-                              onToggled: () {
-                                model.setActiveColorTypeCallback(ColorType.Secondary);
-                              }
-                            )
+                                color: model.primaryColor,
+                                active:
+                                    model.activeColorType == ColorType.Primary,
+                                onColorChanged: model.setPrimaryColorCallback,
+                                onToggled: () {
+                                  model.setActiveColorTypeCallback(
+                                      ColorType.Primary);
+                                })),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: ConstrainedBox(
+                              constraints: BoxConstraints.expand(height: 40.0),
+                              child: ColorMenuButton(
+                                  color: model.secondaryColor,
+                                  active: model.activeColorType ==
+                                      ColorType.Secondary,
+                                  onColorChanged:
+                                      model.setSecondaryColorCallback,
+                                  onToggled: () {
+                                    model.setActiveColorTypeCallback(
+                                        ColorType.Secondary);
+                                  })
 //                          child: InkWell(
 //                            onTap: () {
 //                              if(model.activeColorType == ColorType.Primary) {
@@ -188,45 +181,45 @@ class ColorCard extends StatelessWidget {
 //                              ),
 //                            ),
 //                          ),
+                              ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: GridView.extent(
-                  padding: EdgeInsets.all(12.0),
-                  primary: false,
-                  crossAxisSpacing: 8.0,
-                  mainAxisSpacing: 8.0,
-                  maxCrossAxisExtent: 48.0,
-                  childAspectRatio: 1.0,
-                  shrinkWrap: false,
-                  children: model.palette.map(
-                          (hslColor) => new RaisedButton(
-                        elevation: 0.0,
-                        color: hslColor.toColor(),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                          side: BorderSide(color: Colors.black26),
-                        ),
-                        onPressed: () {
-                          if(model.activeColorType == ColorType.Primary) {
-                            model.setPrimaryColorCallback(hslColor);
-                          }
-                          else {
-                            model.setSecondaryColorCallback(hslColor);
-                          }
-                        },
-                      )
-                  ).toList(),
+                Expanded(
+                  child: GridView.extent(
+                    padding: EdgeInsets.all(8.0),
+                    primary: false,
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
+                    maxCrossAxisExtent: 48.0,
+                    childAspectRatio: 1.0,
+                    shrinkWrap: false,
+                    children: model.palette
+                        .map((hslColor) => new RaisedButton(
+                              elevation: 0.0,
+                              color: hslColor.toColor(),
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0)),
+                                side: BorderSide(color: Colors.black26),
+                              ),
+                              onPressed: () {
+                                if (model.activeColorType ==
+                                    ColorType.Primary) {
+                                  model.setPrimaryColorCallback(hslColor);
+                                } else {
+                                  model.setSecondaryColorCallback(hslColor);
+                                }
+                              },
+                            ))
+                        .toList(),
+                  ),
                 ),
-              ),
-            ],
-          );
-        }
-      ),
+              ],
+            );
+          }),
     );
   }
 }
