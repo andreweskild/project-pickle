@@ -12,8 +12,8 @@ import 'package:project_pickle/tools/line_tool.dart';
 import 'package:project_pickle/tools/pixel_tool.dart';
 import 'package:project_pickle/tools/shape_tool.dart';
 import 'package:project_pickle/tools/marquee_selector_tool.dart';
-import 'package:project_pickle/widgets/tools/tools_list_item.dart';
 import 'package:project_pickle/widgets/common/expandable_button.dart';
+import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 import 'package:project_pickle/widgets/tools/tool_list_button.dart';
 
 typedef _ToolCreationCallback = void Function(BaseTool tool);
@@ -22,16 +22,19 @@ typedef _ToolToggleCallback = BaseTool Function();
 class _ToolsModel {
   _ToolCreationCallback callback;
   BaseTool currentTool;
+  DrawerSizeMode sizeMode;
 
   _ToolsModel({
     this.callback,
     this.currentTool,
+    this.sizeMode,
   });
 
   @override
   int get hashCode {
     int result = 17;
     result = 37 * result + currentTool.hashCode;
+    result = 37 * result + sizeMode.hashCode;
     return result;
   }
 
@@ -39,7 +42,8 @@ class _ToolsModel {
   bool operator ==(dynamic other) {
     if (other is! _ToolsModel) return false;
     _ToolsModel model = other;
-    return (model.currentTool.runtimeType == currentTool.runtimeType);
+    return (model.currentTool.runtimeType == currentTool.runtimeType &&
+      model.sizeMode == sizeMode);
   }
 }
 
@@ -54,6 +58,11 @@ BaseTool _createToolFromIndex(BuildContext context, int index) {
   }
 }
 
+Widget _getToolOptions(dynamic currentTool, bool isCurrentToolType, bool isMini) {
+  return (isCurrentToolType && currentTool.optionsBuilder != null)
+      ? currentTool.optionsBuilder(isMini) : SizedBox();
+}
+
 class ToolsCard extends StatelessWidget {
   const ToolsCard({
     Key key,
@@ -66,6 +75,7 @@ class ToolsCard extends StatelessWidget {
         return _ToolsModel(
           callback: (toolType) => store.dispatch(SetCurrentToolAction(toolType)),
           currentTool: store.state.currentTool,
+          sizeMode: store.state.leftDrawerSizeMode,
         );
       },
       builder: (context, model) {
@@ -80,43 +90,43 @@ class ToolsCard extends StatelessWidget {
               isExpanded: model.currentTool is PixelTool,
               icon: Icons.crop_square ,
               label: 'Pixel',
-              options: (model.currentTool is PixelTool && model.currentTool.options != null)
-                  ? model.currentTool.options : <Widget>[SizedBox()],
+              options: _getToolOptions(model.currentTool, model.currentTool is PixelTool, model.sizeMode == DrawerSizeMode.Mini),
+              isMini: model.sizeMode == DrawerSizeMode.Mini
             ),
             ToolListButton(
               isExpanded: model.currentTool is EraserTool,
               icon: Icons.crop_square ,
               label: 'Eraser',
-              options: (model.currentTool is EraserTool && model.currentTool.options != null)
-                  ? model.currentTool.options : <Widget>[SizedBox()],
+              options: _getToolOptions(model.currentTool, model.currentTool is EraserTool, model.sizeMode == DrawerSizeMode.Mini),
+              isMini: model.sizeMode == DrawerSizeMode.Mini
             ),
             ToolListButton(
               isExpanded: model.currentTool is LineTool,
               icon: Icons.crop_square ,
               label: 'Line',
-              options: (model.currentTool is LineTool && model.currentTool.options != null)
-                  ? model.currentTool.options : <Widget>[SizedBox()],
+              options: _getToolOptions(model.currentTool, model.currentTool is LineTool, model.sizeMode == DrawerSizeMode.Mini),
+              isMini: model.sizeMode == DrawerSizeMode.Mini
             ),
             ToolListButton(
               isExpanded: model.currentTool is ShapeTool,
               icon: Icons.crop_square ,
               label: 'Shape',
-              options: (model.currentTool is ShapeTool && model.currentTool.options != null)
-                  ? model.currentTool.options : <Widget>[SizedBox()],
+              options: _getToolOptions(model.currentTool, model.currentTool is ShapeTool, model.sizeMode == DrawerSizeMode.Mini),
+              isMini: model.sizeMode == DrawerSizeMode.Mini
             ),
             ToolListButton(
               isExpanded: model.currentTool is FillTool,
               icon: Icons.crop_square ,
               label: 'Fill',
-              options: (model.currentTool is FillTool && model.currentTool.options != null)
-                  ? model.currentTool.options : <Widget>[SizedBox()],
+              options: _getToolOptions(model.currentTool, model.currentTool is FillTool, model.sizeMode == DrawerSizeMode.Mini),
+              isMini: model.sizeMode == DrawerSizeMode.Mini
             ),
             ToolListButton(
               isExpanded: model.currentTool is MarqueeSelectorTool,
               icon: Icons.crop_square ,
               label: 'Selection',
-              options: (model.currentTool is MarqueeSelectorTool && model.currentTool.options != null)
-                  ? model.currentTool.options : <Widget>[SizedBox()],
+              options: _getToolOptions(model.currentTool, model.currentTool is MarqueeSelectorTool, model.sizeMode == DrawerSizeMode.Mini),
+              isMini: model.sizeMode == DrawerSizeMode.Mini
             ),
           ],
         );

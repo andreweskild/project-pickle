@@ -100,7 +100,7 @@ class ColorCard extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         ConstrainedBox(
-                            constraints: BoxConstraints.expand(height: 40.0),
+                            constraints: BoxConstraints.expand(height: 48.0),
                             child: ColorMenuButton(
                                 color: model.primaryColor,
                                 active:
@@ -113,7 +113,7 @@ class ColorCard extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: ConstrainedBox(
-                              constraints: BoxConstraints.expand(height: 40.0),
+                              constraints: BoxConstraints.expand(height: 48.0),
                               child: ColorMenuButton(
                                   color: model.secondaryColor,
                                   active: model.activeColorType ==

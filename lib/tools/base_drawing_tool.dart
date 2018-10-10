@@ -58,6 +58,39 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
     }
   }
 
+  void _drawFilledRectToOverlay(Offset p1, Offset p2) {
+    for (double x = p1.dx; x <= p2.dx; x++) {
+      for (double y = p1.dy; y <= p2.dy; y++) {
+        drawOverlayPixel(Offset(x, y));
+      }
+    }
+  }
+
+  void drawOverlayFilledRectangle(Offset p1, Offset p2) {
+    if(p1.dx < p2.dx) {
+      if(p1.dy < p2.dy) {
+        _drawFilledRectToOverlay(p1, p2);
+      }
+      else {
+        var newP1 = Offset(p1.dx, p2.dy);
+        var newP2 = Offset(p2.dx, p1.dy);
+        _drawFilledRectToOverlay(newP1, newP2);
+      }
+    }
+    else {
+      if(p1.dy > p2.dy) {
+        var newP1 = p2;
+        var newP2 = p1;
+        _drawFilledRectToOverlay(newP1, newP2);
+      }
+      else {
+        var newP1 = Offset(p2.dx, p1.dy);
+        var newP2 = Offset(p1.dx, p2.dy);
+        _drawFilledRectToOverlay(newP1, newP2);
+      }
+    }
+  }
+
 
   void removePixel(Offset pos) {
     if(pixelInSelection(pos)) {

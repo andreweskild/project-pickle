@@ -5,10 +5,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-const double _kTrackHeight = 28.0;
+const double _kTrackHeight = 24.0;
 const double _kTrackWidth = 52.0;
 const double _kTrackRadius = _kTrackHeight / 2.0;
-const double _kThumbRadius = 14.0;
+const double _kThumbRadius = 12.0;
 const double _kSwitchWidth = _kTrackWidth - 2 * _kTrackRadius + 2 * kRadialReactionRadius;
 const double _kSwitchHeight = 2 * kRadialReactionRadius + 8.0;
 const double _kSwitchHeightCollapsed = 2 * kRadialReactionRadius;

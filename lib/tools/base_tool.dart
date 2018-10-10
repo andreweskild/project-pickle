@@ -6,6 +6,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:project_pickle/state/app_state.dart';
 
 typedef PixelInputCallback = void Function(Offset);
+typedef OptionsBuilder = Widget Function(bool);
 
 abstract class BaseTool<T extends Widget> {
   BaseTool(
@@ -27,7 +28,7 @@ abstract class BaseTool<T extends Widget> {
 
   Offset _lastInputPos;
 
-  List<Widget> options;
+  OptionsBuilder optionsBuilder;
 
   void onPixelInputUpdate(Offset pos) {}
   void onPixelInputUp() {}

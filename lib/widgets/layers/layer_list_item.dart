@@ -63,7 +63,7 @@ class LayerListItem extends StatelessWidget {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(6.0),
                                 border: Border.all(
-                                  color: (selected) ? Theme.of(context).accentTextTheme.button.color.withAlpha(100) : Colors.transparent,
+                                  color: (selected) ? Theme.of(context).highlightColor.withAlpha(200) : Colors.transparent,
                                 )
                               ),
                               child: ClipRRect(

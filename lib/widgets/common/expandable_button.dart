@@ -6,8 +6,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-const double _kPanelHeaderCollapsedHeight = 40.0;
-const double _kPanelHeaderExpandedHeight = 40.0;
+const double _kPanelHeaderCollapsedHeight = 48.0;
+const double _kPanelHeaderExpandedHeight = 48.0;
 
 class _SaltedKey<S, V> extends LocalKey {
   const _SaltedKey(this.salt, this.value);
@@ -252,10 +252,7 @@ class _ExpandableButtonListState extends State<ExpandableButtonList> {
     for (int index = 0; index < widget.children.length; index += 1) {
 
       final ExpandableButton child = widget.children[index];
-      final Row header = Row(
-        children: <Widget>[
-          Expanded(
-            child: AnimatedContainer(
+      final Widget header = AnimatedContainer(
               duration: widget.animationDuration,
               curve: Curves.fastOutSlowIn,
               margin: _isChildExpanded(index) ? kExpandedEdgeInsets : EdgeInsets.zero,
@@ -266,10 +263,7 @@ class _ExpandableButtonListState extends State<ExpandableButtonList> {
                   _isChildExpanded(index),
                 ),
               ),
-            ),
-          ),
-        ],
-      );
+            );
 
       items.add(
         Padding(

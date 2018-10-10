@@ -1,56 +1,93 @@
+import 'package:flutter/material.dart' show Icons;
 import 'package:flutter/widgets.dart';
 
 import 'package:project_pickle/tools/base_drawing_tool.dart';
+import 'package:project_pickle/tools/base_tool.dart';
 import 'package:project_pickle/widgets/common/switch.dart';
+import 'package:project_pickle/widgets/common/toggle_icon_button.dart';
 
 class ShapeTool extends BaseDrawingTool {
   ShapeTool(context) : super(context);
 
   Offset _startPoint;
   Offset _endPoint;
+  static bool _filled = false;
 
-  get options => <Widget>[
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12.0, 4.0, 4.0, 0.0),
-          child: Row(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 4.0, 8.0, 4.0),
-                child: Text('Shape'),
+  OptionsBuilder optionsBuilder = (isMini) {
+    if(isMini) {
+      return Column (
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
+            child: SizedBox(
+              height: 32.0,
+              child: ToggleIconButton(
+                  icon: Icon(Icons.access_alarm),
+                  onPressed: (){}
               ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Switch(
-                    value: false,
-                    onChanged: (value) {},
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 8.0),
+            child: SizedBox(
+              height: 32.0,
+              child: ToggleIconButton(
+                icon: Icon(Icons.account_balance),
+                onPressed: (){},
+                toggled: true,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+    else {
+      return Column (
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12.0, 4.0, 4.0, 0.0),
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 4.0, 8.0, 4.0),
+                  child: Text('Shape'),
+                ),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Switch(
+                      value: false,
+                      onChanged: (value) {},
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12.0, 0.0, 4.0, 4.0),
-          child: Row(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 4.0, 8.0, 4.0),
-                child: Text('Filled'),
-              ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Switch(
-                    value: false,
-                    onChanged: (value) {},
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12.0, 0.0, 4.0, 4.0),
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 4.0, 8.0, 4.0),
+                  child: Text('Filled'),
+                ),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Switch(
+                      value: _filled,
+                      onChanged: (value) {_filled = value;},
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ];
+        ],
+      );
+    }
+  };
 
   @override
   void onPixelInputUpdate(Offset pos) {
@@ -62,15 +99,19 @@ class ShapeTool extends BaseDrawingTool {
         resetOverlay();
       }
       _endPoint = pos;
-      var topLeftPoint = _startPoint;
-      var topRightPoint = Offset(_endPoint.dx, _startPoint.dy);
-      var bottomLeftPoint = Offset(_startPoint.dx, _endPoint.dy);
-      var bottomRightPoint = _endPoint;
+      if(_filled) {
+        drawOverlayFilledRectangle(_startPoint, _endPoint);
+      } else {
+        var topLeftPoint = _startPoint;
+        var topRightPoint = Offset(_endPoint.dx, _startPoint.dy);
+        var bottomLeftPoint = Offset(_startPoint.dx, _endPoint.dy);
+        var bottomRightPoint = _endPoint;
 
-      drawOverlayPixelLine(topLeftPoint, topRightPoint);
-      drawOverlayPixelLine(topRightPoint, bottomRightPoint);
-      drawOverlayPixelLine(bottomRightPoint, bottomLeftPoint);
-      drawOverlayPixelLine(bottomLeftPoint, topLeftPoint);
+        drawOverlayPixelLine(topLeftPoint, topRightPoint);
+        drawOverlayPixelLine(topRightPoint, bottomRightPoint);
+        drawOverlayPixelLine(bottomRightPoint, bottomLeftPoint);
+        drawOverlayPixelLine(bottomLeftPoint, topLeftPoint);
+      }
     }
   }
 
