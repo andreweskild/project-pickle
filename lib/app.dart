@@ -82,7 +82,10 @@ class MyApp extends StatelessWidget {
                   thumbColor: Colors.white,
                   thumbShape: SliderThumbShape(),
                   overlayColor: const Color(0xFFCFFF93),
-                )),
+                ),
+          toggleableActiveColor: const Color(0xFF86C040),
+          unselectedWidgetColor: Colors.white,
+        ),
 
         // GBA Theme 2
         // theme: new ThemeData(

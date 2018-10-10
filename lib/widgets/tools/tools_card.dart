@@ -61,104 +61,66 @@ class ToolsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-      child: StoreConnector<AppState, _ToolsModel>(
-        converter: (store) {
-          return _ToolsModel(
-            callback: (toolType) => store.dispatch(SetCurrentToolAction(toolType)),
-            currentTool: store.state.currentTool,
-          );
-        },
-        builder: (context, model) {
-          return ExpandableButtonList(
-            expansionCallback: (index, expanded) {
-              if(!expanded){
-                model.callback(_createToolFromIndex(context, index));
-              }
-            },
-            children: <ExpandableButton>[
-              ToolListButton(
-                isExpanded: model.currentTool is PixelTool,
-                icon: Icons.crop_square ,
-                label: 'Pixel',
-                options: (model.currentTool is PixelTool && model.currentTool.options != null)
-                    ? model.currentTool.options : <Widget>[SizedBox()],
-              ),
-              ToolListButton(
-                isExpanded: model.currentTool is EraserTool,
-                icon: Icons.crop_square ,
-                label: 'Eraser',
-                options: (model.currentTool is EraserTool && model.currentTool.options != null)
-                    ? model.currentTool.options : <Widget>[SizedBox()],
-              ),
-              ToolListButton(
-                isExpanded: model.currentTool is LineTool,
-                icon: Icons.crop_square ,
-                label: 'Line',
-                options: (model.currentTool is LineTool && model.currentTool.options != null)
-                    ? model.currentTool.options : <Widget>[SizedBox()],
-              ),
-              ToolListButton(
-                isExpanded: model.currentTool is ShapeTool,
-                icon: Icons.crop_square ,
-                label: 'Shape',
-                options: (model.currentTool is ShapeTool && model.currentTool.options != null)
-                    ? model.currentTool.options : <Widget>[SizedBox()],
-              ),
-              ToolListButton(
-                isExpanded: model.currentTool is FillTool,
-                icon: Icons.crop_square ,
-                label: 'Fill',
-                options: (model.currentTool is FillTool && model.currentTool.options != null)
-                    ? model.currentTool.options : <Widget>[SizedBox()],
-              ),
-              ToolListButton(
-                isExpanded: model.currentTool is MarqueeSelectorTool,
-                icon: Icons.crop_square ,
-                label: 'Selection',
-                options: (model.currentTool is MarqueeSelectorTool && model.currentTool.options != null)
-                    ? model.currentTool.options : <Widget>[SizedBox()],
-              ),
-            ],
-          );
-        }
-      )
-//      child: Column(
-//        mainAxisSize: MainAxisSize.min,
-//        children: <Widget>[
-//          ToolsListItem<PixelTool>(
-//            icon: Icon(Icons.brush),
-//            label: 'Pixel',
-//            onToggled: () => PixelTool(context),
-//          ),
-//          ToolsListItem<EraserTool>(
-//            icon: Icon(Icons.brightness_1),
-//            label: 'Eraser',
-//            onToggled: () => EraserTool(context),
-//          ),
-//          ToolsListItem<FillTool>(
-//            icon: Icon(Icons.brush),
-//            label: 'Fill',
-//            onToggled: () => FillTool(context),
-//          ),
-//          ToolsListItem<LineTool>(
-//            icon: Icon(Icons.brightness_1),
-//            label: 'Line',
-//            onToggled: () => LineTool(context),
-//          ),
-//          ToolsListItem<ShapeTool>(
-//            icon: Icon(Icons.crop_square),
-//            label: 'Shape',
-//            onToggled: () => ShapeTool(context),
-//          ),
-//          ToolsListItem<MarqueeSelectorTool>(
-//            icon: Icon(Icons.brightness_1),
-//            label: 'Select',
-//            onToggled: () => MarqueeSelectorTool(context),
-//          ),
-//        ],
-//      ),
+    return StoreConnector<AppState, _ToolsModel>(
+      converter: (store) {
+        return _ToolsModel(
+          callback: (toolType) => store.dispatch(SetCurrentToolAction(toolType)),
+          currentTool: store.state.currentTool,
+        );
+      },
+      builder: (context, model) {
+        return ExpandableButtonList(
+          expansionCallback: (index, expanded) {
+            if(!expanded){
+              model.callback(_createToolFromIndex(context, index));
+            }
+          },
+          children: <ExpandableButton>[
+            ToolListButton(
+              isExpanded: model.currentTool is PixelTool,
+              icon: Icons.crop_square ,
+              label: 'Pixel',
+              options: (model.currentTool is PixelTool && model.currentTool.options != null)
+                  ? model.currentTool.options : <Widget>[SizedBox()],
+            ),
+            ToolListButton(
+              isExpanded: model.currentTool is EraserTool,
+              icon: Icons.crop_square ,
+              label: 'Eraser',
+              options: (model.currentTool is EraserTool && model.currentTool.options != null)
+                  ? model.currentTool.options : <Widget>[SizedBox()],
+            ),
+            ToolListButton(
+              isExpanded: model.currentTool is LineTool,
+              icon: Icons.crop_square ,
+              label: 'Line',
+              options: (model.currentTool is LineTool && model.currentTool.options != null)
+                  ? model.currentTool.options : <Widget>[SizedBox()],
+            ),
+            ToolListButton(
+              isExpanded: model.currentTool is ShapeTool,
+              icon: Icons.crop_square ,
+              label: 'Shape',
+              options: (model.currentTool is ShapeTool && model.currentTool.options != null)
+                  ? model.currentTool.options : <Widget>[SizedBox()],
+            ),
+            ToolListButton(
+              isExpanded: model.currentTool is FillTool,
+              icon: Icons.crop_square ,
+              label: 'Fill',
+              options: (model.currentTool is FillTool && model.currentTool.options != null)
+                  ? model.currentTool.options : <Widget>[SizedBox()],
+            ),
+            ToolListButton(
+              isExpanded: model.currentTool is MarqueeSelectorTool,
+              icon: Icons.crop_square ,
+              label: 'Selection',
+              options: (model.currentTool is MarqueeSelectorTool && model.currentTool.options != null)
+                  ? model.currentTool.options : <Widget>[SizedBox()],
+            ),
+          ],
+        );
+      }
     );
   }
 }

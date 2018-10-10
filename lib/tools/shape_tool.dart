@@ -11,7 +11,7 @@ class ShapeTool extends BaseDrawingTool {
 
   get options => <Widget>[
         Padding(
-          padding: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 4.0),
+          padding: const EdgeInsets.fromLTRB(12.0, 4.0, 4.0, 0.0),
           child: Row(
             children: <Widget>[
               Padding(
@@ -31,7 +31,7 @@ class ShapeTool extends BaseDrawingTool {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 4.0),
+          padding: const EdgeInsets.fromLTRB(12.0, 0.0, 4.0, 4.0),
           child: Row(
             children: <Widget>[
               Padding(
