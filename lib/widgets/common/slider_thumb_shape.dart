@@ -9,7 +9,7 @@ class SliderThumbShape extends SliderComponentShape {
 
   @override
   Size getPreferredSize(bool isEnabled, bool isDiscrete) {
-    return new Size.fromRadius(isEnabled ? _thumbHeight : _disabledThumbHeight);
+    return new Size(_thumbHeight * 1.3, isEnabled ? _thumbHeight : _disabledThumbHeight);
   }
 
   @override
@@ -45,9 +45,9 @@ class SliderThumbShape extends SliderComponentShape {
 //    ), Colors.black, 2.0, false);
     canvas.drawRRect(
       RRect.fromLTRBR(
-          thumbCenter.dx - heightTween.evaluate(enableAnimation),
+          thumbCenter.dx - heightTween.evaluate(enableAnimation) * 1.3,
           thumbCenter.dy - heightTween.evaluate(enableAnimation),
-          thumbCenter.dx + heightTween.evaluate(enableAnimation),
+          thumbCenter.dx + heightTween.evaluate(enableAnimation) * 1.3,
           thumbCenter.dy + heightTween.evaluate(enableAnimation),
           Radius.circular(8.0)
       ),

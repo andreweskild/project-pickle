@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:project_pickle/widgets/common/value_slider.dart';
+import 'package:project_pickle/widgets/layout/responsive_app_bar.dart';
 import 'package:project_pickle/widgets/tools/tool_options_panel.dart';
 
 class ResponsiveScaffold extends StatefulWidget {
@@ -46,49 +48,105 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
         else {
           // return Desktop Scaffold
           return new Scaffold(
-            appBar: new AppBar(
+            appBar: new ResponsiveAppBar(
               elevation: 1.0,
               primary: true,
-              title: Row(
-                children: <Widget>[
-                  FlatButton(
-                    child: Text(
-                      'Project',
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                    padding: const EdgeInsets.all(8.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6.0),
-                    ),
-                    onPressed: (){},
+              centerTitle: true,
+              title: DefaultTextStyle(
+                style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
+                child: Center(
+                  child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget> [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(left: 12.0, bottom: 4.0),
+                              child: Text('Stroke Width'),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: ValueSlider(
+                                value: 1.0,
+                                min: 1.0,
+                                max: 100.0,
+                                onChanged: (value){
+                                  setState((){
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(left: 12.0, bottom: 4.0),
+                              child: Text('Opacity'),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                              child: ValueSlider(
+                                value: 0.4,
+                                onChanged: (value){
+                                  setState((){
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ]
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4.0, right: 4.0,),
-                    child: Text(
-                      '>',
-                      style: Theme.of(context).textTheme.title,
+                ),
+              ),
+              leading: Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Row(
+                  children: <Widget>[
+                    FlatButton(
+                      child: Text(
+                        'Project',
+                        style: Theme.of(context).textTheme.title,
+                      ),
+                      padding: const EdgeInsets.all(8.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6.0),
+                      ),
+                      onPressed: (){},
                     ),
-                  ),
-                  FlatButton(
-                    child: Text(
-                      'Current Canvas',
-                      style: Theme.of(context).textTheme.title,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4.0, right: 4.0,),
+                      child: Text(
+                        '>',
+                        style: Theme.of(context).textTheme.title,
+                      ),
                     ),
-                    padding: const EdgeInsets.all(8.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6.0),
-                    ),
-                    onPressed: (){},
-                  )
-                ],
+                    FlatButton(
+                      child: Text(
+                        'Current Canvas',
+                        style: Theme.of(context).textTheme.title,
+                      ),
+                      padding: const EdgeInsets.all(8.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6.0),
+                      ),
+                      onPressed: (){},
+                    )
+                  ],
+                ),
               ),
               actions: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.launch),
+                  icon: Icon(Icons.launch, color: Colors.white),
                   onPressed: (){},
                 ),
                 IconButton(
-                  icon: Icon(Icons.settings),
+                  icon: Icon(Icons.settings, color: Colors.white),
                   onPressed: (){},
                 ),
               ],
@@ -104,14 +162,6 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                   alignment: Alignment.centerRight,
                   child: widget.endDrawer,
                 ),
-                new Align(
-                  alignment: Alignment.topCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: ToolOptionsPanel(
-                    ),
-                  ),
-                )
               ],
             ),
           );

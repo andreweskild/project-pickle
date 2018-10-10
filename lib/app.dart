@@ -68,6 +68,7 @@ class MyApp extends StatelessWidget {
             scaffoldBackgroundColor: const Color(0xFFE3E3E3),
             textTheme: Theme.of(context).textTheme.copyWith(
                   title: Theme.of(context).textTheme.title.copyWith(
+                        color: Colors.white,
                         fontSize: 16.0,
                       ),
                   button: Theme.of(context).textTheme.button.copyWith(
@@ -76,11 +77,11 @@ class MyApp extends StatelessWidget {
                 ),
             splashFactory: InkRipple.splashFactory,
             sliderTheme: Theme.of(context).sliderTheme.copyWith(
-                  activeTrackColor: Colors.grey.shade600,
-                  inactiveTrackColor: Colors.grey.shade300,
-                  thumbColor: Colors.grey.shade400,
+                  activeTrackColor: Colors.white,
+                  inactiveTrackColor: const Color(0xFF86C040),
+                  thumbColor: Colors.white,
                   thumbShape: SliderThumbShape(),
-                  overlayColor: Colors.grey.shade600,
+                  overlayColor: const Color(0xFFCFFF93),
                 )),
 
         // GBA Theme 2

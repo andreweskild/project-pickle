@@ -965,8 +965,13 @@ class _RenderSlider extends RenderBox {
       final double radius = _overlayRadiusTween.evaluate(_overlayAnimation);
       canvas.drawRRect(
         RRect.fromRectAndRadius(
-          Rect.fromCircle(center: center, radius: radius),
-          Radius.circular(14.0),
+          Rect.fromLTRB(
+            center.dx - radius * 1.2,
+            center.dy - radius,
+            center.dx + radius * 1.2,
+            center.dy + radius,
+          ),
+          Radius.circular(12.0),
         ),
         overlayPaint
       );
@@ -1020,16 +1025,17 @@ class _RenderSlider extends RenderBox {
     final double trackBottom = trackVerticalCenter + trackRadius;
     final double trackRight = trackLeft + trackLength;
     final double trackActive = trackLeft + trackLength * visualPosition;
-    final double thumbRadius = _sliderTheme.thumbShape.getPreferredSize(isInteractive, isDiscrete).width / 2.0;
-    final double trackActiveLeft = math.max(0.0 + 2.0, trackActive - thumbRadius - thumbGap * (1.0 - _enableAnimation.value) + 2.0);
-    final double trackActiveRight = math.min(trackActive + thumbRadius + thumbGap * (1.0 - _enableAnimation.value), trackRight);
+    final double thumbHeight = _sliderTheme.thumbShape.getPreferredSize(isInteractive, isDiscrete).height;
+    final double thumbWidth = _sliderTheme.thumbShape.getPreferredSize(isInteractive, isDiscrete).width / 2.0;
+    final double trackActiveLeft = math.max(0.0 + 2.0, trackActive - thumbWidth - thumbGap * (1.0 - _enableAnimation.value) + 2.0);
+    final double trackActiveRight = math.min(trackActive + thumbWidth + thumbGap * (1.0 - _enableAnimation.value), trackRight);
     final RRect trackLeftRect = RRect.fromRectAndCorners(
-      Rect.fromLTRB(trackLeft - thumbRadius, trackTop, trackActiveLeft, trackBottom),
+      Rect.fromLTRB(trackLeft - thumbWidth, trackTop, trackActiveLeft, trackBottom),
       topLeft: Radius.circular(_trackHeight / 2.0),
       bottomLeft: Radius.circular(_trackHeight / 2.0),
     );
     final RRect trackRightRect = RRect.fromRectAndCorners(
-      Rect.fromLTRB(trackActiveRight, trackTop, trackRight + thumbRadius, trackBottom),
+      Rect.fromLTRB(trackActiveRight, trackTop, trackRight + thumbWidth, trackBottom),
       topRight: Radius.circular(_trackHeight / 2.0),
       bottomRight: Radius.circular(_trackHeight / 2.0),
     );
@@ -1042,6 +1048,23 @@ class _RenderSlider extends RenderBox {
     if (visualPosition < 1.0) {
       canvas.drawRRect(trackRightRect, rightTrackPaint);
     }
+
+    canvas.drawShadow(
+        Path()..addRRect(
+          RRect.fromRectAndRadius(
+            Rect.fromLTRB(
+              thumbCenter.dx - thumbWidth * 2.0,
+              thumbCenter.dy - thumbHeight,
+              thumbCenter.dx + thumbWidth * 2.0,
+              thumbCenter.dy + thumbHeight,
+            ),
+            Radius.circular(12.0),
+          ),
+        ),
+        Colors.black,
+        3.0,
+        false
+    );
 
     _paintOverlay(canvas, thumbCenter);
 
@@ -1071,6 +1094,8 @@ class _RenderSlider extends RenderBox {
       }
     }
 
+
+
     _sliderTheme.thumbShape.paint(
       context,
       thumbCenter,
@@ -1083,6 +1108,8 @@ class _RenderSlider extends RenderBox {
       textDirection: _textDirection,
       value: _value,
     );
+
+
   }
 
   @override
