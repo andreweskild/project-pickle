@@ -148,7 +148,7 @@ class LayerListItem extends StatelessWidget {
                                       .button
                                       .color,
                             ),
-                            onPressed: onToggleHidden,
+                            onToggled: onToggleHidden,
                           ),
                         ),
                       ),

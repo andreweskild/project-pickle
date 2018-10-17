@@ -23,7 +23,7 @@ class ShapeTool extends BaseDrawingTool {
               height: 32.0,
               child: ToggleIconButton(
                   icon: Icon(Icons.access_alarm),
-                  onPressed: (){}
+                  onToggled: (){}
               ),
             ),
           ),
@@ -33,8 +33,8 @@ class ShapeTool extends BaseDrawingTool {
               height: 32.0,
               child: ToggleIconButton(
                 icon: Icon(Icons.account_balance),
-                onPressed: (){},
-                toggled: true,
+                onToggled: (){_filled = !_filled;},
+                toggled: _filled,
               ),
             ),
           ),
@@ -99,19 +99,20 @@ class ShapeTool extends BaseDrawingTool {
         resetOverlay();
       }
       _endPoint = pos;
-      if(_filled) {
-        drawOverlayFilledRectangle(_startPoint, _endPoint);
-      } else {
-        var topLeftPoint = _startPoint;
-        var topRightPoint = Offset(_endPoint.dx, _startPoint.dy);
-        var bottomLeftPoint = Offset(_startPoint.dx, _endPoint.dy);
-        var bottomRightPoint = _endPoint;
-
-        drawOverlayPixelLine(topLeftPoint, topRightPoint);
-        drawOverlayPixelLine(topRightPoint, bottomRightPoint);
-        drawOverlayPixelLine(bottomRightPoint, bottomLeftPoint);
-        drawOverlayPixelLine(bottomLeftPoint, topLeftPoint);
-      }
+//      if(_filled) {
+//        drawOverlayFilledRectangle(_startPoint, _endPoint);
+//      } else {
+//        var topLeftPoint = _startPoint;
+//        var topRightPoint = Offset(_endPoint.dx, _startPoint.dy);
+//        var bottomLeftPoint = Offset(_startPoint.dx, _endPoint.dy);
+//        var bottomRightPoint = _endPoint;
+//
+//        drawOverlayPixelLine(topLeftPoint, topRightPoint);
+//        drawOverlayPixelLine(topRightPoint, bottomRightPoint);
+//        drawOverlayPixelLine(bottomRightPoint, bottomLeftPoint);
+//        drawOverlayPixelLine(bottomLeftPoint, topLeftPoint);
+//      }
+      drawOverlayCircle(_startPoint, _endPoint);
     }
   }
 
@@ -125,4 +126,5 @@ class ShapeTool extends BaseDrawingTool {
     _startPoint = null;
     _endPoint = null;
   }
+
 }

@@ -240,7 +240,7 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
                                     Icons.colorize,
                                     color: (model.currentTool is ColorPickerTool) ? Colors.white : _getContrastingColor(_currentColor.toColor()),
                                   ),
-                                  onPressed: () {
+                                  onToggled: () {
                                     Navigator.pop(context);
                                     model.callback();
                                   },
