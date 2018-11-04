@@ -37,10 +37,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Project pickle',
         theme: ThemeData(
-            accentColor: const Color(0xFFCFFF93),
-            cardColor: const Color(0xFFFBFBFB),
-            buttonColor: const Color(0xFFCFFF93),
-            dividerColor: const Color(0xFFEEEEEE),
+            accentColor: const Color(0xFFB0EF63),
+            cardColor: const Color(0xFFFFFFFF),
+            buttonColor: const Color(0xFFC4FB81),
+            dividerColor: const Color(0xFFE7E7E7),
             primarySwatch:
                 MaterialColor(const Color(0xFFA0DA58).value, const <int, Color>{
               50: const Color(0xFFFFF8E1),
@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
             buttonTheme: ButtonTheme.of(context).copyWith(
               minWidth: 12.0,
             ),
-            scaffoldBackgroundColor: const Color(0xFFE3E3E3),
+            scaffoldBackgroundColor: const Color(0xFFF1F1F1),
             textTheme: Theme.of(context).textTheme.copyWith(
                   title: Theme.of(context).textTheme.title.copyWith(
                         color: Colors.white,
@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
                   overlayColor: const Color(0xFFCFFF93),
                 ),
           toggleableActiveColor: const Color(0xFF86C040),
-          unselectedWidgetColor: Colors.white,
+          unselectedWidgetColor: const Color(0xFFFBFBFB),
         ),
 
         // GBA Theme 2

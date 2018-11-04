@@ -104,9 +104,19 @@ class SetToolOpacityAction {
   final double opacity;
 }
 
+class SetToolShapeAction {
+  SetToolShapeAction(this.shape);
+  final ShapeMode shape;
+}
+
 class SetToolSizeAction {
   SetToolSizeAction(this.size);
   final double size;
+}
+
+class SetShapeFilledAction {
+  SetShapeFilledAction(this.filled);
+  final bool filled;
 }
 
 class RemovePixelAction {

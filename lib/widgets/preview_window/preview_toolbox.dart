@@ -43,19 +43,22 @@ class PreviewToolbox extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
-  Widget _cachedPreview(BuildContext Context, List<PixelCanvasLayer> layers) {
+  Widget _cachedPreview(BuildContext context, List<PixelCanvasLayer> layers) {
     return DecoratedBox(
       decoration: BoxDecoration(
-          color: Colors.grey.shade300,
+          color: Theme.of(context).scaffoldBackgroundColor,
+          border: Border.all(color: Theme.of(context).dividerColor, width: 2.0),
           borderRadius: BorderRadius.circular(6.0)),
       child: Padding(
         padding: const EdgeInsets.all(18.0),
         child: AspectRatio(
             aspectRatio: 1.0,
             child: LayoutBuilder(builder: (context, constraints) {
-              return Material(
-                elevation: 2.0,
-                color: Colors.white,
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Theme.of(context).dividerColor, width: constraints.maxHeight / 32.0 / 2.0)
+                ),
                 child: UnconstrainedBox(
                   child: Transform.scale(
                     scale: constraints.maxHeight / 32.0,
@@ -86,7 +89,7 @@ class PreviewToolbox extends StatelessWidget {
         },
         builder: (context, model) {
           return Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(12.0),
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[

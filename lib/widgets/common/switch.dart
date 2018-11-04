@@ -5,10 +5,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-const double _kTrackHeight = 24.0;
-const double _kTrackWidth = 52.0;
+const double _kTrackHeight = 32.0;
+const double _kTrackWidth = 60.0;
 const double _kTrackRadius = _kTrackHeight / 2.0;
-const double _kThumbRadius = 12.0;
+const double _kThumbRadius = 14.0;
 const double _kSwitchWidth = _kTrackWidth - 2 * _kTrackRadius + 2 * kRadialReactionRadius;
 const double _kSwitchHeight = 2 * kRadialReactionRadius + 8.0;
 const double _kSwitchHeightCollapsed = 2 * kRadialReactionRadius;
@@ -189,14 +189,14 @@ class _SwitchState extends State<Switch> with TickerProviderStateMixin {
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
 
-    final Color activeThumbColor = widget.activeColor ?? theme.unselectedWidgetColor;
+    final Color activeThumbColor = widget.activeColor ?? Colors.white;
     final Color activeTrackColor = widget.activeTrackColor ?? theme.toggleableActiveColor;
 
     Color inactiveThumbColor;
     Color inactiveTrackColor;
     if (widget.onChanged != null) {
       const Color black32 = Color(0x52000000); // Black with 32% opacity
-      inactiveThumbColor = widget.inactiveThumbColor ?? (isDark ? Colors.grey.shade400 : Colors.grey.shade50);
+      inactiveThumbColor = widget.inactiveThumbColor ?? (isDark ? Colors.grey.shade400 : Colors.white);
       inactiveTrackColor = widget.inactiveTrackColor ?? (isDark ? Colors.white30 : theme.scaffoldBackgroundColor);
     } else {
       inactiveThumbColor = widget.inactiveThumbColor ?? (isDark ? Colors.grey.shade800 : Colors.grey.shade400);
@@ -472,7 +472,7 @@ class _RenderSwitch extends RenderToggleable {
         image: image == null ? null : DecorationImage(image: image),
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(8.0),
-        boxShadow: kElevationToShadow[1]
+        boxShadow: kElevationToShadow[2]
     );
   }
 
@@ -550,7 +550,7 @@ class _RenderSwitch extends RenderToggleable {
       thumbPainter.paint(
           canvas,
           thumbPosition + offset - Offset(radius, radius),
-          configuration.copyWith(size: Size.fromRadius(radius))
+          configuration.copyWith(size: Size.fromRadius(radius)),
       );
     } finally {
       _isPainting = false;

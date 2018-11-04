@@ -248,6 +248,7 @@ class PopupButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
+      color: Theme.of(context).dividerColor,
       elevation: 0.0,
       child: child,
       padding: EdgeInsets.all(0.0),

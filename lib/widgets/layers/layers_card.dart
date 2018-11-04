@@ -83,75 +83,75 @@ class LayersCard extends StatelessWidget {
               sizeMode: store.state.rightDrawerSizeMode,
             ),
         builder: (context, model) {
-          return Material(
-            color: Theme.of(context).dividerColor,
-            child: Stack(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 52.0),
-                  child: ListView(
-                      padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-                      children:
-                          List<Widget>.generate(model.layers.length, (index) {
-                        int reversedIndex = model.layers.length - 1 - index;
-                        return Dismissible(
-                          key: Key(
-                              '${model.layers[reversedIndex].name}$reversedIndex'),
-                          onDismissed: (direction) =>
-                              model.removeLayerCallback(reversedIndex),
-                          background: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: AnimatedContainer(
-                              curve: Curves.ease,
-                              duration: Duration(milliseconds: 150),
-                              child: Center(
-                                  child:
-                                      Icon(Icons.delete, color: Colors.white)),
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(6.0),
-                              ),
-                            ),
-                          ),
-                          child: LayerListItem(
-                            layerCanvas: model.layers[reversedIndex].canvas,
-                            selected:
-                                (model.currentLayerIndex == reversedIndex),
-                            label: model.layers[reversedIndex].name,
-                            hidden: model.layers[reversedIndex].hidden,
-                            onTap: () => model.setLayerCallback(reversedIndex),
-                            onToggleHidden: () =>
-                                model.toggleLayerHiddenCallback(reversedIndex),
-                          ),
-                        );
-                      })),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: RaisedButton(
+                  color: Theme.of(context).unselectedWidgetColor,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Theme.of(context).dividerColor),
+                    borderRadius: BorderRadius.circular(6.0)
+                  ),
+                  padding: EdgeInsets.all(0.0),
+                  child: Text('New Layer'),
+                  elevation: 0.0,
+                  onPressed: () {
+                    model.addLayerCallback();
+                  },
                 ),
-                Positioned(
-                  top: 0.0,
-                  left: 0.0,
-                  right: 0.0,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        height: 36.0,
-                        child: CollapsibleButton(
-                          collapsed: model.sizeMode == DrawerSizeMode.Mini,
-                          icon: Icon(Icons.add),
-                          label: Text('New Layer'),
-                          onPressed: () {
-                            model.addLayerCallback();
-                          },
-                        ),
-                      ),
+              ),
+              Expanded(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).unselectedWidgetColor,
+                    border: Border.all(color: Theme.of(context).dividerColor, width: 2.0),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10.0),
+                      bottomRight: Radius.circular(10.0),
                     ),
                   ),
+                  child: ListView(
+                    padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    children:
+                        List<Widget>.generate(model.layers.length, (index) {
+                      int reversedIndex = model.layers.length - 1 - index;
+                      return Dismissible(
+                        key: Key(
+                            '${model.layers[reversedIndex].name}$reversedIndex'),
+                        onDismissed: (direction) =>
+                            model.removeLayerCallback(reversedIndex),
+                        background: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: AnimatedContainer(
+                            curve: Curves.ease,
+                            duration: Duration(milliseconds: 150),
+                            child: Center(
+                                child:
+                                    Icon(Icons.delete, color: Colors.white)),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(6.0),
+                            ),
+                          ),
+                        ),
+                        child: LayerListItem(
+                          layerCanvas: model.layers[reversedIndex].canvas,
+                          selected:
+                              (model.currentLayerIndex == reversedIndex),
+                          label: model.layers[reversedIndex].name,
+                          hidden: model.layers[reversedIndex].hidden,
+                          onTap: () => model.setLayerCallback(reversedIndex),
+                          onToggleHidden: () =>
+                              model.toggleLayerHiddenCallback(reversedIndex),
+                        ),
+                      );
+                    })),
                 ),
-              ],
-            ),
+              ),
+            ],
           );
         });
   }

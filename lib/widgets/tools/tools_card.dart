@@ -13,6 +13,7 @@ import 'package:project_pickle/tools/pixel_tool.dart';
 import 'package:project_pickle/tools/shape_tool.dart';
 import 'package:project_pickle/tools/marquee_selector_tool.dart';
 import 'package:project_pickle/widgets/common/expandable_button.dart';
+import 'package:project_pickle/widgets/tools/tool_button.dart';
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 import 'package:project_pickle/widgets/tools/tool_list_button.dart';
 
@@ -58,9 +59,9 @@ BaseTool _createToolFromIndex(BuildContext context, int index) {
   }
 }
 
-Widget _getToolOptions(dynamic currentTool, bool isCurrentToolType, bool isMini) {
-  return (isCurrentToolType && currentTool.optionsBuilder != null)
-      ? currentTool.optionsBuilder(isMini) : SizedBox();
+Widget _getToolOptions(dynamic currentTool, bool isCurrentToolType) {
+  return (isCurrentToolType && currentTool.options != null)
+      ? currentTool.options : SizedBox();
 }
 
 class ToolsCard extends StatelessWidget {
@@ -79,57 +80,86 @@ class ToolsCard extends StatelessWidget {
         );
       },
       builder: (context, model) {
-        return ExpandableButtonList(
-          expansionCallback: (index, expanded) {
-            if(!expanded){
-              model.callback(_createToolFromIndex(context, index));
-            }
-          },
-          children: <ExpandableButton>[
-            ToolListButton(
-              isExpanded: model.currentTool is PixelTool,
-              icon: Icons.crop_square ,
-              label: 'Pixel',
-              options: _getToolOptions(model.currentTool, model.currentTool is PixelTool, model.sizeMode == DrawerSizeMode.Mini),
-              isMini: model.sizeMode == DrawerSizeMode.Mini
-            ),
-            ToolListButton(
-              isExpanded: model.currentTool is EraserTool,
-              icon: Icons.crop_square ,
-              label: 'Eraser',
-              options: _getToolOptions(model.currentTool, model.currentTool is EraserTool, model.sizeMode == DrawerSizeMode.Mini),
-              isMini: model.sizeMode == DrawerSizeMode.Mini
-            ),
-            ToolListButton(
-              isExpanded: model.currentTool is LineTool,
-              icon: Icons.crop_square ,
-              label: 'Line',
-              options: _getToolOptions(model.currentTool, model.currentTool is LineTool, model.sizeMode == DrawerSizeMode.Mini),
-              isMini: model.sizeMode == DrawerSizeMode.Mini
-            ),
-            ToolListButton(
-              isExpanded: model.currentTool is ShapeTool,
-              icon: Icons.crop_square ,
-              label: 'Shape',
-              options: _getToolOptions(model.currentTool, model.currentTool is ShapeTool, model.sizeMode == DrawerSizeMode.Mini),
-              isMini: model.sizeMode == DrawerSizeMode.Mini
-            ),
-            ToolListButton(
-              isExpanded: model.currentTool is FillTool,
-              icon: Icons.crop_square ,
-              label: 'Fill',
-              options: _getToolOptions(model.currentTool, model.currentTool is FillTool, model.sizeMode == DrawerSizeMode.Mini),
-              isMini: model.sizeMode == DrawerSizeMode.Mini
-            ),
-            ToolListButton(
-              isExpanded: model.currentTool is MarqueeSelectorTool,
-              icon: Icons.crop_square ,
-              label: 'Selection',
-              options: _getToolOptions(model.currentTool, model.currentTool is MarqueeSelectorTool, model.sizeMode == DrawerSizeMode.Mini),
-              isMini: model.sizeMode == DrawerSizeMode.Mini
-            ),
-          ],
-        );
+//        return Padding(
+//          padding: const EdgeInsets.all(12.0),
+//          child: AspectRatio(
+//            aspectRatio: 1.0,
+//            child: TwoStagePopupButton(
+//              icon: Icon(Icons.crop_square),
+//              label: Text('Shape Tool'),
+//              popupContent: Text('stuff'),
+//              onToggled: (){},
+//              active: true,
+//            ),
+//          ),
+//        );
+         return Padding(
+           padding: const EdgeInsets.all(6.0),
+           child: Column(
+             children: <Widget>[
+               Padding(
+                 padding: const EdgeInsets.all(6.0),
+                 child: ToolButton(
+                   active: model.currentTool is PixelTool,
+                   icon: Icon(Icons.crop_square),
+                   label: Text('Pixel Tool'),
+                   options: _getToolOptions(model.currentTool, model.currentTool is PixelTool),
+                   onToggle: () => model.callback(PixelTool(context)),
+                 ),
+               ),
+               Padding(
+                 padding: const EdgeInsets.all(6.0),
+                 child: ToolButton(
+                   active: model.currentTool is EraserTool,
+                   icon: Icon(Icons.crop_square),
+                   label: Text('Eraser Tool'),
+                   options: _getToolOptions(model.currentTool, model.currentTool is EraserTool),
+                   onToggle: () => model.callback(EraserTool(context)),
+                 ),
+               ),
+               Padding(
+                 padding: const EdgeInsets.all(6.0),
+                 child: ToolButton(
+                   active: model.currentTool is LineTool,
+                   icon: Icon(Icons.crop_square),
+                   label: Text('Line Tool'),
+                   options: _getToolOptions(model.currentTool, model.currentTool is LineTool),
+                   onToggle: () => model.callback(LineTool(context)),
+                 ),
+               ),
+               Padding(
+                 padding: const EdgeInsets.all(6.0),
+                 child: ToolButton(
+                   active: model.currentTool is ShapeTool,
+                   icon: Icon(Icons.crop_square),
+                   label: Text('Shape Tool'),
+                   options: _getToolOptions(model.currentTool, model.currentTool is ShapeTool),
+                   onToggle: () => model.callback(ShapeTool(context)),
+                 ),
+               ),
+               Padding(
+                 padding: const EdgeInsets.all(6.0),
+                 child: ToolButton(
+                   active: model.currentTool is FillTool,
+                   icon: Icon(Icons.crop_square),
+                   label: Text('Fill Tool'),
+                   options: _getToolOptions(model.currentTool, model.currentTool is FillTool),
+                   onToggle: () => model.callback(FillTool(context)),
+                 ),
+               ),
+               Padding(
+                 padding: const EdgeInsets.all(6.0),
+                 child: ToolButton(
+                   active: model.currentTool is MarqueeSelectorTool,
+                   icon: Icon(Icons.crop_square),
+                   label: Text('Selection Tool'),
+                   options: _getToolOptions(model.currentTool, model.currentTool is MarqueeSelectorTool),
+                   onToggle: () => model.callback(MarqueeSelectorTool(context)),
+                 ),
+               ),
+             ],
+           ),
+         );
       }
     );
   }

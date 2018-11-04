@@ -4,6 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
+import 'package:project_pickle/widgets/common/horizontal_divider.dart';
 import 'package:project_pickle/widgets/layers/layers_card.dart';
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 import 'package:project_pickle/widgets/preview_window/preview_toolbox.dart';
@@ -18,24 +19,28 @@ class RightDrawer extends StatelessWidget {
     return StoreBuilder<AppState>(
       rebuildOnChange: false,
       builder: (context, store) {
-        return ResizableDrawer(
-          alignment: DrawerAlignment.end,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              PreviewToolbox(),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                child: Divider(height: 1.0),
+        return Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: SizedBox(
+            width: 196.0,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                border: Border.all(color: Theme.of(context).dividerColor, width: 2.0),
+                borderRadius: BorderRadius.circular(10.0),
               ),
-              Expanded(
-                child: LayersCard(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  PreviewToolbox(),
+                  HorizontalDivider(height: 2.0),
+                  Expanded(
+                    child: LayersCard(),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-          onSizeModeChanged: (sizeMode) {
-            store.dispatch(SetRightDrawerSizeModeAction(sizeMode));
-          },
         );
       },
     );

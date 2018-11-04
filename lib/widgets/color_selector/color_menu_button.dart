@@ -197,13 +197,13 @@ class _ColorPopupContentState extends State<ColorPopupContent> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               SizedBox(
-                height: widget.initialSize.height * 1.33, //stylistic decision to make color header 33% larger than color button.
+                height: widget.initialSize.height * 1.5, //stylistic decision to make color header 33% larger than color button.
                 child: Material(
                   color: _currentColor.toColor(),
                   shape: RoundedRectangleBorder(
                     borderRadius: borderRadius.value,
                     side: BorderSide(
-                      width: 1.0,
+                      width: 2.0,
                       color: Colors.black12,
                     ),
                   ),
@@ -634,7 +634,7 @@ class ColorMenuButton extends StatelessWidget {
                       foregroundDecoration: BoxDecoration(
                         border: Border.all(
                             color: Colors.black12,
-                            width: 1.0
+                            width: 2.0
                         ),
                         borderRadius: BorderRadius.circular(8.0),
                       ),

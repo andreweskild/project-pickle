@@ -110,14 +110,24 @@ AppState stateReducer(AppState state, dynamic action) {
         selectionPath: action.path
     );
   }
+  else if (action is SetShapeFilledAction) {
+    return state.copyWith(
+      shapeFilled: action.filled,
+    );
+  }
   else if(action is SetToolOpacityAction) {
     return state.copyWith(
       toolOpacity: action.opacity
     );
   }
+  else if (action is SetToolShapeAction) {
+    return state.copyWith(
+      toolShape: action.shape,
+    );
+  }
   else if (action is SetToolSizeAction) {
     return state.copyWith(
-      toolSize: action.size
+      toolSize: action.size,
     );
   }
   else if (action is RemovePixelAction) {

@@ -1,10 +1,66 @@
-import 'package:flutter/material.dart' show Icons;
+import 'package:flutter/material.dart' show RaisedButton, Theme;
 import 'package:flutter/widgets.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:project_pickle/state/actions.dart';
+import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/base_drawing_tool.dart';
 import 'package:project_pickle/tools/base_tool.dart';
+import 'package:project_pickle/widgets/common/raised_dropdown_button.dart';
 import 'package:project_pickle/widgets/common/switch.dart';
 import 'package:project_pickle/widgets/common/toggle_icon_button.dart';
+
+class ShapeModel {
+  ShapeModel({
+    this.shape,
+    this.callback
+  });
+
+  final ShapeMode shape;
+  final ValueChanged<ShapeMode> callback;
+
+  @override
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + shape.hashCode;
+    return result;
+  }
+
+  // You should generally implement operator == if you
+  // override hashCode.
+  @override
+  bool operator ==(dynamic other) {
+    if (other is! ShapeModel) return false;
+    ShapeModel model = other;
+    return (model.shape == shape);
+  }
+}
+
+class FilledShapeModel {
+  FilledShapeModel({
+    this.filled,
+    this.callback
+  });
+
+  final bool filled;
+  final ValueChanged<bool> callback;
+
+  @override
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + filled.hashCode;
+    return result;
+  }
+
+  // You should generally implement operator == if you
+  // override hashCode.
+  @override
+  bool operator ==(dynamic other) {
+    if (other is! FilledShapeModel) return false;
+    FilledShapeModel model = other;
+    return (model.filled == filled);
+  }
+}
 
 class ShapeTool extends BaseDrawingTool {
   ShapeTool(context) : super(context);
@@ -13,72 +69,38 @@ class ShapeTool extends BaseDrawingTool {
   Offset _endPoint;
   static bool _filled = false;
 
-  OptionsBuilder optionsBuilder = (isMini) {
-    if(isMini) {
-      return Column (
+
+  Widget options = Column (
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 4.0),
-            child: SizedBox(
-              height: 32.0,
-              child: ToggleIconButton(
-                  icon: Icon(Icons.access_alarm),
-                  onToggled: (){}
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 8.0),
-            child: SizedBox(
-              height: 32.0,
-              child: ToggleIconButton(
-                icon: Icon(Icons.account_balance),
-                onToggled: (){_filled = !_filled;},
-                toggled: _filled,
-              ),
-            ),
-          ),
-        ],
-      );
-    }
-    else {
-      return Column (
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12.0, 4.0, 4.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(12.0, 8.0, 10.0, 4.0),
             child: Row(
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 4.0, 8.0, 4.0),
-                  child: Text('Shape'),
-                ),
                 Expanded(
                   child: Align(
                     alignment: Alignment.centerRight,
-                    child: Switch(
-                      value: false,
-                      onChanged: (value) {},
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12.0, 0.0, 4.0, 4.0),
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 4.0, 8.0, 4.0),
-                  child: Text('Filled'),
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Switch(
-                      value: _filled,
-                      onChanged: (value) {_filled = value;},
-                    ),
+                    child: StoreConnector<AppState,ShapeModel>(
+                      converter: (store) {
+                        return ShapeModel(
+                          shape: store.state.toolShape,
+                          callback: (value) => store.dispatch(SetToolShapeAction(value)),
+                        );
+                      },
+                      builder: (context, model) {
+                        return SizedBox(
+                          height: 36.0,
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints.expand(),
+                            child: RaisedButton(
+                              color: Theme.of(context).buttonColor,
+                              child: Text('Button'),
+                              onPressed: (){},
+                            ),
+                          )
+                        );
+                      }
+                    )
                   ),
                 ),
               ],
@@ -86,8 +108,6 @@ class ShapeTool extends BaseDrawingTool {
           ),
         ],
       );
-    }
-  };
 
   @override
   void onPixelInputUpdate(Offset pos) {
@@ -99,20 +119,7 @@ class ShapeTool extends BaseDrawingTool {
         resetOverlay();
       }
       _endPoint = pos;
-//      if(_filled) {
-//        drawOverlayFilledRectangle(_startPoint, _endPoint);
-//      } else {
-//        var topLeftPoint = _startPoint;
-//        var topRightPoint = Offset(_endPoint.dx, _startPoint.dy);
-//        var bottomLeftPoint = Offset(_startPoint.dx, _endPoint.dy);
-//        var bottomRightPoint = _endPoint;
-//
-//        drawOverlayPixelLine(topLeftPoint, topRightPoint);
-//        drawOverlayPixelLine(topRightPoint, bottomRightPoint);
-//        drawOverlayPixelLine(bottomRightPoint, bottomLeftPoint);
-//        drawOverlayPixelLine(bottomLeftPoint, topLeftPoint);
-//      }
-      drawOverlayCircle(_startPoint, _endPoint);
+      drawShapeToOverlay(_startPoint, _endPoint);
     }
   }
 

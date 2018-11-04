@@ -10,6 +10,11 @@ enum ColorType {
   Secondary
 }
 
+enum ShapeMode {
+  Rectangle,
+  Circle
+}
+
 class AppState {
   AppState({
     this.canvasScale = 1.0,
@@ -26,6 +31,8 @@ class AppState {
     this.selectionPath,
     this.toolOpacity = 1.0,
     this.toolSize = 1.0,
+    this.toolShape = ShapeMode.Rectangle,
+    this.shapeFilled = false,
   });
 
   AppState copyWith({
@@ -44,6 +51,8 @@ class AppState {
     Path selectionPath,
     double toolOpacity,
     double toolSize,
+    ShapeMode toolShape,
+    bool shapeFilled,
   }) {
     return AppState(
       canvasScale: canvasScale ?? this.canvasScale,
@@ -60,6 +69,8 @@ class AppState {
       selectionPath: selectionPath ?? this.selectionPath,
       toolOpacity: toolOpacity ?? this.toolOpacity,
       toolSize: toolSize ?? this.toolSize,
+      toolShape: toolShape ?? this.toolShape,
+      shapeFilled: shapeFilled ?? this.shapeFilled,
     );
   }
 
@@ -80,6 +91,8 @@ class AppState {
   Path selectionPath;
   double toolSize;
   double toolOpacity;
+  ShapeMode toolShape;
+  bool shapeFilled;
 }
 
 

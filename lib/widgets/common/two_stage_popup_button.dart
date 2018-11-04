@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:project_pickle/widgets/common/transparent_routes.dart';
 import 'package:project_pickle/widgets/common/toggle_icon_button.dart';
 
-const double _kMenuScreenPadding = 8.0;
+const double _kMenuScreenPadding = 0.0;
 
 class _TwoStagePopupRouteLayout extends SingleChildLayoutDelegate {
   _TwoStagePopupRouteLayout(this.position);
@@ -70,12 +69,10 @@ class TwoStagePopupContent extends StatefulWidget {
     @required this.initialSize,
     @required this.parentAnimation,
     @required this.onAccept,
-    @required this.onHeightUpdated,
   }) : super(key: key);
 
   final Widget child;
   final Widget headerContent;
-  final ValueChanged<double> onHeightUpdated;
   final Size initialSize;
   final Animation<double> parentAnimation;
   final VoidCallback onAccept;
@@ -115,7 +112,6 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
         ),
       ),
     );
-    size.addListener(() => widget.onHeightUpdated(size.value.height));
 
     final Animation<double> opacity = Tween<double>(
       begin: 0.0,
@@ -133,63 +129,61 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
 
     return SizedBox(
       height: size.value.height,
-      width: (widget.initialSize.width < 100)
-          ? size.value.width
-          : widget.initialSize.width,
-      child: Material(
-        elevation: 0.0,
-        animationDuration: Duration.zero,
-        color: Theme.of(context).dividerColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: widget.initialSize.height,
-              child: Material(
-                elevation: 6.0,
-                shadowColor: Theme.of(context).buttonColor.withAlpha(100),
-                animationDuration: Duration.zero,
-                color: Theme.of(context).buttonColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: InkWell(
-                  onTap: widget.onAccept,
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Stack(
-                      children: <Widget>[
-                        IconTheme(
-                          data: IconThemeData(
-                            color: Theme.of(context).accentTextTheme.button.color,
-                          ),
-                          child: DefaultTextStyle(
-                              style: TextStyle(
+      width: size.value.width,
+      child: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Positioned.fill(
+            child: Material(
+              elevation: 6.0,
+              animationDuration: Duration.zero,
+              color: Theme.of(context).cardColor,
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              shadowColor: Colors.black26,
+            ),
+          ),
+          Positioned.fill(
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: widget.initialSize.height,
+                  child: Material(
+                    color: Theme.of(context).buttonColor,
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Theme.of(context).accentColor, width: 2.0),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: InkWell(
+                      onTap: widget.onAccept,
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Stack(
+                          children: <Widget>[
+                            IconTheme(
+                              data: IconThemeData(
                                 color: Theme.of(context).accentTextTheme.button.color,
                               ),
-                              child: widget.headerContent),
+                              child: DefaultTextStyle(
+                                  style: TextStyle(
+                                    color: Theme.of(context).accentTextTheme.button.color,
+                                  ),
+                                  child: widget.headerContent),
+                            ),
+                          ],
                         ),
-                        Align(
-                            alignment: Alignment.centerRight,
-                            child: Opacity(
-                              opacity: opacity.value,
-                              child: Icon(
-                                Icons.arrow_drop_up,
-                                color: Theme.of(context).accentTextTheme.button.color,
-                              ),
-                            ))
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
+                Expanded(child: widget.child),
+              ],
             ),
-            Expanded(child: widget.child),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -197,16 +191,14 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
 
 typedef HeaderBuilder = Widget Function(BuildContext, Animation<double>);
 
-class _TwoStagePopupRoute extends TransparentPopupRoute<bool> {
+class _TwoStagePopupRoute extends PopupRoute<bool> {
   _TwoStagePopupRoute({
     @required this.buttonContext,
     @required this.header,
     @required this.initialSize,
     @required this.popupContent,
-    @required this.onHeightUpdated,
   });
 
-  final ValueChanged<double> onHeightUpdated;
   final BuildContext buttonContext;
   final Widget header;
   final Size initialSize;
@@ -272,7 +264,6 @@ class _TwoStagePopupRoute extends TransparentPopupRoute<bool> {
                 parentAnimation: parentAnimation,
                 child: popupContent,
                 onAccept: () => Navigator.pop(context),
-                onHeightUpdated: onHeightUpdated,
               ));
         },
       ),
@@ -285,13 +276,15 @@ class _TwoStagePopupRoute extends TransparentPopupRoute<bool> {
 class TwoStagePopupButton extends StatefulWidget {
   TwoStagePopupButton({
     Key key,
-    this.header,
+    this.icon,
+    this.label,
     this.active = false,
     this.onToggled,
     @required this.popupContent,
   }) : super(key: key);
 
-  final Widget header;
+  final Widget icon;
+  final Widget label;
   final Widget popupContent;
   final bool active;
   final VoidCallback onToggled;
@@ -309,13 +302,21 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
     _opened = await Navigator.of(context).push(new _TwoStagePopupRoute(
         initialSize: button.size,
         buttonContext: context,
-        header: widget.header,
+        header: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(4.0, 4.0, 8.0, 4.0),
+              child: widget.icon,
+            ),
+            Expanded(
+              child: widget.label,
+            )
+          ]
+        ),
         popupContent: widget.popupContent,
-        onHeightUpdated: (newHeight) {
-          setState(() {
-            _height = newHeight;
-          });
-        }));
+      )
+    );
   }
 
   @override
@@ -326,8 +327,15 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
       child: Material(
         color: (widget.active && !_opened)
             ? Theme.of(context).buttonColor
-            : Colors.transparent,
-        borderRadius: BorderRadius.circular(8.0),
+            : Theme.of(context).cardColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          side: BorderSide(
+              color: (widget.active && !_opened)
+                ? Theme.of(context).accentColor
+                : Theme.of(context).cardColor,
+              width: 2.0)
+        ),
         child: InkWell(
           borderRadius: BorderRadius.circular(8.0),
           onTap: () {
@@ -356,25 +364,9 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
                               ? Theme.of(context).accentTextTheme.button.color
                               : Theme.of(context).textTheme.button.color,
                         ),
-                        child: widget.header,
+                        child: Center(child: widget.icon),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 32.0),
-                        child: ClipRect(
-                          child: AnimatedOpacity(
-                              curve: Curves.ease,
-                              duration: Duration(milliseconds: 150),
-                              opacity: widget.active ? 1.0 : 0.0,
-                              child: Icon(
-                                Icons.arrow_drop_down,
-                                color: Theme.of(context).accentTextTheme.button.color,
-                              )),
-                        ),
-                      ),
-                    )
                   ],
                 ),
               ),

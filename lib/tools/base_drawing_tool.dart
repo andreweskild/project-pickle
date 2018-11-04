@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
+import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/tools/base_tool.dart';
 import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
@@ -20,6 +21,14 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
     if(pixelInSelection(pos)) {
       overlay.setPixel(pos, store.state.currentColor.toColor());
     }
+  }
+
+  void drawOverlayPixelList(List<Offset> posList) {
+    posList.forEach(
+      (pos) {
+        drawOverlayPixel(pos);
+      }
+    );
   }
 
   void drawOverlayPixelLine(Offset p1, Offset p2) {
@@ -59,15 +68,18 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
     }
   }
 
-  void _drawEllipsePoints(Offset center, int x, int y) {
-    drawOverlayPixel(Offset(center.dx + x, center.dy + y));
-    drawOverlayPixel(Offset(center.dx - x, center.dy + y));
-    drawOverlayPixel(Offset(center.dx + x, center.dy - y));
-    drawOverlayPixel(Offset(center.dx - x, center.dy - y));
+  List<Offset> _getEllipsePoints(Offset center, int x, int y) {
+    var points = <Offset>[];
+    points.add(Offset(center.dx + x, center.dy + y));
+    points.add(Offset(center.dx - x, center.dy + y));
+    points.add(Offset(center.dx + x, center.dy - y));
+    points.add(Offset(center.dx - x, center.dy - y));
+    return points;
   }
 
   // draws an ellipse based on center coordinate, vertical and horizontal Radii.
-  void _drawEllipse(Offset center, int xRadius, int yRadius) {
+  List<Offset> _getEllipseStroke(Offset center, int xRadius, int yRadius) {
+    var ellipseStroke = <Offset>[];
     int xRadiusSquared = math.pow(xRadius, 2);
     int yRadiusSquared = math.pow(yRadius, 2);
     int twoXRadiusSquared = 2 * xRadiusSquared;
@@ -79,7 +91,7 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
     int pX = 0;
     int pY = twoXRadiusSquared * y;
 
-    _drawEllipsePoints(center, x, y);
+    ellipseStroke.addAll(_getEllipsePoints(center, x, y));
 
     p = (yRadiusSquared - (xRadiusSquared * yRadius) + (0.25 * xRadiusSquared)).round();
     while (pX < pY) {
@@ -92,7 +104,7 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
         pY -= twoXRadiusSquared;
         p += yRadiusSquared + pX - pY;
       }
-      _drawEllipsePoints(center, x, y);
+      ellipseStroke.addAll(_getEllipsePoints(center, x, y));
     }
 
     p = (yRadiusSquared * (x + 0.5) * (x + 0.5) + xRadiusSquared * (y - 1) * (y - 1) - xRadiusSquared * yRadiusSquared).round();
@@ -106,71 +118,99 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
         pX += twoYRadiusSquared;
         p += xRadiusSquared - pY + pX;
       }
-      _drawEllipsePoints(center, x, y);
+      ellipseStroke.addAll(_getEllipsePoints(center, x, y));
     }
+
+    return ellipseStroke;
   }
 
-  void drawOverlayCircle(Offset p1, Offset p2) {
+  List<Offset> _getEllipseFill(Offset center, int xRadius, int yRadius) {
+    var topLeft = Offset(center.dx - xRadius, center.dy - yRadius);
+    var bottomRight = Offset(center.dx + xRadius, center.dy + yRadius);
+    var ellipseFill = <Offset>[];
+    bool isPointInEllipse(Offset point) {
+      return math.pow((point.dx - center.dx), 2) / math.pow(xRadius, 2) +
+        math.pow((point.dy - center.dy), 2) / math.pow(yRadius, 2) <= 1;
+    }
+
+    for (double x = topLeft.dx; x < bottomRight.dx; x++) {
+      for (double y = topLeft.dy; y < bottomRight.dy; y++) {
+        if(isPointInEllipse(Offset(x, y))) {
+          ellipseFill.add(Offset(x, y));
+        }
+      }
+    }
+
+    return ellipseFill;
+  }
+
+  void _drawOverlayCircle(Offset p1, Offset p2) {
+    var topLeftBound;
+    var bottomRightBound;
+    List<Offset> ellipseStroke;
+    List<Offset> ellipseFill;
     Offset center;
-//    double hRadius = (p1.dx - p2.dx).abs()/2.0;
-//    double vRadius = (p1.dy - p2.dy).abs()/2.0;
-    double hRadius, vRadius;
+    double xRadius, yRadius;
+
+    Offset roundPoint(Offset point) {
+      return Offset(point.dx.roundToDouble(), point.dy.roundToDouble());
+    }
 
     // checks direction of drag to determine if points need to be flipped.
     // drag in right half
     if(p1.dx < p2.dx) {
       // drag in bottom half
       if(p1.dy < p2.dy) {
+        topLeftBound = p1;
+        bottomRightBound = p2;
         Offset distance = Offset((p1.dx - p2.dx).abs(), (p1.dy - p2.dy).abs());
         center = p1 + (distance/2.0);
-        hRadius = p2.dx - center.dx;
-        vRadius = p2.dy - center.dy;
+        xRadius = p2.dx - center.dx;
+        yRadius = p2.dy - center.dy;
         center = Offset(center.dx.roundToDouble(), center.dy.roundToDouble());
       }
       // drag in top half
       else {
-        var topLeftBound = Offset(p1.dx, p2.dy);
-        var bottomRightBound = Offset(p2.dx, p1.dy);
+        topLeftBound = Offset(p1.dx, p2.dy);
+        bottomRightBound = Offset(p2.dx, p1.dy);
         Offset distance = Offset((topLeftBound.dx - bottomRightBound.dx).abs(), (topLeftBound.dy - bottomRightBound.dy).abs());
         center = topLeftBound + (distance/2.0);
-        hRadius = bottomRightBound.dx - center.dx;
-        vRadius = bottomRightBound.dy - center.dy;
+        xRadius = bottomRightBound.dx - center.dx;
+        yRadius = bottomRightBound.dy - center.dy;
         center = Offset(center.dx.roundToDouble(), center.dy.floorToDouble());
       }
     }
     // drag in left half
     else {
-      // drag in bottom half
-      if(p1.dy > p2.dy) {
-        var topLeftBound = p2;
-        var bottomRightBound = p1;
-        Offset distance = Offset((topLeftBound.dx - bottomRightBound.dx).abs(), (topLeftBound.dy - bottomRightBound.dy).abs());
-        center = topLeftBound + (distance/2.0);
-        hRadius = bottomRightBound.dx - center.dx;
-        vRadius = bottomRightBound.dy - center.dy;
-        center = Offset(center.dx.floorToDouble(), center.dy.roundToDouble());
-      }
       // drag in top half
-      else {
-        var topLeftBound = Offset(p2.dx, p1.dy);
-        var bottomRightBound = Offset(p1.dx, p2.dy);
+      if(p1.dy > p2.dy) {
+        topLeftBound = p2;
+        bottomRightBound = p1;
         Offset distance = Offset((topLeftBound.dx - bottomRightBound.dx).abs(), (topLeftBound.dy - bottomRightBound.dy).abs());
         center = topLeftBound + (distance/2.0);
-        hRadius = bottomRightBound.dx - center.dx;
-        vRadius = bottomRightBound.dy - center.dy;
+        xRadius = bottomRightBound.dx - center.dx;
+        yRadius = bottomRightBound.dy - center.dy;
         center = Offset(center.dx.floorToDouble(), center.dy.floorToDouble());
       }
+      // drag in bottom half
+      else {
+        topLeftBound = Offset(p2.dx, p1.dy);
+        bottomRightBound = Offset(p1.dx, p2.dy);
+        Offset distance = Offset((topLeftBound.dx - bottomRightBound.dx).abs(), (topLeftBound.dy - bottomRightBound.dy).abs());
+        center = topLeftBound + (distance/2.0);
+        xRadius = bottomRightBound.dx - center.dx;
+        yRadius = bottomRightBound.dy - center.dy;
+        center = Offset(center.dx.floorToDouble(), center.dy.roundToDouble());
+      }
     }
-    drawOverlayPixel(p1);
-    drawOverlayPixel(p2);
 
-    print(hRadius);
-    print(vRadius);
+    if(store.state.shapeFilled) {
+      ellipseFill = _getEllipseFill(center, xRadius.round(), yRadius.round());
+      drawOverlayPixelList(ellipseFill);
+    }
 
-
-    center = Offset(center.dx.floorToDouble(), center.dy.floorToDouble());
-    _drawEllipse(center, hRadius.round(), vRadius.round());
-
+    ellipseStroke = _getEllipseStroke(center, xRadius.round(), yRadius.round());
+    drawOverlayPixelList(ellipseStroke);
 //    Offset currentPixel = Offset(hRadius + center.dx, center.dy);
 //
 //    drawOverlayPixel(currentPixel);
@@ -193,8 +233,31 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
     }
   }
 
+  void drawShapeToOverlay(Offset p1, Offset p2) {
+    switch(store.state.toolShape) {
+      case ShapeMode.Rectangle: _drawOverlayRectangle(p1, p2);
+      break;
+      case ShapeMode.Circle: _drawOverlayCircle(p1, p2);
+    }
+  }
 
-  void drawOverlayFilledRectangle(Offset p1, Offset p2) {
+  void _drawOverlayRectangle(Offset p1, Offset p2) {
+    if(store.state.shapeFilled) {
+      _drawOverlayFilledRectangle(p1, p2);
+    } else {
+      var topLeftPoint = p1;
+      var topRightPoint = Offset(p2.dx, p1.dy);
+      var bottomLeftPoint = Offset(p1.dx, p2.dy);
+      var bottomRightPoint = p2;
+
+      drawOverlayPixelLine(topLeftPoint, topRightPoint);
+      drawOverlayPixelLine(topRightPoint, bottomRightPoint);
+      drawOverlayPixelLine(bottomRightPoint, bottomLeftPoint);
+      drawOverlayPixelLine(bottomLeftPoint, topLeftPoint);
+    }
+  }
+
+  void _drawOverlayFilledRectangle(Offset p1, Offset p2) {
     if(p1.dx < p2.dx) {
       if(p1.dy < p2.dy) {
         _drawFilledRectToOverlay(p1, p2);
