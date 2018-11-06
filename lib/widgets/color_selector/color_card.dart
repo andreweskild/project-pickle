@@ -92,7 +92,7 @@ class ColorCard extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     AspectRatio(
-                      aspectRatio: 1.33,
+                      aspectRatio: 1.2,
                         child: ColorMenuButton(
                           color: model.primaryColor,
                           active:
@@ -106,7 +106,7 @@ class ColorCard extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 12.0),
                       child: AspectRatio(
-                        aspectRatio: 1.33,
+                        aspectRatio: 1.2,
                           child: ColorMenuButton(
                             color: model.secondaryColor,
                             active: model.activeColorType ==
@@ -138,7 +138,7 @@ class ColorCard extends StatelessWidget {
                     crossAxisSpacing: 12.0,
                     mainAxisSpacing: 12.0,
                     crossAxisCount: 1,
-                    childAspectRatio: 1.33,
+                    childAspectRatio: 1.2,
                     shrinkWrap: false,
                     children: model.palette
                         .map((hslColor) => new RaisedButton(

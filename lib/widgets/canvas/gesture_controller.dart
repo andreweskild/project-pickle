@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -165,7 +166,17 @@ class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
           onScaleUpdate: _handleScaleUpdate,
           child: new Container(
             child: new Center (
-              child: widget.canvasController,
+              child: SizedBox(
+                height: 32.0 + 4.0 / _scale,
+                width: 32.0 + 4.0 / _scale,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Theme.of(context).dividerColor, width: 2.0 / _scale),
+                  ),
+                  child: Center(child: widget.canvasController)
+                ),
+              ),
             ),
             transform: _matrix,
           ),

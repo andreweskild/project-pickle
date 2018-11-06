@@ -54,12 +54,12 @@ class PreviewToolbox extends StatelessWidget {
         child: AspectRatio(
             aspectRatio: 1.0,
             child: LayoutBuilder(builder: (context, constraints) {
-              return DecoratedBox(
-                decoration: BoxDecoration(
+              return Material(
                   color: Colors.white,
-                  border: Border.all(color: Theme.of(context).dividerColor, width: constraints.maxHeight / 32.0 / 2.0)
-                ),
-                child: UnconstrainedBox(
+                  shape: Border.all(
+                      color: Theme.of(context).dividerColor, width: constraints.maxHeight / 32.0 / 2.0
+                  ),
+                  child: UnconstrainedBox(
                   child: Transform.scale(
                     scale: constraints.maxHeight / 32.0,
                     child: SizedBox(
@@ -122,23 +122,9 @@ class PreviewToolbox extends StatelessWidget {
                             ),
                           ),
                         );
-                        return Material(
-                          elevation: 6.0,
-                          color: Theme.of(context).cardColor,
-                          animationDuration: Duration.zero,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: borderRadius.value,
-                            side: BorderSide(
-                              color: Colors.black26,
-                            ),
-                          ),
-                          child: Opacity(
-                            opacity: animation.value,
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: _cachedPreview(context, model.layers),
-                            ),
-                          ),
+                        return Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: _cachedPreview(context, model.layers),
                         );
                       },
                     ),

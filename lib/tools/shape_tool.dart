@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' show RaisedButton, Theme;
+import 'package:flutter/material.dart' show RaisedButton, Theme, Icons;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -6,9 +6,11 @@ import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/base_drawing_tool.dart';
 import 'package:project_pickle/tools/base_tool.dart';
+import 'package:project_pickle/widgets/common/toggle_button.dart';
+import 'package:project_pickle/widgets/common/pushbutton_toggle_group.dart';
 import 'package:project_pickle/widgets/common/raised_dropdown_button.dart';
 import 'package:project_pickle/widgets/common/switch.dart';
-import 'package:project_pickle/widgets/common/toggle_icon_button.dart';
+import 'package:project_pickle/widgets/common/toggle_button.dart';
 
 class ShapeModel {
   ShapeModel({
@@ -74,38 +76,78 @@ class ShapeTool extends BaseDrawingTool {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.fromLTRB(12.0, 8.0, 10.0, 4.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: StoreConnector<AppState,ShapeModel>(
-                      converter: (store) {
-                        return ShapeModel(
-                          shape: store.state.toolShape,
-                          callback: (value) => store.dispatch(SetToolShapeAction(value)),
-                        );
-                      },
-                      builder: (context, model) {
-                        return SizedBox(
-                          height: 36.0,
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints.expand(),
-                            child: RaisedButton(
-                              color: Theme.of(context).buttonColor,
-                              child: Text('Button'),
-                              onPressed: (){},
-                            ),
-                          )
-                        );
-                      }
-                    )
-                  ),
-                ),
-              ],
+            padding: const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 6.0),
+            child: StoreConnector<AppState,ShapeModel>(
+              converter: (store) {
+                return ShapeModel(
+                  shape: store.state.toolShape,
+                  callback: (value) => store.dispatch(SetToolShapeAction(value)),
+                );
+              },
+              builder: (context, model) {
+                return PushbuttonToggleGroup<ShapeMode>(
+                  value: model.shape,
+                  onChanged: model.callback,
+                  items: <PushbuttonToggle<ShapeMode>>[
+                    PushbuttonToggle<ShapeMode>(
+                      child: Icon(Icons.crop_square),
+                      value: ShapeMode.Rectangle
+                    ),
+                    PushbuttonToggle<ShapeMode>(
+                        child: Icon(Icons.brightness_1),
+                        value: ShapeMode.Circle
+                    ),
+                    PushbuttonToggle<ShapeMode>(
+                        child: Icon(Icons.change_history),
+                        value: ShapeMode.Triangle
+                    ),
+                  ],
+                );
+              }
             ),
           ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 12.0),
+            child: SizedBox(
+              height: 40.0,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 6.0),
+                      child: ToggleButton(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[Icon(Icons.brightness_1), Padding(
+                            padding: const EdgeInsets.only(left: 6.0),
+                            child: Text('Stroke'),
+                          )],
+                        ),
+                        toggled: true,
+                        onToggled: (value){}
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 6.0),
+                      child: ToggleButton(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[Icon(Icons.brightness_1), Padding(
+                              padding: const EdgeInsets.only(left: 6.0),
+                              child: Text('Fill'),
+                            )],
+                          ),
+                          toggled: false,
+                          onToggled: (value){}
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          )
         ],
       );
 

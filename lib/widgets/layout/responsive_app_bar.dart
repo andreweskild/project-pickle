@@ -480,6 +480,9 @@ class _ResponsiveAppBarState extends State<ResponsiveAppBar> {
           color: widget.backgroundColor ?? themeData.primaryColor,
           elevation: widget.elevation,
           child: appBar,
+          shape: Border(
+            bottom: BorderSide(color: themeData.dividerColor, width: 2.0)
+          ),
         ),
       ),
     );

@@ -124,20 +124,16 @@ class _CanvasControllerState extends State<CanvasController> {
           },
           child: Opacity(
             opacity: layers.length > 0 ? 1.0 : 0.0,
-            child: Material(
-              color: Colors.white,
-              elevation: 2.0,
-              child: SizedBox(
-                width: 32.0,
-                height: 32.0,
-                child: Stack(
-                  children: <Widget>[
-                    Stack(
-                      children: layers
-                    ),
-                    SelectToolOverlay(),
-                  ],
-                ),
+            child: SizedBox(
+              width: 32.0,
+              height: 32.0,
+              child: Stack(
+                children: <Widget>[
+                  Stack(
+                    children: layers
+                  ),
+                  SelectToolOverlay(),
+                ],
               ),
             ),
           ),

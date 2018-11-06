@@ -4,8 +4,8 @@ class SliderThumbShape extends SliderComponentShape {
   /// Create a slider thumb that draws a circle.
   const SliderThumbShape();
 
-  static const double _thumbHeight = 10.0;
-  static const double _disabledThumbHeight = 10.0;
+  static const double _thumbHeight = 13.0;
+  static const double _disabledThumbHeight = 13.0;
 
   @override
   Size getPreferredSize(bool isEnabled, bool isDiscrete) {

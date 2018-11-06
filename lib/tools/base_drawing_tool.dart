@@ -238,6 +238,9 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
       case ShapeMode.Rectangle: _drawOverlayRectangle(p1, p2);
       break;
       case ShapeMode.Circle: _drawOverlayCircle(p1, p2);
+      break;
+      case ShapeMode.Triangle: _drawOverlayCircle(p1, p2);
+      break;
     }
   }
 

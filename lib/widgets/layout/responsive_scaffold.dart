@@ -49,7 +49,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
           // return Desktop Scaffold
           return new Scaffold(
             appBar: new ResponsiveAppBar(
-              elevation: 1.0,
+              elevation: 0.0,
               primary: true,
               centerTitle: true,
               title: DefaultTextStyle(
@@ -58,47 +58,32 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                   child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget> [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(left: 12.0, bottom: 4.0),
-                              child: Text('Stroke Width'),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10.0),
-                              child: ValueSlider(
-                                value: 1.0,
-                                min: 1.0,
-                                max: 100.0,
-                                onChanged: (value){
-                                  setState((){
-                                  });
-                                },
-                              ),
-                            ),
-                          ],
+                        Icon(Icons.line_weight),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12.0),
+                          child: ValueSlider(
+                            value: 1.0,
+                            min: 1.0,
+                            max: 100.0,
+                            onChanged: (value){
+                              setState((){
+                              });
+                            },
+                          ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(left: 12.0, bottom: 4.0),
-                              child: Text('Opacity'),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                              child: ValueSlider(
-                                value: 0.4,
-                                onChanged: (value){
-                                  setState((){
-                                  });
-                                },
-                              ),
-                            ),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16.0),
+                          child: Icon(Icons.invert_colors),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12.0),
+                          child: ValueSlider(
+                            value: 0.4,
+                            onChanged: (value){
+                              setState((){
+                              });
+                            },
+                          ),
                         ),
                       ]
                   ),
@@ -111,7 +96,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                     FlatButton(
                       child: Text(
                         'Project',
-                        style: Theme.of(context).textTheme.title,
+                        style: Theme.of(context).accentTextTheme.title,
                       ),
                       padding: const EdgeInsets.all(8.0),
                       shape: RoundedRectangleBorder(
@@ -123,13 +108,13 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                       padding: const EdgeInsets.only(left: 4.0, right: 4.0,),
                       child: Text(
                         '>',
-                        style: Theme.of(context).textTheme.title,
+                        style: Theme.of(context).accentTextTheme.title,
                       ),
                     ),
                     FlatButton(
                       child: Text(
                         'Current Canvas',
-                        style: Theme.of(context).textTheme.title,
+                        style: Theme.of(context).accentTextTheme.title,
                       ),
                       padding: const EdgeInsets.all(8.0),
                       shape: RoundedRectangleBorder(
@@ -142,11 +127,11 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
               ),
               actions: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.launch, color: Colors.white),
+                  icon: Icon(Icons.launch, color: Theme.of(context).accentIconTheme.color),
                   onPressed: (){},
                 ),
                 IconButton(
-                  icon: Icon(Icons.settings, color: Colors.white),
+                  icon: Icon(Icons.settings, color: Theme.of(context).accentIconTheme.color),
                   onPressed: (){},
                 ),
               ],

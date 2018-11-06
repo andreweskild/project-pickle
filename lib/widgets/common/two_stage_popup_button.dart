@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_pickle/widgets/common/toggle_icon_button.dart';
+import 'package:project_pickle/widgets/common/toggle_button.dart';
 
 const double _kMenuScreenPadding = 0.0;
 
@@ -101,7 +101,7 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
   Widget build(BuildContext context) {
     final Animation<Size> size = SizeTween(
       begin: widget.initialSize,
-      end: Size(196.0, 156.0),
+      end: Size(256.0, 166.0),
     ).animate(
       CurvedAnimation(
         parent: widget.parentAnimation,
@@ -153,7 +153,7 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
                   child: Material(
                     color: Theme.of(context).buttonColor,
                     shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Theme.of(context).accentColor, width: 2.0),
+                      side: BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: InkWell(
@@ -168,10 +168,10 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
                                 color: Theme.of(context).accentTextTheme.button.color,
                               ),
                               child: DefaultTextStyle(
-                                  style: TextStyle(
-                                    color: Theme.of(context).accentTextTheme.button.color,
-                                  ),
-                                  child: widget.headerContent),
+                                style: TextStyle(
+                                  color: Theme.of(context).accentTextTheme.button.color,
+                                ),
+                                child: widget.headerContent),
                             ),
                           ],
                         ),
@@ -325,6 +325,8 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
     return SizedBox(
       height: _height,
       child: Material(
+        elevation: widget.active ? 6.0 : 0.0,
+        shadowColor: Theme.of(context).splashColor.withAlpha(60),
         color: (widget.active && !_opened)
             ? Theme.of(context).buttonColor
             : Theme.of(context).cardColor,
@@ -332,8 +334,8 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
           borderRadius: BorderRadius.circular(8.0),
           side: BorderSide(
               color: (widget.active && !_opened)
-                ? Theme.of(context).accentColor
-                : Theme.of(context).cardColor,
+                ? Theme.of(context).dividerColor
+                : Colors.transparent,
               width: 2.0)
         ),
         child: InkWell(

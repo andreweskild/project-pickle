@@ -577,7 +577,7 @@ class _RenderSlider extends RenderBox {
   static const Duration _positionAnimationDuration = Duration(milliseconds: 75);
   static const double _overlayRadius = 12.0;
   static const double _overlayDiameter = _overlayRadius * 2.0;
-  static const double _trackHeight = 12.0;
+  static const double _trackHeight = 24.0;
   static const double _preferredTrackWidth = 144.0;
   static const double _preferredTotalWidth = _preferredTrackWidth + _overlayDiameter;
   static const Duration _minimumInteractionTime = Duration(milliseconds: 500);
@@ -971,7 +971,7 @@ class _RenderSlider extends RenderBox {
             center.dx + radius * 1.2,
             center.dy + radius,
           ),
-          Radius.circular(12.0),
+          Radius.circular(10.0),
         ),
         overlayPaint
       );
@@ -990,7 +990,13 @@ class _RenderSlider extends RenderBox {
     final ColorTween inactiveTickMarkEnableColor = new ColorTween(begin: _sliderTheme.disabledInactiveTickMarkColor, end: _sliderTheme.inactiveTickMarkColor);
 
     final Paint activeTrackPaint = new Paint()..color = activeTrackEnableColor.evaluate(_enableAnimation);
+    final Paint activeTrackBorderPaint = new Paint()..color = activeTickMarkEnableColor.evaluate(_enableAnimation)
+      ..strokeWidth = 2.0
+      ..style = PaintingStyle.stroke;
     final Paint inactiveTrackPaint = new Paint()..color = inactiveTrackEnableColor.evaluate(_enableAnimation);
+    final Paint inactiveTrackBorderPaint = new Paint()..color = inactiveTickMarkEnableColor.evaluate(_enableAnimation)
+      ..strokeWidth = 2.0
+      ..style = PaintingStyle.stroke;
     final Paint activeTickMarkPaint = new Paint()..color = activeTickMarkEnableColor.evaluate(_enableAnimation);
     final Paint inactiveTickMarkPaint = new Paint()..color = inactiveTickMarkEnableColor.evaluate(_enableAnimation);
 
@@ -999,6 +1005,8 @@ class _RenderSlider extends RenderBox {
     Paint rightTrackPaint;
     Paint leftTickMarkPaint;
     Paint rightTickMarkPaint;
+    Paint leftTrackBorderPaint;
+    Paint rightTrackBorderPaint;
     switch (textDirection) {
       case TextDirection.rtl:
         visualPosition = 1.0 - value;
@@ -1006,6 +1014,8 @@ class _RenderSlider extends RenderBox {
         rightTrackPaint = activeTrackPaint;
         leftTickMarkPaint = inactiveTickMarkPaint;
         rightTickMarkPaint = activeTickMarkPaint;
+        leftTrackBorderPaint = inactiveTrackBorderPaint;
+        rightTrackBorderPaint = activeTrackBorderPaint;
         break;
       case TextDirection.ltr:
         visualPosition = value;
@@ -1013,6 +1023,8 @@ class _RenderSlider extends RenderBox {
         rightTrackPaint = inactiveTrackPaint;
         leftTickMarkPaint = activeTickMarkPaint;
         rightTickMarkPaint = inactiveTickMarkPaint;
+        leftTrackBorderPaint = activeTrackBorderPaint;
+        rightTrackBorderPaint = inactiveTrackBorderPaint;
         break;
     }
 
@@ -1031,22 +1043,24 @@ class _RenderSlider extends RenderBox {
     final double trackActiveRight = math.min(trackActive + thumbWidth + thumbGap * (1.0 - _enableAnimation.value), trackRight);
     final RRect trackLeftRect = RRect.fromRectAndCorners(
       Rect.fromLTRB(trackLeft - thumbWidth, trackTop, trackActiveLeft, trackBottom),
-      topLeft: Radius.circular(_trackHeight / 2.0),
-      bottomLeft: Radius.circular(_trackHeight / 2.0),
+      topLeft: Radius.circular(8.0),
+      bottomLeft: Radius.circular(8.0),
     );
     final RRect trackRightRect = RRect.fromRectAndCorners(
       Rect.fromLTRB(trackActiveRight, trackTop, trackRight + thumbWidth, trackBottom),
-      topRight: Radius.circular(_trackHeight / 2.0),
-      bottomRight: Radius.circular(_trackHeight / 2.0),
+      topRight: Radius.circular(8.0),
+      bottomRight: Radius.circular(8.0),
     );
     final Offset thumbCenter = new Offset(trackActive, trackVerticalCenter);
 
     // Paint the track.
     if (visualPosition > 0.0) {
       canvas.drawRRect(trackLeftRect, leftTrackPaint);
+      canvas.drawRRect(trackLeftRect, leftTrackBorderPaint);
     }
     if (visualPosition < 1.0) {
       canvas.drawRRect(trackRightRect, rightTrackPaint);
+      canvas.drawRRect(trackRightRect, rightTrackBorderPaint);
     }
 
     canvas.drawShadow(
@@ -1061,8 +1075,8 @@ class _RenderSlider extends RenderBox {
             Radius.circular(12.0),
           ),
         ),
-        Colors.black,
-        3.0,
+        Colors.black26,
+        6.0,
         false
     );
 

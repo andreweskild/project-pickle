@@ -12,7 +12,8 @@ enum ColorType {
 
 enum ShapeMode {
   Rectangle,
-  Circle
+  Circle,
+  Triangle,
 }
 
 class AppState {

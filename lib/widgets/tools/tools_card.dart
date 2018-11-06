@@ -80,19 +80,6 @@ class ToolsCard extends StatelessWidget {
         );
       },
       builder: (context, model) {
-//        return Padding(
-//          padding: const EdgeInsets.all(12.0),
-//          child: AspectRatio(
-//            aspectRatio: 1.0,
-//            child: TwoStagePopupButton(
-//              icon: Icon(Icons.crop_square),
-//              label: Text('Shape Tool'),
-//              popupContent: Text('stuff'),
-//              onToggled: (){},
-//              active: true,
-//            ),
-//          ),
-//        );
          return Padding(
            padding: const EdgeInsets.all(6.0),
            child: Column(

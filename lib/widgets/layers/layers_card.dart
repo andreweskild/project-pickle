@@ -89,18 +89,23 @@ class LayersCard extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: RaisedButton(
-                  color: Theme.of(context).unselectedWidgetColor,
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Theme.of(context).dividerColor),
-                    borderRadius: BorderRadius.circular(6.0)
+                child: ConstrainedBox(
+                  constraints: BoxConstraints.expand(height: 40.0),
+                  child: RaisedButton(
+                    elevation: 0.0,
+                    highlightElevation: 0.0,
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    highlightColor: Theme.of(context).accentColor,
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.black.withAlpha(15), width: 2.0),
+                      borderRadius: BorderRadius.circular(6.0)
+                    ),
+                    padding: EdgeInsets.all(0.0),
+                    child: Text('New Layer'),
+                    onPressed: () {
+                      model.addLayerCallback();
+                    },
                   ),
-                  padding: EdgeInsets.all(0.0),
-                  child: Text('New Layer'),
-                  elevation: 0.0,
-                  onPressed: () {
-                    model.addLayerCallback();
-                  },
                 ),
               ),
               Expanded(
@@ -114,7 +119,7 @@ class LayersCard extends StatelessWidget {
                     ),
                   ),
                   child: ListView(
-                    padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    padding: const EdgeInsets.only(top: 6.0, bottom: 6.0),
                     children:
                         List<Widget>.generate(model.layers.length, (index) {
                       int reversedIndex = model.layers.length - 1 - index;

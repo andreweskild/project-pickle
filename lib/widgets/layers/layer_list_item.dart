@@ -3,7 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
-import 'package:project_pickle/widgets/common/toggle_icon_button.dart';
+import 'package:project_pickle/widgets/common/toggle_button.dart';
 
 class LayerListItem extends StatelessWidget {
   const LayerListItem({
@@ -31,7 +31,7 @@ class LayerListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+      padding: const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 6.0),
       child: StoreConnector<AppState, DrawerSizeMode>(
           converter: (store) => store.state.rightDrawerSizeMode,
           builder: (context, sizeMode) {
@@ -41,9 +41,17 @@ class LayerListItem extends StatelessWidget {
                   elevation: selected ? 6.0 : 0.0,
                   color: selected
                       ? Theme.of(context).buttonColor
-                      : Theme.of(context).dividerColor,
-                  shadowColor: Theme.of(context).buttonColor.withAlpha(100),
-                  borderRadius: BorderRadius.circular(8.0),
+                      : Theme.of(context).unselectedWidgetColor,
+                  shadowColor: Theme.of(context).splashColor.withAlpha(60),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    side: BorderSide(
+                      color: selected
+                          ? Theme.of(context).accentColor
+                          : Theme.of(context).unselectedWidgetColor,
+                      width: 2.0,
+                    )
+                  ),
                   child: Stack(children: <Widget>[
                     Align(
                       alignment: Alignment.topLeft,
@@ -58,13 +66,14 @@ class LayerListItem extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             padding: EdgeInsets.all(8.0),
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
+                            child: Material(
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6.0),
-                                border: Border.all(
-                                  color: (selected) ? Theme.of(context).highlightColor.withAlpha(200) : Colors.transparent,
-                                )
+                                side: BorderSide(
+                                  color: (selected) ? Theme.of(context).accentColor : Theme.of(context).dividerColor,
+                                  width: 2.0,
+                                ),
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(6.0),
@@ -103,7 +112,7 @@ class LayerListItem extends StatelessWidget {
                                         .textTheme
                                         .button
                                         .color,
-                                fontWeight: (selected) ? FontWeight.w500 : FontWeight.normal,
+                                fontWeight: FontWeight.w500,
                               ),
                             )),
                           ),
@@ -117,7 +126,7 @@ class LayerListItem extends StatelessWidget {
                     highlightElevation: 0.0,
                     padding: const EdgeInsets.all(0.0),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6.0),
+                      borderRadius: BorderRadius.circular(8.0),
                     ),
                     onPressed: onTap,
                   ),
@@ -135,20 +144,13 @@ class LayerListItem extends StatelessWidget {
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: ToggleIconButton(
-                            icon: Icon(
+                          child: ToggleButton(
+                            child: Icon(
                               (hidden) ? Icons.remove : Icons.adjust,
-                              color: selected
-                                  ? Theme.of(context)
-                                      .accentTextTheme
-                                      .button
-                                      .color
-                                  : Theme.of(context)
-                                      .primaryTextTheme
-                                      .button
-                                      .color,
+                              color: Theme.of(context).accentTextTheme.button.color,
                             ),
-                            onToggled: onToggleHidden,
+                            toggled: hidden,
+                            onToggled: (newValue) => onToggleHidden(),
                           ),
                         ),
                       ),
