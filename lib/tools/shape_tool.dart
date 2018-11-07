@@ -12,8 +12,8 @@ import 'package:project_pickle/widgets/common/raised_dropdown_button.dart';
 import 'package:project_pickle/widgets/common/switch.dart';
 import 'package:project_pickle/widgets/common/toggle_button.dart';
 
-class ShapeModel {
-  ShapeModel({
+class ShapeModeModel {
+  ShapeModeModel({
     this.shape,
     this.callback
   });
@@ -32,14 +32,14 @@ class ShapeModel {
   // override hashCode.
   @override
   bool operator ==(dynamic other) {
-    if (other is! ShapeModel) return false;
-    ShapeModel model = other;
+    if (other is! ShapeModeModel) return false;
+    ShapeModeModel model = other;
     return (model.shape == shape);
   }
 }
 
-class FilledShapeModel {
-  FilledShapeModel({
+class ShapeOptionsModel {
+  ShapeOptionsModel({
     this.filled,
     this.callback
   });
@@ -58,8 +58,8 @@ class FilledShapeModel {
   // override hashCode.
   @override
   bool operator ==(dynamic other) {
-    if (other is! FilledShapeModel) return false;
-    FilledShapeModel model = other;
+    if (other is! ShapeOptionsModel) return false;
+    ShapeOptionsModel model = other;
     return (model.filled == filled);
   }
 }
@@ -77,9 +77,9 @@ class ShapeTool extends BaseDrawingTool {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 6.0),
-            child: StoreConnector<AppState,ShapeModel>(
+            child: StoreConnector<AppState,ShapeModeModel>(
               converter: (store) {
-                return ShapeModel(
+                return ShapeModeModel(
                   shape: store.state.toolShape,
                   callback: (value) => store.dispatch(SetToolShapeAction(value)),
                 );
@@ -108,44 +108,58 @@ class ShapeTool extends BaseDrawingTool {
           ),
           Padding(
             padding: EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 12.0),
-            child: SizedBox(
-              height: 40.0,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 6.0),
-                      child: ToggleButton(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[Icon(Icons.brightness_1), Padding(
-                            padding: const EdgeInsets.only(left: 6.0),
-                            child: Text('Stroke'),
-                          )],
-                        ),
-                        toggled: true,
-                        onToggled: (value){}
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 6.0),
-                      child: ToggleButton(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[Icon(Icons.brightness_1), Padding(
-                              padding: const EdgeInsets.only(left: 6.0),
-                              child: Text('Fill'),
-                            )],
+            child: StoreConnector<AppState, ShapeOptionsModel>(
+              converter: (store) {
+                return ShapeOptionsModel(
+                  filled: store.state.shapeFilled,
+                  callback: (filled) => store.dispatch(SetShapeFilledAction(filled)),
+                );
+              },
+              builder: (context, model) {
+                return SizedBox(
+                  height: 40.0,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 6.0),
+                          child: ToggleButton(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Icon(Icons.brightness_1), Padding(
+                                    padding: const EdgeInsets.only(left: 6.0),
+                                    child: Text('Stroke'),
+                                  )
+                                ],
+                              ),
+                              toggled: true,
+                              onToggled: (value) {}
                           ),
-                          toggled: false,
-                          onToggled: (value){}
+                        ),
                       ),
-                    ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 6.0),
+                          child: ToggleButton(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Icon(Icons.brightness_1), Padding(
+                                    padding: const EdgeInsets.only(left: 6.0),
+                                    child: Text('Fill'),
+                                  )
+                                ],
+                              ),
+                              toggled: model.filled,
+                              onToggled: model.callback
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                );
+              }
             )
           )
         ],
