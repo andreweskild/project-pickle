@@ -47,8 +47,8 @@ class LayerListItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8.0),
                     side: BorderSide(
                       color: selected
-                          ? Theme.of(context).accentColor
-                          : Theme.of(context).unselectedWidgetColor,
+                          ? Theme.of(context).dividerColor
+                          : Colors.transparent,
                       width: 2.0,
                     )
                   ),
@@ -144,13 +144,27 @@ class LayerListItem extends StatelessWidget {
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: ToggleButton(
-                            child: Icon(
-                              (hidden) ? Icons.remove : Icons.adjust,
-                              color: Theme.of(context).accentTextTheme.button.color,
+                          child: AspectRatio(
+                            aspectRatio: 1.0,
+                            child: FlatButton(
+                              padding: EdgeInsets.all(0.0),
+                              child: IconTheme(
+                                data: IconThemeData(
+                                    color: selected
+                                        ? Theme.of(context)
+                                        .accentIconTheme.color
+                                        : Theme.of(context)
+                                        .iconTheme.color
+                                ),
+                                child: Icon(
+                                  (hidden) ? Icons.remove : Icons.adjust,
+                                ),
+                              ),
+                              onPressed: onToggleHidden,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
                             ),
-                            toggled: hidden,
-                            onToggled: (newValue) => onToggleHidden(),
                           ),
                         ),
                       ),

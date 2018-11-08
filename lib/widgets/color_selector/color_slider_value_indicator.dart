@@ -236,7 +236,7 @@ class ColorSliderValueIndicatorShape extends SliderComponentShape {
           final Paint outlinePaint = new Paint()
             ..color = const Color(0xffff0000)
             ..style = PaintingStyle.stroke
-            ..strokeWidth = 1.0;
+            ..strokeWidth = 2.0;
           canvas.drawRect(valueRect, outlinePaint);
           return true;
         }());
@@ -269,11 +269,12 @@ class ColorSliderValueIndicatorShape extends SliderComponentShape {
       rightNeckArcAngle,
       math.pi,
     );
-    canvas.drawShadow(path, Colors.black, 2.0, false);
+    canvas.drawShadow(path, Colors.black26, 6.0, false);
     canvas.drawPath(path, paint);
     canvas.drawPath(path, paint
-      ..color = Colors.black38
+      ..color = Colors.black26
       ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0
     );
 
     // Draw the label.

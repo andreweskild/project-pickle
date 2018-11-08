@@ -97,7 +97,7 @@ class LayersCard extends StatelessWidget {
                     color: Theme.of(context).scaffoldBackgroundColor,
                     highlightColor: Theme.of(context).accentColor,
                     shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.black.withAlpha(15), width: 2.0),
+                      side: BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
                       borderRadius: BorderRadius.circular(6.0)
                     ),
                     padding: EdgeInsets.all(0.0),

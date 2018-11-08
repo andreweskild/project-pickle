@@ -86,9 +86,11 @@ class PixelCanvasLayer extends StatelessWidget {
           pos.dy >= 0 && pos.dy < height ) {
         if (!_pixels.containsKey(pos) &&
             color != Colors.white) {
-          if(_pixels[pos] != color) {
             _pixels[pos] = color;
-          }
+        } else if (color == Colors.white) {
+          _pixels.remove(pos);
+        } else if(_pixels[pos] != color) {
+          _pixels[pos] = color;
         }
       }
     });

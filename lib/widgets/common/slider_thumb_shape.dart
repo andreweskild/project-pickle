@@ -34,15 +34,6 @@ class SliderThumbShape extends SliderComponentShape {
       begin: sliderTheme.disabledThumbColor,
       end: sliderTheme.thumbColor,
     );
-//    canvas.drawShadow(Path()..addRRect(
-//      RRect.fromLTRBR(
-//          thumbCenter.dx - heightTween.evaluate(enableAnimation),
-//          thumbCenter.dy - heightTween.evaluate(enableAnimation),
-//          thumbCenter.dx + heightTween.evaluate(enableAnimation),
-//          thumbCenter.dy + heightTween.evaluate(enableAnimation),
-//          Radius.circular(8.0)
-//      ),
-//    ), Colors.black, 2.0, false);
     canvas.drawRRect(
       RRect.fromLTRBR(
           thumbCenter.dx - heightTween.evaluate(enableAnimation) * 1.3,
@@ -53,18 +44,5 @@ class SliderThumbShape extends SliderComponentShape {
       ),
       new Paint()..color = colorTween.evaluate(enableAnimation),
     );
-//    canvas.drawRRect(
-//      RRect.fromLTRBR(
-//          thumbCenter.dx - heightTween.evaluate(enableAnimation),
-//          thumbCenter.dy - heightTween.evaluate(enableAnimation),
-//          thumbCenter.dx + heightTween.evaluate(enableAnimation),
-//          thumbCenter.dy + heightTween.evaluate(enableAnimation),
-//          Radius.circular(8.0)
-//      ),
-//      new Paint()
-//        ..style = PaintingStyle.stroke
-//        ..color = Colors.black26
-//        ..strokeWidth = 1.0,
-//    );
   }
 }

@@ -211,17 +211,6 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
 
     ellipseStroke = _getEllipseStroke(center, xRadius.round(), yRadius.round());
     drawOverlayPixelList(ellipseStroke);
-//    Offset currentPixel = Offset(hRadius + center.dx, center.dy);
-//
-//    drawOverlayPixel(currentPixel);
-//
-//    currentPixel = Offset(center.dx, center.dy - vRadius);
-//    drawOverlayPixel(currentPixel);
-//    currentPixel = Offset(center.dx, center.dy + vRadius);
-//    drawOverlayPixel(currentPixel);
-//    currentPixel = Offset(center.dx - hRadius, center.dy);
-//    drawOverlayPixel(currentPixel);
-//
 
   }
 

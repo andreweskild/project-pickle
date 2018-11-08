@@ -37,7 +37,7 @@ class ToggleButton extends StatelessWidget {
         padding: const EdgeInsets.all(4.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
-          side: BorderSide(color: toggled ? activeBorderColor ?? Theme.of(context).accentColor : inactiveBorderColor ?? Colors.black.withAlpha(15), width: 2.0)
+          side: BorderSide(color: Theme.of(context).dividerColor, width: 2.0)
         ),
         onPressed: () => onToggled(!toggled),
       ),
