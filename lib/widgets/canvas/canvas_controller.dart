@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:project_pickle/canvas/pixel_buffer.dart';
+
 import 'package:project_pickle/widgets/tools/select_tool_overlay.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
@@ -29,6 +31,7 @@ class _CanvasControllerState extends State<CanvasController> {
   int _visibleLayerCount;
   int _currentLayerIndex;
   Type _currentToolType;
+  Color _currentColor;
 
 
   List<PixelCanvasLayer> _populateLayerList(AppState state, BaseTool currentTool) {
@@ -40,9 +43,6 @@ class _CanvasControllerState extends State<CanvasController> {
           .getRange(0, state.currentLayerIndex + 1)
           .where((layer) => !layer.hidden)
           .toList();
-      if (currentTool is BaseDrawingTool) {
-        layers.add(currentTool.overlay);
-      }
       layers.addAll(state.layers.getRange(
           state.currentLayerIndex + 1, state.layers.length));
     }
@@ -68,15 +68,20 @@ class _CanvasControllerState extends State<CanvasController> {
         if(_currentToolType== null) {
           _currentToolType = store.state.currentTool.runtimeType;
         }
+        if(_currentColor == null) {
+          _currentColor = store.state.currentColor.toColor();
+        }
 
         store.onChange.listen(
             (state) {
               var newLayerCount = state.layers.where((layer) => !layer.hidden).length;
               if( newLayerCount != _visibleLayerCount ||
                   state.currentLayerIndex != _currentLayerIndex ||
-                  state.currentTool.runtimeType != _currentToolType
+                  state.currentTool.runtimeType != _currentToolType ||
+                  state.currentColor != _currentColor
               ) {
                 setState(() {
+                  _currentColor = state.currentColor.toColor();
                   _visibleLayerCount = newLayerCount;
                   _currentLayerIndex = state.currentLayerIndex;
                   _currentToolType = state.currentTool.runtimeType;
@@ -110,7 +115,7 @@ class _CanvasControllerState extends State<CanvasController> {
             if (currentPointerCount <= 1) {
               store.state.currentTool.handlePointerDown(details, context);
             } else {
-              store.dispatch(ClearPreviewAction());
+              store.dispatch(ClearPixelBufferAction());
             }
           },
           onPointerUp: (details) {
@@ -131,6 +136,12 @@ class _CanvasControllerState extends State<CanvasController> {
                 children: <Widget>[
                   Stack(
                     children: layers
+                  ),
+                  Positioned.fill(
+                    child: PixelBufferLayer(
+                      buffer: store.state.drawingBuffer,
+                      color: store.state.currentColor.toColor(),
+                    ),
                   ),
                   SelectToolOverlay(),
                 ],

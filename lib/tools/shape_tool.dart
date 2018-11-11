@@ -169,19 +169,19 @@ class ShapeTool extends BaseDrawingTool {
   void onPixelInputUpdate(Offset pos) {
     if (_startPoint == null) {
       _startPoint = pos;
-      drawOverlayPixel(pos);
+      drawPixelToBuffer(pos);
     } else {
       if (_endPoint != null) {
-        resetOverlay();
+        clearBuffer();
       }
       _endPoint = pos;
-      drawShapeToOverlay(_startPoint, _endPoint);
+      drawShapeToBuffer(_startPoint, _endPoint);
     }
   }
 
   @override
   void onPixelInputUp() {
-    saveOverlayToLayer();
+    finalizeBuffer();
     resetLinePoints();
   }
 

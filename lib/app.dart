@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
+import 'package:project_pickle/canvas/pixel_buffer.dart';
+
 import 'package:project_pickle/pages/pixel_editor_page.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/state/reducer.dart';
@@ -11,6 +13,9 @@ import 'package:project_pickle/widgets/common/slider_thumb_shape.dart';
 final store = Store<AppState>(
   stateReducer,
   initialState: AppState(
+    canvasWidth: 32,
+    canvasHeight: 32,
+    drawingBuffer: PixelBuffer(32, 32),
     primaryColor: HSLColor.fromAHSL(1.0, 1.0, 1.0, 1.0),
     secondaryColor: HSLColor.fromAHSL(1.0, 100.0, 1.0, 0.5),
     layers: <PixelCanvasLayer>[

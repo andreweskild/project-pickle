@@ -1,4 +1,5 @@
 import 'package:flutter/painting.dart';
+import 'package:project_pickle/canvas/pixel_buffer.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
@@ -35,6 +36,10 @@ AppState stateReducer(AppState state, dynamic action) {
     state.currentLayerIndex = newIndex;
     return state;
   }
+  else if (action is ClearPixelBufferAction) {
+    state.drawingBuffer.clearBuffer();
+    return state;
+  }
   else if (action is DeselectAction) {
     state.selectionPath = null;
     return state;
@@ -47,12 +52,16 @@ AppState stateReducer(AppState state, dynamic action) {
     );
     return state;
   }
-  else if (action is ToggleLayerHiddenAction) {
-    state.layers[action.index].toggleHidden();
+  else if (action is FinalizePixelBufferAction) {
+    state.drawingBuffer.toPixelList().forEach(
+      (pixel) {
+        state.currentLayer.setPixel(pixel, state.currentColor.toColor());
+      }
+    );
     return state;
   }
-  else if (action is SaveOverlayToLayerAction) {
-    state.currentLayer.setPixelsFromMap(action.overlay.pixels);
+  else if (action is ToggleLayerHiddenAction) {
+    state.layers[action.index].toggleHidden();
     return state;
   }
   else if (action is SetActiveColorTypeAction) {

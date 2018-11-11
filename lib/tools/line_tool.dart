@@ -13,21 +13,21 @@ class LineTool extends BaseDrawingTool {
   void onPixelInputUpdate(Offset pos) {
     if (_startPoint == null) {
       _startPoint = pos;
-      drawOverlayPixel(pos);
+      drawPixelToBuffer(pos);
     }
     else {
       if (_endPoint != null) {
-        resetOverlay();
+        clearBuffer();
       }
       _endPoint = pos;
-      drawOverlayPixelLine(_startPoint, _endPoint);
+      drawPixelLineToBuffer(_startPoint, _endPoint);
     }
   }
 
   @override
   void onPixelInputUp() {
     if (_endPoint != null) {
-      saveOverlayToLayer();
+      finalizeBuffer();
       resetLinePoints();
     }
   }

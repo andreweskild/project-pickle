@@ -7,7 +7,6 @@ import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/base_tool.dart';
 import 'package:project_pickle/tools/eraser_tool.dart';
 import 'package:project_pickle/tools/fill_tool.dart';
-import 'package:project_pickle/tools/gradient_tool.dart';
 import 'package:project_pickle/tools/line_tool.dart';
 import 'package:project_pickle/tools/pixel_tool.dart';
 import 'package:project_pickle/tools/shape_tool.dart';

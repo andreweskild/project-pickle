@@ -14,17 +14,17 @@ class PixelTool extends BaseDrawingTool {
     if ( _lastPoint != null &&
         ((_lastPoint.dx - pos.dx).abs() > 1 ||
             (_lastPoint.dy - pos.dy).abs() > 1)) {
-      drawOverlayPixelLine(_lastPoint, pos);
+      drawPixelLineToBuffer(_lastPoint, pos);
     }
     else {
-      drawOverlayPixel(pos);
+      drawPixelToBuffer(pos);
     }
     _lastPoint = pos;
   }
 
   @override
   void onPixelInputUp() {
-    saveOverlayToLayer();
+    finalizeBuffer();
     _lastPoint = null;
   }
 

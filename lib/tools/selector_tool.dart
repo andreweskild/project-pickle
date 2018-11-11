@@ -11,9 +11,7 @@ import 'package:project_pickle/tools/base_tool.dart';
 class SelectorTool extends BaseTool<Null> {
   VoidCallback onSelectionFinished;
 
-  SelectorTool(context) : super(
-    context, null
-  );
+  SelectorTool(context) : super(context);
 
 
   void setSelectionPath(Path path) {

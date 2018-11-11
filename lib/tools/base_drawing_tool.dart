@@ -9,29 +9,25 @@ import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
   BaseDrawingTool(context)
     : super(
-      context,
-      PixelCanvasLayer(
-        height: 32,
-        width: 32
-      )
+      context
     );
 
 
-  void drawOverlayPixel(Offset pos) {
+  void drawPixelToBuffer(Offset pos) {
     if(pixelInSelection(pos)) {
-      overlay.setPixel(pos, store.state.currentColor.toColor());
+      store.state.drawingBuffer.addPixel(pos.dx.toInt(), pos.dy.toInt());
     }
   }
 
-  void drawOverlayPixelList(List<Offset> posList) {
+  void drawPixelListToBuffer(List<Offset> posList) {
     posList.forEach(
       (pos) {
-        drawOverlayPixel(pos);
+        drawPixelToBuffer(pos);
       }
     );
   }
 
-  void drawOverlayPixelLine(Offset p1, Offset p2) {
+  void drawPixelLineToBuffer(Offset p1, Offset p2) {
     var horizontalMovement = (p1.dx - p2.dx).abs();
     var verticalMovement = (p1.dy - p2.dy).abs();
 
@@ -47,7 +43,7 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
       var slope = (p2.dy - p1.dy) / (p2.dx - p1.dx);
       var crossAxisPosition = p1.dy;
       for (double i = p1.dx; i <= p2.dx; i++) {
-        drawOverlayPixel(new Offset(i, crossAxisPosition.round().toDouble()));
+        drawPixelToBuffer(new Offset(i, crossAxisPosition.round().toDouble()));
         crossAxisPosition = crossAxisPosition + slope;
       }
     }
@@ -62,7 +58,7 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
       var slope = (p2.dx - p1.dx) / (p2.dy - p1.dy);
       var crossAxisPosition = p1.dx;
       for (double i = p1.dy; i >= p2.dy; i--) {
-        drawOverlayPixel(new Offset(crossAxisPosition.round().toDouble(), i));
+        drawPixelToBuffer(new Offset(crossAxisPosition.round().toDouble(), i));
         crossAxisPosition = crossAxisPosition - slope;
       }
     }
@@ -144,17 +140,13 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
     return ellipseFill;
   }
 
-  void _drawOverlayCircle(Offset p1, Offset p2) {
+  void _drawCircleToBuffer(Offset p1, Offset p2) {
     var topLeftBound;
     var bottomRightBound;
     List<Offset> ellipseStroke;
     List<Offset> ellipseFill;
     Offset center;
     double xRadius, yRadius;
-
-    Offset roundPoint(Offset point) {
-      return Offset(point.dx.roundToDouble(), point.dy.roundToDouble());
-    }
 
     // checks direction of drag to determine if points need to be flipped.
     // drag in right half
@@ -206,34 +198,34 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
 
     if(store.state.shapeFilled) {
       ellipseFill = _getEllipseFill(center, xRadius.round(), yRadius.round());
-      drawOverlayPixelList(ellipseFill);
+      drawPixelListToBuffer(ellipseFill);
     }
 
     ellipseStroke = _getEllipseStroke(center, xRadius.round(), yRadius.round());
-    drawOverlayPixelList(ellipseStroke);
+    drawPixelListToBuffer(ellipseStroke);
 
   }
 
-  void _drawFilledRectToOverlay(Offset p1, Offset p2) {
+  void _drawFilledRectToBuffer(Offset p1, Offset p2) {
     for (double x = p1.dx; x <= p2.dx; x++) {
       for (double y = p1.dy; y <= p2.dy; y++) {
-        drawOverlayPixel(Offset(x, y));
+        drawPixelToBuffer(Offset(x, y));
       }
     }
   }
 
-  void drawShapeToOverlay(Offset p1, Offset p2) {
+  void drawShapeToBuffer(Offset p1, Offset p2) {
     switch(store.state.toolShape) {
-      case ShapeMode.Rectangle: _drawOverlayRectangle(p1, p2);
+      case ShapeMode.Rectangle: _drawRectangleToBuffer(p1, p2);
       break;
-      case ShapeMode.Circle: _drawOverlayCircle(p1, p2);
+      case ShapeMode.Circle: _drawCircleToBuffer(p1, p2);
       break;
-      case ShapeMode.Triangle: _drawOverlayCircle(p1, p2);
+      case ShapeMode.Triangle: _drawCircleToBuffer(p1, p2);
       break;
     }
   }
 
-  void _drawOverlayRectangle(Offset p1, Offset p2) {
+  void _drawRectangleToBuffer(Offset p1, Offset p2) {
     if(store.state.shapeFilled) {
       _drawOverlayFilledRectangle(p1, p2);
     } else {
@@ -242,34 +234,34 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
       var bottomLeftPoint = Offset(p1.dx, p2.dy);
       var bottomRightPoint = p2;
 
-      drawOverlayPixelLine(topLeftPoint, topRightPoint);
-      drawOverlayPixelLine(topRightPoint, bottomRightPoint);
-      drawOverlayPixelLine(bottomRightPoint, bottomLeftPoint);
-      drawOverlayPixelLine(bottomLeftPoint, topLeftPoint);
+      drawPixelLineToBuffer(topLeftPoint, topRightPoint);
+      drawPixelLineToBuffer(topRightPoint, bottomRightPoint);
+      drawPixelLineToBuffer(bottomRightPoint, bottomLeftPoint);
+      drawPixelLineToBuffer(bottomLeftPoint, topLeftPoint);
     }
   }
 
   void _drawOverlayFilledRectangle(Offset p1, Offset p2) {
     if(p1.dx < p2.dx) {
       if(p1.dy < p2.dy) {
-        _drawFilledRectToOverlay(p1, p2);
+        _drawFilledRectToBuffer(p1, p2);
       }
       else {
         var newP1 = Offset(p1.dx, p2.dy);
         var newP2 = Offset(p2.dx, p1.dy);
-        _drawFilledRectToOverlay(newP1, newP2);
+        _drawFilledRectToBuffer(newP1, newP2);
       }
     }
     else {
       if(p1.dy > p2.dy) {
         var newP1 = p2;
         var newP2 = p1;
-        _drawFilledRectToOverlay(newP1, newP2);
+        _drawFilledRectToBuffer(newP1, newP2);
       }
       else {
         var newP1 = Offset(p2.dx, p1.dy);
         var newP2 = Offset(p1.dx, p2.dy);
-        _drawFilledRectToOverlay(newP1, newP2);
+        _drawFilledRectToBuffer(newP1, newP2);
       }
     }
   }
@@ -322,13 +314,13 @@ class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
     if (pixelInSelection(pos)) store.dispatch(new FillAreaAction(pos));
   }
 
-  void resetOverlay() {
-    overlay.clearPixels();
+  void clearBuffer() {
+    store.state.drawingBuffer.clearBuffer();
   }
 
-  void saveOverlayToLayer() {
-    store.dispatch(new SaveOverlayToLayerAction(overlay));
-    resetOverlay();
+  void finalizeBuffer() {
+    store.dispatch(new FinalizePixelBufferAction());
+    clearBuffer();
   }
 
 }

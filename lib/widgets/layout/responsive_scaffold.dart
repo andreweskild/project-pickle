@@ -1,8 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:project_pickle/state/actions.dart';
+import 'package:project_pickle/state/app_state.dart';
+import 'package:project_pickle/widgets/common/square_icon_button.dart';
 import 'package:project_pickle/widgets/common/value_slider.dart';
 import 'package:project_pickle/widgets/layout/responsive_app_bar.dart';
 import 'package:project_pickle/widgets/tools/tool_options_panel.dart';
+
+class UndoModel {
+  UndoModel(
+    this.canUndo,
+    this.callback,
+  );
+
+  final bool canUndo;
+  final VoidCallback callback;
+
+  @override
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + canUndo.hashCode;
+    return result;
+  }
+
+  // You should generally implement operator == if you
+  // override hashCode.
+  @override
+  bool operator ==(dynamic other) {
+    if (other is! UndoModel) return false;
+    UndoModel model = other;
+    return (model.canUndo == canUndo);
+  }
+}
+
 
 class ResponsiveScaffold extends StatefulWidget {
   ResponsiveScaffold({
@@ -100,7 +131,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                       ),
                       padding: const EdgeInsets.all(8.0),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0),
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                       onPressed: (){},
                     ),
@@ -118,7 +149,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                       ),
                       padding: const EdgeInsets.all(8.0),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0),
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                       onPressed: (){},
                     )
@@ -126,13 +157,45 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                 ),
               ),
               actions: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.launch, color: Theme.of(context).accentIconTheme.color),
-                  onPressed: (){},
+//                Padding(
+//                  padding: const EdgeInsets.fromLTRB(12.0, 12.0, 6.0, 12.0),
+//                  child: StoreConnector<AppState, UndoModel>(
+//                    converter: (store) {
+//                      return UndoModel(
+//
+//                      );
+//                    },
+//                    builder: (context, model) {
+//                      return SquareIconButton (
+//                        icon: Icon(Icons.undo, color: Theme
+//                            .of(context)
+//                            .accentIconTheme
+//                            .color),
+//                        onPressed: model.canUndo ? model.callback : null,
+//                      );
+//                    }
+//                  ),
+//                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(6.0, 12.0, 6.0, 12.0),
+                  child: SquareIconButton(
+                    icon: Icon(Icons.redo, color: Theme.of(context).accentIconTheme.color),
+                    onPressed: (){},
+                  ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.settings, color: Theme.of(context).accentIconTheme.color),
-                  onPressed: (){},
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(6.0, 12.0, 6.0, 12.0),
+                  child: SquareIconButton(
+                    icon: Icon(Icons.launch, color: Theme.of(context).accentIconTheme.color),
+                    onPressed: (){},
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(6.0, 12.0, 12.0, 12.0),
+                  child: SquareIconButton(
+                    icon: Icon(Icons.settings, color: Theme.of(context).accentIconTheme.color),
+                    onPressed: (){},
+                  ),
                 ),
               ],
             ),

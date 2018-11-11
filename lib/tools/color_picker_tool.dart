@@ -8,10 +8,7 @@ import 'package:project_pickle/tools/base_tool.dart';
 
 class ColorPickerTool extends BaseTool<Widget> {
   ColorPickerTool(context)
-      : super(
-      context,
-      Placeholder(color: Colors.black12),
-  );
+      : super(context);
 
   Color _currentSelectedColor;
 

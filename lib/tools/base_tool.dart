@@ -11,12 +11,10 @@ typedef OptionsBuilder = Widget Function();
 abstract class BaseTool<T extends Widget> {
   BaseTool(
     BuildContext context,
-    this.overlay,
   ) {
     store = StoreProvider.of<AppState>(context);
   }
 
-  final T overlay;
   Store<AppState> store;
 
   bool get selectionIsPresent => store.state.selectionPath != null;
@@ -52,6 +50,10 @@ abstract class BaseTool<T extends Widget> {
   void updateInputPosition(Offset pos) {
     double snappedX = pos.dx.floorToDouble();
     double snappedY = pos.dy.floorToDouble();
+    if (snappedX < 0) { snappedX = 0.0; }
+    else if (snappedX > store.state.canvasWidth - 1) { snappedX = store.state.canvasWidth.toDouble() - 1; }
+    if (snappedY < 0) { snappedY = 0.0; }
+    else if (snappedY > store.state.canvasHeight - 1) { snappedY = store.state.canvasHeight.toDouble() - 1; }
     Offset snappedPos = Offset(snappedX, snappedY);
       onPixelInputUpdate(snappedPos);
     _lastInputPos = snappedPos;

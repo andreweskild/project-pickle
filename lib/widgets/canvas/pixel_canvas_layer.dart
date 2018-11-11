@@ -12,7 +12,7 @@ class CanvasPainter extends CustomPainter {
       LayerChangeNotifier _notifier
       ) : super(repaint: _notifier);
 
-  final HashMap<Offset, Color> _pixels;
+  final LinkedHashMap<Offset, Color> _pixels;
 
   final Paint _pixelPaint = new Paint()
     ..strokeWidth = 1.0
@@ -53,7 +53,7 @@ class PixelCanvasLayer extends StatelessWidget {
   bool hidden;
 
   final _repaintNotifier = LayerChangeNotifier();
-  final _pixels = HashMap<Offset, Color>();
+  final _pixels = LinkedHashMap<Offset, Color>();
 
   get pixels => _pixels;
 

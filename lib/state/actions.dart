@@ -22,8 +22,8 @@ class AddNewLayerAction {
   AddNewLayerAction();
 }
 
-class ClearPreviewAction {
-  ClearPreviewAction();
+class ClearPixelBufferAction {
+  ClearPixelBufferAction();
 }
 
 class DeselectAction {
@@ -35,19 +35,14 @@ class FillAreaAction {
   final Offset pos;
 }
 
-class FinalizePixelsAction {
-  FinalizePixelsAction();
+class FinalizePixelBufferAction {
+  FinalizePixelBufferAction();
 }
 
 
 class ToggleLayerHiddenAction {
   ToggleLayerHiddenAction(this.index);
   final int index;
-}
-
-class SaveOverlayToLayerAction {
-  SaveOverlayToLayerAction(this.overlay);
-  PixelCanvasLayer overlay;
 }
 
 class SetActiveColorTypeAction {

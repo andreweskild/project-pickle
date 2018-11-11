@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:project_pickle/canvas/pixel_buffer.dart';
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 import 'package:project_pickle/tools/base_tool.dart';
@@ -18,9 +19,12 @@ enum ShapeMode {
 
 class AppState {
   AppState({
+    this.canvasWidth,
+    this.canvasHeight,
     this.canvasScale = 1.0,
     this.currentTool,
     this.activeColorType = ColorType.Primary,
+    this.drawingBuffer,
     @required this.primaryColor,
     @required this.secondaryColor,
     this.currentLayerIndex = 0,
@@ -38,6 +42,9 @@ class AppState {
 
   AppState copyWith({
     double canvasScale,
+    int canvasWidth,
+    int canvasHeight,
+    PixelBuffer drawingBuffer,
     ColorType activeColorType,
     HSLColor primaryColor,
     HSLColor secondaryColor,
@@ -57,7 +64,10 @@ class AppState {
   }) {
     return AppState(
       canvasScale: canvasScale ?? this.canvasScale,
+      canvasWidth: canvasWidth ?? this.canvasWidth,
+      canvasHeight: canvasHeight ?? this.canvasHeight,
       activeColorType: activeColorType ?? this.activeColorType,
+      drawingBuffer: drawingBuffer ?? this.drawingBuffer,
       primaryColor: primaryColor ?? this.primaryColor,
       secondaryColor: secondaryColor ?? this.secondaryColor,
       currentLayerIndex: currentLayerIndex ?? this.currentLayerIndex,
@@ -76,10 +86,13 @@ class AppState {
   }
 
   int layerNamingCounter;
+  int canvasWidth;
+  int canvasHeight;
   double canvasScale;
   ColorType activeColorType;
   HSLColor get currentColor =>
       (activeColorType == ColorType.Primary) ? primaryColor : secondaryColor;
+  PixelBuffer drawingBuffer;
   HSLColor primaryColor;
   HSLColor secondaryColor;
   PixelCanvasLayer get currentLayer => layers[currentLayerIndex];
