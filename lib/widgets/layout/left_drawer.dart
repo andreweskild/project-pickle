@@ -20,27 +20,23 @@ class LeftDrawer extends StatelessWidget {
     return StoreBuilder<AppState>(
       rebuildOnChange: false,
       builder: (context, store) {
-        return Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: SizedBox(
-            width: 72.0,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                border: Border.all(color: Theme.of(context).dividerColor, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ToolsCard(),
-                  HorizontalDivider(
-                    height: 2.0,
-                  ),
-                  Expanded(child: ColorCard()),
-                ],
-              ),
+        return SizedBox(
+          width: 72.0,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              border: Border(right: BorderSide(color: Theme.of(context).dividerColor, width: 2.0))
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ToolsCard(),
+                HorizontalDivider(
+                  height: 2.0,
+                ),
+                Expanded(child: ColorCard()),
+              ],
             ),
           ),
         );

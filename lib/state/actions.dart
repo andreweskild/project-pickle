@@ -3,19 +3,10 @@ import 'package:flutter/rendering.dart';
 //import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/base_tool.dart';
-import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 
 class AddCurrentColorToPaletteAction {
   AddCurrentColorToPaletteAction();
-}
-
-class AddPixelAction {
-  AddPixelAction(
-      this.pos,
-      );
-
-  final Offset pos;
 }
 
 class AddNewLayerAction {
@@ -122,4 +113,12 @@ class RemovePixelAction {
 class RemoveLayerAction {
   RemoveLayerAction(this.index);
   final int index;
+}
+
+class RedoAction {
+  RedoAction();
+}
+
+class UndoAction {
+  UndoAction();
 }

@@ -5,12 +5,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/base_drawing_tool.dart';
-import 'package:project_pickle/tools/base_tool.dart';
 import 'package:project_pickle/widgets/common/toggle_button.dart';
 import 'package:project_pickle/widgets/common/pushbutton_toggle_group.dart';
-import 'package:project_pickle/widgets/common/raised_dropdown_button.dart';
-import 'package:project_pickle/widgets/common/switch.dart';
-import 'package:project_pickle/widgets/common/toggle_button.dart';
 
 class ShapeModeModel {
   ShapeModeModel({

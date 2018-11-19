@@ -9,10 +9,10 @@ import 'package:project_pickle/widgets/layout/responsive_app_bar.dart';
 import 'package:project_pickle/widgets/tools/tool_options_panel.dart';
 
 class UndoModel {
-  UndoModel(
+  UndoModel({
     this.canUndo,
     this.callback,
-  );
+  });
 
   final bool canUndo;
   final VoidCallback callback;
@@ -31,6 +31,32 @@ class UndoModel {
     if (other is! UndoModel) return false;
     UndoModel model = other;
     return (model.canUndo == canUndo);
+  }
+}
+
+class RedoModel {
+  RedoModel({
+    this.canRedo,
+    this.callback,
+  });
+
+  final bool canRedo;
+  final VoidCallback callback;
+
+  @override
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + canRedo.hashCode;
+    return result;
+  }
+
+  // You should generally implement operator == if you
+  // override hashCode.
+  @override
+  bool operator ==(dynamic other) {
+    if (other is! UndoModel) return false;
+    UndoModel model = other;
+    return (model.canUndo == canRedo);
   }
 }
 
@@ -157,30 +183,38 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                 ),
               ),
               actions: <Widget>[
-//                Padding(
-//                  padding: const EdgeInsets.fromLTRB(12.0, 12.0, 6.0, 12.0),
-//                  child: StoreConnector<AppState, UndoModel>(
-//                    converter: (store) {
-//                      return UndoModel(
-//
-//                      );
-//                    },
-//                    builder: (context, model) {
-//                      return SquareIconButton (
-//                        icon: Icon(Icons.undo, color: Theme
-//                            .of(context)
-//                            .accentIconTheme
-//                            .color),
-//                        onPressed: model.canUndo ? model.callback : null,
-//                      );
-//                    }
-//                  ),
-//                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12.0, 12.0, 6.0, 12.0),
+                  child: StoreConnector<AppState, UndoModel>(
+                    converter: (store) {
+                      return UndoModel(
+                        canUndo: store.state.canvasHistory.isNotEmpty,
+                        callback: () => store.dispatch(UndoAction()),
+                      );
+                    },
+                    builder: (context, model) {
+                      return SquareIconButton (
+                        icon: Icon(Icons.undo),
+                        onPressed: model.canUndo ? model.callback : null,
+                      );
+                    }
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(6.0, 12.0, 6.0, 12.0),
-                  child: SquareIconButton(
-                    icon: Icon(Icons.redo, color: Theme.of(context).accentIconTheme.color),
-                    onPressed: (){},
+                  child: StoreConnector<AppState, RedoModel>(
+                      converter: (store) {
+                        return RedoModel(
+                          canRedo: store.state.canvasFuture.isNotEmpty,
+                          callback: () => store.dispatch(RedoAction()),
+                        );
+                      },
+                      builder: (context, model) {
+                        return SquareIconButton (
+                          icon: Icon(Icons.redo),
+                          onPressed: model.canRedo ? model.callback : null,
+                        );
+                      }
                   ),
                 ),
                 Padding(

@@ -6,7 +6,7 @@ import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/layers/layer_list_item.dart';
-import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
+import 'package:project_pickle/canvas/pixel_layer.dart';
 import 'package:project_pickle/widgets/common/collapsible_button.dart';
 
 typedef LayerIndexCallback = void Function(int);
@@ -25,7 +25,7 @@ class LayerListModel {
     _visibleLayerCount = layers.where((layer) => !layer.hidden).length;
   }
 
-  List<PixelCanvasLayer> layers;
+  List<PixelLayer> layers;
 
   int currentLayerIndex;
   int layerCount;
@@ -112,10 +112,9 @@ class LayersCard extends StatelessWidget {
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     color: Theme.of(context).unselectedWidgetColor,
-                    border: Border.all(color: Theme.of(context).dividerColor, width: 2.0),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(10.0),
-                      bottomRight: Radius.circular(10.0),
+                    border: Border(
+                      top: BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
+                      left: BorderSide(color: Theme.of(context).dividerColor, width: 2.0)
                     ),
                   ),
                   child: ListView(

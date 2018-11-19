@@ -69,11 +69,11 @@ class PixelBufferPainter extends CustomPainter {
   bool shouldRepaint(PixelBufferPainter oldDelegate) => true;
 }
 
-class PixelBufferLayer extends StatelessWidget {
+class PixelBufferWidget extends StatelessWidget {
   final PixelBuffer buffer;
   final Color color;
 
-  PixelBufferLayer({
+  PixelBufferWidget({
     Key key,
     @required this.buffer,
     this.color = Colors.red

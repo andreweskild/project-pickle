@@ -18,7 +18,14 @@ class SquareIconButton extends StatelessWidget {
       aspectRatio: 1.0,
       child: FlatButton(
         padding: EdgeInsets.all(0.0),
-        child: icon,
+        child: IconTheme(
+          data: IconThemeData(
+            color: onPressed == null ?
+              Theme.of(context).disabledColor :
+              Theme.of(context).accentIconTheme.color,
+          ),
+          child: icon
+        ),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
         ),

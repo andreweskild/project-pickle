@@ -126,11 +126,10 @@ class ColorCard extends StatelessWidget {
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     color: Theme.of(context).unselectedWidgetColor,
-                    border: Border.all(color: Theme.of(context).dividerColor, width: 2.0),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(10.0),
-                      bottomRight: Radius.circular(10.0)
-                    )
+                    border: Border(
+                      top: BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
+                      right: BorderSide(color: Theme.of(context).dividerColor, width: 2.0)
+                    ),
                   ),
                   child: GridView.count(
                     padding: EdgeInsets.all(12.0),

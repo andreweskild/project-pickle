@@ -1,8 +1,9 @@
+import 'dart:collection';
 import 'package:flutter/material.dart';
 
 import 'package:project_pickle/canvas/pixel_buffer.dart';
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
-import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
+import 'package:project_pickle/canvas/pixel_layer.dart';
 import 'package:project_pickle/tools/base_tool.dart';
 
 // enum for differentiating between whether the primary color or secondary color is active.
@@ -19,6 +20,9 @@ enum ShapeMode {
 
 class AppState {
   AppState({
+    this.canvasDirty = false,
+    this.canvasHistory,
+    this.canvasFuture,
     this.canvasWidth,
     this.canvasHeight,
     this.canvasScale = 1.0,
@@ -41,6 +45,9 @@ class AppState {
   });
 
   AppState copyWith({
+    bool canvasDirty,
+    Queue<PixelLayerList> canvasHistory,
+    Queue<PixelLayerList> canvasFuture,
     double canvasScale,
     int canvasWidth,
     int canvasHeight,
@@ -51,10 +58,9 @@ class AppState {
     int currentLayerIndex,
     BaseTool currentTool,
     int layerNamingCounter,
-    List<PixelCanvasLayer> layers,
+    PixelLayerList layers,
     DrawerSizeMode leftDrawerSizeMode,
     List<HSLColor> palette,
-    PixelCanvasLayer previewLayer,
     DrawerSizeMode rightDrawerSizeMode,
     Path selectionPath,
     double toolOpacity,
@@ -63,6 +69,9 @@ class AppState {
     bool shapeFilled,
   }) {
     return AppState(
+      canvasDirty: canvasDirty ?? this.canvasDirty,
+      canvasHistory: canvasHistory ?? this.canvasHistory,
+      canvasFuture: canvasFuture ?? this.canvasFuture,
       canvasScale: canvasScale ?? this.canvasScale,
       canvasWidth: canvasWidth ?? this.canvasWidth,
       canvasHeight: canvasHeight ?? this.canvasHeight,
@@ -85,28 +94,34 @@ class AppState {
     );
   }
 
+  bool canvasDirty;
+  Queue<PixelLayerList> canvasHistory;
+  Queue<PixelLayerList> canvasFuture;
   int layerNamingCounter;
   int canvasWidth;
   int canvasHeight;
   double canvasScale;
   ColorType activeColorType;
-  HSLColor get currentColor =>
-      (activeColorType == ColorType.Primary) ? primaryColor : secondaryColor;
   PixelBuffer drawingBuffer;
   HSLColor primaryColor;
   HSLColor secondaryColor;
-  PixelCanvasLayer get currentLayer => layers[currentLayerIndex];
+  PixelLayer get currentLayer => layers[currentLayerIndex];
   int currentLayerIndex;
   BaseTool currentTool;
-  List<PixelCanvasLayer> layers;
+  PixelLayerList layers;
   DrawerSizeMode leftDrawerSizeMode;
-  var palette = new List<HSLColor>();
+  var palette = <HSLColor>[];
   DrawerSizeMode rightDrawerSizeMode;
   Path selectionPath;
   double toolSize;
   double toolOpacity;
   ShapeMode toolShape;
   bool shapeFilled;
+
+
+  HSLColor get currentColor =>
+      (activeColorType == ColorType.Primary) ? primaryColor : secondaryColor;
+
 }
 
 

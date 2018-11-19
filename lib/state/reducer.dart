@@ -2,7 +2,7 @@ import 'package:flutter/painting.dart';
 import 'package:project_pickle/canvas/pixel_buffer.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
-import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
+import 'package:project_pickle/canvas/pixel_layer.dart';
 
 AppState stateReducer(AppState state, dynamic action) {
 
@@ -26,7 +26,7 @@ AppState stateReducer(AppState state, dynamic action) {
     }
     state.layers.insert(
         newIndex,
-        new PixelCanvasLayer(
+        PixelLayer(
           name: 'Layer $nameCount',
           height: 32,
           width: 32,
@@ -34,6 +34,7 @@ AppState stateReducer(AppState state, dynamic action) {
     );
     state.layerNamingCounter = nameCount;
     state.currentLayerIndex = newIndex;
+    state.canvasDirty = true;
     return state;
   }
   else if (action is ClearPixelBufferAction) {
@@ -62,11 +63,13 @@ AppState stateReducer(AppState state, dynamic action) {
   }
   else if (action is ToggleLayerHiddenAction) {
     state.layers[action.index].toggleHidden();
+    state.canvasDirty = true;
     return state;
   }
   else if (action is SetActiveColorTypeAction) {
     return state.copyWith(
-        activeColorType: action.colorType,
+      activeColorType: action.colorType,
+      canvasDirty: true,
     );
   }
   else if (action is SetCanvasScaleAction) {
@@ -82,6 +85,7 @@ AppState stateReducer(AppState state, dynamic action) {
         action.color.saturation,
         action.color.lightness,
       ),
+      canvasDirty: true,
     );
   }
   else if (action is SetSecondaryColorAction) {
@@ -92,11 +96,13 @@ AppState stateReducer(AppState state, dynamic action) {
         action.color.saturation,
         action.color.lightness,
       ),
+      canvasDirty: true,
     );
   }
   else if (action is SetCurrentLayerIndexAction) {
     if (action.currentLayerIndex < state.layers.length) {
       state.currentLayerIndex = action.currentLayerIndex;
+      state.canvasDirty = true;
     }
     return state;
   }
@@ -152,6 +158,7 @@ AppState stateReducer(AppState state, dynamic action) {
         state.currentLayerIndex != 0) {
       state.currentLayerIndex = state.currentLayerIndex - 1;
     }
+    state.canvasDirty = true;
     return state;
   }
   else {

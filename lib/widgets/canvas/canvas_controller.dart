@@ -7,7 +7,7 @@ import 'package:project_pickle/canvas/pixel_buffer.dart';
 import 'package:project_pickle/widgets/tools/select_tool_overlay.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
-import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
+import 'package:project_pickle/canvas/pixel_layer.dart';
 
 import 'package:project_pickle/tools/base_drawing_tool.dart';
 import 'package:project_pickle/tools/base_tool.dart';
@@ -28,26 +28,49 @@ class CanvasController extends StatefulWidget {
 }
 
 class _CanvasControllerState extends State<CanvasController> {
-  int _visibleLayerCount;
+//  int _visibleLayerCount;
   int _currentLayerIndex;
   Type _currentToolType;
   Color _currentColor;
 
 
-  List<PixelCanvasLayer> _populateLayerList(AppState state, BaseTool currentTool) {
-    // layer pixellayers correctly so drawing of pixels is done in the correct order
-    List<PixelCanvasLayer> layers;
+  List<Widget> _populateLayerList(AppState state, BaseTool currentTool) {
+    // layer pixellayers correctly so drawing of pixels is done in the correct order.
+    var layers = <Widget>[];
 
     if (state.layers.length > 0) {
-      layers = state.layers
+      // add current layer and all below it.
+      layers.addAll(
+        state.layers
           .getRange(0, state.currentLayerIndex + 1)
-          .where((layer) => !layer.hidden)
-          .toList();
-      layers.addAll(state.layers.getRange(
-          state.currentLayerIndex + 1, state.layers.length));
+            .where((layer) => !layer.hidden)
+              .map<PixelLayerWidget>(
+                (layer) {
+                  return layer.canvas;
+                }
+              ).toList()
+      );
+
+      // add drawing buffer above current layer.
+      layers.add(
+        PixelBufferWidget(
+          buffer: state.drawingBuffer,
+          color: state.currentColor.toColor(),
+        )
+      );
+
+      // add all layers above current layer.
+      layers.addAll(
+        state.layers.getRange(state.currentLayerIndex + 1, state.layers.length)
+          .map<PixelLayerWidget>(
+            (layer) {
+              return layer.canvas;
+            }
+          )
+      );
     }
     else {
-      layers = List<PixelCanvasLayer>();
+      layers = List<Widget>();
     }
 
     return layers;
@@ -59,9 +82,9 @@ class _CanvasControllerState extends State<CanvasController> {
     return StoreBuilder<AppState>(
       rebuildOnChange: false,
       builder: (context, store) {
-        if(_visibleLayerCount == null) {
-          _visibleLayerCount = store.state.layers.where((layer) => !layer.hidden).length;
-        }
+//        if(_visibleLayerCount == null) {
+//          _visibleLayerCount = store.state.layers.where((layer) => !layer.hidden).length;
+//        }
         if(_currentLayerIndex == null) {
           _currentLayerIndex = store.state.currentLayerIndex;
         }
@@ -74,21 +97,35 @@ class _CanvasControllerState extends State<CanvasController> {
 
         store.onChange.listen(
             (state) {
-              var newLayerCount = state.layers.where((layer) => !layer.hidden).length;
-              if( newLayerCount != _visibleLayerCount ||
-                  state.currentLayerIndex != _currentLayerIndex ||
-                  state.currentTool.runtimeType != _currentToolType ||
-                  state.currentColor != _currentColor
-              ) {
-                setState(() {
+              if(state.canvasDirty) {
+                state.canvasDirty = false;
+                setState((){
                   _currentColor = state.currentColor.toColor();
-                  _visibleLayerCount = newLayerCount;
                   _currentLayerIndex = state.currentLayerIndex;
                   _currentToolType = state.currentTool.runtimeType;
                 });
               }
             }
         );
+
+//        store.onChange.listen(
+//            (state) {
+//              var newLayerCount = state.layers.where((layer) => !layer.hidden).length;
+//              if( newLayerCount != _visibleLayerCount ||
+//                  state.currentLayerIndex != _currentLayerIndex ||
+//                  state.currentTool.runtimeType != _currentToolType ||
+//                  state.currentColor.toColor() != _currentColor
+//              ) {
+//                print('reloading canvas');
+//                setState(() {
+//                  _currentColor = state.currentColor.toColor();
+//                  _visibleLayerCount = newLayerCount;
+//                  _currentLayerIndex = state.currentLayerIndex;
+//                  _currentToolType = state.currentTool.runtimeType;
+//                });
+//              }
+//            }
+//        );
 
         // holds the current number of mouse/touch events
         int currentPointerCount = 0;
@@ -135,13 +172,8 @@ class _CanvasControllerState extends State<CanvasController> {
               child: Stack(
                 children: <Widget>[
                   Stack(
+                    fit: StackFit.expand,
                     children: layers
-                  ),
-                  Positioned.fill(
-                    child: PixelBufferLayer(
-                      buffer: store.state.drawingBuffer,
-                      color: store.state.currentColor.toColor(),
-                    ),
                   ),
                   SelectToolOverlay(),
                 ],

@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/tools/base_tool.dart';
-import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
 
-class BaseDrawingTool extends BaseTool<PixelCanvasLayer> {
+class BaseDrawingTool extends BaseTool {
   BaseDrawingTool(context)
     : super(
       context

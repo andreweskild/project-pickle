@@ -4,7 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
-import 'package:project_pickle/widgets/canvas/pixel_canvas_layer.dart';
+import 'package:project_pickle/canvas/pixel_layer.dart';
 import 'package:project_pickle/widgets/common/popup_button.dart';
 
 class _PreviewModel {
@@ -15,7 +15,7 @@ class _PreviewModel {
     layerCount = layers.length;
   }
 
-  List<PixelCanvasLayer> layers;
+  List<PixelLayer> layers;
   DrawerSizeMode sizeMode;
   int currentLayerIndex;
   int layerCount;
@@ -43,7 +43,7 @@ class PreviewToolbox extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
-  Widget _cachedPreview(BuildContext context, List<PixelCanvasLayer> layers) {
+  Widget _cachedPreview(BuildContext context, List<PixelLayer> layers) {
     return DecoratedBox(
       decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
@@ -66,7 +66,13 @@ class PreviewToolbox extends StatelessWidget {
                       height: 32.0,
                       width: 32.0,
                       child: Stack(
-                        children: layers,
+                        children: layers.map(
+                          (layer) {
+                            return PixelLayerWidget(
+                              layer: layer,
+                            );
+                          }
+                        ).toList(),
                       ),
                     ),
                   ),

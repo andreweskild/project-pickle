@@ -19,26 +19,22 @@ class RightDrawer extends StatelessWidget {
     return StoreBuilder<AppState>(
       rebuildOnChange: false,
       builder: (context, store) {
-        return Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: SizedBox(
-            width: 196.0,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                border: Border.all(color: Theme.of(context).dividerColor, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  PreviewToolbox(),
-                  HorizontalDivider(height: 2.0),
-                  Expanded(
-                    child: LayersCard(),
-                  ),
-                ],
-              ),
+        return SizedBox(
+          width: 196.0,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              border: Border(left: BorderSide(color: Theme.of(context).dividerColor, width: 2.0)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                PreviewToolbox(),
+                HorizontalDivider(height: 2.0),
+                Expanded(
+                  child: LayersCard(),
+                ),
+              ],
             ),
           ),
         );

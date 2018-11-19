@@ -1,49 +1,131 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
 
+class PixelLayerList extends ListBase<PixelLayer> {
+  var _layers;
+  PixelLayerList({
+    List<PixelLayer> layers
+  }) {
+    _layers = layers ?? <PixelLayer>[];
+  }
 
-class LayerChangeNotifier extends ChangeNotifier {
-  LayerChangeNotifier();
+  @override
+  PixelLayer operator [](int index) {
+    return _layers[index];
+  }
+
+  @override
+  void operator []=(int index, PixelLayer other) {
+    _layers[index] = other;
+  }
+
+  @override
+  get length => _layers.length;
+
+  @override
+  set length(int length) => _layers.length = length;
+
+  @override
+  void add(PixelLayer pixel) {
+    _layers.add(pixel);
+  }
+
+  @override
+  void addAll(Iterable<PixelLayer> pixels) {
+    _layers.addAll(pixels);
+  }
+
+  @override
+  factory PixelLayerList.from(PixelLayerList elements, {bool growable: true}) {
+    var result = PixelLayerList();
+    elements.forEach(
+      (layer) {
+        result.add(PixelLayer.from(layer));
+      }
+    );
+    return result;
+  }
+
+
+  @override
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + _layers.hashCode;
+    return result;
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    if (other is! PixelLayerList) return false;
+    PixelLayerList list = other;
+    return (list._layers == _layers);
+  }
 }
 
-class CanvasPainter extends CustomPainter {
-  CanvasPainter(
-      this._pixels,
-      LayerChangeNotifier _notifier
-      ) : super(repaint: _notifier);
+class PixelLayerPainter extends CustomPainter {
+  PixelLayerPainter(
+      this.layer,
+      ) : super(repaint: layer);
 
-  final LinkedHashMap<Offset, Color> _pixels;
+  final PixelLayer layer;
 
-  final Paint _pixelPaint = new Paint()
+  final Paint _pixelPaint = Paint()
     ..strokeWidth = 1.0
     ..filterQuality = FilterQuality.none
     ..isAntiAlias = false;
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.clipRect(new Rect.fromLTWH(0.0, 0.0, size.width, size.height));
-    for (var entry in _pixels.entries) {
-      canvas.drawRect(new Rect.fromLTWH(entry.key.dx, entry.key.dy, 1.0, 1.0), _pixelPaint..color = entry.value);
+    canvas.clipRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height));
+    for (var entry in layer.raw.entries) {
+      canvas.drawRect(Rect.fromLTWH(entry.key.dx, entry.key.dy, 1.0, 1.0), _pixelPaint..color = entry.value);
     }
   }
 
   @override
-  bool shouldRepaint(CanvasPainter oldDelegate) => true;
+  bool shouldRepaint(PixelLayerPainter oldDelegate) => true;
 }
 
-class PixelCanvasLayer extends StatelessWidget {
-  CustomPaint canvas;
+class PixelLayerWidget extends StatelessWidget {
+  final PixelLayer layer;
 
-  PixelCanvasLayer({
+  PixelLayerWidget({
+    Key key,
+    @required this.layer
+  }) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      willChange: true,
+      painter: PixelLayerPainter(layer),
+    );
+  }
+}
+
+class PixelLayer extends ChangeNotifier {
+  PixelLayerWidget canvas;
+
+  PixelLayer({
     Key key,
     this.name,
     @required this.width,
     @required this.height,
     this.hidden = false,
-  }) : super(key: key) {
-    canvas = new CustomPaint(
-      willChange: true,
-      painter: CanvasPainter(_pixels, _repaintNotifier),
+    LinkedHashMap<Offset, Color> pixels,
+  }) {
+    _pixels = pixels ?? LinkedHashMap<Offset, Color>();
+    canvas = PixelLayerWidget(layer: this);
+  }
+
+  factory PixelLayer.from(PixelLayer layer) {
+    return PixelLayer(
+      name: layer.name,
+      width: layer.width,
+      height: layer.height,
+      hidden: layer.hidden,
+      pixels: LinkedHashMap<Offset, Color>.from(layer.raw),
     );
   }
 
@@ -52,77 +134,55 @@ class PixelCanvasLayer extends StatelessWidget {
   final int height;
   bool hidden;
 
-  final _repaintNotifier = LayerChangeNotifier();
-  final _pixels = LinkedHashMap<Offset, Color>();
+  var _pixels;
 
-  get pixels => _pixels;
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned.fill(
-        child: canvas
-    );
-  }
+  get raw => _pixels;
 
   void toggleHidden() {
     hidden = !hidden;
+    notifyListeners();
   }
 
   void setPixel(Offset pos, Color color) {
-    if (pos.dx >= 0 && pos.dx < width &&
-        pos.dy >= 0 && pos.dy < height ) {
-      if (!_pixels.containsKey(pos) ||
-          _pixels[pos] != color) {
+    if(_pixels.containsKey(pos)) {
+      if (_pixels[pos] != color) {
+        _pixels.remove(pos);
         _pixels[pos] = color;
-        _repaintNotifier.notifyListeners();
+        notifyListeners();
       }
     }
-  }
-
-  void setPixelsFromMap(HashMap<Offset, Color> pixels) {
-    pixels.forEach((pos, color) {
-      if (pos.dx >= 0 && pos.dx < width &&
-          pos.dy >= 0 && pos.dy < height ) {
-        if (!_pixels.containsKey(pos) &&
-            color != Colors.white) {
-            _pixels[pos] = color;
-        } else if (color == Colors.white) {
-          _pixels.remove(pos);
-        } else if(_pixels[pos] != color) {
-          _pixels[pos] = color;
-        }
-      }
-    });
-    _repaintNotifier.notifyListeners();
+    else {
+      _pixels[pos] = color;
+      notifyListeners();
+    }
   }
 
   void removePixel(Offset pos) {
     if (_pixels.containsKey(pos)) {
       _pixels.remove(pos);
-      _repaintNotifier.notifyListeners();
+      notifyListeners();
     }
   }
 
   void clearPixels() {
     _pixels.clear();
-    _repaintNotifier.notifyListeners();
+    notifyListeners();
   }
 
 
   void fillArea(Offset pos, Color color, Path selection) {
     if(_pixels.containsKey(pos)) {
       _coloredAreaFill(
-        pos,
-        _pixels[pos],
-        color,
-        selection
+          pos,
+          _pixels[pos],
+          color,
+          selection
       );
     }
     else {
       _nullAreaFill(pos, color, selection);
     }
-    _repaintNotifier.notifyListeners();
+    notifyListeners();
   }
 
   bool pixelInSelection(Offset pos, Path selection) {
@@ -139,17 +199,17 @@ class PixelCanvasLayer extends StatelessWidget {
 
     while (uncheckedPixels.isNotEmpty) {
       uncheckedPixels.forEach( (currentPixel) {
-          _getAdjacentColoredPixels(currentPixel, targetColor).forEach(
-            (adjacentPixel) {
+        _getAdjacentColoredPixels(currentPixel, targetColor).forEach(
+                (adjacentPixel) {
               if( !tempPixels.contains(adjacentPixel) &&
                   !checkedPixels.contains(adjacentPixel) &&
                   !uncheckedPixels.contains(adjacentPixel) &&
                   pixelInSelection(adjacentPixel, selection)) {
-                    tempPixels.add(adjacentPixel);
-                  }
+                tempPixels.add(adjacentPixel);
+              }
             }
-          );
-        }
+        );
+      }
       );
 
       checkedPixels.addAll(uncheckedPixels);
@@ -164,7 +224,7 @@ class PixelCanvasLayer extends StatelessWidget {
   List<Offset> _getAdjacentColoredPixels(Offset targetPixelPos, Color targetPixelColor) {
     List<Offset> adjacentPixels = new List<Offset>();
     Offset currentPixelPoint;
-    
+
     currentPixelPoint = targetPixelPos.translate(-1.0, 0.0);
     if ( _pixels[currentPixelPoint] == targetPixelColor) {
       adjacentPixels.add(currentPixelPoint);
@@ -191,8 +251,8 @@ class PixelCanvasLayer extends StatelessWidget {
 
     currentPixelPoint = targetPixelPos.translate(-1.0, 0.0);
     if ( currentPixelPoint.dx >= 0 && currentPixelPoint.dx < 32 &&
-          currentPixelPoint.dy >= 0 && currentPixelPoint.dy < 32 &&
-          !_pixels.containsKey(currentPixelPoint)) {
+        currentPixelPoint.dy >= 0 && currentPixelPoint.dy < 32 &&
+        !_pixels.containsKey(currentPixelPoint)) {
       adjacentPixels.add(currentPixelPoint);
     }
     currentPixelPoint = targetPixelPos.translate(1.0, 0.0);
@@ -228,7 +288,7 @@ class PixelCanvasLayer extends StatelessWidget {
     while (uncheckedPixels.isNotEmpty) {
       uncheckedPixels.forEach( (currentPixel) {
         _getAdjacentNullPixels(currentPixel).forEach(
-            (adjacentPixel) {
+                (adjacentPixel) {
               if( !tempPixels.contains(adjacentPixel) &&
                   !checkedPixels.contains(adjacentPixel) &&
                   !uncheckedPixels.contains(adjacentPixel) &&
@@ -236,8 +296,8 @@ class PixelCanvasLayer extends StatelessWidget {
                 tempPixels.add(adjacentPixel);
               }
             }
-          );
-        }
+        );
+      }
       );
 
       checkedPixels.addAll(uncheckedPixels);
