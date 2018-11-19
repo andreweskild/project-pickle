@@ -9,7 +9,6 @@ import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/canvas/pixel_layer.dart';
 
-import 'package:project_pickle/tools/base_drawing_tool.dart';
 import 'package:project_pickle/tools/base_tool.dart';
 
 class CanvasController extends StatefulWidget {
@@ -108,24 +107,6 @@ class _CanvasControllerState extends State<CanvasController> {
             }
         );
 
-//        store.onChange.listen(
-//            (state) {
-//              var newLayerCount = state.layers.where((layer) => !layer.hidden).length;
-//              if( newLayerCount != _visibleLayerCount ||
-//                  state.currentLayerIndex != _currentLayerIndex ||
-//                  state.currentTool.runtimeType != _currentToolType ||
-//                  state.currentColor.toColor() != _currentColor
-//              ) {
-//                print('reloading canvas');
-//                setState(() {
-//                  _currentColor = state.currentColor.toColor();
-//                  _visibleLayerCount = newLayerCount;
-//                  _currentLayerIndex = state.currentLayerIndex;
-//                  _currentToolType = state.currentTool.runtimeType;
-//                });
-//              }
-//            }
-//        );
 
         // holds the current number of mouse/touch events
         int currentPointerCount = 0;

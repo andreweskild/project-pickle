@@ -11,30 +11,23 @@ import 'package:project_pickle/tools/line_tool.dart';
 import 'package:project_pickle/tools/pixel_tool.dart';
 import 'package:project_pickle/tools/shape_tool.dart';
 import 'package:project_pickle/tools/marquee_selector_tool.dart';
-import 'package:project_pickle/widgets/common/expandable_button.dart';
 import 'package:project_pickle/widgets/tools/tool_button.dart';
-import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
-import 'package:project_pickle/widgets/tools/tool_list_button.dart';
 
 typedef _ToolCreationCallback = void Function(BaseTool tool);
-typedef _ToolToggleCallback = BaseTool Function();
 
 class _ToolsModel {
   _ToolCreationCallback callback;
   BaseTool currentTool;
-  DrawerSizeMode sizeMode;
 
   _ToolsModel({
     this.callback,
     this.currentTool,
-    this.sizeMode,
   });
 
   @override
   int get hashCode {
     int result = 17;
     result = 37 * result + currentTool.hashCode;
-    result = 37 * result + sizeMode.hashCode;
     return result;
   }
 
@@ -42,19 +35,7 @@ class _ToolsModel {
   bool operator ==(dynamic other) {
     if (other is! _ToolsModel) return false;
     _ToolsModel model = other;
-    return (model.currentTool.runtimeType == currentTool.runtimeType &&
-      model.sizeMode == sizeMode);
-  }
-}
-
-BaseTool _createToolFromIndex(BuildContext context, int index) {
-  switch(index) {
-    case 0: return PixelTool(context);
-    case 1: return EraserTool(context);
-    case 2: return LineTool(context);
-    case 3: return ShapeTool(context);
-    case 4: return FillTool(context);
-    case 5: return MarqueeSelectorTool(context);
+    return (model.currentTool.runtimeType == currentTool.runtimeType);
   }
 }
 
@@ -75,7 +56,6 @@ class ToolsCard extends StatelessWidget {
         return _ToolsModel(
           callback: (toolType) => store.dispatch(SetCurrentToolAction(toolType)),
           currentTool: store.state.currentTool,
-          sizeMode: store.state.leftDrawerSizeMode,
         );
       },
       builder: (context, model) {

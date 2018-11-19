@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/layers/layer_list_item.dart';
 import 'package:project_pickle/canvas/pixel_layer.dart';
-import 'package:project_pickle/widgets/common/collapsible_button.dart';
 
 typedef LayerIndexCallback = void Function(int);
 
@@ -19,7 +17,6 @@ class LayerListModel {
     this.setLayerCallback,
     this.removeLayerCallback,
     this.toggleLayerHiddenCallback,
-    this.sizeMode,
   }) {
     layerCount = layers.length;
     _visibleLayerCount = layers.where((layer) => !layer.hidden).length;
@@ -29,7 +26,6 @@ class LayerListModel {
 
   int currentLayerIndex;
   int layerCount;
-  DrawerSizeMode sizeMode;
 
   VoidCallback addLayerCallback;
   LayerIndexCallback setLayerCallback;
@@ -44,7 +40,6 @@ class LayerListModel {
     result = 37 * result + layerCount.hashCode;
     result = 37 * result + currentLayerIndex.hashCode;
     result = 37 * result + _visibleLayerCount.hashCode;
-    result = 37 * result + sizeMode.hashCode;
     return result;
   }
 
@@ -56,8 +51,7 @@ class LayerListModel {
     LayerListModel model = other;
     return (model.layerCount == layerCount &&
         model.currentLayerIndex == currentLayerIndex &&
-        model._visibleLayerCount == _visibleLayerCount &&
-        model.sizeMode == sizeMode);
+        model._visibleLayerCount == _visibleLayerCount);
   }
 }
 
@@ -80,7 +74,6 @@ class LayersCard extends StatelessWidget {
                   store.dispatch(RemoveLayerAction(index)),
               toggleLayerHiddenCallback: (index) =>
                   store.dispatch(ToggleLayerHiddenAction(index)),
-              sizeMode: store.state.rightDrawerSizeMode,
             ),
         builder: (context, model) {
           return Column(

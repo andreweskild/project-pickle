@@ -11,7 +11,7 @@ void _rollbackLayerState(Store<AppState> store) {
   store.state.layers = store.state.canvasHistory.removeLast();
 }
 
-final undoMiddleware = (
+final dynamic undoMiddleware = (
     Store<AppState> store,
     UndoAction action,
     NextDispatcher next
@@ -30,7 +30,7 @@ void _rollForwardLayerState(Store<AppState> store) {
   store.state.layers = store.state.canvasFuture.removeLast();
 }
 
-final redoMiddleware = (
+final dynamic redoMiddleware = (
     Store<AppState> store,
     RedoAction action,
     NextDispatcher next
@@ -47,7 +47,7 @@ void _saveLayerState(Store<AppState> store) {
   store.state.canvasFuture.clear();
 }
 
-final recordHistoryMiddleware = (
+final dynamic recordHistoryMiddleware = (
     Store<AppState> store,
     dynamic action,
     NextDispatcher next

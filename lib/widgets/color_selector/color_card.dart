@@ -53,14 +53,6 @@ class ColorCardModel {
   }
 }
 
-Color _getContrastingColor(Color color) {
-  if (color.computeLuminance() > 0.5) {
-    return Colors.black;
-  } else {
-    return Colors.white;
-  }
-}
-
 class ColorCard extends StatelessWidget {
   const ColorCard({
     Key key,

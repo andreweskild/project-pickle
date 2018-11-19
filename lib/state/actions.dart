@@ -3,7 +3,6 @@ import 'package:flutter/rendering.dart';
 //import 'package:project_pickle/data_objects/hsl_color.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/base_tool.dart';
-import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 
 class AddCurrentColorToPaletteAction {
   AddCurrentColorToPaletteAction();
@@ -59,11 +58,6 @@ class SetCurrentToolAction {
   final BaseTool tool;
 }
 
-class SetLeftDrawerSizeModeAction {
-  SetLeftDrawerSizeModeAction(this.sizeMode);
-  final DrawerSizeMode sizeMode;
-}
-
 
 class SetPrimaryColorAction {
   SetPrimaryColorAction(this.color);
@@ -73,11 +67,6 @@ class SetPrimaryColorAction {
 class SetSecondaryColorAction {
   SetSecondaryColorAction(this.color);
   final HSLColor color;
-}
-
-class SetRightDrawerSizeModeAction {
-  SetRightDrawerSizeModeAction(this.sizeMode);
-  final DrawerSizeMode sizeMode;
 }
 
 class SetSelectionPathAction {

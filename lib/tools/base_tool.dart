@@ -24,8 +24,6 @@ abstract class BaseTool<T extends Widget> {
     else return store.state.selectionPath.contains(pos.translate(0.5, 0.5));
   }
 
-  Offset _lastInputPos;
-
   Widget options;
 
   void onPixelInputUpdate(Offset pos) {}
@@ -56,6 +54,5 @@ abstract class BaseTool<T extends Widget> {
     else if (snappedY > store.state.canvasHeight - 1) { snappedY = store.state.canvasHeight.toDouble() - 1; }
     Offset snappedPos = Offset(snappedX, snappedY);
       onPixelInputUpdate(snappedPos);
-    _lastInputPos = snappedPos;
   }
 }

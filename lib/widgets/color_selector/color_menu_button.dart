@@ -10,7 +10,6 @@ import 'package:project_pickle/widgets/color_selector/color_slider_thumb.dart';
 import 'package:project_pickle/widgets/color_selector/color_slider_value_indicator.dart';
 import 'package:project_pickle/widgets/common/toggle_button.dart';
 import 'package:project_pickle/widgets/common/value_slider.dart';
-import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 
 const double _kMenuScreenPadding = 8.0;
 
@@ -116,8 +115,6 @@ class ColorPopupContent extends StatefulWidget {
 class _ColorPopupContentState extends State<ColorPopupContent> {
 
   HSLColor _currentColor;
-
-  final double _sliderTrackHeight = 12.0;
 
   @override
   void initState() {

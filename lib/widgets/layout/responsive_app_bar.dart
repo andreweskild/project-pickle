@@ -11,7 +11,6 @@ import 'package:flutter/widgets.dart';
 // void _restitchDress() { }
 // void _repairDress() { }
 
-const double _kLeadingWidth = kToolbarHeight; // So the leading button is square.
 
 // Bottom justify the kToolbarHeight child which may overflow the top.
 class _ToolbarContainerLayout extends SingleChildLayoutDelegate {
@@ -286,20 +285,6 @@ class ResponsiveAppBar extends StatefulWidget implements PreferredSizeWidget {
   /// [Scaffold] uses this this size to set its app bar's height.
   @override
   final Size preferredSize;
-
-  bool _getEffectiveCenterTitle(ThemeData themeData) {
-    if (centerTitle != null)
-      return centerTitle;
-    assert(themeData.platform != null);
-    switch (themeData.platform) {
-      case TargetPlatform.android:
-      case TargetPlatform.fuchsia:
-        return false;
-      case TargetPlatform.iOS:
-        return actions == null || actions.length < 2;
-    }
-    return null;
-  }
 
   @override
   _ResponsiveAppBarState createState() => _ResponsiveAppBarState();

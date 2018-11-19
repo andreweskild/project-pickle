@@ -2,7 +2,6 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 
 import 'package:project_pickle/canvas/pixel_buffer.dart';
-import 'package:project_pickle/widgets/layout/responsive_drawer.dart';
 import 'package:project_pickle/canvas/pixel_layer.dart';
 import 'package:project_pickle/tools/base_tool.dart';
 
@@ -34,9 +33,7 @@ class AppState {
     this.currentLayerIndex = 0,
     this.layerNamingCounter = 1,
     @required this.layers,
-    this.leftDrawerSizeMode = DrawerSizeMode.Normal,
     @required this.palette,
-    this.rightDrawerSizeMode = DrawerSizeMode.Normal,
     this.selectionPath,
     this.toolOpacity = 1.0,
     this.toolSize = 1.0,
@@ -59,9 +56,7 @@ class AppState {
     BaseTool currentTool,
     int layerNamingCounter,
     PixelLayerList layers,
-    DrawerSizeMode leftDrawerSizeMode,
     List<HSLColor> palette,
-    DrawerSizeMode rightDrawerSizeMode,
     Path selectionPath,
     double toolOpacity,
     double toolSize,
@@ -83,9 +78,7 @@ class AppState {
       currentTool: currentTool ?? this.currentTool,
       layerNamingCounter: layerNamingCounter ?? this.layerNamingCounter,
       layers: layers ?? this.layers,
-      leftDrawerSizeMode: leftDrawerSizeMode ?? this.leftDrawerSizeMode,
       palette: palette ?? this.palette,
-      rightDrawerSizeMode: rightDrawerSizeMode ?? this.rightDrawerSizeMode,
       selectionPath: selectionPath ?? this.selectionPath,
       toolOpacity: toolOpacity ?? this.toolOpacity,
       toolSize: toolSize ?? this.toolSize,
@@ -109,9 +102,7 @@ class AppState {
   int currentLayerIndex;
   BaseTool currentTool;
   PixelLayerList layers;
-  DrawerSizeMode leftDrawerSizeMode;
   var palette = <HSLColor>[];
-  DrawerSizeMode rightDrawerSizeMode;
   Path selectionPath;
   double toolSize;
   double toolOpacity;

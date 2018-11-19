@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project_pickle/widgets/common/toggle_button.dart';
 
 const double _kMenuScreenPadding = 0.0;
 
@@ -82,19 +81,10 @@ class TwoStagePopupContent extends StatefulWidget {
 }
 
 class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
-  final double _sliderTrackHeight = 12.0;
 
   @override
   void initState() {
     super.initState();
-  }
-
-  Color _getContrastingColor(Color color) {
-    if (color.computeLuminance() > 0.5) {
-      return Colors.black;
-    } else {
-      return Colors.white;
-    }
   }
 
   @override
@@ -179,7 +169,10 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
                     ),
                   ),
                 ),
-                Expanded(child: widget.child),
+                Expanded(child: Opacity(
+                  opacity: opacity.value,
+                  child: widget.child)
+                ),
               ],
             ),
           ),
@@ -321,7 +314,6 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
 
   @override
   Widget build(BuildContext context) {
-    final RenderBox button = context.findRenderObject();
     return SizedBox(
       height: _height,
       child: Material(

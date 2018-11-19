@@ -1,5 +1,4 @@
 import 'package:flutter/painting.dart';
-import 'package:project_pickle/canvas/pixel_buffer.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/canvas/pixel_layer.dart';
@@ -109,16 +108,6 @@ AppState stateReducer(AppState state, dynamic action) {
   else if (action is SetCurrentToolAction) {
     state.currentTool = action.tool;
     return state;
-  }
-  else if(action is SetLeftDrawerSizeModeAction) {
-    return state.copyWith(
-      leftDrawerSizeMode: action.sizeMode,
-    );
-  }
-  else if(action is SetRightDrawerSizeModeAction) {
-    return state.copyWith(
-      rightDrawerSizeMode: action.sizeMode,
-    );
   }
   else if(action is SetSelectionPathAction) {
     return state.copyWith(

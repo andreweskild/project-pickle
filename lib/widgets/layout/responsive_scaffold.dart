@@ -6,7 +6,6 @@ import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/common/square_icon_button.dart';
 import 'package:project_pickle/widgets/common/value_slider.dart';
 import 'package:project_pickle/widgets/layout/responsive_app_bar.dart';
-import 'package:project_pickle/widgets/tools/tool_options_panel.dart';
 
 class UndoModel {
   UndoModel({

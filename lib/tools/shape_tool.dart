@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' show RaisedButton, Theme, Icons;
+import 'package:flutter/material.dart' show Icons;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -65,7 +65,6 @@ class ShapeTool extends BaseDrawingTool {
 
   Offset _startPoint;
   Offset _endPoint;
-  static bool _filled = false;
 
 
   Widget options = Column (
