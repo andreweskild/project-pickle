@@ -5,13 +5,54 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:project_pickle/canvas/pixel_buffer.dart';
 
 import 'package:project_pickle/widgets/tools/select_tool_overlay.dart';
-import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/canvas/pixel_layer.dart';
 
 import 'package:project_pickle/tools/base_tool.dart';
 
-class CanvasController extends StatefulWidget {
+class CanvasModel {
+  CanvasModel({
+    this.dirtyCallback,
+    this.canvasDirty,
+    this.drawingBuffer,
+    this.currentColor,
+    this.currentTool,
+    this.layers
+  });
+
+  final VoidCallback dirtyCallback;
+  final bool canvasDirty;
+  final PixelBuffer drawingBuffer;
+  final Color currentColor;
+  final BaseTool currentTool;
+  final PixelLayerList layers;
+
+
+  @override
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + canvasDirty.hashCode;
+    result = 37 * result + currentColor.hashCode;
+    result = 37 * result + currentTool.hashCode;
+    result = 37 * result + layers.hashCode;
+    return result;
+  }
+
+  // You should generally implement operator == if you
+  // override hashCode.
+  @override
+  bool operator ==(dynamic other) {
+    if (other is! CanvasModel) return false;
+    CanvasModel model = other;
+    return (model.canvasDirty == canvasDirty &&
+        model.currentColor == currentColor &&
+        model.currentTool.runtimeType == currentTool.runtimeType &&
+        model.layers.indexOfActiveLayer == layers.indexOfActiveLayer);
+  }
+
+}
+
+class CanvasController extends StatelessWidget {
   CanvasController({
     Key key,
     this.width,
@@ -21,27 +62,18 @@ class CanvasController extends StatefulWidget {
 
   final int height, width;
   final double scale;
-
-  @override
-  _CanvasControllerState createState() => new _CanvasControllerState();
-}
-
-class _CanvasControllerState extends State<CanvasController> {
-//  int _visibleLayerCount;
-  int _currentLayerIndex;
-  Type _currentToolType;
-  Color _currentColor;
+////  int _visibleLayerCount;
 
 
-  List<Widget> _populateLayerList(AppState state, BaseTool currentTool) {
+  List<Widget> _populateLayerList(CanvasModel model) {
     // layer pixellayers correctly so drawing of pixels is done in the correct order.
-    var layers = <Widget>[];
+    var result = <Widget>[];
 
-    if (state.layers.length > 0) {
+    if (model.layers.length > 0) {
       // add current layer and all below it.
-      layers.addAll(
-        state.layers
-          .getRange(0, state.layers.indexOfActiveLayer + 1)
+      result.addAll(
+        model.layers
+          .getRange(0, model.layers.indexOfActiveLayer + 1)
             .where((layer) => !layer.hidden)
               .map<PixelLayerWidget>(
                 (layer) {
@@ -51,16 +83,16 @@ class _CanvasControllerState extends State<CanvasController> {
       );
 
       // add drawing buffer above current layer.
-      layers.add(
+      result.add(
         PixelBufferWidget(
-          buffer: state.drawingBuffer,
-          color: state.currentColor.toColor(),
+          buffer: model.drawingBuffer,
+          color: model.currentColor,
         )
       );
 
       // add all layers above current layer.
-      layers.addAll(
-        state.layers.getRange(state.layers.indexOfActiveLayer + 1, state.layers.length)
+      result.addAll(
+        model.layers.getRange(model.layers.indexOfActiveLayer + 1, model.layers.length)
           .map<PixelLayerWidget>(
             (layer) {
               return layer.canvas;
@@ -69,60 +101,45 @@ class _CanvasControllerState extends State<CanvasController> {
       );
     }
     else {
-      layers = List<Widget>();
+      result = List<Widget>();
     }
 
-    return layers;
+    return result;
   }
 
 
   @override
   Widget build(BuildContext context) {
-    return StoreBuilder<AppState>(
-      rebuildOnChange: false,
-      builder: (context, store) {
-//        if(_visibleLayerCount == null) {
-//          _visibleLayerCount = store.state.layers.where((layer) => !layer.hidden).length;
-//        }
-        if(_currentLayerIndex == null) {
-          _currentLayerIndex = store.state.layers.indexOfActiveLayer;
-        }
-        if(_currentToolType== null) {
-          _currentToolType = store.state.currentTool.runtimeType;
-        }
-        if(_currentColor == null) {
-          _currentColor = store.state.currentColor.toColor();
-        }
-
-        store.onChange.listen(
-            (state) {
-              if(state.canvasDirty) {
-                state.canvasDirty = false;
-                setState((){
-                  _currentColor = state.currentColor.toColor();
-                  _currentLayerIndex = state.layers.indexOfActiveLayer;
-                  _currentToolType = state.currentTool.runtimeType;
-                });
-              }
-            }
+    return StoreConnector<AppState, CanvasModel>(
+      converter: (store) {
+        return CanvasModel(
+          dirtyCallback: () => store.state.canvasDirty = false,
+          canvasDirty: store.state.canvasDirty,
+          drawingBuffer: store.state.drawingBuffer,
+          currentColor: store.state.currentColor.toColor(),
+          currentTool: store.state.currentTool,
+          layers: store.state.layers,
         );
-
-
+      },
+      distinct: true,
+      builder: (context, model) {
         // holds the current number of mouse/touch events
         int currentPointerCount = 0;
         // holds the highest number of mouse/touch events
         // that have been in contact with the screen during
         // the current gesture.
 
+        if(model.canvasDirty) {model.dirtyCallback();}
+
         int maxPointerCount = 0;
 
-        var layers = _populateLayerList(store.state, store.state.currentTool);
+        var layers = _populateLayerList(model);
 
 
         return Listener(
           onPointerMove: (details) {
             if (maxPointerCount == 1) {
-              store.state.currentTool.handlePointerMove(details, context);
+              model.currentTool.handlePointerMove(details, context);
             }
           },
           onPointerDown: (details) {
@@ -131,9 +148,9 @@ class _CanvasControllerState extends State<CanvasController> {
               maxPointerCount = currentPointerCount;
             }
             if (currentPointerCount <= 1) {
-              store.state.currentTool.handlePointerDown(details, context);
+              model.currentTool.handlePointerDown(details, context);
             } else {
-              store.dispatch(ClearPixelBufferAction());
+              model.drawingBuffer.clearBuffer();
             }
           },
           onPointerUp: (details) {
@@ -142,7 +159,7 @@ class _CanvasControllerState extends State<CanvasController> {
               maxPointerCount = 0;
             }
             if (currentPointerCount == 0) {
-              store.state.currentTool.handlePointerUp(details, context);
+              model.currentTool.handlePointerUp(details, context);
             }
           },
           child: Opacity(
