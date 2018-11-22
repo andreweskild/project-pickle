@@ -56,9 +56,7 @@ class LayerListItem extends StatelessWidget {
               child: Stack(children: <Widget>[
                 Align(
                   alignment: Alignment.topLeft,
-                  child: AnimatedContainer(
-                    curve: Curves.ease,
-                    duration: Duration(milliseconds: 150),
+                  child: SizedBox(
                     width: 48.0,
                     child: AspectRatio(
                       aspectRatio: 1.0,
@@ -82,11 +80,15 @@ class LayerListItem extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(6.0),
-                            child: Transform.scale(
-                              alignment: Alignment.topLeft,
-                              scale: 48.0 / 32.0,
-                              child: layerCanvas,
-                            ),
+                            child: LayoutBuilder(
+                              builder: (context, constraints) {
+                                return Transform.scale(
+                                  alignment: Alignment.topLeft,
+                                  scale: constraints.maxHeight / 32.0,
+                                  child: layerCanvas,
+                                );
+                              }
+                            )
                           ),
                         ),
                       ),
