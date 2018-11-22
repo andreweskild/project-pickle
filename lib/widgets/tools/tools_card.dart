@@ -59,6 +59,9 @@ class ToolsCard extends StatelessWidget {
         );
       },
       builder: (context, model) {
+        if(model.currentTool == null) {
+          model.callback(PixelTool(context));
+        }
          return Padding(
            padding: const EdgeInsets.all(6.0),
            child: Column(
