@@ -49,9 +49,6 @@ final store = Store<AppState>(
   ),
 );
 
-
-
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
