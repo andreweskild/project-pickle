@@ -17,11 +17,11 @@ AppState stateReducer(AppState state, dynamic action) {
   else if (action is AddNewLayerAction) {
     int nameCount = state.layerNamingCounter + 1;
     int newIndex;
-    if(state.currentLayerIndex == -1) {
+    if(state.layers.indexOfActiveLayer == -1) {
       newIndex = 0;
     }
     else {
-      newIndex = state.currentLayerIndex + 1;
+      newIndex = state.layers.indexOfActiveLayer + 1;
     }
     state.layers.insert(
         newIndex,
@@ -32,7 +32,7 @@ AppState stateReducer(AppState state, dynamic action) {
         )
     );
     state.layerNamingCounter = nameCount;
-    state.currentLayerIndex = newIndex;
+    state.layers.indexOfActiveLayer = newIndex;
     state.canvasDirty = true;
     return state;
   }
@@ -100,7 +100,7 @@ AppState stateReducer(AppState state, dynamic action) {
   }
   else if (action is SetCurrentLayerIndexAction) {
     if (action.currentLayerIndex < state.layers.length) {
-      state.currentLayerIndex = action.currentLayerIndex;
+      state.layers.indexOfActiveLayer = action.currentLayerIndex;
       state.canvasDirty = true;
     }
     return state;
@@ -121,7 +121,7 @@ AppState stateReducer(AppState state, dynamic action) {
   }
   else if(action is SetToolOpacityAction) {
     return state.copyWith(
-      toolOpacity: action.opacity
+      toolOpacity: action.opacity,
     );
   }
   else if (action is SetToolShapeAction) {
@@ -134,18 +134,35 @@ AppState stateReducer(AppState state, dynamic action) {
       toolSize: action.size,
     );
   }
+  else if (action is EraseStartAction) {
+    return state.copyWith(
+      eraserRemoveCounter: 0,
+    );
+  }
   else if (action is RemovePixelAction) {
-    state.currentLayer.removePixel(action.pos);
+    if (state.currentLayer.removePixel(action.pos)) {
+      return state.copyWith(
+        eraserRemoveCounter: state.eraserRemoveCounter + 1,
+      );
+    }
     return state;
+  }
+  else if (action is EraseEndAction) {
+    if (state.eraserRemoveCounter == 0) {
+      state.canvasHistory.removeLast();
+    }
+    return state.copyWith(
+      eraserRemoveCounter: 0,
+    );
   }
   else if (action is RemoveLayerAction) {
     state.layers.removeAt(action.index);
     if(state.layers.length == 0) {
-      state.currentLayerIndex = -1;
+      state.layers.indexOfActiveLayer = -1;
     }
-    else if(action.index <= state.currentLayerIndex &&
-        state.currentLayerIndex != 0) {
-      state.currentLayerIndex = state.currentLayerIndex - 1;
+    else if(action.index <= state.layers.indexOfActiveLayer &&
+        state.layers.indexOfActiveLayer != 0) {
+      state.layers.indexOfActiveLayer = state.layers.indexOfActiveLayer - 1;
     }
     state.canvasDirty = true;
     return state;

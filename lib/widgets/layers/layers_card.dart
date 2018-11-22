@@ -66,7 +66,7 @@ class LayersCard extends StatelessWidget {
         distinct: true,
         converter: (store) => LayerListModel(
               layers: store.state.layers,
-              currentLayerIndex: store.state.currentLayerIndex,
+              currentLayerIndex: store.state.layers.indexOfActiveLayer,
               addLayerCallback: () => store.dispatch(AddNewLayerAction()),
               setLayerCallback: (index) =>
                   store.dispatch(SetCurrentLayerIndexAction(index)),

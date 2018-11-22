@@ -27,6 +27,12 @@ class EraserTool extends BaseDrawingTool {
   @override
   void onPixelInputUp() {
     _lastPoint = null;
+    endEraserAction();
+  }
+
+  @override
+  void onPixelInputDown() {
+    startEraserAction();
   }
 
 }

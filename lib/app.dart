@@ -20,6 +20,10 @@ final store = Store<AppState>(
     TypedMiddleware<AppState, UndoAction>(undoMiddleware),
     TypedMiddleware<AppState, RedoAction>(redoMiddleware),
     TypedMiddleware<AppState, FinalizePixelBufferAction>(recordHistoryMiddleware),
+    TypedMiddleware<AppState, FillAreaAction>(recordHistoryMiddleware),
+    TypedMiddleware<AppState, AddNewLayerAction>(recordHistoryMiddleware),
+    TypedMiddleware<AppState, RemoveLayerAction>(recordHistoryMiddleware),
+    TypedMiddleware<AppState, EraseStartAction>(recordHistoryMiddleware),
   ],
   initialState: AppState(
     canvasHistory: Queue<PixelLayerList>(),

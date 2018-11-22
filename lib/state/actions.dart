@@ -20,6 +20,14 @@ class DeselectAction {
   DeselectAction();
 }
 
+class EraseStartAction {
+  EraseStartAction();
+}
+
+class EraseEndAction {
+  EraseEndAction();
+}
+
 class FillAreaAction {
   FillAreaAction(this.pos);
   final Offset pos;
@@ -110,4 +118,8 @@ class RedoAction {
 
 class UndoAction {
   UndoAction();
+}
+
+class SaveCanvasStateAction {
+  SaveCanvasStateAction();
 }

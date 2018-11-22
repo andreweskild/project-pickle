@@ -28,9 +28,9 @@ class AppState {
     this.currentTool,
     this.activeColorType = ColorType.Primary,
     this.drawingBuffer,
+    this.eraserRemoveCounter = 0,
     @required this.primaryColor,
     @required this.secondaryColor,
-    this.currentLayerIndex = 0,
     this.layerNamingCounter = 1,
     @required this.layers,
     @required this.palette,
@@ -49,6 +49,7 @@ class AppState {
     int canvasWidth,
     int canvasHeight,
     PixelBuffer drawingBuffer,
+    int eraserRemoveCounter,
     ColorType activeColorType,
     HSLColor primaryColor,
     HSLColor secondaryColor,
@@ -72,9 +73,9 @@ class AppState {
       canvasHeight: canvasHeight ?? this.canvasHeight,
       activeColorType: activeColorType ?? this.activeColorType,
       drawingBuffer: drawingBuffer ?? this.drawingBuffer,
+      eraserRemoveCounter: eraserRemoveCounter ?? this.eraserRemoveCounter,
       primaryColor: primaryColor ?? this.primaryColor,
       secondaryColor: secondaryColor ?? this.secondaryColor,
-      currentLayerIndex: currentLayerIndex ?? this.currentLayerIndex,
       currentTool: currentTool ?? this.currentTool,
       layerNamingCounter: layerNamingCounter ?? this.layerNamingCounter,
       layers: layers ?? this.layers,
@@ -98,8 +99,7 @@ class AppState {
   PixelBuffer drawingBuffer;
   HSLColor primaryColor;
   HSLColor secondaryColor;
-  PixelLayer get currentLayer => layers[currentLayerIndex];
-  int currentLayerIndex;
+  PixelLayer get currentLayer => layers.activeLayer;
   BaseTool currentTool;
   PixelLayerList layers;
   var palette = <HSLColor>[];
@@ -108,6 +108,7 @@ class AppState {
   double toolOpacity;
   ShapeMode toolShape;
   bool shapeFilled;
+  int eraserRemoveCounter;
 
 
   HSLColor get currentColor =>

@@ -268,9 +268,10 @@ class BaseDrawingTool extends BaseTool {
 
   void removePixel(Offset pos) {
     if(pixelInSelection(pos)) {
-      store.dispatch(new RemovePixelAction(pos));
+      store.dispatch(RemovePixelAction(pos));
     }
   }
+
 
   void removePixelLine(Offset p1, Offset p2) {
     var horizontalMovement = (p1.dx - p2.dx).abs();
@@ -307,6 +308,14 @@ class BaseDrawingTool extends BaseTool {
         crossAxisPosition = crossAxisPosition - slope;
       }
     }
+  }
+
+  void startEraserAction() {
+    store.dispatch(EraseStartAction());
+  }
+
+  void endEraserAction() {
+    store.dispatch(EraseEndAction());
   }
 
   void fillArea(Offset pos) {

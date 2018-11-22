@@ -4,10 +4,15 @@ import 'package:flutter/material.dart';
 class PixelLayerList extends ListBase<PixelLayer> {
   var _layers;
   PixelLayerList({
-    List<PixelLayer> layers
+    List<PixelLayer> layers,
+    this.indexOfActiveLayer = 0,
   }) {
     _layers = layers ?? <PixelLayer>[];
   }
+
+  int indexOfActiveLayer;
+
+  get activeLayer => _layers[indexOfActiveLayer];
 
   @override
   PixelLayer operator [](int index) {
@@ -157,11 +162,13 @@ class PixelLayer extends ChangeNotifier {
     }
   }
 
-  void removePixel(Offset pos) {
+  bool removePixel(Offset pos) {
     if (_pixels.containsKey(pos)) {
       _pixels.remove(pos);
       notifyListeners();
+      return true;
     }
+    return false;
   }
 
   void clearPixels() {

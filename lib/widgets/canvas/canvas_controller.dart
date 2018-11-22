@@ -41,7 +41,7 @@ class _CanvasControllerState extends State<CanvasController> {
       // add current layer and all below it.
       layers.addAll(
         state.layers
-          .getRange(0, state.currentLayerIndex + 1)
+          .getRange(0, state.layers.indexOfActiveLayer + 1)
             .where((layer) => !layer.hidden)
               .map<PixelLayerWidget>(
                 (layer) {
@@ -60,7 +60,7 @@ class _CanvasControllerState extends State<CanvasController> {
 
       // add all layers above current layer.
       layers.addAll(
-        state.layers.getRange(state.currentLayerIndex + 1, state.layers.length)
+        state.layers.getRange(state.layers.indexOfActiveLayer + 1, state.layers.length)
           .map<PixelLayerWidget>(
             (layer) {
               return layer.canvas;
@@ -85,7 +85,7 @@ class _CanvasControllerState extends State<CanvasController> {
 //          _visibleLayerCount = store.state.layers.where((layer) => !layer.hidden).length;
 //        }
         if(_currentLayerIndex == null) {
-          _currentLayerIndex = store.state.currentLayerIndex;
+          _currentLayerIndex = store.state.layers.indexOfActiveLayer;
         }
         if(_currentToolType== null) {
           _currentToolType = store.state.currentTool.runtimeType;
@@ -100,7 +100,7 @@ class _CanvasControllerState extends State<CanvasController> {
                 state.canvasDirty = false;
                 setState((){
                   _currentColor = state.currentColor.toColor();
-                  _currentLayerIndex = state.currentLayerIndex;
+                  _currentLayerIndex = state.layers.indexOfActiveLayer;
                   _currentToolType = state.currentTool.runtimeType;
                 });
               }

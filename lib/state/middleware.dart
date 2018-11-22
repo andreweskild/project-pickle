@@ -43,6 +43,9 @@ final dynamic redoMiddleware = (
 };
 
 void _saveLayerState(Store<AppState> store) {
+  if(store.state.canvasHistory.length == 20) {
+    store.state.canvasHistory.removeFirst();
+  }
   store.state.canvasHistory.add(PixelLayerList.from(store.state.layers));
   store.state.canvasFuture.clear();
 }

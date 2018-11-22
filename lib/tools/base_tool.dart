@@ -28,6 +28,7 @@ abstract class BaseTool<T extends Widget> {
 
   void onPixelInputUpdate(Offset pos) {}
   void onPixelInputUp() {}
+  void onPixelInputDown() {}
 
   void handlePointerMove(details, BuildContext context) {
     RenderBox box = context.findRenderObject();
@@ -36,6 +37,7 @@ abstract class BaseTool<T extends Widget> {
   }
 
   void handlePointerDown(details, BuildContext context) {
+    onPixelInputDown();
     RenderBox box = context.findRenderObject();
     var pos = box.globalToLocal(details.position);
     updateInputPosition(pos);
