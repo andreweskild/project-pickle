@@ -15,9 +15,9 @@ AppState stateReducer(AppState state, dynamic action) {
     );
   }
   else if (action is AddNewLayerAction) {
-    int nameCount = state.layerNamingCounter + 1;
+    int nameCount = state.layers.length + 1;
     int newIndex;
-    if(state.layers.indexOfActiveLayer == -1) {
+    if(state.layers.length == 0) {
       newIndex = 0;
     }
     else {
@@ -31,7 +31,6 @@ AppState stateReducer(AppState state, dynamic action) {
           width: 32,
         )
     );
-    state.layerNamingCounter = nameCount;
     state.layers.indexOfActiveLayer = newIndex;
     state.canvasDirty = true;
     return state;
@@ -50,7 +49,9 @@ AppState stateReducer(AppState state, dynamic action) {
         state.currentColor.toColor(),
         state.selectionPath
     );
-    return state;
+    return state.copyWith(
+      canvasDirty: true,
+    );
   }
   else if (action is FinalizePixelBufferAction) {
     state.drawingBuffer.toPixelList().forEach(
@@ -106,8 +107,10 @@ AppState stateReducer(AppState state, dynamic action) {
     return state;
   }
   else if (action is SetCurrentToolAction) {
-    state.currentTool = action.tool;
-    return state;
+    return state.copyWith(
+      currentTool: action.tool,
+      canvasDirty: true,
+    );
   }
   else if(action is SetSelectionPathAction) {
     return state.copyWith(
@@ -117,6 +120,7 @@ AppState stateReducer(AppState state, dynamic action) {
   else if (action is SetShapeFilledAction) {
     return state.copyWith(
       shapeFilled: action.filled,
+      canvasDirty: true,
     );
   }
   else if(action is SetToolOpacityAction) {
@@ -127,6 +131,7 @@ AppState stateReducer(AppState state, dynamic action) {
   else if (action is SetToolShapeAction) {
     return state.copyWith(
       toolShape: action.shape,
+      canvasDirty: true,
     );
   }
   else if (action is SetToolSizeAction) {

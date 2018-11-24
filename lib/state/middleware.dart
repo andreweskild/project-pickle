@@ -5,9 +5,7 @@ import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/canvas/pixel_layer.dart';
 
 void _rollbackLayerState(Store<AppState> store) {
-  store.state.canvasFuture.add(
-    store.state.layers
-  );
+  store.state.canvasFuture.add(PixelLayerList.from(store.state.layers));
   store.state.layers = store.state.canvasHistory.removeLast();
 }
 
@@ -24,9 +22,7 @@ final dynamic undoMiddleware = (
 };
 
 void _rollForwardLayerState(Store<AppState> store) {
-  store.state.canvasHistory.add(
-      store.state.layers
-  );
+  store.state.canvasHistory.add(PixelLayerList.from(store.state.layers));
   store.state.layers = store.state.canvasFuture.removeLast();
 }
 

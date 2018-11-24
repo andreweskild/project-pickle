@@ -148,9 +148,9 @@ class BaseDrawingTool extends BaseTool {
     double xRadius, yRadius;
 
     // checks direction of drag to determine if points need to be flipped.
-    // drag in right half
+    // dragging to the right
     if(p1.dx < p2.dx) {
-      // drag in bottom half
+      // dragging down
       if(p1.dy < p2.dy) {
         topLeftBound = p1;
         bottomRightBound = p2;
@@ -160,7 +160,7 @@ class BaseDrawingTool extends BaseTool {
         yRadius = p2.dy - center.dy;
         center = Offset(center.dx.roundToDouble(), center.dy.roundToDouble());
       }
-      // drag in top half
+      // dragging up
       else {
         topLeftBound = Offset(p1.dx, p2.dy);
         bottomRightBound = Offset(p2.dx, p1.dy);
@@ -171,9 +171,9 @@ class BaseDrawingTool extends BaseTool {
         center = Offset(center.dx.roundToDouble(), center.dy.floorToDouble());
       }
     }
-    // drag in left half
+    // dragging to the left
     else {
-      // drag in top half
+      // dragging up
       if(p1.dy > p2.dy) {
         topLeftBound = p2;
         bottomRightBound = p1;
@@ -183,7 +183,7 @@ class BaseDrawingTool extends BaseTool {
         yRadius = bottomRightBound.dy - center.dy;
         center = Offset(center.dx.floorToDouble(), center.dy.floorToDouble());
       }
-      // drag in bottom half
+      // dragging down
       else {
         topLeftBound = Offset(p2.dx, p1.dy);
         bottomRightBound = Offset(p1.dx, p2.dy);

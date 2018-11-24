@@ -27,29 +27,6 @@ class CanvasModel {
   final BaseTool currentTool;
   final PixelLayerList layers;
 
-
-  @override
-  int get hashCode {
-    int result = 17;
-    result = 37 * result + canvasDirty.hashCode;
-    result = 37 * result + currentColor.hashCode;
-    result = 37 * result + currentTool.hashCode;
-    result = 37 * result + layers.hashCode;
-    return result;
-  }
-
-  // You should generally implement operator == if you
-  // override hashCode.
-  @override
-  bool operator ==(dynamic other) {
-    if (other is! CanvasModel) return false;
-    CanvasModel model = other;
-    return (model.canvasDirty == canvasDirty &&
-        model.currentColor == currentColor &&
-        model.currentTool.runtimeType == currentTool.runtimeType &&
-        model.layers.indexOfActiveLayer == layers.indexOfActiveLayer);
-  }
-
 }
 
 class CanvasController extends StatelessWidget {
@@ -62,7 +39,6 @@ class CanvasController extends StatelessWidget {
 
   final int height, width;
   final double scale;
-////  int _visibleLayerCount;
 
 
   List<Widget> _populateLayerList(CanvasModel model) {
@@ -121,8 +97,9 @@ class CanvasController extends StatelessWidget {
           layers: store.state.layers,
         );
       },
-      distinct: true,
+      ignoreChange: (state) => !state.canvasDirty,
       builder: (context, model) {
+        print('rebuilding canvas');
         // holds the current number of mouse/touch events
         int currentPointerCount = 0;
         // holds the highest number of mouse/touch events
