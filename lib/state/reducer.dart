@@ -54,9 +54,12 @@ AppState stateReducer(AppState state, dynamic action) {
     );
   }
   else if (action is FinalizePixelBufferAction) {
-    state.drawingBuffer.toPixelList().forEach(
-      (pixel) {
-        state.currentLayer.setPixel(pixel, state.currentColor.toColor());
+    state.drawingBuffer.toPixelMap().forEach(
+      (pos, colorType) {
+        state.currentLayer.setPixel(
+          pos,
+          (colorType == 1) ? state.primaryColor.toColor() : state.secondaryColor.toColor()
+        );
       }
     );
     return state;

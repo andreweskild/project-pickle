@@ -1,6 +1,9 @@
 import 'dart:typed_data';
+import 'dart:collection';
 
 import 'package:flutter/material.dart';
+
+import 'package:project_pickle/state/app_state.dart';
 
 
 class PixelBuffer extends ChangeNotifier {
@@ -13,8 +16,8 @@ class PixelBuffer extends ChangeNotifier {
 
   get raw => _buffer;
 
-  void addPixel(int x, int y) {
-    _buffer[x + y * height] = 1;
+  void addPixel(int x, int y, ColorType colorType) {
+    _buffer[x + y * height] = (colorType == ColorType.Primary) ? 1 : 2;
     notifyListeners();
   }
 
@@ -23,13 +26,13 @@ class PixelBuffer extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Offset> toPixelList() {
-   var pixels = <Offset>[];
+  HashMap<Offset, int> toPixelMap() {
+   var pixels = HashMap<Offset, int>();
 
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
-        if(_buffer[x + y * width] == 1) {
-          pixels.add(Offset(x.toDouble(), y.toDouble()));
+        if(_buffer[x + y * width] > 0) {
+          pixels[Offset(x.toDouble(), y.toDouble())] = _buffer[x+y*width];
         }
       }
     }
@@ -41,11 +44,13 @@ class PixelBuffer extends ChangeNotifier {
 class PixelBufferPainter extends CustomPainter {
   PixelBufferPainter(
     this.buffer,
-    this.paintColor
+    this.primaryColor,
+    this.secondaryColor
   ) : super(repaint: buffer);
 
   final PixelBuffer buffer;
-  final Color paintColor;
+  final Color primaryColor;
+  final Color secondaryColor;
 
   final Paint _pixelPaint = new Paint()
     ..strokeWidth = 1.0
@@ -59,7 +64,10 @@ class PixelBufferPainter extends CustomPainter {
     for (int x = 0; x < size.width; x++) {
       for (int y = 0; y < size.height; y++) {
         if(buffer.raw[x + y * size.width.toInt()] == 1) {
-          canvas.drawRect(new Rect.fromLTWH(x.toDouble(), y.toDouble(), 1.0, 1.0), _pixelPaint..color = paintColor);
+          canvas.drawRect(new Rect.fromLTWH(x.toDouble(), y.toDouble(), 1.0, 1.0), _pixelPaint..color = primaryColor);
+        }
+        else if(buffer.raw[x + y * size.width.toInt()] == 2) {
+          canvas.drawRect(new Rect.fromLTWH(x.toDouble(), y.toDouble(), 1.0, 1.0), _pixelPaint..color = secondaryColor);
         }
       }
     }
@@ -71,12 +79,14 @@ class PixelBufferPainter extends CustomPainter {
 
 class PixelBufferWidget extends StatelessWidget {
   final PixelBuffer buffer;
-  final Color color;
+  final Color primary;
+  final Color secondary;
 
   PixelBufferWidget({
     Key key,
     @required this.buffer,
-    this.color = Colors.red
+    this.primary = Colors.red,
+    this.secondary = Colors.green
   }) : super(key: key);
 
 
@@ -84,7 +94,7 @@ class PixelBufferWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return new CustomPaint(
       willChange: true,
-      painter: PixelBufferPainter(buffer, color),
+      painter: PixelBufferPainter(buffer, primary, secondary),
     );
   }
 }

@@ -12,21 +12,22 @@ class BaseDrawingTool extends BaseTool {
     );
 
 
-  void drawPixelToBuffer(Offset pos) {
+  void drawPixelToBuffer(Offset pos, {ColorType colorType}) {
+    if(colorType == null) {colorType = store.state.activeColorType;}
     if(pixelInSelection(pos)) {
-      store.state.drawingBuffer.addPixel(pos.dx.toInt(), pos.dy.toInt());
+      store.state.drawingBuffer.addPixel(pos.dx.toInt(), pos.dy.toInt(), colorType);
     }
   }
 
-  void drawPixelListToBuffer(List<Offset> posList) {
+  void drawPixelListToBuffer(List<Offset> posList, {ColorType colorType}) {
     posList.forEach(
       (pos) {
-        drawPixelToBuffer(pos);
+        drawPixelToBuffer(pos, colorType: colorType);
       }
     );
   }
 
-  void drawPixelLineToBuffer(Offset p1, Offset p2) {
+  void drawPixelLineToBuffer(Offset p1, Offset p2, {ColorType colorType}) {
     var horizontalMovement = (p1.dx - p2.dx).abs();
     var verticalMovement = (p1.dy - p2.dy).abs();
 
@@ -63,7 +64,7 @@ class BaseDrawingTool extends BaseTool {
     }
   }
 
-  List<Offset> _getEllipsePoints(Offset center, int x, int y) {
+  List<Offset> _getEllipsePoints(Offset center, double x, double y) {
     var points = <Offset>[];
     points.add(Offset(center.dx + x, center.dy + y));
     points.add(Offset(center.dx - x, center.dy + y));
@@ -73,22 +74,22 @@ class BaseDrawingTool extends BaseTool {
   }
 
   // draws an ellipse based on center coordinate, vertical and horizontal Radii.
-  List<Offset> _getEllipseStroke(Offset center, int xRadius, int yRadius) {
+  List<Offset> _getEllipseStroke(Offset center, double xRadius, double yRadius) {
     var ellipseStroke = <Offset>[];
-    int xRadiusSquared = math.pow(xRadius, 2);
-    int yRadiusSquared = math.pow(yRadius, 2);
-    int twoXRadiusSquared = 2 * xRadiusSquared;
-    int twoYRadiusSquared = 2 * yRadiusSquared;
+    double xRadiusSquared = math.pow(xRadius, 2.0);
+    double yRadiusSquared = math.pow(yRadius, 2.0);
+    double twoXRadiusSquared = 2 * xRadiusSquared;
+    double twoYRadiusSquared = 2 * yRadiusSquared;
 
-    int p;
-    int x = 0;
-    int y = yRadius;
-    int pX = 0;
-    int pY = twoXRadiusSquared * y;
+    double p;
+    double x = 0.0;
+    double y = yRadius;
+    double pX = 0.0;
+    double pY = twoXRadiusSquared * y;
 
     ellipseStroke.addAll(_getEllipsePoints(center, x, y));
 
-    p = (yRadiusSquared - (xRadiusSquared * yRadius) + (0.25 * xRadiusSquared)).round();
+    p = (yRadiusSquared - (xRadiusSquared * yRadius) + (0.25 * xRadiusSquared));
     while (pX < pY) {
       x++;
       pX += twoYRadiusSquared;
@@ -102,7 +103,7 @@ class BaseDrawingTool extends BaseTool {
       ellipseStroke.addAll(_getEllipsePoints(center, x, y));
     }
 
-    p = (yRadiusSquared * (x + 0.5) * (x + 0.5) + xRadiusSquared * (y - 1) * (y - 1) - xRadiusSquared * yRadiusSquared).round();
+    p = (yRadiusSquared * (x + 0.5) * (x + 0.5) + xRadiusSquared * (y - 1) * (y - 1) - xRadiusSquared * yRadiusSquared);
     while (y > 0) {
       y--;
       pY -= twoXRadiusSquared;
@@ -119,7 +120,7 @@ class BaseDrawingTool extends BaseTool {
     return ellipseStroke;
   }
 
-  List<Offset> _getEllipseFill(Offset center, int xRadius, int yRadius) {
+  List<Offset> _getEllipseFill(Offset center, double xRadius, double yRadius) {
     var topLeft = Offset(center.dx - xRadius, center.dy - yRadius);
     var bottomRight = Offset(center.dx + xRadius, center.dy + yRadius);
     var ellipseFill = <Offset>[];
@@ -146,6 +147,9 @@ class BaseDrawingTool extends BaseTool {
     List<Offset> ellipseFill;
     Offset center;
     double xRadius, yRadius;
+    ColorType strokeColorType = store.state.activeColorType;
+    ColorType fillColorType = (store.state.activeColorType == ColorType.Primary) ?
+        ColorType.Secondary : ColorType.Primary;
 
     // checks direction of drag to determine if points need to be flipped.
     // dragging to the right
@@ -196,19 +200,21 @@ class BaseDrawingTool extends BaseTool {
     }
 
     if(store.state.shapeFilled) {
-      ellipseFill = _getEllipseFill(center, xRadius.round(), yRadius.round());
-      drawPixelListToBuffer(ellipseFill);
+      ellipseFill = _getEllipseFill(center, xRadius, yRadius);
+      drawPixelListToBuffer(ellipseFill, colorType: fillColorType);
     }
 
-    ellipseStroke = _getEllipseStroke(center, xRadius.round(), yRadius.round());
-    drawPixelListToBuffer(ellipseStroke);
+    ellipseStroke = _getEllipseStroke(center, xRadius, yRadius);
+    drawPixelListToBuffer(ellipseStroke, colorType: strokeColorType);
 
   }
 
   void _drawFilledRectToBuffer(Offset p1, Offset p2) {
+    ColorType fillColorType = (store.state.activeColorType == ColorType.Primary) ?
+      ColorType.Secondary : ColorType.Primary;
     for (double x = p1.dx; x <= p2.dx; x++) {
       for (double y = p1.dy; y <= p2.dy; y++) {
-        drawPixelToBuffer(Offset(x, y));
+        drawPixelToBuffer(Offset(x, y), colorType: fillColorType);
       }
     }
   }
@@ -225,14 +231,17 @@ class BaseDrawingTool extends BaseTool {
   }
 
   void _drawRectangleToBuffer(Offset p1, Offset p2) {
+    var topLeftPoint = p1;
+    var topRightPoint = Offset(p2.dx, p1.dy);
+    var bottomLeftPoint = Offset(p1.dx, p2.dy);
+    var bottomRightPoint = p2;
     if(store.state.shapeFilled) {
       _drawOverlayFilledRectangle(p1, p2);
+      drawPixelLineToBuffer(topLeftPoint, topRightPoint);
+      drawPixelLineToBuffer(topRightPoint, bottomRightPoint);
+      drawPixelLineToBuffer(bottomRightPoint, bottomLeftPoint);
+      drawPixelLineToBuffer(bottomLeftPoint, topLeftPoint);
     } else {
-      var topLeftPoint = p1;
-      var topRightPoint = Offset(p2.dx, p1.dy);
-      var bottomLeftPoint = Offset(p1.dx, p2.dy);
-      var bottomRightPoint = p2;
-
       drawPixelLineToBuffer(topLeftPoint, topRightPoint);
       drawPixelLineToBuffer(topRightPoint, bottomRightPoint);
       drawPixelLineToBuffer(bottomRightPoint, bottomLeftPoint);

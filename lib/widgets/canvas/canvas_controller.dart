@@ -15,7 +15,8 @@ class CanvasModel {
     this.dirtyCallback,
     this.canvasDirty,
     this.drawingBuffer,
-    this.currentColor,
+    this.primaryColor,
+    this.secondaryColor,
     this.currentTool,
     this.layers
   });
@@ -23,7 +24,8 @@ class CanvasModel {
   final VoidCallback dirtyCallback;
   final bool canvasDirty;
   final PixelBuffer drawingBuffer;
-  final Color currentColor;
+  final Color primaryColor;
+  final Color secondaryColor;
   final BaseTool currentTool;
   final PixelLayerList layers;
 
@@ -62,7 +64,8 @@ class CanvasController extends StatelessWidget {
       result.add(
         PixelBufferWidget(
           buffer: model.drawingBuffer,
-          color: model.currentColor,
+          primary: model.primaryColor,
+          secondary: model.secondaryColor,
         )
       );
 
@@ -92,7 +95,8 @@ class CanvasController extends StatelessWidget {
           dirtyCallback: () => store.state.canvasDirty = false,
           canvasDirty: store.state.canvasDirty,
           drawingBuffer: store.state.drawingBuffer,
-          currentColor: store.state.currentColor.toColor(),
+          primaryColor: store.state.primaryColor.toColor(),
+          secondaryColor: store.state.secondaryColor.toColor(),
           currentTool: store.state.currentTool,
           layers: store.state.layers,
         );
