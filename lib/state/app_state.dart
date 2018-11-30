@@ -26,6 +26,7 @@ class AppState {
     this.canvasHeight,
     this.canvasScale = 1.0,
     this.currentTool,
+    this.activeColorIndex = 0,
     this.activeColorType = ColorType.Primary,
     this.drawingBuffer,
     this.eraserRemoveCounter = 0,
@@ -42,6 +43,7 @@ class AppState {
   });
 
   AppState copyWith({
+    int activeColorIndex,
     bool canvasDirty,
     Queue<PixelLayerList> canvasHistory,
     Queue<PixelLayerList> canvasFuture,
@@ -65,6 +67,7 @@ class AppState {
     bool shapeFilled,
   }) {
     return AppState(
+      activeColorIndex: activeColorIndex ?? this.activeColorIndex,
       canvasDirty: canvasDirty ?? this.canvasDirty,
       canvasHistory: canvasHistory ?? this.canvasHistory,
       canvasFuture: canvasFuture ?? this.canvasFuture,
@@ -95,6 +98,7 @@ class AppState {
   int canvasWidth;
   int canvasHeight;
   double canvasScale;
+  int activeColorIndex;
   ColorType activeColorType;
   PixelBuffer drawingBuffer;
   HSLColor primaryColor;
@@ -111,8 +115,8 @@ class AppState {
   int eraserRemoveCounter;
 
 
-  HSLColor get currentColor =>
-      (activeColorType == ColorType.Primary) ? primaryColor : secondaryColor;
+  HSLColor get activeColor =>
+      palette[activeColorIndex];
 
 }
 

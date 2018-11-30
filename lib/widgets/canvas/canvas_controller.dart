@@ -15,8 +15,7 @@ class CanvasModel {
     this.dirtyCallback,
     this.canvasDirty,
     this.drawingBuffer,
-    this.primaryColor,
-    this.secondaryColor,
+    this.activeColor,
     this.currentTool,
     this.layers
   });
@@ -24,8 +23,7 @@ class CanvasModel {
   final VoidCallback dirtyCallback;
   final bool canvasDirty;
   final PixelBuffer drawingBuffer;
-  final Color primaryColor;
-  final Color secondaryColor;
+  final Color activeColor;
   final BaseTool currentTool;
   final PixelLayerList layers;
 
@@ -57,26 +55,29 @@ class CanvasController extends StatelessWidget {
                 (layer) {
                   return layer.canvas;
                 }
-              ).toList()
+              )
       );
 
-      // add drawing buffer above current layer.
-      result.add(
-        PixelBufferWidget(
-          buffer: model.drawingBuffer,
-          primary: model.primaryColor,
-          secondary: model.secondaryColor,
-        )
-      );
+      if (!model.layers.activeLayer.hidden) {
+        // add drawing buffer above current layer.
+        result.add(
+            PixelBufferWidget(
+              buffer: model.drawingBuffer,
+              color: model.activeColor
+            )
+        );
+      }
+
 
       // add all layers above current layer.
       result.addAll(
         model.layers.getRange(model.layers.indexOfActiveLayer + 1, model.layers.length)
-          .map<PixelLayerWidget>(
-            (layer) {
-              return layer.canvas;
-            }
-          )
+          .where((layer) => !layer.hidden)
+            .map<PixelLayerWidget>(
+              (layer) {
+                return layer.canvas;
+              }
+            )
       );
     }
     else {
@@ -95,15 +96,13 @@ class CanvasController extends StatelessWidget {
           dirtyCallback: () => store.state.canvasDirty = false,
           canvasDirty: store.state.canvasDirty,
           drawingBuffer: store.state.drawingBuffer,
-          primaryColor: store.state.primaryColor.toColor(),
-          secondaryColor: store.state.secondaryColor.toColor(),
+          activeColor: store.state.activeColor.toColor(),
           currentTool: store.state.currentTool,
           layers: store.state.layers,
         );
       },
       ignoreChange: (state) => !state.canvasDirty,
       builder: (context, model) {
-        print('rebuilding canvas');
         // holds the current number of mouse/touch events
         int currentPointerCount = 0;
         // holds the highest number of mouse/touch events

@@ -12,7 +12,7 @@ class PixelLayerList extends ListBase<PixelLayer> {
 
   int indexOfActiveLayer;
 
-  get activeLayer => _layers[indexOfActiveLayer];
+  PixelLayer get activeLayer => _layers[indexOfActiveLayer];
 
   @override
   PixelLayer operator [](int index) {

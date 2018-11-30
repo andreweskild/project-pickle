@@ -31,7 +31,7 @@ final store = Store<AppState>(
     canvasWidth: 32,
     canvasHeight: 32,
     drawingBuffer: PixelBuffer(32, 32),
-    primaryColor: HSLColor.fromAHSL(1.0, 1.0, 1.0, 1.0),
+    primaryColor: HSLColor.fromAHSL(1.0, 50.0, 1.0, 0.5),
     secondaryColor: HSLColor.fromAHSL(1.0, 100.0, 1.0, 0.5),
     layers: PixelLayerList()..add(
       PixelLayer(

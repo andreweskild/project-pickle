@@ -4,7 +4,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/color_selector/color_card.dart';
-import 'package:project_pickle/widgets/common/horizontal_divider.dart';
 import 'package:project_pickle/widgets/tools/tools_card.dart';
 
 class LeftDrawer extends StatelessWidget {
@@ -29,9 +28,6 @@ class LeftDrawer extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 ToolsCard(),
-                HorizontalDivider(
-                  height: 2.0,
-                ),
                 Expanded(child: ColorCard()),
               ],
             ),

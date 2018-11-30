@@ -7,8 +7,8 @@ AppState stateReducer(AppState state, dynamic action) {
 
   if (action is AddCurrentColorToPaletteAction) {
     List<HSLColor> newPalette = List.from(state.palette);
-    if (!newPalette.contains(state.currentColor)) {
-      newPalette.add(state.currentColor);
+    if (!newPalette.contains(state.activeColor)) {
+      newPalette.add(state.activeColor);
     }
     return state.copyWith(
       palette: newPalette,
@@ -46,7 +46,7 @@ AppState stateReducer(AppState state, dynamic action) {
   else if (action is FillAreaAction) {
     state.currentLayer.fillArea(
         action.pos,
-        state.currentColor.toColor(),
+        state.activeColor.toColor(),
         state.selectionPath
     );
     return state.copyWith(
@@ -54,11 +54,11 @@ AppState stateReducer(AppState state, dynamic action) {
     );
   }
   else if (action is FinalizePixelBufferAction) {
-    state.drawingBuffer.toPixelMap().forEach(
-      (pos, colorType) {
+    state.drawingBuffer.toPixelList().forEach(
+      (pixel) {
         state.currentLayer.setPixel(
-          pos,
-          (colorType == 1) ? state.primaryColor.toColor() : state.secondaryColor.toColor()
+          pixel,
+          state.activeColor.toColor()
         );
       }
     );
@@ -75,10 +75,21 @@ AppState stateReducer(AppState state, dynamic action) {
       canvasDirty: true,
     );
   }
+  else if (action is SetActiveColorIndexAction) {
+    return state.copyWith(
+      activeColorIndex: action.index,
+      canvasDirty: true,
+    );
+  }
   else if (action is SetCanvasScaleAction) {
     return state.copyWith(
         canvasScale: action.scale
     );
+  }
+  else if (action is SetPaletteColorAction) {
+    state.palette[action.index] = action.color;
+    state.canvasDirty = true;
+    return state;
   }
   else if (action is SetPrimaryColorAction) {
     return state.copyWith(

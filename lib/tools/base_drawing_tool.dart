@@ -12,22 +12,21 @@ class BaseDrawingTool extends BaseTool {
     );
 
 
-  void drawPixelToBuffer(Offset pos, {ColorType colorType}) {
-    if(colorType == null) {colorType = store.state.activeColorType;}
+  void drawPixelToBuffer(Offset pos) {
     if(pixelInSelection(pos)) {
-      store.state.drawingBuffer.addPixel(pos.dx.toInt(), pos.dy.toInt(), colorType);
+      store.state.drawingBuffer.addPixel(pos.dx.toInt(), pos.dy.toInt());
     }
   }
 
-  void drawPixelListToBuffer(List<Offset> posList, {ColorType colorType}) {
+  void drawPixelListToBuffer(List<Offset> posList) {
     posList.forEach(
       (pos) {
-        drawPixelToBuffer(pos, colorType: colorType);
+        drawPixelToBuffer(pos);
       }
     );
   }
 
-  void drawPixelLineToBuffer(Offset p1, Offset p2, {ColorType colorType}) {
+  void drawPixelLineToBuffer(Offset p1, Offset p2) {
     var horizontalMovement = (p1.dx - p2.dx).abs();
     var verticalMovement = (p1.dy - p2.dy).abs();
 
@@ -120,36 +119,12 @@ class BaseDrawingTool extends BaseTool {
     return ellipseStroke;
   }
 
-  List<Offset> _getEllipseFill(Offset center, double xRadius, double yRadius) {
-    var topLeft = Offset(center.dx - xRadius, center.dy - yRadius);
-    var bottomRight = Offset(center.dx + xRadius, center.dy + yRadius);
-    var ellipseFill = <Offset>[];
-    bool isPointInEllipse(Offset point) {
-      return math.pow((point.dx - center.dx), 2) / math.pow(xRadius, 2) +
-        math.pow((point.dy - center.dy), 2) / math.pow(yRadius, 2) <= 1;
-    }
-
-    for (double x = topLeft.dx; x < bottomRight.dx; x++) {
-      for (double y = topLeft.dy; y < bottomRight.dy; y++) {
-        if(isPointInEllipse(Offset(x, y))) {
-          ellipseFill.add(Offset(x, y));
-        }
-      }
-    }
-
-    return ellipseFill;
-  }
-
   void _drawCircleToBuffer(Offset p1, Offset p2) {
     var topLeftBound;
     var bottomRightBound;
     List<Offset> ellipseStroke;
-    List<Offset> ellipseFill;
     Offset center;
     double xRadius, yRadius;
-    ColorType strokeColorType = store.state.activeColorType;
-    ColorType fillColorType = (store.state.activeColorType == ColorType.Primary) ?
-        ColorType.Secondary : ColorType.Primary;
 
     // checks direction of drag to determine if points need to be flipped.
     // dragging to the right
@@ -199,24 +174,9 @@ class BaseDrawingTool extends BaseTool {
       }
     }
 
-    if(store.state.shapeFilled) {
-      ellipseFill = _getEllipseFill(center, xRadius, yRadius);
-      drawPixelListToBuffer(ellipseFill, colorType: fillColorType);
-    }
-
     ellipseStroke = _getEllipseStroke(center, xRadius, yRadius);
-    drawPixelListToBuffer(ellipseStroke, colorType: strokeColorType);
+    drawPixelListToBuffer(ellipseStroke);
 
-  }
-
-  void _drawFilledRectToBuffer(Offset p1, Offset p2) {
-    ColorType fillColorType = (store.state.activeColorType == ColorType.Primary) ?
-      ColorType.Secondary : ColorType.Primary;
-    for (double x = p1.dx; x <= p2.dx; x++) {
-      for (double y = p1.dy; y <= p2.dy; y++) {
-        drawPixelToBuffer(Offset(x, y), colorType: fillColorType);
-      }
-    }
   }
 
   void drawShapeToBuffer(Offset p1, Offset p2) {
@@ -235,45 +195,11 @@ class BaseDrawingTool extends BaseTool {
     var topRightPoint = Offset(p2.dx, p1.dy);
     var bottomLeftPoint = Offset(p1.dx, p2.dy);
     var bottomRightPoint = p2;
-    if(store.state.shapeFilled) {
-      _drawOverlayFilledRectangle(p1, p2);
-      drawPixelLineToBuffer(topLeftPoint, topRightPoint);
-      drawPixelLineToBuffer(topRightPoint, bottomRightPoint);
-      drawPixelLineToBuffer(bottomRightPoint, bottomLeftPoint);
-      drawPixelLineToBuffer(bottomLeftPoint, topLeftPoint);
-    } else {
-      drawPixelLineToBuffer(topLeftPoint, topRightPoint);
-      drawPixelLineToBuffer(topRightPoint, bottomRightPoint);
-      drawPixelLineToBuffer(bottomRightPoint, bottomLeftPoint);
-      drawPixelLineToBuffer(bottomLeftPoint, topLeftPoint);
-    }
+    drawPixelLineToBuffer(topLeftPoint, topRightPoint);
+    drawPixelLineToBuffer(topRightPoint, bottomRightPoint);
+    drawPixelLineToBuffer(bottomRightPoint, bottomLeftPoint);
+    drawPixelLineToBuffer(bottomLeftPoint, topLeftPoint);
   }
-
-  void _drawOverlayFilledRectangle(Offset p1, Offset p2) {
-    if(p1.dx < p2.dx) {
-      if(p1.dy < p2.dy) {
-        _drawFilledRectToBuffer(p1, p2);
-      }
-      else {
-        var newP1 = Offset(p1.dx, p2.dy);
-        var newP2 = Offset(p2.dx, p1.dy);
-        _drawFilledRectToBuffer(newP1, newP2);
-      }
-    }
-    else {
-      if(p1.dy > p2.dy) {
-        var newP1 = p2;
-        var newP2 = p1;
-        _drawFilledRectToBuffer(newP1, newP2);
-      }
-      else {
-        var newP1 = Offset(p2.dx, p1.dy);
-        var newP2 = Offset(p1.dx, p2.dy);
-        _drawFilledRectToBuffer(newP1, newP2);
-      }
-    }
-  }
-
 
   void removePixel(Offset pos) {
     if(pixelInSelection(pos)) {

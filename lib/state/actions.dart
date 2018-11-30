@@ -43,6 +43,11 @@ class ToggleLayerHiddenAction {
   final int index;
 }
 
+class SetActiveColorIndexAction {
+  SetActiveColorIndexAction(this.index);
+  final int index;
+}
+
 class SetActiveColorTypeAction {
   SetActiveColorTypeAction(this.colorType);
   final ColorType colorType;
@@ -53,6 +58,15 @@ class SetCanvasScaleAction {
   final double scale;
 }
 
+class SetPaletteColorAction {
+  SetPaletteColorAction(
+    this.index,
+    this.color,
+  );
+
+  final HSLColor color;
+  final int index;
+}
 
 class SetCurrentLayerIndexAction {
   SetCurrentLayerIndexAction(

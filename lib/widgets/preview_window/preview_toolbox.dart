@@ -46,7 +46,6 @@ class PreviewToolbox extends StatelessWidget {
         );
       },
       builder: (context, model) {
-        print('rebuilding preview');
         return Padding(
           padding: const EdgeInsets.all(12.0),
           child: DecoratedBox(

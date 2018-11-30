@@ -63,7 +63,7 @@ class LayersCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, LayerListModel>(
-        distinct: true,
+        ignoreChange: (state) => !state.canvasDirty,
         converter: (store) => LayerListModel(
               layers: store.state.layers,
               currentLayerIndex: store.state.layers.indexOfActiveLayer,
@@ -77,24 +77,24 @@ class LayersCard extends StatelessWidget {
             ),
         builder: (context, model) {
           return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints.expand(height: 40.0),
+                child: SizedBox(
+                  height: 32.0,
+                  width: 32.0,
                   child: RaisedButton(
                     elevation: 0.0,
                     highlightElevation: 0.0,
                     color: Theme.of(context).scaffoldBackgroundColor,
                     highlightColor: Theme.of(context).accentColor,
-                    shape: RoundedRectangleBorder(
+                    shape: CircleBorder(
                       side: BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
-                      borderRadius: BorderRadius.circular(6.0)
                     ),
                     padding: EdgeInsets.all(0.0),
-                    child: Text('New Layer'),
+                    child: Icon(Icons.add),
                     onPressed: () {
                       model.addLayerCallback();
                     },
