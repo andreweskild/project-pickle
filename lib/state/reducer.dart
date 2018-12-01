@@ -14,6 +14,13 @@ AppState stateReducer(AppState state, dynamic action) {
       palette: newPalette,
     );
   }
+  else if (action is AddNewColorToPaletteAction) {
+    List<HSLColor> newPalette = state.palette;
+    newPalette.add(HSLColor.fromAHSL(1.0, 0.0, 0.0, 1.0));
+    return state.copyWith(
+      palette: newPalette,
+    );
+  }
   else if (action is AddNewLayerAction) {
     int nameCount = state.layers.length + 1;
     int newIndex;

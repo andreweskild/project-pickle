@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:project_pickle/widgets/common/horizontal_divider.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/color_selector/color_menu_button.dart';
@@ -14,38 +15,26 @@ typedef SetColorIndexCallback = void Function(int);
 class ColorCardModel {
   ColorCardModel({
     this.activeColorIndex,
-    this.activeColorType,
     this.addToPalette,
-    this.primaryColor,
-    this.secondaryColor,
     this.palette,
-    this.setActiveColorTypeCallback,
     this.setActiveColorCallback,
-    this.setPrimaryColorCallback,
-    this.setSecondaryColorCallback,
     this.setActiveColorIndexCallback,
   });
 
-  final ColorType activeColorType;
   final int activeColorIndex;
-  final HSLColor primaryColor;
-  final HSLColor secondaryColor;
   VoidCallback addToPalette;
   final List<HSLColor> palette;
   final SetColorIndexCallback setActiveColorIndexCallback;
-  final SetColorTypeCallback setActiveColorTypeCallback;
-  final SetColorCallback setPrimaryColorCallback;
-  final SetColorCallback setSecondaryColorCallback;
   final SetActiveColorCallback setActiveColorCallback;
+
+  HSLColor get activeColor => palette[activeColorIndex];
 
   @override
   int get hashCode {
     int result = 17;
     result = 37 * result + activeColorIndex.hashCode;
-    result = 37 * result + activeColorType.hashCode;
-    result = 37 * result + primaryColor.hashCode;
-    result = 37 * result + secondaryColor.hashCode;
     result = 37 * result + palette.hashCode;
+    result = 37 * result + activeColor.hashCode;
     return result;
   }
 
@@ -57,9 +46,7 @@ class ColorCardModel {
     ColorCardModel model = other;
     return (model.activeColorIndex == activeColorIndex &&
         model.palette.length == palette.length &&
-        model.activeColorType == activeColorType &&
-        model.primaryColor == primaryColor &&
-        model.secondaryColor == secondaryColor);
+        model.activeColor == activeColor);
   }
 }
 
@@ -71,64 +58,21 @@ class ColorCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ColorCardModel>(
-        ignoreChange: (state) => !state.canvasDirty,
+        distinct: true,
         converter: (store) {
           return ColorCardModel(
+            addToPalette: () => store.dispatch(AddNewColorToPaletteAction()),
             activeColorIndex: store.state.activeColorIndex,
-            activeColorType: store.state.activeColorType,
-            primaryColor: store.state.primaryColor,
-            secondaryColor: store.state.secondaryColor,
             setActiveColorCallback: (index, newColor) =>
                 store.dispatch(SetPaletteColorAction(index, newColor)),
             setActiveColorIndexCallback: (index) =>
                 store.dispatch(SetActiveColorIndexAction(index)),
-            setActiveColorTypeCallback: (colorType) =>
-                store.dispatch(SetActiveColorTypeAction(colorType)),
-            setPrimaryColorCallback: (newColor) =>
-                store.dispatch(SetPrimaryColorAction(newColor)),
-            setSecondaryColorCallback: (newColor) =>
-                store.dispatch(SetSecondaryColorAction(newColor)),
-            palette: store.state.palette,
+            palette: List.from(store.state.palette),
           );
         },
         builder: (context, model) {
           return Column(
             children: <Widget>[
-//              Padding(
-//                padding: const EdgeInsets.all(12.0),
-//                child: Column(
-//                  children: <Widget>[
-//                    AspectRatio(
-//                      aspectRatio: 1.2,
-//                        child: ColorMenuButton(
-//                          color: model.primaryColor,
-//                          active:
-//                              model.activeColorType == ColorType.Primary,
-//                          onColorChanged: model.setPrimaryColorCallback,
-//                          onToggled: () {
-//                            model.setActiveColorTypeCallback(
-//                                ColorType.Primary);
-//                          }),
-//                    ),
-//                    Padding(
-//                      padding: const EdgeInsets.only(top: 12.0),
-//                      child: AspectRatio(
-//                        aspectRatio: 1.2,
-//                          child: ColorMenuButton(
-//                            color: model.secondaryColor,
-//                            active: model.activeColorType ==
-//                                ColorType.Secondary,
-//                            onColorChanged:
-//                                model.setSecondaryColorCallback,
-//                            onToggled: () {
-//                              model.setActiveColorTypeCallback(
-//                                  ColorType.Secondary);
-//                            }),
-//                      ),
-//                    ),
-//                  ],
-//                ),
-//              ),
               Expanded(
                 child: DecoratedBox(
                   decoration: BoxDecoration(
@@ -148,7 +92,7 @@ class ColorCard extends StatelessWidget {
                         return Padding(
                           padding: const EdgeInsets.all(6.0),
                           child: SizedBox(
-                            height: 32.0,
+                            height: 40.0,
                             child: ColorMenuButton (
                               active: model.activeColorIndex == index,
                               onColorChanged: (color){
@@ -161,22 +105,39 @@ class ColorCard extends StatelessWidget {
                         );
                       }
                     )
-//                    children: model.palette
-//                        .map((hslColor) => Padding(
-//                          padding: const EdgeInsets.all(6.0),
-//                          child: SizedBox(
-//                            height: 32.0,
-//                            child: new ColorMenuButton(
-//                                  onColorChanged: (color){},
-//                                  onToggled: (){},
-//                                  color: hslColor,
-//                                ),
-//                          ),
-//                        ))
-//                        .toList(),
                   ),
                 ),
               ),
+              HorizontalDivider(height: 2.0),
+              Padding(
+                padding: EdgeInsets.all(12.0),
+                child: SizedBox(
+                  height: 40.0,
+                  child: StoreBuilder<AppState>(
+                    builder: (context, store) {
+                      return RaisedButton(
+                        elevation: 0.0,
+                        highlightElevation: 0.0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            width: 2.0,
+                            color: Theme
+                                .of(context)
+                                .dividerColor,
+                          ),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        color: Theme
+                            .of(context)
+                            .scaffoldBackgroundColor,
+                        padding: EdgeInsets.zero,
+                        onPressed: () => store.dispatch(AddNewColorToPaletteAction()),
+                        child: Center(child: Icon(Icons.add)),
+                      );
+                    }
+                  ),
+                )
+              )
             ],
           );
         });

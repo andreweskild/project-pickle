@@ -8,6 +8,10 @@ class AddCurrentColorToPaletteAction {
   AddCurrentColorToPaletteAction();
 }
 
+class AddNewColorToPaletteAction {
+  AddNewColorToPaletteAction();
+}
+
 class AddNewLayerAction {
   AddNewLayerAction();
 }

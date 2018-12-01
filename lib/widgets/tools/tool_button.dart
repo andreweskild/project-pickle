@@ -20,15 +20,12 @@ class ToolButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.0,
-      child: TwoStagePopupButton(
-        icon: icon,
-        label: label,
-        popupContent: options,
-        onToggled: onToggle,
-        active: active,
-      ),
+    return TwoStagePopupButton(
+      icon: icon,
+      label: label,
+      popupContent: options,
+      onToggled: onToggle,
+      active: active,
     );
   }
 

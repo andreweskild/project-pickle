@@ -34,32 +34,6 @@ class ShapeModeModel {
   }
 }
 
-class ShapeOptionsModel {
-  ShapeOptionsModel({
-    this.filled,
-    this.callback
-  });
-
-  final bool filled;
-  final ValueChanged<bool> callback;
-
-  @override
-  int get hashCode {
-    int result = 17;
-    result = 37 * result + filled.hashCode;
-    return result;
-  }
-
-  // You should generally implement operator == if you
-  // override hashCode.
-  @override
-  bool operator ==(dynamic other) {
-    if (other is! ShapeOptionsModel) return false;
-    ShapeOptionsModel model = other;
-    return (model.filled == filled);
-  }
-}
-
 class ShapeTool extends BaseDrawingTool {
   ShapeTool(context) : super(context);
 
@@ -101,62 +75,6 @@ class ShapeTool extends BaseDrawingTool {
               }
             ),
           ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 12.0),
-            child: StoreConnector<AppState, ShapeOptionsModel>(
-              converter: (store) {
-                return ShapeOptionsModel(
-                  filled: store.state.shapeFilled,
-                  callback: (filled) => store.dispatch(SetShapeFilledAction(filled)),
-                );
-              },
-              builder: (context, model) {
-                return SizedBox(
-                  height: 40.0,
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 6.0),
-                          child: ToggleButton(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Icon(Icons.brightness_1), Padding(
-                                    padding: const EdgeInsets.only(left: 6.0),
-                                    child: Text('Stroke'),
-                                  )
-                                ],
-                              ),
-                              toggled: true,
-                              onToggled: (value) {}
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 6.0),
-                          child: ToggleButton(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Icon(Icons.brightness_1), Padding(
-                                    padding: const EdgeInsets.only(left: 6.0),
-                                    child: Text('Fill'),
-                                  )
-                                ],
-                              ),
-                              toggled: model.filled,
-                              onToggled: model.callback
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }
-            )
-          )
         ],
       );
 

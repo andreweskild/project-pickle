@@ -91,7 +91,7 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
   Widget build(BuildContext context) {
     final Animation<Size> size = SizeTween(
       begin: widget.initialSize,
-      end: Size(256.0, 166.0),
+      end: Size(256.0, 114.0),
     ).animate(
       CurvedAnimation(
         parent: widget.parentAnimation,
@@ -314,8 +314,8 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: _height,
+    return AspectRatio(
+      aspectRatio: 1.0,
       child: Material(
         elevation: widget.active ? 6.0 : 0.0,
         shadowColor: Theme.of(context).splashColor.withAlpha(60),
