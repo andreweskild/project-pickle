@@ -1,33 +1,34 @@
 import 'package:flutter/material.dart';
 
-import 'package:project_pickle/tools/base_tool.dart';
 import 'package:project_pickle/widgets/color_selector/color_slider_thumb.dart';
 import 'package:project_pickle/widgets/color_selector/color_slider_value_indicator.dart';
 import 'package:project_pickle/widgets/common/value_slider.dart';
 
 const double _kMenuScreenPadding = 8.0;
 
-class _ColorPickerModel {
-  _ColorPickerModel({this.currentTool, this.callback});
+const double _kButtonHeight = 40.0;
 
-  final BaseTool currentTool;
-  final VoidCallback callback;
-
-
-  @override
-  int get hashCode {
-    int result = 17;
-    result = 37 * result + currentTool.hashCode;
-    return result;
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    if (other is! _ColorPickerModel) return false;
-    _ColorPickerModel model = other;
-    return (model.currentTool.runtimeType == currentTool.runtimeType);
-  }
-}
+//class _ColorPickerModel {
+//  _ColorPickerModel({this.currentTool, this.callback});
+//
+//  final BaseTool currentTool;
+//  final VoidCallback callback;
+//
+//
+//  @override
+//  int get hashCode {
+//    int result = 17;
+//    result = 37 * result + currentTool.hashCode;
+//    return result;
+//  }
+//
+//  @override
+//  bool operator ==(dynamic other) {
+//    if (other is! _ColorPickerModel) return false;
+//    _ColorPickerModel model = other;
+//    return (model.currentTool.runtimeType == currentTool.runtimeType);
+//  }
+//}
 
 class _ColorPopupRouteLayout extends SingleChildLayoutDelegate {
   _ColorPopupRouteLayout(this.position);
@@ -501,7 +502,7 @@ class _ColorPopupRoute extends PopupRoute<HSLColor> {
   }
 }
 
-typedef ColorChangeCallback = void Function(HSLColor);
+typedef ColorChangeCallback = void Function(Color);
 
 class ColorMenuButton extends StatelessWidget {
   ColorMenuButton({
@@ -512,7 +513,7 @@ class ColorMenuButton extends StatelessWidget {
     @required this.onColorChanged,
   }) : super(key: key);
 
-  final HSLColor color;
+  final Color color;
   final bool active;
   final ColorChangeCallback onColorChanged;
   final VoidCallback onToggled;
@@ -529,13 +530,13 @@ class ColorMenuButton extends StatelessWidget {
     );
     HSLColor newColor = await Navigator.of(context).push(
       _ColorPopupRoute(
-        color: color,
+        color: HSLColor.fromColor(color),
         initialSize: button.size,
         position: position,
       )
     );
 
-    onColorChanged(newColor);
+    onColorChanged(newColor.toColor());
   }
 
   Color _getContrastingColor(Color color) {
@@ -549,73 +550,76 @@ class ColorMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(
-        splashColor: _getContrastingColor(color.toColor()).withAlpha(25),
-        highlightColor: _getContrastingColor(color.toColor()).withAlpha(25),
-      ),
-      child: Material(
-        color: color.toColor(),
-        borderRadius: BorderRadius.circular(8.0),
-        child: InkWell(
+    return SizedBox(
+      height: _kButtonHeight,
+      child: Theme(
+        data: Theme.of(context).copyWith(
+          splashColor: _getContrastingColor(color).withAlpha(25),
+          highlightColor: _getContrastingColor(color).withAlpha(25),
+        ),
+        child: Material(
+          color: color,
           borderRadius: BorderRadius.circular(8.0),
-          onTap: () {
-            if(!active) {
-              onToggled();
-            }
-          },
-          child: IgnorePointer(
-            ignoring: !active,
-            child: Stack(
-              children: <Widget>[
-                Positioned.fill(
-                  child: InkWell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(''),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(8.0),
+            onTap: () {
+              if(!active) {
+                onToggled();
+              }
+            },
+            child: IgnorePointer(
+              ignoring: !active,
+              child: Stack(
+                children: <Widget>[
+                  Positioned.fill(
+                    child: InkWell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(''),
+                      ),
+                      borderRadius: BorderRadius.circular(8.0),
+                      onTap: () => _showColorMenu(context),
                     ),
-                    borderRadius: BorderRadius.circular(8.0),
-                    onTap: () => _showColorMenu(context),
                   ),
-                ),
-                Positioned.fill(
-                  child: IgnorePointer(
-                    ignoring: true,
-                    child: AnimatedContainer(
-                        curve: Curves.ease,
-                        duration: Duration(milliseconds: 200),
-                        foregroundDecoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.black12,
-                              width: 2.0
+                  Positioned.fill(
+                    child: IgnorePointer(
+                      ignoring: true,
+                      child: AnimatedContainer(
+                          curve: Curves.ease,
+                          duration: Duration(milliseconds: 200),
+                          foregroundDecoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors.black12,
+                                width: 2.0
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 12.0),
-                              child: AnimatedOpacity(
-                                curve: Curves.ease,
-                                duration: Duration(milliseconds: 200),
-                                opacity: active ? 1.0 : 0.0,
-                                child: DecoratedBox(
-                                  decoration: ShapeDecoration(
-                                    color: Colors.black38,
-                                    shape: CircleBorder()
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Icon(Icons.check, size: 16.0, color: Colors.white),
+                          child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 12.0),
+                                child: AnimatedOpacity(
+                                  curve: Curves.ease,
+                                  duration: Duration(milliseconds: 200),
+                                  opacity: active ? 1.0 : 0.0,
+                                  child: DecoratedBox(
+                                    decoration: ShapeDecoration(
+                                      color: Colors.black38,
+                                      shape: CircleBorder()
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Icon(Icons.check, size: 16.0, color: Colors.white),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            )
-                        )
+                              )
+                          )
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

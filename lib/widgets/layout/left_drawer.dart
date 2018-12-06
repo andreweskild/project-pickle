@@ -5,6 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/color_selector/color_card.dart';
 import 'package:project_pickle/widgets/tools/tools_card.dart';
+import 'package:project_pickle/widgets/common/base_list.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({
@@ -28,7 +29,8 @@ class LeftDrawer extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 ToolsCard(),
-                Expanded(child: ColorCard()),
+//                Expanded(child: ColorCard()),
+                Expanded(child: ReorderableListDemo())
               ],
             ),
           ),

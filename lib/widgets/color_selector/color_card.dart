@@ -7,8 +7,8 @@ import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/color_selector/color_menu_button.dart';
 
-typedef SetActiveColorCallback = void Function(int, HSLColor);
-typedef SetColorCallback = void Function(HSLColor);
+typedef SetActiveColorCallback = void Function(int, Color);
+typedef SetColorCallback = void Function(Color);
 typedef SetColorTypeCallback = void Function(ColorType);
 typedef SetColorIndexCallback = void Function(int);
 
@@ -23,11 +23,11 @@ class ColorCardModel {
 
   final int activeColorIndex;
   VoidCallback addToPalette;
-  final List<HSLColor> palette;
+  final List<Color> palette;
   final SetColorIndexCallback setActiveColorIndexCallback;
   final SetActiveColorCallback setActiveColorCallback;
 
-  HSLColor get activeColor => palette[activeColorIndex];
+  Color get activeColor => palette[activeColorIndex];
 
   @override
   int get hashCode {
@@ -71,6 +71,26 @@ class ColorCard extends StatelessWidget {
           );
         },
         builder: (context, model) {
+          List<Widget> colors = List.generate(
+            model.palette.length,
+            (index) {
+              return Padding(
+                key: Key(model.palette[index].toString() + index.toString()),
+                padding: const EdgeInsets.all(6.0),
+                child: SizedBox(
+                  height: 40.0,
+                  child: ColorMenuButton (
+                    active: model.activeColorIndex == index,
+                    onColorChanged: (color){
+                      model.setActiveColorCallback(index, color);
+                    },
+                    onToggled: () => model.setActiveColorIndexCallback(index),
+                    color: model.palette[index],
+                  ),
+                ),
+              );
+            }
+          );
           return Column(
             children: <Widget>[
               Expanded(
@@ -84,27 +104,7 @@ class ColorCard extends StatelessWidget {
                   ),
                   child: ListView(
                     padding: EdgeInsets.all(6.0),
-                    primary: false,
-                    shrinkWrap: false,
-                    children: List.generate(
-                      model.palette.length,
-                      (index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(6.0),
-                          child: SizedBox(
-                            height: 40.0,
-                            child: ColorMenuButton (
-                              active: model.activeColorIndex == index,
-                              onColorChanged: (color){
-                                model.setActiveColorCallback(index, color);
-                              },
-                              onToggled: () => model.setActiveColorIndexCallback(index),
-                              color: model.palette[index],
-                            ),
-                          ),
-                        );
-                      }
-                    )
+                    children: colors,
                   ),
                 ),
               ),

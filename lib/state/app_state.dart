@@ -53,13 +53,13 @@ class AppState {
     PixelBuffer drawingBuffer,
     int eraserRemoveCounter,
     ColorType activeColorType,
-    HSLColor primaryColor,
-    HSLColor secondaryColor,
+    Color primaryColor,
+    Color secondaryColor,
     int currentLayerIndex,
     BaseTool currentTool,
     int layerNamingCounter,
     PixelLayerList layers,
-    List<HSLColor> palette,
+    List<Color> palette,
     Path selectionPath,
     double toolOpacity,
     double toolSize,
@@ -101,12 +101,12 @@ class AppState {
   int activeColorIndex;
   ColorType activeColorType;
   PixelBuffer drawingBuffer;
-  HSLColor primaryColor;
-  HSLColor secondaryColor;
+  Color primaryColor;
+  Color secondaryColor;
   PixelLayer get currentLayer => layers.activeLayer;
   BaseTool currentTool;
   PixelLayerList layers;
-  var palette = <HSLColor>[];
+  var palette = <Color>[];
   Path selectionPath;
   double toolSize;
   double toolOpacity;
@@ -115,7 +115,7 @@ class AppState {
   int eraserRemoveCounter;
 
 
-  HSLColor get activeColor =>
+  Color get activeColor =>
       palette[activeColorIndex];
 
 }

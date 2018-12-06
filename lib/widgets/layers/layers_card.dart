@@ -63,57 +63,41 @@ class LayersCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, LayerListModel>(
-        ignoreChange: (state) => !state.canvasDirty,
-        converter: (store) => LayerListModel(
-              layers: store.state.layers,
-              currentLayerIndex: store.state.layers.indexOfActiveLayer,
-              addLayerCallback: () => store.dispatch(AddNewLayerAction()),
-              setLayerCallback: (index) =>
-                  store.dispatch(SetCurrentLayerIndexAction(index)),
-              removeLayerCallback: (index) =>
-                  store.dispatch(RemoveLayerAction(index)),
-              toggleLayerHiddenCallback: (index) =>
-                  store.dispatch(ToggleLayerHiddenAction(index)),
-            ),
-        builder: (context, model) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: SizedBox(
-                  height: 32.0,
-                  width: 32.0,
-                  child: RaisedButton(
-                    elevation: 0.0,
-                    highlightElevation: 0.0,
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    highlightColor: Theme.of(context).accentColor,
-                    shape: CircleBorder(
-                      side: BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
-                    ),
-                    padding: EdgeInsets.all(0.0),
-                    child: Icon(Icons.add),
-                    onPressed: () {
-                      model.addLayerCallback();
-                    },
+      ignoreChange: (state) => !state.canvasDirty,
+      converter: (store) {
+        return LayerListModel(
+          layers: store.state.layers,
+          currentLayerIndex: store.state.layers.indexOfActiveLayer,
+          addLayerCallback: () => store.dispatch(AddNewLayerAction()),
+          setLayerCallback: (index) =>
+              store.dispatch(SetCurrentLayerIndexAction(index)),
+          removeLayerCallback: (index) =>
+              store.dispatch(RemoveLayerAction(index)),
+          toggleLayerHiddenCallback: (index) =>
+              store.dispatch(ToggleLayerHiddenAction(index)),
+        );
+      },
+      builder: (context, model) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+
+            Expanded(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).unselectedWidgetColor,
+                  border: Border(
+                    top: BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
+                    bottom: BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
+                    left: BorderSide(color: Theme.of(context).dividerColor, width: 2.0)
                   ),
                 ),
-              ),
-              Expanded(
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).unselectedWidgetColor,
-                    border: Border(
-                      top: BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
-                      left: BorderSide(color: Theme.of(context).dividerColor, width: 2.0)
-                    ),
-                  ),
-                  child: ListView(
-                    padding: const EdgeInsets.only(top: 6.0, bottom: 6.0, left: 12.0, right: 12.0),
-                    children:
-                        List<Widget>.generate(model.layers.length, (index) {
+                child: ListView(
+                  padding: const EdgeInsets.only(top: 6.0, bottom: 6.0, left: 12.0, right: 12.0),
+                  children: List<Widget>.generate(
+                    model.layers.length,
+                    (index) {
                       int reversedIndex = model.layers.length - 1 - index;
                       return Dismissible(
                         key: Key(
@@ -125,9 +109,7 @@ class LayersCard extends StatelessWidget {
                           child: AnimatedContainer(
                             curve: Curves.ease,
                             duration: Duration(milliseconds: 150),
-                            child: Center(
-                                child:
-                                    Icon(Icons.delete, color: Colors.white)),
+                            child: Center(child: Icon(Icons.delete, color: Colors.white)),
                             decoration: BoxDecoration(
                               color: Colors.red,
                               borderRadius: BorderRadius.circular(6.0),
@@ -145,11 +127,33 @@ class LayersCard extends StatelessWidget {
                               model.toggleLayerHiddenCallback(reversedIndex),
                         ),
                       );
-                    })),
+                    }
+                  )
                 ),
               ),
-            ],
-          );
-        });
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: ConstrainedBox(
+                constraints: BoxConstraints.expand(height: 40.0),
+                child: FlatButton.icon(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  highlightColor: Theme.of(context).accentColor,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  icon: Icon(Icons.add),
+                  label: Text('New Layer'),
+                  onPressed: () {
+                    model.addLayerCallback();
+                  },
+                ),
+              ),
+            ),
+          ],
+        );
+      }
+    );
   }
 }

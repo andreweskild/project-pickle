@@ -96,7 +96,7 @@ class CanvasController extends StatelessWidget {
           dirtyCallback: () => store.state.canvasDirty = false,
           canvasDirty: store.state.canvasDirty,
           drawingBuffer: store.state.drawingBuffer,
-          activeColor: store.state.activeColor.toColor(),
+          activeColor: store.state.activeColor,
           currentTool: store.state.currentTool,
           layers: store.state.layers,
         );

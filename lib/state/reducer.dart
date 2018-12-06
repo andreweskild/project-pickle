@@ -6,7 +6,7 @@ import 'package:project_pickle/canvas/pixel_layer.dart';
 AppState stateReducer(AppState state, dynamic action) {
 
   if (action is AddCurrentColorToPaletteAction) {
-    List<HSLColor> newPalette = List.from(state.palette);
+    List<Color> newPalette = List.from(state.palette);
     if (!newPalette.contains(state.activeColor)) {
       newPalette.add(state.activeColor);
     }
@@ -15,8 +15,8 @@ AppState stateReducer(AppState state, dynamic action) {
     );
   }
   else if (action is AddNewColorToPaletteAction) {
-    List<HSLColor> newPalette = state.palette;
-    newPalette.add(HSLColor.fromAHSL(1.0, 0.0, 0.0, 1.0));
+    List<Color> newPalette = state.palette;
+    newPalette.add(HSLColor.fromAHSL(1.0, 0.0, 0.0, 1.0).toColor());
     return state.copyWith(
       palette: newPalette,
     );
@@ -53,7 +53,7 @@ AppState stateReducer(AppState state, dynamic action) {
   else if (action is FillAreaAction) {
     state.currentLayer.fillArea(
         action.pos,
-        state.activeColor.toColor(),
+        state.activeColor,
         state.selectionPath
     );
     return state.copyWith(
@@ -65,7 +65,7 @@ AppState stateReducer(AppState state, dynamic action) {
       (pixel) {
         state.currentLayer.setPixel(
           pixel,
-          state.activeColor.toColor()
+          state.activeColor
         );
       }
     );
@@ -105,7 +105,7 @@ AppState stateReducer(AppState state, dynamic action) {
         action.color.hue,
         action.color.saturation,
         action.color.lightness,
-      ),
+      ).toColor(),
       canvasDirty: true,
     );
   }
@@ -116,7 +116,7 @@ AppState stateReducer(AppState state, dynamic action) {
         action.color.hue,
         action.color.saturation,
         action.color.lightness,
-      ),
+      ).toColor(),
       canvasDirty: true,
     );
   }
@@ -192,6 +192,23 @@ AppState stateReducer(AppState state, dynamic action) {
     }
     state.canvasDirty = true;
     return state;
+  }
+  else if (action is ReorderColorAction) {
+    int finalIndex = action.newIndex;
+
+    if (action.newIndex > action.oldIndex) {
+      finalIndex -= 1;
+    }
+
+    if (action.oldIndex == state.activeColorIndex) {
+      state.activeColorIndex = finalIndex;
+    }
+
+    final Color item = state.palette.removeAt(action.oldIndex);
+    state.palette.insert(finalIndex, item);
+    return state.copyWith(
+      canvasDirty: true,
+    );
   }
   else {
     return state;

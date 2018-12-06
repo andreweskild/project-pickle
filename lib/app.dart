@@ -31,8 +31,8 @@ final store = Store<AppState>(
     canvasWidth: 32,
     canvasHeight: 32,
     drawingBuffer: PixelBuffer(32, 32),
-    primaryColor: HSLColor.fromAHSL(1.0, 50.0, 1.0, 0.5),
-    secondaryColor: HSLColor.fromAHSL(1.0, 100.0, 1.0, 0.5),
+    primaryColor: Colors.red,
+    secondaryColor: Colors.green,
     layers: PixelLayerList()..add(
       PixelLayer(
         name: 'Layer 1',
@@ -40,11 +40,14 @@ final store = Store<AppState>(
         height: 32,
       )
     ),
-    palette: <HSLColor>[
-      HSLColor.fromAHSL(1.0, 34.0, 0.5, 0.4),
-      HSLColor.fromAHSL(1.0, 25.0, 0.8, 0.4),
-      HSLColor.fromAHSL(1.0, 155.4, 0.6, 0.6),
-      HSLColor.fromAHSL(1.0, 300.8, 0.9, 0.7),
+    palette: <Color>[
+      Colors.purple,
+      Colors.amber,
+      Colors.red,
+      Colors.green,
+      Colors.blue,
+      Colors.orange,
+      Colors.cyanAccent
     ],
   ),
 );

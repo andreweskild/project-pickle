@@ -68,7 +68,7 @@ class SetPaletteColorAction {
     this.color,
   );
 
-  final HSLColor color;
+  final Color color;
   final int index;
 }
 
@@ -120,6 +120,12 @@ class SetShapeFilledAction {
   final bool filled;
 }
 
+class RemoveColorAction{
+  RemoveColorAction(this.index);
+
+  final int index;
+}
+
 class RemovePixelAction {
   RemovePixelAction(this.pos);
   final Offset pos;
@@ -132,6 +138,16 @@ class RemoveLayerAction {
 
 class RedoAction {
   RedoAction();
+}
+
+class ReorderColorAction {
+  ReorderColorAction(
+    this.oldIndex,
+    this.newIndex,
+  );
+
+  final int oldIndex;
+  final int newIndex;
 }
 
 class UndoAction {
