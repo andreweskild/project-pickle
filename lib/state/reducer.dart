@@ -16,7 +16,7 @@ AppState stateReducer(AppState state, dynamic action) {
   }
   else if (action is AddNewColorToPaletteAction) {
     List<Color> newPalette = state.palette;
-    newPalette.add(HSLColor.fromAHSL(1.0, 0.0, 0.0, 1.0).toColor());
+    newPalette.add(action.color);
     return state.copyWith(
       palette: newPalette,
     );

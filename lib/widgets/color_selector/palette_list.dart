@@ -9,11 +9,11 @@ import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/common/reorderable_list.dart';
 
-class ReorderableListDemo extends StatefulWidget {
-  const ReorderableListDemo({ Key key }) : super(key: key);
+class PaletteList extends StatefulWidget {
+  const PaletteList({ Key key }) : super(key: key);
 
   @override
-  _ListDemoState createState() => _ListDemoState();
+  _PaletteListState createState() => _PaletteListState();
 }
 
 typedef _SetActiveColorCallback = void Function(int);
@@ -41,7 +41,7 @@ class _PaletteModel {
   final _ColorChangeCallback colorChangeCallback;
 }
 
-class _ListDemoState extends State<ReorderableListDemo> {
+class _PaletteListState extends State<PaletteList> {
   static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   
 
@@ -73,7 +73,7 @@ class _ListDemoState extends State<ReorderableListDemo> {
         builder: (context, model) {
           return ReorderableList(
             onReorder: model.reorderCallback,
-            padding: EdgeInsets.all(12.0),
+            padding: EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 6.0),
             scrollDirection: Axis.vertical,
             children: List.generate(model.palette.length,
               (index) =>

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-/// Icon Button that shows a rounded background when [selected] is true
 class SquareIconButton extends StatelessWidget {
   SquareIconButton({
     Key key,
@@ -29,6 +28,8 @@ class SquareIconButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
         ),
+        splashColor: Theme.of(context).splashColor,
+        highlightColor: Theme.of(context).highlightColor,
         onPressed: onPressed,
       ),
     );

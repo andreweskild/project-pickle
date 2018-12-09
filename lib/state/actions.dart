@@ -9,7 +9,9 @@ class AddCurrentColorToPaletteAction {
 }
 
 class AddNewColorToPaletteAction {
-  AddNewColorToPaletteAction();
+  AddNewColorToPaletteAction(this.color);
+
+  final Color color;
 }
 
 class AddNewLayerAction {

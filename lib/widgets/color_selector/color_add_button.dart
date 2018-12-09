@@ -12,28 +12,6 @@ const double _kButtonHeight = 40.0;
 const double _kMenuWidth = 300.0;
 const double _kMenuHeight = 192.0;
 
-//class _ColorPickerModel {
-//  _ColorPickerModel({this.currentTool, this.callback});
-//
-//  final BaseTool currentTool;
-//  final VoidCallback callback;
-//
-//
-//  @override
-//  int get hashCode {
-//    int result = 17;
-//    result = 37 * result + currentTool.hashCode;
-//    return result;
-//  }
-//
-//  @override
-//  bool operator ==(dynamic other) {
-//    if (other is! _ColorPickerModel) return false;
-//    _ColorPickerModel model = other;
-//    return (model.currentTool.runtimeType == currentTool.runtimeType);
-//  }
-//}
-
 class _ColorPopupRouteLayout extends SingleChildLayoutDelegate {
   _ColorPopupRouteLayout(this.position);
 
@@ -98,14 +76,12 @@ class ColorPopupContent extends StatefulWidget {
     this.color,
     @required this.onAccept,
     @required this.onCancel,
-    @required this.onColorChanged,
     @required this.initialSize,
     @required this.parentAnimation,
   }) : super(key: key);
 
   final ValueChanged<HSLColor> onAccept;
   final VoidCallback onCancel;
-  final ValueChanged<HSLColor> onColorChanged;
   final HSLColor color;
   final Size initialSize;
   final Animation<double> parentAnimation;
@@ -129,7 +105,6 @@ class ColorPopupContentState extends State<ColorPopupContent> {
       if (s != null) _color = _color.withSaturation(s);
       if (l != null) _color = _color.withLightness(l);
     });
-    widget.onColorChanged(_color);
   }
 
 
@@ -224,17 +199,17 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                           highlightColor: _getContrastingColor(_color.toColor()).withAlpha(25),
                         ),
                         child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              SquareIconButton(
-                                icon: Icon(Icons.clear, color: _getContrastingColor(_color.toColor())),
-                                onPressed: widget.onCancel,
-                              ),
-                              SquareIconButton(
-                                icon: Icon(Icons.check, color: _getContrastingColor(_color.toColor())),
-                                onPressed: () => widget.onAccept(_color),
-                              )
-                            ]
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            SquareIconButton(
+                              icon: Icon(Icons.clear, color: _getContrastingColor(_color.toColor())),
+                              onPressed: widget.onCancel,
+                            ),
+                            SquareIconButton(
+                              icon: Icon(Icons.add, color: _getContrastingColor(_color.toColor())),
+                              onPressed: () => widget.onAccept(_color),
+                            )
+                          ]
                         ),
                       ),
                     )
@@ -264,19 +239,19 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                   Expanded(
                                     child: SliderTheme(
                                       data: SliderTheme.of(context).copyWith(
-                                        activeTrackColor: Colors.transparent,
-                                        inactiveTrackColor: Colors.transparent,
-                                        activeTickMarkColor: Colors.transparent,
-                                        inactiveTickMarkColor: Colors.transparent,
-                                        thumbColor: _color.withSaturation(1.0).withLightness(0.5).toColor(),
-                                        thumbShape: ColorSliderThumbShape(),
-                                        overlayColor: _color.withAlpha(0.3).withSaturation(1.0).withLightness(0.5).toColor(),
-                                        showValueIndicator: ShowValueIndicator.always,
-                                        valueIndicatorColor: _color.withSaturation(1.0).withLightness(0.5).toColor(),
-                                        valueIndicatorShape: ColorSliderValueIndicatorShape(),
-                                        valueIndicatorTextStyle: TextStyle(
-                                          color: _getContrastingColor(_color.withSaturation(1.0).withLightness(0.5).toColor()),
-                                        )
+                                          activeTrackColor: Colors.transparent,
+                                          inactiveTrackColor: Colors.transparent,
+                                          activeTickMarkColor: Colors.transparent,
+                                          inactiveTickMarkColor: Colors.transparent,
+                                          thumbColor: _color.withSaturation(1.0).withLightness(0.5).toColor(),
+                                          thumbShape: ColorSliderThumbShape(),
+                                          overlayColor: _color.withAlpha(0.3).withSaturation(1.0).withLightness(0.5).toColor(),
+                                          showValueIndicator: ShowValueIndicator.always,
+                                          valueIndicatorColor: _color.withSaturation(1.0).withLightness(0.5).toColor(),
+                                          valueIndicatorShape: ColorSliderValueIndicatorShape(),
+                                          valueIndicatorTextStyle: TextStyle(
+                                            color: _getContrastingColor(_color.withSaturation(1.0).withLightness(0.5).toColor()),
+                                          )
                                       ),
                                       child: Stack(
                                         children: <Widget>[
@@ -330,19 +305,19 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                   Expanded(
                                     child: SliderTheme(
                                       data: SliderTheme.of(context).copyWith(
-                                        activeTrackColor: Colors.transparent,
-                                        inactiveTrackColor: Colors.transparent,
-                                        activeTickMarkColor: Colors.transparent,
-                                        inactiveTickMarkColor: Colors.transparent,
-                                        overlayColor: _color.toColor().withOpacity(0.33),
-                                        thumbColor: _color.toColor(),
-                                        thumbShape: ColorSliderThumbShape(),
-                                        showValueIndicator: ShowValueIndicator.always,
-                                        valueIndicatorColor: _color.toColor(),
-                                        valueIndicatorShape: ColorSliderValueIndicatorShape(),
-                                        valueIndicatorTextStyle: TextStyle(
-                                          color: _getContrastingColor(_color.toColor()),
-                                        )
+                                          activeTrackColor: Colors.transparent,
+                                          inactiveTrackColor: Colors.transparent,
+                                          activeTickMarkColor: Colors.transparent,
+                                          inactiveTickMarkColor: Colors.transparent,
+                                          overlayColor: _color.toColor().withOpacity(0.33),
+                                          thumbColor: _color.toColor(),
+                                          thumbShape: ColorSliderThumbShape(),
+                                          showValueIndicator: ShowValueIndicator.always,
+                                          valueIndicatorColor: _color.toColor(),
+                                          valueIndicatorShape: ColorSliderValueIndicatorShape(),
+                                          valueIndicatorTextStyle: TextStyle(
+                                            color: _getContrastingColor(_color.toColor()),
+                                          )
                                       ),
                                       child: Stack(
                                         children: <Widget>[
@@ -396,19 +371,19 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                   Expanded(
                                     child: SliderTheme(
                                       data: SliderTheme.of(context).copyWith(
-                                        activeTrackColor: Colors.transparent,
-                                        inactiveTrackColor: Colors.transparent,
-                                        activeTickMarkColor: Colors.transparent,
-                                        inactiveTickMarkColor: Colors.transparent,
-                                        showValueIndicator: ShowValueIndicator.always,
-                                        overlayColor: _color.toColor().withOpacity(0.33),
-                                        thumbColor: _color.toColor(),
-                                        thumbShape: ColorSliderThumbShape(),
-                                        valueIndicatorColor: _color.toColor(),
-                                        valueIndicatorShape: ColorSliderValueIndicatorShape(),
-                                        valueIndicatorTextStyle: TextStyle(
-                                          color: _getContrastingColor(_color.toColor()),
-                                        )
+                                          activeTrackColor: Colors.transparent,
+                                          inactiveTrackColor: Colors.transparent,
+                                          activeTickMarkColor: Colors.transparent,
+                                          inactiveTickMarkColor: Colors.transparent,
+                                          showValueIndicator: ShowValueIndicator.always,
+                                          overlayColor: _color.toColor().withOpacity(0.33),
+                                          thumbColor: _color.toColor(),
+                                          thumbShape: ColorSliderThumbShape(),
+                                          valueIndicatorColor: _color.toColor(),
+                                          valueIndicatorShape: ColorSliderValueIndicatorShape(),
+                                          valueIndicatorTextStyle: TextStyle(
+                                            color: _getContrastingColor(_color.toColor()),
+                                          )
                                       ),
                                       child: Stack(
                                         children: <Widget>[
@@ -469,18 +444,11 @@ class _ColorPopupRoute extends PopupRoute<HSLColor> {
     @required this.color,
     @required this.initialSize,
     @required this.position,
-  }) {
-    oldColor = color;
-  }
+  });
 
   HSLColor color;
-  HSLColor oldColor;
   final Size initialSize;
   final RelativeRect position;
-
-  void _onPopupColorChanged(HSLColor newColor) {
-    color = newColor;
-  }
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 400);
@@ -495,7 +463,7 @@ class _ColorPopupRoute extends PopupRoute<HSLColor> {
   String get barrierLabel => '';
 
   @override
-  HSLColor get currentResult => color;
+  HSLColor get currentResult => null;
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> forwardAnimation) {
@@ -519,17 +487,16 @@ class _ColorPopupRoute extends PopupRoute<HSLColor> {
       child: new Builder(
         builder: (BuildContext context) {
           return new CustomSingleChildLayout(
-            delegate: new _ColorPopupRouteLayout(
-              position,
-            ),
-            child: ColorPopupContent(
-              color: color,
-              onColorChanged: _onPopupColorChanged,
-              initialSize: initialSize,
-              parentAnimation: parentAnimation,
-              onAccept: (color) => Navigator.pop(context, color),
-              onCancel: () => Navigator.pop(context, oldColor),
-            )
+              delegate: new _ColorPopupRouteLayout(
+                position,
+              ),
+              child: ColorPopupContent(
+                color: color,
+                initialSize: initialSize,
+                parentAnimation: parentAnimation,
+                onAccept: (color) => Navigator.pop(context, color),
+                onCancel: () => Navigator.pop(context),
+              )
           );
         },
       ),
@@ -539,19 +506,15 @@ class _ColorPopupRoute extends PopupRoute<HSLColor> {
 
 typedef ColorChangeCallback = void Function(Color);
 
-class ColorMenuButton extends StatelessWidget {
-  ColorMenuButton({
+class ColorAddButton extends StatelessWidget {
+  ColorAddButton({
     Key key,
-    this.active = false,
-    this.onToggled,
     @required this.color,
-    @required this.onColorChanged,
+    @required this.onAccepted,
   }) : super(key: key);
 
   final Color color;
-  final bool active;
-  final ColorChangeCallback onColorChanged;
-  final VoidCallback onToggled;
+  final ColorChangeCallback onAccepted;
 
   _showColorMenu(BuildContext context) async {
     final RenderBox button = context.findRenderObject();
@@ -564,25 +527,15 @@ class ColorMenuButton extends StatelessWidget {
       Offset.zero & overlay.size,
     );
     HSLColor newColor = await Navigator.of(context).push(
-      _ColorPopupRoute(
-        color: HSLColor.fromColor(color),
-        initialSize: button.size,
-        position: position,
-      )
+        _ColorPopupRoute(
+          color: HSLColor.fromColor(color),
+          initialSize: button.size,
+          position: position,
+        )
     );
 
-    if(newColor != null) {
-      onColorChanged(newColor.toColor());
-    }
-
-  }
-
-  Color _getContrastingColor(Color color) {
-    if (color.computeLuminance() > 0.5) {
-      return Colors.black;
-    }
-    else {
-      return Colors.white;
+    if (newColor != null) {
+      onAccepted(newColor.toColor());
     }
   }
 
@@ -590,76 +543,26 @@ class ColorMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: _kButtonHeight,
-      child: Theme(
-        data: Theme.of(context).copyWith(
-          splashColor: _getContrastingColor(color).withAlpha(25),
-          highlightColor: _getContrastingColor(color).withAlpha(25),
-        ),
-        child: Material(
-          color: color,
-          borderRadius: BorderRadius.circular(8.0),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(8.0),
-            onTap: () {
-              if(!active) {
-                onToggled();
-              }
-            },
-            child: IgnorePointer(
-              ignoring: !active,
-              child: Stack(
-                children: <Widget>[
-                  Positioned.fill(
-                    child: InkWell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text(''),
-                      ),
-                      borderRadius: BorderRadius.circular(8.0),
-                      onTap: () => _showColorMenu(context),
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: IgnorePointer(
-                      ignoring: true,
-                      child: Container(
-                        foregroundDecoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black12,
-                            width: 2.0
-                          ),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 12.0),
-                            child: AnimatedOpacity(
-                              curve: Curves.ease,
-                              duration: Duration(milliseconds: 1000),
-                              opacity: active ? 1.0 : 0.0,
-                              child: DecoratedBox(
-                                decoration: ShapeDecoration(
-                                  color: Colors.black38,
-                                  shape: CircleBorder()
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Icon(Icons.check, size: 16.0, color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          )
-                        )
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+      child: RaisedButton(
+        elevation: 0.0,
+        highlightElevation: 0.0,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            width: 2.0,
+            color: Theme
+                .of(context)
+                .dividerColor,
           ),
+          borderRadius: BorderRadius.circular(8.0),
         ),
-      ),
+        color: Theme
+            .of(context)
+            .scaffoldBackgroundColor,
+        padding: EdgeInsets.zero,
+        onPressed: () => _showColorMenu(context),
+        child: Center(child: Icon(Icons.add)),
+
+      )
     );
   }
 }
