@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide DismissDirection;
 import 'package:flutter/rendering.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
@@ -8,6 +8,7 @@ import 'package:project_pickle/widgets/color_selector/color_menu_button.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/common/reorderable_list.dart';
+import 'package:project_pickle/widgets/common/slide_action.dart';
 
 class PaletteList extends StatefulWidget {
   const PaletteList({ Key key }) : super(key: key);
@@ -46,12 +47,15 @@ class _PaletteListState extends State<PaletteList> {
   
 
   Widget buildListTile(Color color, int index, bool active, _ColorChangeCallback onColorChanged, _SetActiveColorCallback onToggled) {
-    return ColorMenuButton(
+    return SlideAction(
       key: Key(color.value.toString() + index.toString()),
-      color: color,
-      onColorChanged: (color) => onColorChanged(color, index),
-      active: active,
-      onToggled: () => onToggled(index),
+      direction: DismissDirection.startToEnd,
+      child: ColorMenuButton(
+        color: color,
+        onColorChanged: (color) => onColorChanged(color, index),
+        active: active,
+        onToggled: () => onToggled(index),
+      ),
     );
   }
 
@@ -74,7 +78,6 @@ class _PaletteListState extends State<PaletteList> {
           return ReorderableList(
             onReorder: model.reorderCallback,
             padding: EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 6.0),
-            scrollDirection: Axis.vertical,
             children: List.generate(model.palette.length,
               (index) =>
                 buildListTile(model.palette[index], index, model.activeColorIndex == index, model.colorChangeCallback, model.setActiveColorCallback),

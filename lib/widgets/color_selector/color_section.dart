@@ -40,6 +40,7 @@ class ColorSection extends StatelessWidget {
             child: SizedBox(
               height: 40.0,
               child: StoreBuilder<AppState>(
+                rebuildOnChange: false,
                   builder: (context, store) {
 //                    return RaisedButton(
 //                      elevation: 0.0,
