@@ -1,38 +1,39 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 const Curve _kResizeTimeCurve = Interval(0.4, 1.0, curve: Curves.ease);
 const double _kMinFlingVelocity = 700.0;
 const double _kMinFlingVelocityDelta = 400.0;
 const double _kFlingVelocityScale = 1.0 / 300.0;
-const double _kDismissThreshold = 0.4;
+const double _kDismissThreshold = 1.0;
 const double _kRevealAmount = 0.75;
 
-/// Signature used by [SlideAction] to indicate that it has been dismissed in
+/// Signature used by [Deletable] to indicate that it has been dismissed in
 /// the given `direction`.
 ///
-/// Used by [SlideAction.onDismissed].
+/// Used by [Deletable.onDeleted].
 typedef DismissDirectionCallback = void Function(DismissDirection direction);
 
-/// The direction in which a [SlideAction] can be dismissed.
+/// The direction in which a [Deletable] can be dismissed.
 enum DismissDirection {
-  /// The [SlideAction] can be dismissed by dragging either up or down.
+  /// The [Deletable] can be dismissed by dragging either up or down.
   vertical,
 
-  /// The [SlideAction] can be dismissed by dragging either left or right.
+  /// The [Deletable] can be dismissed by dragging either left or right.
   horizontal,
 
-  /// The [SlideAction] can be dismissed by dragging in the reverse of the
+  /// The [Deletable] can be dismissed by dragging in the reverse of the
   /// reading direction (e.g., from right to left in left-to-right languages).
   endToStart,
 
-  /// The [SlideAction] can be dismissed by dragging in the reading direction
+  /// The [Deletable] can be dismissed by dragging in the reading direction
   /// (e.g., from left to right in left-to-right languages).
   startToEnd,
 
-  /// The [SlideAction] can be dismissed by dragging up only.
+  /// The [Deletable] can be dismissed by dragging up only.
   up,
 
-  /// The [SlideAction] can be dismissed by dragging down only.
+  /// The [Deletable] can be dismissed by dragging down only.
   down
 }
 
@@ -40,34 +41,34 @@ enum DismissDirection {
 ///
 /// Dragging or flinging this widget in the [DismissDirection] causes the child
 /// to slide out of view. Following the slide animation, if [resizeDuration] is
-/// non-null, the SlideAction widget animates its height (or width, whichever is
+/// non-null, the Deletable widget animates its height (or width, whichever is
 /// perpendicular to the dismiss direction) to zero over the [resizeDuration].
 ///
 /// Backgrounds can be used to implement the "leave-behind" idiom. If a background
-/// is specified it is stacked behind the SlideAction's child and is exposed when
+/// is specified it is stacked behind the Deletable's child and is exposed when
 /// the child moves.
 ///
-/// The widget calls the [onDismissed] callback either after its size has
+/// The widget calls the [onDeleted] callback either after its size has
 /// collapsed to zero (if [resizeDuration] is non-null) or immediately after
-/// the slide animation (if [resizeDuration] is null). If the SlideAction is a
+/// the slide animation (if [resizeDuration] is null). If the Deletable is a
 /// list item, it must have a key that distinguishes it from the other items and
-/// its [onDismissed] callback must remove the item from the list.
-class SlideAction extends StatefulWidget {
+/// its [onDeleted] callback must remove the item from the list.
+class Deletable extends StatefulWidget {
   /// Creates a widget that can be dismissed.
   ///
-  /// The [key] argument must not be null because [SlideAction]s are commonly
+  /// The [key] argument must not be null because [Deletable]s are commonly
   /// used in lists and removed from the list when dismissed. Without keys, the
   /// default behavior is to sync widgets based on their index in the list,
   /// which means the item after the dismissed item would be synced with the
   /// state of the dismissed item. Using keys causes the widgets to sync
   /// according to their keys and avoids this pitfall.
-  const SlideAction({
+  const Deletable({
     @required Key key,
     @required this.child,
     this.background,
     this.secondaryBackground,
     this.onResize,
-    this.onDismissed,
+    this.onDeleted,
     this.direction = DismissDirection.horizontal,
     this.resizeDuration = const Duration(milliseconds: 300),
     this.dismissThresholds = const <DismissDirection, double>{},
@@ -96,14 +97,14 @@ class SlideAction extends StatefulWidget {
   final VoidCallback onResize;
 
   /// Called when the widget has been dismissed, after finishing resizing.
-  final DismissDirectionCallback onDismissed;
+  final DismissDirectionCallback onDeleted;
 
   /// The direction in which the widget can be dismissed.
   final DismissDirection direction;
 
-  /// The amount of time the widget will spend contracting before [onDismissed] is called.
+  /// The amount of time the widget will spend contracting before [onDeleted] is called.
   ///
-  /// If null, the widget will not contract and [onDismissed] will be called
+  /// If null, the widget will not contract and [onDeleted] will be called
   /// immediately after the widget is dismissed.
   final Duration resizeDuration;
 
@@ -134,11 +135,11 @@ class SlideAction extends StatefulWidget {
   final double crossAxisEndOffset;
 
   @override
-  _SlideActionState createState() => _SlideActionState();
+  _DeletableState createState() => _DeletableState();
 }
 
-class _SlideActionClipper extends CustomClipper<Rect> {
-  _SlideActionClipper({
+class _DeletableClipper extends CustomClipper<Rect> {
+  _DeletableClipper({
     @required this.axis,
     @required this.moveAnimation
   }) : assert(axis != null),
@@ -170,15 +171,40 @@ class _SlideActionClipper extends CustomClipper<Rect> {
   Rect getApproximateClipRect(Size size) => getClip(size);
 
   @override
-  bool shouldReclip(_SlideActionClipper oldClipper) {
+  bool shouldReclip(_DeletableClipper oldClipper) {
     return oldClipper.axis != axis
         || oldClipper.moveAnimation.value != moveAnimation.value;
   }
 }
 
+class _CircleExpandClipper extends CustomClipper<Rect> {
+  _CircleExpandClipper({
+    @required this.moveAnimation
+  }) :  assert(moveAnimation != null),
+        super(reclip: moveAnimation);
+
+  final Animation<Offset> moveAnimation;
+
+  @override
+  Rect getClip(Size size) {
+    final double offset = moveAnimation.value.dx * size.height;
+    if (offset < 0)
+      return Rect.fromLTRB(0.0, size.height + offset, size.width, size.height);
+    return Rect.fromLTRB(0.0, 0.0, offset, offset);
+  }
+
+  @override
+  Rect getApproximateClipRect(Size size) => getClip(size);
+
+  @override
+  bool shouldReclip(_CircleExpandClipper oldClipper) {
+    return oldClipper.moveAnimation.value != moveAnimation.value;
+  }
+}
+
 enum _FlingGestureKind { none, forward, reverse }
 
-class _SlideActionState extends State<SlideAction> with TickerProviderStateMixin, AutomaticKeepAliveClientMixin { // ignore: MIXIN_INFERENCE_INCONSISTENT_MATCHING_CLASSES
+class _DeletableState extends State<Deletable> with TickerProviderStateMixin, AutomaticKeepAliveClientMixin { // ignore: MIXIN_INFERENCE_INCONSISTENT_MATCHING_CLASSES
   @override
   void initState() {
     super.initState();
@@ -190,12 +216,16 @@ class _SlideActionState extends State<SlideAction> with TickerProviderStateMixin
   AnimationController _moveController;
   Animation<Offset> _moveAnimation;
 
+  Animation<double> _responseSizeAnimation;
+
   AnimationController _resizeController;
   Animation<double> _resizeAnimation;
 
   double _dragExtent = 0.0;
   bool _dragUnderway = false;
   Size _sizePriorToCollapse;
+  Size _sizePriorToDrag;
+  double _inkResponseSize;
 
   @override
   bool get wantKeepAlive => _moveController?.isAnimating == true || _resizeController?.isAnimating == true;
@@ -241,6 +271,7 @@ class _SlideActionState extends State<SlideAction> with TickerProviderStateMixin
   }
 
   void _handleDragStart(DragStartDetails details) {
+    _sizePriorToDrag = context.size;
     _dragUnderway = true;
     if (_moveController.isAnimating) {
       _dragExtent = _moveController.value * _overallDragAxisExtent * _dragExtent.sign;
@@ -302,6 +333,12 @@ class _SlideActionState extends State<SlideAction> with TickerProviderStateMixin
         }
         break;
     }
+    if(_sizePriorToDrag != null) {
+      _inkResponseSize = _sizePriorToDrag.height * _moveController.value;
+    }
+    else {
+      _inkResponseSize = 0.0;
+    }
     if (oldDragExtent.sign != _dragExtent.sign) {
       setState(() {
         _updateMoveAnimation();
@@ -321,6 +358,11 @@ class _SlideActionState extends State<SlideAction> with TickerProviderStateMixin
             ? Offset(end * _kRevealAmount, widget.crossAxisEndOffset)
             : Offset(widget.crossAxisEndOffset, end),
       ),
+    );
+    _responseSizeAnimation = _moveController.drive(
+      CurveTween(
+        curve: Curves.easeIn
+      )
     );
   }
 
@@ -405,10 +447,10 @@ class _SlideActionState extends State<SlideAction> with TickerProviderStateMixin
     assert(_resizeController == null);
     assert(_sizePriorToCollapse == null);
     if (widget.resizeDuration == null) {
-      if (widget.onDismissed != null) {
+      if (widget.onDeleted != null) {
         final DismissDirection direction = _dismissDirection;
         assert(direction != null);
-        widget.onDismissed(direction);
+        widget.onDeleted(direction);
       }
     } else {
       _resizeController = AnimationController(duration: widget.resizeDuration, vsync: this)
@@ -433,10 +475,10 @@ class _SlideActionState extends State<SlideAction> with TickerProviderStateMixin
 
   void _handleResizeProgressChanged() {
     if (_resizeController.isCompleted) {
-      if (widget.onDismissed != null) {
+      if (widget.onDeleted != null) {
         final DismissDirection direction = _dismissDirection;
         assert(direction != null);
-        widget.onDismissed(direction);
+        widget.onDeleted(direction);
       }
     } else {
       if (widget.onResize != null)
@@ -463,13 +505,14 @@ class _SlideActionState extends State<SlideAction> with TickerProviderStateMixin
         if (_resizeAnimation.status != AnimationStatus.forward) {
           assert(_resizeAnimation.status == AnimationStatus.completed);
           throw FlutterError(
-              'A dismissed SlideAction widget is still part of the tree.\n'
-                  'Make sure to implement the onDismissed handler and to immediately remove the SlideAction\n'
+              'A dismissed Deletable widget is still part of the tree.\n'
+                  'Make sure to implement the onDeleted handler and to immediately remove the Deletable\n'
                   'widget from the application once that handler has fired.'
           );
         }
         return true;
       }());
+
 
       return SizeTransition(
           sizeFactor: _resizeAnimation,
@@ -477,7 +520,7 @@ class _SlideActionState extends State<SlideAction> with TickerProviderStateMixin
           child: SizedBox(
               width: _sizePriorToCollapse.width,
               height: _sizePriorToCollapse.height,
-              child: background
+              child: widget.child
           )
       );
     }
@@ -490,15 +533,46 @@ class _SlideActionState extends State<SlideAction> with TickerProviderStateMixin
     if (background != null) {
       final List<Widget> children = <Widget>[];
 
+
       if (!_moveAnimation.isDismissed) {
         children.add(Positioned.fill(
-            child: ClipRect(
-                clipper: _SlideActionClipper(
-                  axis: _directionIsXAxis ? Axis.horizontal : Axis.vertical,
-                  moveAnimation: _moveAnimation,
-                ),
-                child: background
+          child: Material(
+            clipBehavior: Clip.antiAlias,
+            elevation: 0.0,
+            color: Color(0xFFFFA6B1),
+            borderRadius: BorderRadius.circular(8.0),
+            child: FractionallySizedBox(
+              alignment: Alignment.centerLeft,
+              widthFactor: _kRevealAmount,
+              child: Stack(
+                children: <Widget>[
+                  Center(
+                    child: UnconstrainedBox(
+                      child: SizedOverflowBox(
+                        size: Size.square(_sizePriorToDrag.height * _kRevealAmount),
+                        child: ScaleTransition(
+                          scale: _responseSizeAnimation,
+                          child: SizedBox(
+                            height: _sizePriorToDrag.height * 1.5,
+                            width: _sizePriorToDrag.height * 1.5,
+                            child: DecoratedBox(
+                              decoration: ShapeDecoration(
+                                shape: CircleBorder(),
+                                color: Color(0xFFFF485E),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Icon(Icons.delete_outline, color: Colors.white),
+                  )
+                ],
+              ),
             )
+          ),
         ));
       }
 

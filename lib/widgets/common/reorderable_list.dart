@@ -542,11 +542,6 @@ class _ReorderableListContentState extends State<_ReorderableListContent> with T
             widget.children.length,
             constraints),
         );
-//        return SingleChildScrollView(
-//          scrollDirection: Axis.vertical,
-//          child: _buildContainerForScrollDirection(children: wrappedChildren),
-//          controller: _scrollController,
-//        );
         return ListView(
           controller: _scrollController,
           children: wrappedChildren,

@@ -203,11 +203,33 @@ AppState stateReducer(AppState state, dynamic action) {
     if (action.oldIndex == state.activeColorIndex) {
       state.activeColorIndex = finalIndex;
     }
+    else if (action.oldIndex < state.activeColorIndex &&
+              action.newIndex > state.activeColorIndex) {
+      state.activeColorIndex -= 1;
+    }
+    else if (action.oldIndex > state.activeColorIndex &&
+        action.newIndex <= state.activeColorIndex) {
+      state.activeColorIndex += 1;
+    }
 
     final Color item = state.palette.removeAt(action.oldIndex);
     state.palette.insert(finalIndex, item);
     return state.copyWith(
       canvasDirty: true,
+    );
+  }
+  else if (action is RemoveColorAction) {
+    int activeIndex = state.activeColorIndex;
+    if (state.palette.length > 1) {
+      if (activeIndex ==
+          state.palette.length - 1) { // if active color is last in palette
+        activeIndex -= 1;
+      }
+      state.palette.removeAt(action.index);
+    }
+    return state.copyWith(
+      canvasDirty: true,
+      activeColorIndex: activeIndex,
     );
   }
   else {

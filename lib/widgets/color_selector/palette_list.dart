@@ -8,7 +8,7 @@ import 'package:project_pickle/widgets/color_selector/color_menu_button.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/common/reorderable_list.dart';
-import 'package:project_pickle/widgets/common/slide_action.dart';
+import 'package:project_pickle/widgets/common/deletable.dart';
 
 class PaletteList extends StatefulWidget {
   const PaletteList({ Key key }) : super(key: key);
@@ -46,17 +46,61 @@ class _PaletteListState extends State<PaletteList> {
   static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   
 
-  Widget buildListTile(Color color, int index, bool active, _ColorChangeCallback onColorChanged, _SetActiveColorCallback onToggled) {
-    return SlideAction(
-      key: Key(color.value.toString() + index.toString()),
-      direction: DismissDirection.startToEnd,
-      child: ColorMenuButton(
-        color: color,
-        onColorChanged: (color) => onColorChanged(color, index),
-        active: active,
-        onToggled: () => onToggled(index),
-      ),
-    );
+  Widget buildListTile(int index, _PaletteModel model) {
+    // don't allow deleting of last color in palette
+    if(model.palette.length > 1) {
+      return Deletable(
+        key: Key(model.palette[index].value.toString() + index.toString()),
+        direction: DismissDirection.startToEnd,
+        onDeleted: (direction) => model.removeCallback(index),
+        background: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Color(0xFFFFBABA),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: FractionallySizedBox(
+              alignment: Alignment.centerLeft,
+              widthFactor: 0.75,
+              heightFactor: 1.0,
+              child: Icon(Icons.delete_outline, color: Color(0xFFDC5353)),
+            )
+        ),
+        child: Stack(
+          children: <Widget>[
+            Align(
+              alignment: Alignment.center,
+              child: ColorMenuButton(
+                color: model.palette[index],
+                onColorChanged: (color) => model.colorChangeCallback(color, index),
+                active: model.activeColorIndex == index,
+                onToggled: () => model.setActiveColorCallback(index),
+              ),
+            ),
+            Positioned.fill(
+              child: Material(
+                type: MaterialType.transparency,
+                child: InkWell(
+                  onTap: (){},
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+    else {
+      return InkWell(
+        onTap: (){},
+        child: ColorMenuButton(
+          key: Key(model.palette[index].value.toString() + index.toString()),
+          color: model.palette[index],
+          onColorChanged: (color) => model.colorChangeCallback(color, index),
+          active: model.activeColorIndex == index,
+          onToggled: () => model.setActiveColorCallback(index),
+        ),
+      );
+    }
+
   }
 
 
@@ -80,7 +124,7 @@ class _PaletteListState extends State<PaletteList> {
             padding: EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 6.0),
             children: List.generate(model.palette.length,
               (index) =>
-                buildListTile(model.palette[index], index, model.activeColorIndex == index, model.colorChangeCallback, model.setActiveColorCallback),
+                buildListTile(index, model),
             ),
             feedbackShape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
