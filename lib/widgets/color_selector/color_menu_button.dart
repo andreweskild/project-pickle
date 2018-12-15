@@ -636,7 +636,7 @@ class ColorMenuButton extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 12.0),
                             child: AnimatedOpacity(
                               curve: Curves.ease,
-                              duration: Duration(milliseconds: 1000),
+                              duration: Duration(milliseconds: 200),
                               opacity: active ? 1.0 : 0.0,
                               child: DecoratedBox(
                                 decoration: ShapeDecoration(

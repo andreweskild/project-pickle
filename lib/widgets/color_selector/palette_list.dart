@@ -24,22 +24,50 @@ typedef _ColorRemoveCallback = void Function(int);
 
 class _PaletteModel {
   _PaletteModel({
-    this.activeColorIndex,
     this.palette,
     this.reorderCallback,
     this.removeCallback,
     this.addColorCallback,
     this.colorChangeCallback,
-    this.setActiveColorCallback,
   });
 
-  final int activeColorIndex;
   final List<Color> palette;
   final _ColorReorderCallback reorderCallback;
   final _ColorRemoveCallback removeCallback;
   final VoidCallback addColorCallback;
-  final _SetActiveColorCallback setActiveColorCallback;
   final _ColorChangeCallback colorChangeCallback;
+
+}
+
+class _ColorModel {
+  _ColorModel({
+    this.active,
+    this.color,
+    this.setActiveColorCallback
+  });
+
+  final bool active;
+  final Color color;
+  final _SetActiveColorCallback setActiveColorCallback;
+
+
+  @override
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + active.hashCode;
+    result = 37 * result + color.hashCode;
+    return result;
+  }
+
+  // You should generally implement operator == if you
+  // override hashCode.
+  @override
+  bool operator ==(dynamic other) {
+    if (other is! _ColorModel) return false;
+    _ColorModel model = other;
+    return (model.active == active &&
+            model.color == color);
+  }
 }
 
 class _PaletteListState extends State<PaletteList> {
@@ -65,40 +93,45 @@ class _PaletteListState extends State<PaletteList> {
               child: Icon(Icons.delete_outline, color: Color(0xFFDC5353)),
             )
         ),
-        child: Stack(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.center,
-              child: ColorMenuButton(
-                color: model.palette[index],
-                onColorChanged: (color) => model.colorChangeCallback(color, index),
-                active: model.activeColorIndex == index,
-                onToggled: () => model.setActiveColorCallback(index),
-              ),
-            ),
-            Positioned.fill(
-              child: Material(
-                type: MaterialType.transparency,
-                child: InkWell(
-                  onTap: (){},
-                ),
-              ),
-            )
-          ],
+        child: StoreConnector<AppState, _ColorModel>(
+          distinct: true,
+          converter: (store) {
+            return _ColorModel(
+              active: index == store.state.activeColorIndex,
+              color: store.state.palette[index],
+              setActiveColorCallback: (index) => store.dispatch(SetActiveColorIndexAction(index)),
+            );
+          },
+          builder: (context, colorModel) {
+            return ColorMenuButton(
+              color: colorModel.color,
+              onColorChanged: (color){},
+              active: colorModel.active,
+              onToggled: () => colorModel.setActiveColorCallback(index),
+            );
+          } 
         ),
       );
     }
     else {
-      return InkWell(
-        onTap: (){},
-        child: ColorMenuButton(
-          key: Key(model.palette[index].value.toString() + index.toString()),
-          color: model.palette[index],
-          onColorChanged: (color) => model.colorChangeCallback(color, index),
-          active: model.activeColorIndex == index,
-          onToggled: () => model.setActiveColorCallback(index),
-        ),
-      );
+      return StoreConnector<AppState, _ColorModel>(
+          distinct: true,
+          converter: (store) {
+            return _ColorModel(
+              active: index == store.state.activeColorIndex,
+              color: store.state.palette[index],
+              setActiveColorCallback: (index) => store.dispatch(SetActiveColorIndexAction(index)),
+            );
+          },
+          builder: (context, colorModel) {
+            return ColorMenuButton(
+              color: colorModel.color,
+              onColorChanged: (color){},
+              active: colorModel.active,
+              onToggled: () => colorModel.setActiveColorCallback(index),
+            );
+          } 
+        );
     }
 
   }
@@ -110,14 +143,13 @@ class _PaletteListState extends State<PaletteList> {
       child: StoreConnector<AppState, _PaletteModel>(
         converter: (store) {
           return _PaletteModel(
-            activeColorIndex: store.state.activeColorIndex,
             palette: store.state.palette,
             reorderCallback: (oldIndex, newIndex) => store.dispatch(ReorderColorAction(oldIndex, newIndex)),
             removeCallback: (index) => store.dispatch(RemoveColorAction(index)),
-            colorChangeCallback: (color, index) => store.dispatch(SetPaletteColorAction(index, color)),
-            setActiveColorCallback: (index) => store.dispatch(SetActiveColorIndexAction(index))
+            colorChangeCallback: (color, index) => store.dispatch(SetPaletteColorAction(index, color))
           );
         },
+        // TODO: add ignoreChange method to check if palette has changed since last build
         builder: (context, model) {
           return ReorderableList(
             onReorder: model.reorderCallback,
