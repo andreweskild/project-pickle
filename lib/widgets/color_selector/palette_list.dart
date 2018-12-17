@@ -43,12 +43,14 @@ class _ColorModel {
   _ColorModel({
     this.active,
     this.color,
-    this.setActiveColorCallback
+    this.setActiveColorCallback,
+    this.colorChangeCallback
   });
 
   final bool active;
   final Color color;
   final _SetActiveColorCallback setActiveColorCallback;
+  final _ColorChangeCallback colorChangeCallback;
 
 
   @override
@@ -100,12 +102,13 @@ class _PaletteListState extends State<PaletteList> {
               active: index == store.state.activeColorIndex,
               color: store.state.palette[index],
               setActiveColorCallback: (index) => store.dispatch(SetActiveColorIndexAction(index)),
+              colorChangeCallback: (newColor, colorIndex) => store.dispatch(SetPaletteColorAction(colorIndex, newColor)),
             );
           },
           builder: (context, colorModel) {
             return ColorMenuButton(
               color: colorModel.color,
-              onColorChanged: (color){},
+              onColorChanged: (color) => colorModel.colorChangeCallback(color, index),
               active: colorModel.active,
               onToggled: () => colorModel.setActiveColorCallback(index),
             );
@@ -121,12 +124,13 @@ class _PaletteListState extends State<PaletteList> {
               active: index == store.state.activeColorIndex,
               color: store.state.palette[index],
               setActiveColorCallback: (index) => store.dispatch(SetActiveColorIndexAction(index)),
+              colorChangeCallback: (newColor, colorIndex) => store.dispatch(SetPaletteColorAction(colorIndex, newColor)),
             );
           },
           builder: (context, colorModel) {
             return ColorMenuButton(
               color: colorModel.color,
-              onColorChanged: (color){},
+              onColorChanged: (color) => colorModel.colorChangeCallback(color, index),
               active: colorModel.active,
               onToggled: () => colorModel.setActiveColorCallback(index),
             );
@@ -136,6 +140,7 @@ class _PaletteListState extends State<PaletteList> {
 
   }
 
+  int _previousPaletteCount;
 
   @override
   Widget build(BuildContext context) {
@@ -149,8 +154,10 @@ class _PaletteListState extends State<PaletteList> {
             colorChangeCallback: (color, index) => store.dispatch(SetPaletteColorAction(index, color))
           );
         },
+        ignoreChange: (state) => _previousPaletteCount == state.palette.length,
         // TODO: add ignoreChange method to check if palette has changed since last build
         builder: (context, model) {
+          _previousPaletteCount = model.palette.length;
           return ReorderableList(
             onReorder: model.reorderCallback,
             padding: EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 6.0),
