@@ -318,7 +318,7 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
       aspectRatio: 1.0,
       child: Material(
         elevation: widget.active ? 6.0 : 0.0,
-        shadowColor: Theme.of(context).splashColor.withAlpha(60),
+        shadowColor: Theme.of(context).buttonColor.withAlpha(128),
         color: (widget.active && !_opened)
             ? Theme.of(context).buttonColor
             : Theme.of(context).cardColor,

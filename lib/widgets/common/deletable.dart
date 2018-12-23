@@ -138,80 +138,21 @@ class Deletable extends StatefulWidget {
   _DeletableState createState() => _DeletableState();
 }
 
-class _DeletableClipper extends CustomClipper<Rect> {
-  _DeletableClipper({
-    @required this.axis,
-    @required this.moveAnimation
-  }) : assert(axis != null),
-        assert(moveAnimation != null),
-        super(reclip: moveAnimation);
-
-  final Axis axis;
-  final Animation<Offset> moveAnimation;
-
-  @override
-  Rect getClip(Size size) {
-    assert(axis != null);
-    switch (axis) {
-      case Axis.horizontal:
-        final double offset = moveAnimation.value.dx * size.width;
-        if (offset < 0)
-          return Rect.fromLTRB(size.width + offset, 0.0, size.width, size.height);
-        return Rect.fromLTRB(0.0, 0.0, offset, size.height);
-      case Axis.vertical:
-        final double offset = moveAnimation.value.dy * size.height;
-        if (offset < 0)
-          return Rect.fromLTRB(0.0, size.height + offset, size.width, size.height);
-        return Rect.fromLTRB(0.0, 0.0, size.width, offset);
-    }
-    return null;
-  }
-
-  @override
-  Rect getApproximateClipRect(Size size) => getClip(size);
-
-  @override
-  bool shouldReclip(_DeletableClipper oldClipper) {
-    return oldClipper.axis != axis
-        || oldClipper.moveAnimation.value != moveAnimation.value;
-  }
-}
-
-class _CircleExpandClipper extends CustomClipper<Rect> {
-  _CircleExpandClipper({
-    @required this.moveAnimation
-  }) :  assert(moveAnimation != null),
-        super(reclip: moveAnimation);
-
-  final Animation<Offset> moveAnimation;
-
-  @override
-  Rect getClip(Size size) {
-    final double offset = moveAnimation.value.dx * size.height;
-    if (offset < 0)
-      return Rect.fromLTRB(0.0, size.height + offset, size.width, size.height);
-    return Rect.fromLTRB(0.0, 0.0, offset, offset);
-  }
-
-  @override
-  Rect getApproximateClipRect(Size size) => getClip(size);
-
-  @override
-  bool shouldReclip(_CircleExpandClipper oldClipper) {
-    return oldClipper.moveAnimation.value != moveAnimation.value;
-  }
-}
-
 enum _FlingGestureKind { none, forward, reverse }
 
 class _DeletableState extends State<Deletable> with TickerProviderStateMixin, AutomaticKeepAliveClientMixin { // ignore: MIXIN_INFERENCE_INCONSISTENT_MATCHING_CLASSES
   @override
   void initState() {
     super.initState();
+    
     _moveController = AnimationController(duration: widget.movementDuration, vsync: this)
       ..addStatusListener(_handleDismissStatusChanged);
     _updateMoveAnimation();
+
+    contentWidget = buildContentNormal();
   }
+
+  
 
   AnimationController _moveController;
   Animation<Offset> _moveAnimation;
@@ -226,6 +167,8 @@ class _DeletableState extends State<Deletable> with TickerProviderStateMixin, Au
   Size _sizePriorToCollapse;
   Size _sizePriorToDrag;
   double _inkResponseSize;
+  OverlayEntry feedbackWidget;
+  Widget contentWidget;
 
   @override
   bool get wantKeepAlive => _moveController?.isAnimating == true || _resizeController?.isAnimating == true;
@@ -270,8 +213,88 @@ class _DeletableState extends State<Deletable> with TickerProviderStateMixin, Au
     return _directionIsXAxis ? size.width : size.height;
   }
 
-  void _handleDragStart(DragStartDetails details) {
+  OverlayEntry _buildFeedbackWidget(BuildContext context) {
+    final RenderBox button = context.findRenderObject();
+    final RenderBox overlay = Overlay.of(context).context.findRenderObject();
+    final RelativeRect position = new RelativeRect.fromRect(
+      new Rect.fromPoints(
+        button.localToGlobal(Offset.zero, ancestor: overlay),
+        button.localToGlobal(button.size.bottomRight(Offset.zero), ancestor: overlay),
+      ),
+      Offset.zero & overlay.size,
+    );
+
+    return OverlayEntry(
+      builder: (context) {
+        return Positioned(
+          top: position.top,
+          left: position.left,
+          child: SizedBox(
+            width: button.size.width,
+            height: button.size.height,
+            child: SlideTransition(
+              position: _moveAnimation,
+              child: widget.child
+            ),
+          ),
+        );
+      }
+    );
+  }
+
+  Widget buildContentNormal() {
+    return widget.child;
+  }
+  
+  Widget buildContentDragging() {
+    return SizedBox(
+      height: _sizePriorToDrag.height,
+      width: _sizePriorToDrag.width,
+      child: Material(
+        clipBehavior: Clip.antiAlias,
+        elevation: 0.0,
+        color: Color(0xFFFFA6B1),
+        borderRadius: BorderRadius.circular(8.0),
+        child: FractionallySizedBox(
+          alignment: Alignment.centerLeft,
+          widthFactor: _kRevealAmount,
+          child: Stack(
+            children: <Widget>[
+              Center(
+                child: UnconstrainedBox(
+                  child: SizedOverflowBox(
+                    size: Size.square(_sizePriorToDrag.height * _kRevealAmount),
+                    child: ScaleTransition(
+                      scale: _responseSizeAnimation,
+                      child: SizedBox(
+                        height: _sizePriorToDrag.height * 1.5,
+                        width: _sizePriorToDrag.height * 1.5,
+                        child: DecoratedBox(
+                          decoration: ShapeDecoration(
+                            shape: CircleBorder(),
+                            color: Color(0xFFFF485E),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Center(
+                child: Icon(Icons.delete_outline, color: Colors.white),
+              )
+            ],
+          ),
+        )
+      ),
+    );
+  }
+
+  void _handleDragStart(BuildContext context, DragStartDetails details) {
     _sizePriorToDrag = context.size;
+    contentWidget = buildContentDragging();
+    feedbackWidget = _buildFeedbackWidget(context);
+
     _dragUnderway = true;
     if (_moveController.isAnimating) {
       _dragExtent = _moveController.value * _overallDragAxisExtent * _dragExtent.sign;
@@ -283,6 +306,7 @@ class _DeletableState extends State<Deletable> with TickerProviderStateMixin, Au
     setState(() {
       _updateMoveAnimation();
     });
+    Navigator.of(context).overlay.insert(feedbackWidget);
   }
 
   void _handleDragUpdate(DragUpdateDetails details) {
@@ -402,7 +426,9 @@ class _DeletableState extends State<Deletable> with TickerProviderStateMixin, Au
       return;
     _dragUnderway = false;
     if (_moveController.isCompleted) {
-      _startResizeAnimation();
+      _moveController.reverse().whenComplete(
+        _startResizeAnimation
+      );
       return;
     }
     final double flingVelocity = _directionIsXAxis ? details.velocity.pixelsPerSecond.dx : details.velocity.pixelsPerSecond.dy;
@@ -428,7 +454,14 @@ class _DeletableState extends State<Deletable> with TickerProviderStateMixin, Au
           if (_moveController.value > (widget.dismissThresholds[_dismissDirection] ?? _kDismissThreshold)) {
             _moveController.forward();
           } else {
-            _moveController.reverse();
+            _moveController.reverse().whenComplete(
+              () {
+                setState((){
+                  contentWidget = buildContentNormal();
+                });
+                feedbackWidget.remove();
+              } 
+            );
           }
         }
         break;
@@ -442,8 +475,11 @@ class _DeletableState extends State<Deletable> with TickerProviderStateMixin, Au
   }
 
   void _startResizeAnimation() {
+    contentWidget = buildContentNormal();
+    feedbackWidget.remove();
+
     assert(_moveController != null);
-    assert(_moveController.isCompleted);
+    // assert(_moveController.isCompleted);
     assert(_resizeController == null);
     assert(_sizePriorToCollapse == null);
     if (widget.resizeDuration == null) {
@@ -492,6 +528,8 @@ class _DeletableState extends State<Deletable> with TickerProviderStateMixin, Au
 
     assert(!_directionIsXAxis || debugCheckHasDirectionality(context));
 
+    
+    Widget deletionBackground = SizedBox();
     Widget background = widget.background;
     if (widget.secondaryBackground != null) {
       final DismissDirection direction = _dismissDirection;
@@ -525,71 +563,81 @@ class _DeletableState extends State<Deletable> with TickerProviderStateMixin, Au
       );
     }
 
-    Widget content = SlideTransition(
-        position: _moveAnimation,
-        child: widget.child
-    );
+    
 
-    if (background != null) {
-      final List<Widget> children = <Widget>[];
+    Widget content;
 
+    // if (background != null) {
+    //   final List<Widget> children = <Widget>[];
 
-      if (!_moveAnimation.isDismissed) {
-        children.add(Positioned.fill(
-          child: Material(
-            clipBehavior: Clip.antiAlias,
-            elevation: 0.0,
-            color: Color(0xFFFFA6B1),
-            borderRadius: BorderRadius.circular(8.0),
-            child: FractionallySizedBox(
-              alignment: Alignment.centerLeft,
-              widthFactor: _kRevealAmount,
-              child: Stack(
-                children: <Widget>[
-                  Center(
-                    child: UnconstrainedBox(
-                      child: SizedOverflowBox(
-                        size: Size.square(_sizePriorToDrag.height * _kRevealAmount),
-                        child: ScaleTransition(
-                          scale: _responseSizeAnimation,
-                          child: SizedBox(
-                            height: _sizePriorToDrag.height * 1.5,
-                            width: _sizePriorToDrag.height * 1.5,
-                            child: DecoratedBox(
-                              decoration: ShapeDecoration(
-                                shape: CircleBorder(),
-                                color: Color(0xFFFF485E),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Icon(Icons.delete_outline, color: Colors.white),
-                  )
-                ],
-              ),
-            )
-          ),
-        ));
-      }
+    //   // TODO: change deletable implementation to use draggable widgets
 
-      children.add(content);
-      content = Stack(children: children);
-    }
+    //   if (!_moveAnimation.isDismissed) {
+        
+    //       children.add(
+    //         SizedBox(
+    //           height: _sizePriorToDrag.height,
+    //           width: _sizePriorToDrag.width,
+    //           child: Material(
+    //             clipBehavior: Clip.antiAlias,
+    //             elevation: 0.0,
+    //             color: Color(0xFFFFA6B1),
+    //             borderRadius: BorderRadius.circular(8.0),
+    //             child: FractionallySizedBox(
+    //               alignment: Alignment.centerLeft,
+    //               widthFactor: _kRevealAmount,
+    //               child: Stack(
+    //                 children: <Widget>[
+    //                   Center(
+    //                     child: UnconstrainedBox(
+    //                       child: SizedOverflowBox(
+    //                         size: Size.square(_sizePriorToDrag.height * _kRevealAmount),
+    //                         child: ScaleTransition(
+    //                           scale: _responseSizeAnimation,
+    //                           child: SizedBox(
+    //                             height: _sizePriorToDrag.height * 1.5,
+    //                             width: _sizePriorToDrag.height * 1.5,
+    //                             child: DecoratedBox(
+    //                               decoration: ShapeDecoration(
+    //                                 shape: CircleBorder(),
+    //                                 color: Color(0xFFFF485E),
+    //                               ),
+    //                             ),
+    //                           ),
+    //                         ),
+    //                       ),
+    //                     ),
+    //                   ),
+    //                   Center(
+    //                     child: Icon(Icons.delete_outline, color: Colors.white),
+    //                   )
+    //                 ],
+    //               ),
+    //             )
+    //           ),
+    //         )
+    //       );
+    //   }
+
+    //   children.add(
+    //     Opacity(
+    //       opacity: !_isActive ? 1.0 : 0.0,
+    //       child: widget.child,
+    //     )
+    //   );
+    //   content = Stack(children: children);
+    // }
 
     // We are not resizing but we may be being dragging in widget.direction.
     return GestureDetector(
-        onHorizontalDragStart: _directionIsXAxis ? _handleDragStart : null,
+        onHorizontalDragStart: (details) => _directionIsXAxis ? _handleDragStart(context, details) : null,
         onHorizontalDragUpdate: _directionIsXAxis ? _handleDragUpdate : null,
         onHorizontalDragEnd: _directionIsXAxis ? _handleDragEnd : null,
-        onVerticalDragStart: _directionIsXAxis ? null : _handleDragStart,
+        // onVerticalDragStart: _directionIsXAxis ? null : _handleDragStart,
         onVerticalDragUpdate: _directionIsXAxis ? null : _handleDragUpdate,
         onVerticalDragEnd: _directionIsXAxis ? null : _handleDragEnd,
         behavior: HitTestBehavior.opaque,
-        child: content
+        child: contentWidget
     );
   }
 }

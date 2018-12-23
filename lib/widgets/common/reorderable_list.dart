@@ -50,7 +50,7 @@ class ReorderableList extends StatefulWidget {
     this.header,
     @required this.children,
     @required this.onReorder,
-    this.feedbackShape,
+    this.feedbackDecoration,
     this.padding,
     this.spacing,
   }): assert(onReorder != null),
@@ -79,7 +79,7 @@ class ReorderableList extends StatefulWidget {
   final ReorderCallback onReorder;
 
   /// Shape of [Material] widget that wraps list items when they are being dragged.
-  final ShapeBorder feedbackShape;
+  final BoxDecoration feedbackDecoration;
 
   /// Spacing between each list item.
   final double spacing;
@@ -115,7 +115,7 @@ class _ReorderableListState extends State<ReorderableList> {
           children: widget.children,
           onReorder: widget.onReorder,
           padding: widget.padding,
-          feedbackShape: widget.feedbackShape,
+          feedbackDecoration: widget.feedbackDecoration,
           spacing: widget.spacing,
         );
       },
@@ -134,7 +134,7 @@ class _ReorderableListState extends State<ReorderableList> {
       children: widget.children,
       onReorder: widget.onReorder,
       padding: widget.padding,
-      feedbackShape: widget.feedbackShape,
+      feedbackDecoration: widget.feedbackDecoration,
       spacing: widget.spacing,
     );
   }
@@ -149,14 +149,14 @@ class _ReorderableListContent extends StatefulWidget {
     @required this.padding,
     @required this.onReorder,
     this.spacing = 0.0,
-    this.feedbackShape,
+    this.feedbackDecoration,
   });
 
   final Widget header;
   final List<Widget> children;
   final EdgeInsets padding;
   final ReorderCallback onReorder;
-  final ShapeBorder feedbackShape;
+  final BoxDecoration feedbackDecoration;
   final double spacing;
 
   @override
@@ -170,7 +170,7 @@ class _ReorderableListContentState extends State<_ReorderableListContent> with T
   //
   // This value is used when the extents haven't yet been calculated from
   // the currently dragging widget, such as when it first builds.
-  static const double _defaultDropAreaExtent = 100.0;
+  static const double _defaultDropAreaExtent = 40.0;
 
   // The additional margin to place around a computed drop area.
   static const double _dropAreaMargin = 8.0;
@@ -418,11 +418,16 @@ class _ReorderableListContentState extends State<_ReorderableListContent> with T
         feedback: Container(
           alignment: Alignment.topLeft,
           // These constraints will limit the cross axis of the drawn widget.
-          constraints: constraints,
+          constraints: constraints.deflate(widget.padding),
           child: Material(
             elevation: 6.0,
             child: toWrapWithSemantics,
-            shape: widget.feedbackShape,
+            shape: RoundedRectangleBorder(
+              borderRadius: widget.feedbackDecoration.borderRadius,
+              side: widget.feedbackDecoration.border != null ? 
+                widget.feedbackDecoration.border.top : BorderSide.none,
+            ),
+            color: widget.feedbackDecoration.color,
           ),
         ),
         child: _dragging == toWrap.key ? const SizedBox() : toWrapWithSemantics,
@@ -459,7 +464,7 @@ class _ReorderableListContentState extends State<_ReorderableListContent> with T
                       child: Container(
                         height: 4.0,
                         decoration: BoxDecoration(
-                          color: Theme.of(context).accentColor,
+                          color: Theme.of(context).dividerColor,
                           borderRadius: BorderRadius.circular(2.0),
                         ),
                       )
@@ -519,34 +524,38 @@ class _ReorderableListContentState extends State<_ReorderableListContent> with T
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterialLocalizations(context));
     // We use the layout builder to constrain the cross-axis size of dragging child widgets.
-    return Padding(
-      padding: widget.padding,
-      child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-        final List<Widget> wrappedChildren = <Widget>[];
-        if (widget.header != null) {
-          wrappedChildren.add(widget.header);
-        }
-        for (int i = 0; i < widget.children.length; i += 1) {
-          wrappedChildren.add(
-            _wrap(widget.children[i], i, constraints)
-          );
-        }
-        const Key endWidgetKey = Key('DraggableList - End Widget');
-        Widget finalDropArea = SizedBox(
-          key: endWidgetKey,
-          height: _defaultDropAreaExtent,
-          width: constraints.maxWidth,
+    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+      final List<Widget> wrappedChildren = <Widget>[];
+      if (widget.header != null) {
+        wrappedChildren.add(widget.header);
+      }
+      for (int i = 0; i < widget.children.length; i += 1) {
+        wrappedChildren.add(
+          _wrap(widget.children[i], i, constraints)
         );
-        wrappedChildren.add(_wrap(
-            finalDropArea,
-            widget.children.length,
-            constraints),
-        );
-        return ListView(
-          controller: _scrollController,
-          children: wrappedChildren,
-        );
-      }),
-    );
+      }
+      const Key endWidgetKey = Key('DraggableList - End Widget');
+      Widget finalDropArea = SizedBox(
+        key: endWidgetKey,
+        height: _defaultDropAreaExtent,
+        width: constraints.maxWidth,
+      );
+      wrappedChildren.add(_wrap(
+          finalDropArea,
+          widget.children.length,
+          constraints),
+      );
+      return CustomScrollView(
+        controller: _scrollController,
+        slivers: <Widget>[
+          SliverPadding(
+            padding: widget.padding,
+            sliver: SliverList(
+              delegate: SliverChildListDelegate(wrappedChildren),
+            ),
+          )
+        ]
+      );
+    });
   }
 }

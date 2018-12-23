@@ -54,11 +54,6 @@ class SetActiveColorIndexAction {
   final int index;
 }
 
-class SetActiveColorTypeAction {
-  SetActiveColorTypeAction(this.colorType);
-  final ColorType colorType;
-}
-
 class SetCanvasScaleAction {
   SetCanvasScaleAction(this.scale);
   final double scale;
@@ -84,17 +79,6 @@ class SetCurrentLayerIndexAction {
 class SetCurrentToolAction {
   SetCurrentToolAction(this.tool);
   final BaseTool tool;
-}
-
-
-class SetPrimaryColorAction {
-  SetPrimaryColorAction(this.color);
-  final HSLColor color;
-}
-
-class SetSecondaryColorAction {
-  SetSecondaryColorAction(this.color);
-  final HSLColor color;
 }
 
 class SetSelectionPathAction {
@@ -144,6 +128,16 @@ class RedoAction {
 
 class ReorderColorAction {
   ReorderColorAction(
+    this.oldIndex,
+    this.newIndex,
+  );
+
+  final int oldIndex;
+  final int newIndex;
+}
+
+class ReorderLayerAction {
+  ReorderLayerAction(
     this.oldIndex,
     this.newIndex,
   );

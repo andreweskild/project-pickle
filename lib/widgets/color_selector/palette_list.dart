@@ -118,6 +118,7 @@ class _PaletteListState extends State<PaletteList> {
     }
     else {
       return StoreConnector<AppState, _ColorModel>(
+          key: Key(model.palette[index].value.toString() + index.toString()),
           distinct: true,
           converter: (store) {
             return _ColorModel(
@@ -144,34 +145,34 @@ class _PaletteListState extends State<PaletteList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scrollbar(
-      child: StoreConnector<AppState, _PaletteModel>(
-        converter: (store) {
-          return _PaletteModel(
-            palette: store.state.palette,
-            reorderCallback: (oldIndex, newIndex) => store.dispatch(ReorderColorAction(oldIndex, newIndex)),
-            removeCallback: (index) => store.dispatch(RemoveColorAction(index)),
-            colorChangeCallback: (color, index) => store.dispatch(SetPaletteColorAction(index, color))
-          );
-        },
-        ignoreChange: (state) => _previousPaletteCount == state.palette.length,
-        // TODO: add ignoreChange method to check if palette has changed since last build
-        builder: (context, model) {
-          _previousPaletteCount = model.palette.length;
-          return ReorderableList(
+    return StoreConnector<AppState, _PaletteModel>(
+      converter: (store) {
+        return _PaletteModel(
+          palette: store.state.palette,
+          reorderCallback: (oldIndex, newIndex) => store.dispatch(ReorderColorAction(oldIndex, newIndex)),
+          removeCallback: (index) => store.dispatch(RemoveColorAction(index)),
+          colorChangeCallback: (color, index) => store.dispatch(SetPaletteColorAction(index, color))
+        );
+      },
+      ignoreChange: (state) => _previousPaletteCount == state.palette.length,
+      // TODO: add ignoreChange method to check if palette has changed since last build
+      builder: (context, model) {
+        _previousPaletteCount = model.palette.length;
+        return Scrollbar(
+          child: ReorderableList(
             onReorder: model.reorderCallback,
             padding: EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 6.0),
             children: List.generate(model.palette.length,
               (index) =>
                 buildListTile(index, model),
             ),
-            feedbackShape: RoundedRectangleBorder(
+            feedbackDecoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.0),
             ),
             spacing: 12.0,
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

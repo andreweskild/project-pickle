@@ -5,12 +5,6 @@ import 'package:project_pickle/canvas/pixel_buffer.dart';
 import 'package:project_pickle/canvas/pixel_layer.dart';
 import 'package:project_pickle/tools/base_tool.dart';
 
-// enum for differentiating between whether the primary color or secondary color is active.
-enum ColorType {
-  Primary,
-  Secondary
-}
-
 enum ShapeMode {
   Rectangle,
   Circle,
@@ -20,6 +14,7 @@ enum ShapeMode {
 class AppState {
   AppState({
     this.canvasDirty = false,
+    this.layersDirty = false,
     this.canvasHistory,
     this.canvasFuture,
     this.canvasWidth,
@@ -27,11 +22,8 @@ class AppState {
     this.canvasScale = 1.0,
     this.currentTool,
     this.activeColorIndex = 0,
-    this.activeColorType = ColorType.Primary,
     this.drawingBuffer,
     this.eraserRemoveCounter = 0,
-    @required this.primaryColor,
-    @required this.secondaryColor,
     this.layerNamingCounter = 1,
     @required this.layers,
     @required this.palette,
@@ -52,11 +44,9 @@ class AppState {
     int canvasHeight,
     PixelBuffer drawingBuffer,
     int eraserRemoveCounter,
-    ColorType activeColorType,
-    Color primaryColor,
-    Color secondaryColor,
     int currentLayerIndex,
     BaseTool currentTool,
+    bool layersDirty,
     int layerNamingCounter,
     PixelLayerList layers,
     List<Color> palette,
@@ -74,12 +64,10 @@ class AppState {
       canvasScale: canvasScale ?? this.canvasScale,
       canvasWidth: canvasWidth ?? this.canvasWidth,
       canvasHeight: canvasHeight ?? this.canvasHeight,
-      activeColorType: activeColorType ?? this.activeColorType,
       drawingBuffer: drawingBuffer ?? this.drawingBuffer,
       eraserRemoveCounter: eraserRemoveCounter ?? this.eraserRemoveCounter,
-      primaryColor: primaryColor ?? this.primaryColor,
-      secondaryColor: secondaryColor ?? this.secondaryColor,
       currentTool: currentTool ?? this.currentTool,
+      layersDirty: layersDirty ?? this.layersDirty,
       layerNamingCounter: layerNamingCounter ?? this.layerNamingCounter,
       layers: layers ?? this.layers,
       palette: palette ?? this.palette,
@@ -95,14 +83,12 @@ class AppState {
   Queue<PixelLayerList> canvasHistory;
   Queue<PixelLayerList> canvasFuture;
   int layerNamingCounter;
+  bool layersDirty;
   int canvasWidth;
   int canvasHeight;
   double canvasScale;
   int activeColorIndex;
-  ColorType activeColorType;
   PixelBuffer drawingBuffer;
-  Color primaryColor;
-  Color secondaryColor;
   PixelLayer get currentLayer => layers.activeLayer;
   BaseTool currentTool;
   PixelLayerList layers;

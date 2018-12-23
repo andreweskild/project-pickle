@@ -597,6 +597,8 @@ class ColorMenuButton extends StatelessWidget {
         ),
         child: Material(
           color: color,
+          elevation: active ? 6.0 : 0.0,
+          shadowColor: color.withAlpha(128),
           borderRadius: BorderRadius.circular(8.0),
           child: InkWell(
             borderRadius: BorderRadius.circular(8.0),

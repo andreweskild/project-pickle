@@ -40,6 +40,7 @@ AppState stateReducer(AppState state, dynamic action) {
     );
     state.layers.indexOfActiveLayer = newIndex;
     state.canvasDirty = true;
+    state.layersDirty = true;
     return state;
   }
   else if (action is ClearPixelBufferAction) {
@@ -76,12 +77,6 @@ AppState stateReducer(AppState state, dynamic action) {
     state.canvasDirty = true;
     return state;
   }
-  else if (action is SetActiveColorTypeAction) {
-    return state.copyWith(
-      activeColorType: action.colorType,
-      canvasDirty: true,
-    );
-  }
   else if (action is SetActiveColorIndexAction) {
     return state.copyWith(
       activeColorIndex: action.index,
@@ -98,32 +93,10 @@ AppState stateReducer(AppState state, dynamic action) {
     state.canvasDirty = true;
     return state;
   }
-  else if (action is SetPrimaryColorAction) {
-    return state.copyWith(
-      primaryColor: HSLColor.fromAHSL(
-        1.0,
-        action.color.hue,
-        action.color.saturation,
-        action.color.lightness,
-      ).toColor(),
-      canvasDirty: true,
-    );
-  }
-  else if (action is SetSecondaryColorAction) {
-    return state.copyWith(
-      secondaryColor: HSLColor.fromAHSL(
-        1.0,
-        action.color.hue,
-        action.color.saturation,
-        action.color.lightness,
-      ).toColor(),
-      canvasDirty: true,
-    );
-  }
   else if (action is SetCurrentLayerIndexAction) {
     if (action.currentLayerIndex < state.layers.length) {
       state.layers.indexOfActiveLayer = action.currentLayerIndex;
-      state.canvasDirty = true;
+      // state.canvasDirty = true;
     }
     return state;
   }
@@ -191,6 +164,7 @@ AppState stateReducer(AppState state, dynamic action) {
       state.layers.indexOfActiveLayer = state.layers.indexOfActiveLayer - 1;
     }
     state.canvasDirty = true;
+    state.layersDirty = true;
     return state;
   }
   else if (action is ReorderColorAction) {
@@ -216,6 +190,32 @@ AppState stateReducer(AppState state, dynamic action) {
     state.palette.insert(finalIndex, item);
     return state.copyWith(
       canvasDirty: true,
+    );
+  }
+  else if (action is ReorderLayerAction) {
+    int finalIndex = action.newIndex;
+
+    if (action.newIndex > action.oldIndex) {
+      finalIndex -= 1;
+    }
+
+    if (action.oldIndex == state.layers.indexOfActiveLayer) {
+      state.layers.indexOfActiveLayer = finalIndex;
+    }
+    else if (action.oldIndex < state.layers.indexOfActiveLayer &&
+              action.newIndex > state.layers.indexOfActiveLayer) {
+      state.layers.indexOfActiveLayer -= 1;
+    }
+    else if (action.oldIndex > state.layers.indexOfActiveLayer &&
+        action.newIndex <= state.layers.indexOfActiveLayer) {
+      state.layers.indexOfActiveLayer += 1;
+    }
+
+    final PixelLayer item = state.layers.removeAt(action.oldIndex);
+    state.layers.insert(finalIndex, item);
+    return state.copyWith(
+      canvasDirty: true,
+      layersDirty: true,
     );
   }
   else if (action is RemoveColorAction) {

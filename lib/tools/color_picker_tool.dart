@@ -19,10 +19,10 @@ class ColorPickerTool extends BaseTool<Widget> {
   }
 
   @override
-  void onPixelInputUp() {
-    updateCurrentColor(_currentSelectedColor);
-    _currentSelectedColor = null;
-  }
+  // void onPixelInputUp() {
+  //   updateCurrentColor(_currentSelectedColor);
+  //   _currentSelectedColor = null;
+  // }
 
 
   Color getPixelColor(Offset pos) {
@@ -35,14 +35,14 @@ class ColorPickerTool extends BaseTool<Widget> {
     return Colors.white;
   }
 
-  void updateCurrentColor(Color color) {
-    HSLColor hslColor = HSLColor.fromColor(color);
-    if(store.state.activeColorType == ColorType.Primary) {
-      store.dispatch(SetPrimaryColorAction(hslColor));
-    }
-    else {
-      store.dispatch(SetSecondaryColorAction(hslColor));
-    }
-  }
+  // void updateCurrentColor(Color color) {
+  //   HSLColor hslColor = HSLColor.fromColor(color);
+  //   if(store.state.activeColorType == ColorType.Primary) {
+  //     store.dispatch(SetPrimaryColorAction(hslColor));
+  //   }
+  //   else {
+  //     store.dispatch(SetSecondaryColorAction(hslColor));
+  //   }
+  // }
 
 }

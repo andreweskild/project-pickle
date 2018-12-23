@@ -31,8 +31,6 @@ final store = Store<AppState>(
     canvasWidth: 32,
     canvasHeight: 32,
     drawingBuffer: PixelBuffer(32, 32),
-    primaryColor: Colors.red,
-    secondaryColor: Colors.green,
     layers: PixelLayerList()..add(
       PixelLayer(
         name: 'Layer 1',

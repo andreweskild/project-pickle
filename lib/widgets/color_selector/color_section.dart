@@ -10,7 +10,6 @@ import 'package:project_pickle/widgets/color_selector/palette_list.dart';
 
 typedef SetActiveColorCallback = void Function(int, Color);
 typedef SetColorCallback = void Function(Color);
-typedef SetColorTypeCallback = void Function(ColorType);
 typedef SetColorIndexCallback = void Function(int);
 
 class ColorSection extends StatelessWidget {
@@ -34,14 +33,17 @@ class ColorSection extends StatelessWidget {
             child: PaletteList(),
           ),
         ),
-        HorizontalDivider(height: 2.0),
-        Padding(
-            padding: EdgeInsets.all(12.0),
-            child: SizedBox(
-              height: 40.0,
-              child: StoreBuilder<AppState>(
-                rebuildOnChange: false,
-                  builder: (context, store) {
+        Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          HorizontalDivider(height: 2.0),
+          Padding(
+        padding: EdgeInsets.all(12.0),
+        child: SizedBox(
+          height: 40.0,
+          child: StoreBuilder<AppState>(
+            rebuildOnChange: false,
+              builder: (context, store) {
 //                    return RaisedButton(
 //                      elevation: 0.0,
 //                      highlightElevation: 0.0,
@@ -61,14 +63,16 @@ class ColorSection extends StatelessWidget {
 //                      onPressed: () => store.dispatch(AddNewColorToPaletteAction()),
 //                      child: Center(child: Icon(Icons.add)),
 //                    );
-                    return ColorAddButton(
-                      color: Colors.red,
-                      onAccepted: (color) => store.dispatch(AddNewColorToPaletteAction(color)),
-                    );
-                  }
-              ),
-            )
+                return ColorAddButton(
+                  color: Colors.red,
+                  onAccepted: (color) => store.dispatch(AddNewColorToPaletteAction(color)),
+                );
+              }
+          ),
         )
+        )
+        ],
+          ),
       ],
     );
   }
