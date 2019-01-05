@@ -597,6 +597,7 @@ class ColorMenuButton extends StatelessWidget {
         ),
         child: Material(
           color: color,
+          animationDuration: Duration(milliseconds: 400),
           elevation: active ? 6.0 : 0.0,
           shadowColor: color.withAlpha(128),
           borderRadius: BorderRadius.circular(8.0),
@@ -638,7 +639,7 @@ class ColorMenuButton extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 12.0),
                             child: AnimatedOpacity(
                               curve: Curves.ease,
-                              duration: Duration(milliseconds: 200),
+                              duration: Duration(milliseconds: 300),
                               opacity: active ? 1.0 : 0.0,
                               child: DecoratedBox(
                                 decoration: ShapeDecoration(

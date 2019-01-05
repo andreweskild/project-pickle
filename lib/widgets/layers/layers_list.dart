@@ -19,9 +19,7 @@ class LayersList extends StatefulWidget {
   _LayersListState createState() => _LayersListState();
 }
 
-typedef _SetActiveLayerCallback = void Function(int);
 typedef _LayerReorderCallback = void Function(int, int);
-typedef _LayerRemoveCallback = void Function(int);
 
 class _LayerListModel {
   _LayerListModel({
@@ -33,7 +31,7 @@ class _LayerListModel {
 
   final PixelLayerList layers;
   final _LayerReorderCallback reorderCallback;
-  final _LayerRemoveCallback removeCallback;
+  final ValueSetter<int> removeCallback;
   final VoidCallback newLayerCallback;
 
 
@@ -56,17 +54,14 @@ class _LayerListModel {
 
 class _LayerModel {
   _LayerModel({
-    this.index,
     this.layer,
-    this.removeCallback,
     this.setActiveCallback,
+    this.toggleHidden,
   });
 
-  get key => Key(layer.name + index.toString());
-  final int index;
   final PixelLayer layer;
-  final _LayerRemoveCallback removeCallback;
-  final _SetActiveLayerCallback setActiveCallback;
+  final ValueSetter<int> setActiveCallback;
+  final ValueSetter<int> toggleHidden;
 }
 
 class _LayersListState extends State<LayersList> {
@@ -98,17 +93,18 @@ class _LayersListState extends State<LayersList> {
               layer: store.state.layers[index],
               setActiveCallback: (index) =>
                   store.dispatch(SetCurrentLayerIndexAction(index)),
+              toggleHidden: (index) => store.dispatch(ToggleLayerHiddenAction(index)),
             );
           },
           builder: (context, layerModel) {
             return LayerListItem(
               layerCanvas: layerModel.layer.canvas,
               selected:
-                  (layerModel.layer == listModel.layers.activeLayer),
+                  (index == listModel.layers.indexOfActiveLayer),
               label: layerModel.layer.name,
               hidden: layerModel.layer.hidden,
               onTap: () => layerModel.setActiveCallback(index),
-              onToggleHidden: () => {},
+              onToggleHidden: () => layerModel.toggleHidden(index),
             );
           } 
         )
@@ -119,18 +115,21 @@ class _LayersListState extends State<LayersList> {
           key: Key(listModel.layers[index].name + index.toString()),
           converter: (store) {
             return _LayerModel(
-              layer: store.state.layers[index]
+              layer: store.state.layers[index],
+              setActiveCallback: (index) =>
+                  store.dispatch(SetCurrentLayerIndexAction(index)),
+              toggleHidden: (index) => store.dispatch(ToggleLayerHiddenAction(index)),
             );
           },
           builder: (context, layerModel) {
             return LayerListItem(
               layerCanvas: layerModel.layer.canvas,
               selected:
-                  (layerModel.layer == listModel.layers.activeLayer),
+                  (index == listModel.layers.indexOfActiveLayer),
               label: layerModel.layer.name,
               hidden: layerModel.layer.hidden,
               onTap: () => layerModel.setActiveCallback(index),
-              onToggleHidden: () => {},
+              onToggleHidden: () => layerModel.toggleHidden(index),
             );
           } 
         );
@@ -149,7 +148,7 @@ class _LayersListState extends State<LayersList> {
           }
           return _LayerListModel(
             layers: store.state.layers,
-            removeCallback: (int) {},
+            removeCallback: (index) => store.dispatch(RemoveLayerAction(index)),
             reorderCallback: (oldIndex, newIndex) => store.dispatch(ReorderLayerAction(oldIndex, newIndex)),
             newLayerCallback: (){}
           );
@@ -157,16 +156,21 @@ class _LayersListState extends State<LayersList> {
         ignoreChange: (state) => !state.layersDirty,
         builder: (context, model) {
           return ReorderableList(
-            onReorder: model.reorderCallback,
+            onReorder: (oldIndex, newIndex) {
+              // we have to adjust incoming indexes because list was flipped to better
+              // reflect the drawing order of layers in layer list
+              int tempOld = model.layers.length - 1 - oldIndex;
+              int tempNew = model.layers.length - newIndex;
+              model.reorderCallback(tempOld, tempNew);
+            },
             padding: EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 6.0),
             children: List.generate(model.layers.length,
               (index) =>
-                buildListTile(index, model),
+                buildListTile(model.layers.length - 1 - index, model), // ordering list from end to beginning
             ),
             feedbackDecoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.0),
-              color: Theme.of(context).scaffoldBackgroundColor,
-              border: Border.all(color: Theme.of(context).dividerColor)
+              color: Colors.transparent,
             ),
             spacing: 12.0,
           );

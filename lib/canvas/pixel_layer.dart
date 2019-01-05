@@ -48,6 +48,7 @@ class PixelLayerList extends ListBase<PixelLayer> {
         result.add(PixelLayer.from(layer));
       }
     );
+    result.indexOfActiveLayer = elements.indexOfActiveLayer;
     return result;
   }
 

@@ -210,7 +210,7 @@ class _DeletableState extends State<Deletable> with TickerProviderStateMixin, Au
 
   double get _overallDragAxisExtent {
     final Size size = context.size;
-    return _directionIsXAxis ? size.width : size.height;
+    return _directionIsXAxis ? size.height : size.height;
   }
 
   OverlayEntry _buildFeedbackWidget(BuildContext context) {
@@ -254,38 +254,45 @@ class _DeletableState extends State<Deletable> with TickerProviderStateMixin, Au
         clipBehavior: Clip.antiAlias,
         elevation: 0.0,
         color: Color(0xFFFFA6B1),
-        borderRadius: BorderRadius.circular(8.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          side: BorderSide(color: Color(0xFFFF485E), width: 2.0)
+        ),
         child: FractionallySizedBox(
-          alignment: Alignment.centerLeft,
-          widthFactor: _kRevealAmount,
-          child: Stack(
-            children: <Widget>[
-              Center(
-                child: UnconstrainedBox(
-                  child: SizedOverflowBox(
-                    size: Size.square(_sizePriorToDrag.height * _kRevealAmount),
-                    child: ScaleTransition(
-                      scale: _responseSizeAnimation,
-                      child: SizedBox(
-                        height: _sizePriorToDrag.height * 1.5,
-                        width: _sizePriorToDrag.height * 1.5,
-                        child: DecoratedBox(
-                          decoration: ShapeDecoration(
-                            shape: CircleBorder(),
-                            color: Color(0xFFFF485E),
-                          ),
-                        ),
-                      ),
+            alignment: (widget.direction == DismissDirection.startToEnd) ? Alignment.centerLeft : 
+              Alignment.centerRight,
+            widthFactor: _sizePriorToDrag.height / _sizePriorToDrag.width,
+            child: Stack(
+              children: <Widget>[
+                Center(
+        child: UnconstrainedBox(
+          child: SizedOverflowBox(
+            size: Size.square(_sizePriorToDrag.height * _kRevealAmount),
+            child: ScaleTransition(
+              scale: _responseSizeAnimation,
+              child: FadeTransition(
+                opacity: _responseSizeAnimation,
+                child: SizedBox(
+                  height: _sizePriorToDrag.height * 1.5,
+                  width: _sizePriorToDrag.height * 1.5,
+                  child: DecoratedBox(
+                    decoration: ShapeDecoration(
+                      shape: CircleBorder(),
+                      color: Color(0xFFFF485E),
                     ),
                   ),
                 ),
               ),
-              Center(
-                child: Icon(Icons.delete_outline, color: Colors.white),
-              )
-            ],
+            ),
           ),
-        )
+        ),
+                ),
+                Center(
+        child: Icon(Icons.delete_outline, color: Colors.white),
+                )
+              ],
+            ),
+          )
       ),
     );
   }
@@ -379,13 +386,15 @@ class _DeletableState extends State<Deletable> with TickerProviderStateMixin, Au
       Tween<Offset>(
         begin: Offset.zero,
         end: _directionIsXAxis
-            ? Offset(end * _kRevealAmount, widget.crossAxisEndOffset)
+            ? (_sizePriorToDrag == null) ?
+                Offset(end, widget.crossAxisEndOffset) :
+                Offset(end * (_sizePriorToDrag.height / _sizePriorToDrag.width), widget.crossAxisEndOffset)
             : Offset(widget.crossAxisEndOffset, end),
       ),
     );
     _responseSizeAnimation = _moveController.drive(
       CurveTween(
-        curve: Curves.easeIn
+        curve: Curves.easeInOut
       )
     );
   }

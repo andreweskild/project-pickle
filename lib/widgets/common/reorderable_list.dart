@@ -421,6 +421,7 @@ class _ReorderableListContentState extends State<_ReorderableListContent> with T
           constraints: constraints.deflate(widget.padding),
           child: Material(
             elevation: 6.0,
+            shadowColor: Colors.black38,
             child: toWrapWithSemantics,
             shape: RoundedRectangleBorder(
               borderRadius: widget.feedbackDecoration.borderRadius,

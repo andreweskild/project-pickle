@@ -26,32 +26,21 @@ class LayerListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 48.0,
+      height: 40.0,
       child: Stack(
         children: <Widget>[
           Positioned.fill(
-            child: AnimatedOpacity(
-              duration: Duration(milliseconds: 150),
-              curve: Curves.ease,
-              opacity: selected ? 1.0 : 0.0,
-              child: Material(
-                elevation: 6.0,
-                color:Theme
-                    .of(context)
-                    .buttonColor,
-                shadowColor: Theme
-                    .of(context)
-                    .buttonColor
-                    .withAlpha(128),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    side: BorderSide(
-                      color: Theme
-                          .of(context)
-                          .dividerColor,
-                      width: 2.0,
-                    )
-                ),
+            child: Material(
+              elevation: selected ? 6.0 : 0.0,
+              color: selected ? Theme
+                  .of(context)
+                  .buttonColor : Theme.of(context).scaffoldBackgroundColor,
+              shadowColor: Theme
+                  .of(context)
+                  .buttonColor
+                  .withAlpha(128),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
               ),
             ),
           ),
@@ -61,22 +50,14 @@ class LayerListItem extends StatelessWidget {
               child: AspectRatio(
                 aspectRatio: 1.0,
                 child: Container(
+                  padding: EdgeInsets.all(2.0),
                   foregroundDecoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  padding: EdgeInsets.all(8.0),
                   child: Material(
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6.0),
-                      side: BorderSide(
-                        color: (selected) ? Theme
-                            .of(context)
-                            .accentColor : Theme
-                            .of(context)
-                            .dividerColor,
-                        width: 2.0,
-                      ),
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(6.0),
@@ -103,7 +84,7 @@ class LayerListItem extends StatelessWidget {
                   child: Center(
                       child: Text(
                         label,
-                        style: TextStyle(
+                        style: Theme.of(context).textTheme.button.copyWith(
                           color: selected
                               ? Theme
                               .of(context)
@@ -116,7 +97,7 @@ class LayerListItem extends StatelessWidget {
                               .button
                               .color,
                           fontWeight: FontWeight.w500,
-                        ),
+                        )
                       )),
                 )),
           ]),
@@ -156,7 +137,8 @@ class LayerListItem extends StatelessWidget {
                               .color
                       ),
                       child: Icon(
-                        (hidden) ? Icons.remove : Icons.adjust,
+                        (hidden) ? Icons.remove : Icons.remove_red_eye,
+                        size: 20.0,
                       ),
                     ),
                     onPressed: onToggleHidden,
