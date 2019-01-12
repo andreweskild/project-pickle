@@ -169,11 +169,10 @@ class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
               child: SizedBox(
                 height: 32.0 + 4.0 / _scale,
                 width: 32.0 + 4.0 / _scale,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Theme.of(context).dividerColor, width: 2.0 / _scale),
-                  ),
+                child: Material(
+                  elevation: 3.0,
+                  shadowColor: Colors.black26,
+                  color: Colors.white,
                   child: Center(child: widget.canvasController)
                 ),
               ),

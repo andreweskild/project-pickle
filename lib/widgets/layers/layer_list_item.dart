@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+double _kButtonHeight = 48.0;
+
 class LayerListItem extends StatelessWidget {
   const LayerListItem({
     Key key,
@@ -26,7 +28,7 @@ class LayerListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40.0,
+      height: _kButtonHeight,
       child: Stack(
         children: <Widget>[
           Positioned.fill(
@@ -50,7 +52,7 @@ class LayerListItem extends StatelessWidget {
               child: AspectRatio(
                 aspectRatio: 1.0,
                 child: Container(
-                  padding: EdgeInsets.all(2.0),
+                  padding: EdgeInsets.all(4.0),
                   foregroundDecoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -76,7 +78,7 @@ class LayerListItem extends StatelessWidget {
               ),
             ),
             Positioned(
-                left: 40.0,
+                left: _kButtonHeight,
                 top: 0.0,
                 bottom: 0.0,
                 child: Padding(

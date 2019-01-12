@@ -547,21 +547,15 @@ class ColorAddButton extends StatelessWidget {
         elevation: 0.0,
         highlightElevation: 0.0,
         shape: RoundedRectangleBorder(
-          side: BorderSide(
-            width: 2.0,
-            color: Theme
-                .of(context)
-                .dividerColor,
-          ),
           borderRadius: BorderRadius.circular(8.0),
         ),
         color: Theme
             .of(context)
-            .scaffoldBackgroundColor,
+            .cardColor,
         padding: EdgeInsets.zero,
         onPressed: () => _showColorMenu(context),
         child: Center(child: Icon(Icons.add)),
-
+        colorBrightness: Theme.of(context).brightness,
       )
     );
   }

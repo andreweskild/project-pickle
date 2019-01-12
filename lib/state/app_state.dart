@@ -20,6 +20,7 @@ class AppState {
     this.canvasWidth,
     this.canvasHeight,
     this.canvasScale = 1.0,
+    this.darkMode = true,
     this.currentTool,
     this.activeColorIndex = 0,
     this.drawingBuffer,
@@ -42,6 +43,7 @@ class AppState {
     double canvasScale,
     int canvasWidth,
     int canvasHeight,
+    bool darkMode,
     PixelBuffer drawingBuffer,
     int eraserRemoveCounter,
     int currentLayerIndex,
@@ -64,6 +66,7 @@ class AppState {
       canvasScale: canvasScale ?? this.canvasScale,
       canvasWidth: canvasWidth ?? this.canvasWidth,
       canvasHeight: canvasHeight ?? this.canvasHeight,
+      darkMode: darkMode ?? this.darkMode,
       drawingBuffer: drawingBuffer ?? this.drawingBuffer,
       eraserRemoveCounter: eraserRemoveCounter ?? this.eraserRemoveCounter,
       currentTool: currentTool ?? this.currentTool,
@@ -87,6 +90,7 @@ class AppState {
   int canvasWidth;
   int canvasHeight;
   double canvasScale;
+  bool darkMode;
   int activeColorIndex;
   PixelBuffer drawingBuffer;
   PixelLayer get currentLayer => layers.activeLayer;

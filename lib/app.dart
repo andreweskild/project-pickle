@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
       store: store,
       child: MaterialApp(
         title: 'Project pickle',
-        theme: theme(context),
+        theme: theme(context, store.state.darkMode),
         home: PixelEditorPage(name: 'Pickle Editor'),
       ),
     );

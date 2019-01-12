@@ -93,7 +93,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
           // return Mobile Scaffold
           return new Scaffold(
             appBar: new AppBar(
-              elevation: 0.5,
+              elevation: 6.0,
               primary: true,
             ),
             body: widget.body,
@@ -104,8 +104,9 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
         else {
           // return Desktop Scaffold
           return new Scaffold(
+            drawer: widget.drawer,
             appBar: new ResponsiveAppBar(
-              elevation: 0.0,
+              elevation: 6.0,
               primary: true,
               centerTitle: true,
               title: DefaultTextStyle(
@@ -232,14 +233,31 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                 ),
               ],
             ),
-            body: new Stack(
+            body: Stack(
               children: <Widget>[
                 widget.body,
-                new Align(
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.expand(height: 1.0),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            blurRadius: 12.0,
+                            spreadRadius: 6.0,
+                            color: Theme.of(context).accentIconTheme.color.withAlpha(72)
+                          )
+                        ]
+                      ),
+                    )
+                  )
+                ),
+                Align(
                   alignment: Alignment.centerLeft,
                   child: widget.drawer,
                 ),
-                new Align(
+                Align(
                   alignment: Alignment.centerRight,
                   child: widget.endDrawer,
                 ),

@@ -25,54 +25,25 @@ class ColorSection extends StatelessWidget {
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: Theme.of(context).unselectedWidgetColor,
-              border: Border(
-                  top: BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
-                  right: BorderSide(color: Theme.of(context).dividerColor, width: 2.0)
-              ),
             ),
             child: PaletteList(),
           ),
         ),
-        Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          HorizontalDivider(height: 2.0),
-          Padding(
-        padding: EdgeInsets.all(12.0),
-        child: SizedBox(
-          height: 40.0,
-          child: StoreBuilder<AppState>(
-            rebuildOnChange: false,
+        Padding(
+          padding: EdgeInsets.all(12.0),
+          child: SizedBox(
+            height: 48.0,
+            child: StoreBuilder<AppState>(
+              rebuildOnChange: false,
               builder: (context, store) {
-//                    return RaisedButton(
-//                      elevation: 0.0,
-//                      highlightElevation: 0.0,
-//                      shape: RoundedRectangleBorder(
-//                        side: BorderSide(
-//                          width: 2.0,
-//                          color: Theme
-//                              .of(context)
-//                              .dividerColor,
-//                        ),
-//                        borderRadius: BorderRadius.circular(8.0),
-//                      ),
-//                      color: Theme
-//                          .of(context)
-//                          .scaffoldBackgroundColor,
-//                      padding: EdgeInsets.zero,
-//                      onPressed: () => store.dispatch(AddNewColorToPaletteAction()),
-//                      child: Center(child: Icon(Icons.add)),
-//                    );
                 return ColorAddButton(
                   color: Colors.red,
                   onAccepted: (color) => store.dispatch(AddNewColorToPaletteAction(color)),
                 );
               }
-          ),
-        )
-        )
-        ],
-          ),
+            ),
+          )
+        ),
       ],
     );
   }

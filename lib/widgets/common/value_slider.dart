@@ -1056,11 +1056,9 @@ class _RenderSlider extends RenderBox {
     // Paint the track.
     if (visualPosition > 0.0) {
       canvas.drawRRect(trackLeftRect, leftTrackPaint);
-      canvas.drawRRect(trackLeftRect, leftTrackBorderPaint);
     }
     if (visualPosition < 1.0) {
       canvas.drawRRect(trackRightRect, rightTrackPaint);
-      canvas.drawRRect(trackRightRect, rightTrackBorderPaint);
     }
 
     canvas.drawShadow(

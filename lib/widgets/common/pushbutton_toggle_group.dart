@@ -46,7 +46,6 @@ class PushbuttonToggleGroup<T> extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
-            border: Border.all(color: Theme.of(context).dividerColor, width: 2.0),
             color: Theme.of(context).scaffoldBackgroundColor,
           ),
           child: Row(
@@ -70,7 +69,6 @@ class PushbuttonToggleGroup<T> extends StatelessWidget {
                               color: Theme.of(context).buttonColor,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0),
-                                side: BorderSide(color: Theme.of(context).accentColor, width: 2.0),
                               ),
                               shadowColor: Theme.of(context).splashColor.withAlpha(60),
                             ),

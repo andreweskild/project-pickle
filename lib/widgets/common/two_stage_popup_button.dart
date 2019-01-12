@@ -129,7 +129,6 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
               animationDuration: Duration.zero,
               color: Theme.of(context).cardColor,
               shape: RoundedRectangleBorder(
-                side: BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
                 borderRadius: BorderRadius.circular(10.0),
               ),
               shadowColor: Colors.black26,
@@ -143,8 +142,7 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
                   child: Material(
                     color: Theme.of(context).buttonColor,
                     shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(8.0), topRight: Radius.circular(8.0),),
                     ),
                     child: InkWell(
                       onTap: widget.onAccept,
@@ -324,11 +322,6 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
             : Theme.of(context).cardColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
-          side: BorderSide(
-              color: (widget.active && !_opened)
-                ? Theme.of(context).dividerColor
-                : Colors.transparent,
-              width: 2.0)
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(8.0),

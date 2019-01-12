@@ -6,7 +6,7 @@ const double _kMinFlingVelocity = 700.0;
 const double _kMinFlingVelocityDelta = 400.0;
 const double _kFlingVelocityScale = 1.0 / 300.0;
 const double _kDismissThreshold = 1.0;
-const double _kRevealAmount = 0.75;
+const double _kRevealAmount = 36.0;
 
 /// Signature used by [Deletable] to indicate that it has been dismissed in
 /// the given `direction`.
@@ -256,39 +256,38 @@ class _DeletableState extends State<Deletable> with TickerProviderStateMixin, Au
         color: Color(0xFFFFA6B1),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
-          side: BorderSide(color: Color(0xFFFF485E), width: 2.0)
         ),
         child: FractionallySizedBox(
             alignment: (widget.direction == DismissDirection.startToEnd) ? Alignment.centerLeft : 
               Alignment.centerRight,
-            widthFactor: _sizePriorToDrag.height / _sizePriorToDrag.width,
+            widthFactor: _kRevealAmount / _sizePriorToDrag.width,
             child: Stack(
               children: <Widget>[
                 Center(
-        child: UnconstrainedBox(
-          child: SizedOverflowBox(
-            size: Size.square(_sizePriorToDrag.height * _kRevealAmount),
-            child: ScaleTransition(
-              scale: _responseSizeAnimation,
-              child: FadeTransition(
-                opacity: _responseSizeAnimation,
-                child: SizedBox(
-                  height: _sizePriorToDrag.height * 1.5,
-                  width: _sizePriorToDrag.height * 1.5,
-                  child: DecoratedBox(
-                    decoration: ShapeDecoration(
-                      shape: CircleBorder(),
-                      color: Color(0xFFFF485E),
+                  child: UnconstrainedBox(
+                    child: SizedOverflowBox(
+                      size: Size.square(_kRevealAmount * _sizePriorToDrag.height / _sizePriorToDrag.width),
+                      child: ScaleTransition(
+                        scale: _responseSizeAnimation,
+                        child: FadeTransition(
+                          opacity: _responseSizeAnimation,
+                          child: SizedBox(
+                            height: _sizePriorToDrag.height * 1.5,
+                            width: _sizePriorToDrag.height * 1.5,
+                            child: DecoratedBox(
+                              decoration: ShapeDecoration(
+                                shape: CircleBorder(),
+                                color: Color(0xFFFF485E),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-          ),
-        ),
-                ),
                 Center(
-        child: Icon(Icons.delete_outline, color: Colors.white),
+                    child: Icon(Icons.delete_outline, color: Colors.white),
                 )
               ],
             ),
@@ -388,7 +387,7 @@ class _DeletableState extends State<Deletable> with TickerProviderStateMixin, Au
         end: _directionIsXAxis
             ? (_sizePriorToDrag == null) ?
                 Offset(end, widget.crossAxisEndOffset) :
-                Offset(end * (_sizePriorToDrag.height / _sizePriorToDrag.width), widget.crossAxisEndOffset)
+                Offset(end * (_kRevealAmount / _sizePriorToDrag.width), widget.crossAxisEndOffset)
             : Offset(widget.crossAxisEndOffset, end),
       ),
     );
