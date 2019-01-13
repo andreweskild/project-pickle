@@ -1073,8 +1073,8 @@ class _RenderSlider extends RenderBox {
             Radius.circular(12.0),
           ),
         ),
-        Colors.black26,
-        6.0,
+        Colors.black38,
+        8.0,
         false
     );
 

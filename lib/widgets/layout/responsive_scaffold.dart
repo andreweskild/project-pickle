@@ -246,7 +246,9 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                           BoxShadow(
                             blurRadius: 12.0,
                             spreadRadius: 6.0,
-                            color: Theme.of(context).accentIconTheme.color.withAlpha(72)
+                            color: Theme.of(context).brightness == Brightness.light ? 
+                              Theme.of(context).accentIconTheme.color.withAlpha(72) :
+                              Colors.black26
                           )
                         ]
                       ),

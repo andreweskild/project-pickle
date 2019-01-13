@@ -131,7 +131,7 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              shadowColor: Colors.black26,
+              shadowColor: Theme.of(context).brightness == Brightness.dark ? Colors.black54 : Colors.black26,
             ),
           ),
           Positioned.fill(
@@ -314,56 +314,71 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1.0,
-      child: Material(
-        elevation: widget.active ? 6.0 : 0.0,
-        shadowColor: Theme.of(context).buttonColor.withAlpha(128),
-        color: (widget.active && !_opened)
-            ? Theme.of(context).buttonColor
-            : Theme.of(context).cardColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(8.0),
-          onTap: () {
-            if (!widget.active) {
-              Navigator.of(context)
-                  .popUntil((route) => route.settings.name != '/tool-options');
-              widget.onToggled();
-            }
-          },
-          child: IgnorePointer(
-            ignoring: !widget.active,
-            child: InkWell(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Stack(
-                  children: <Widget>[
-                    IconTheme(
-                      data: IconThemeData(
-                        color: (widget.active)
-                            ? Theme.of(context).accentTextTheme.button.color
-                            : Theme.of(context).textTheme.button.color,
-                      ),
-                      child: DefaultTextStyle(
-                        style: TextStyle(
+      child: Stack(
+        children: <Widget>[
+          Positioned.fill(
+            child: AnimatedOpacity(
+              curve: Curves.ease,
+              duration: Duration(milliseconds: 200),
+              opacity: widget.active ? 1.0 : 0.0,
+              child: Material(
+                elevation: 6.0,
+                shadowColor: Theme.of(context).buttonColor.withAlpha(
+                  Theme.of(context).brightness == Brightness.dark ? 255 : 128
+                ),
+                color: Theme.of(context).buttonColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+            ),
+          ),
+          FlatButton(
+            color: Colors.transparent,
+            padding: const EdgeInsets.all(0.0),
+            onPressed: () {
+              if (!widget.active) {
+                Navigator.of(context)
+                    .popUntil((route) => route.settings.name != '/tool-options');
+                widget.onToggled();
+              }
+            },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: IgnorePointer(
+              ignoring: !widget.active,
+              child: InkWell(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Stack(
+                    children: <Widget>[
+                      IconTheme(
+                        data: IconThemeData(
                           color: (widget.active)
                               ? Theme.of(context).accentTextTheme.button.color
                               : Theme.of(context).textTheme.button.color,
                         ),
-                        child: Center(child: widget.icon),
+                        child: DefaultTextStyle(
+                          style: TextStyle(
+                            color: (widget.active)
+                                ? Theme.of(context).accentTextTheme.button.color
+                                : Theme.of(context).textTheme.button.color,
+                          ),
+                          child: Center(child: widget.icon),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
+                borderRadius: BorderRadius.circular(8.0),
+                onTap: () {
+                  _showPopupMenu(context);
+                },
               ),
-              borderRadius: BorderRadius.circular(8.0),
-              onTap: () {
-                _showPopupMenu(context);
-              },
             ),
           ),
-        ),
+        ],
       ),
     );
   }

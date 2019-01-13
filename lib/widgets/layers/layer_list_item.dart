@@ -32,17 +32,29 @@ class LayerListItem extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Positioned.fill(
-            child: Material(
-              elevation: selected ? 6.0 : 0.0,
-              color: selected ? Theme
-                  .of(context)
-                  .buttonColor : Theme.of(context).scaffoldBackgroundColor,
-              shadowColor: Theme
-                  .of(context)
-                  .buttonColor
-                  .withAlpha(128),
-              shape: RoundedRectangleBorder(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.0),
+                  color: Theme.of(context).scaffoldBackgroundColor
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: AnimatedOpacity(
+              duration: Duration(milliseconds: 200),
+              curve: Curves.ease,
+              opacity: selected ? 1.0 : 0.0,
+              child: Material(
+                elevation: 6.0,
+                color: Theme
+                    .of(context)
+                    .buttonColor,
+                shadowColor: Theme.of(context).buttonColor.withAlpha(
+                  Theme.of(context).brightness == Brightness.dark ? 255 : 128
+                ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                ),
               ),
             ),
           ),

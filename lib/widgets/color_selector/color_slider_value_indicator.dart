@@ -233,11 +233,11 @@ class ColorSliderValueIndicatorShape extends SliderComponentShape {
             rightCenter.dx + _topLobeRadius,
             rightCenter.dy + _topLobeRadius,
           );
-          final Paint outlinePaint = new Paint()
-            ..color = const Color(0xffff0000)
-            ..style = PaintingStyle.stroke
-            ..strokeWidth = 2.0;
-          canvas.drawRect(valueRect, outlinePaint);
+          // final Paint outlinePaint = new Paint()
+          //   ..color = const Color(0xffff0000)
+          //   ..style = PaintingStyle.stroke
+          //   ..strokeWidth = 2.0;
+          // canvas.drawRect(valueRect, outlinePaint);
           return true;
         }());
 

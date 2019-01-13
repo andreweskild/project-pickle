@@ -44,8 +44,8 @@ class ColorSliderThumbShape extends SliderComponentShape {
               Radius.circular(8.0)
           ),
         ),
-        Colors.black26,
-        6.0,
+        Colors.black38,
+        8.0,
         false
     );
     canvas.drawRRect(
@@ -67,7 +67,19 @@ class ColorSliderThumbShape extends SliderComponentShape {
           Radius.circular(8.0)
       ),
       new Paint()..color = Colors.black26
-                 ..strokeWidth = 2.0
+                 ..strokeWidth = 1.0
+                 ..style = PaintingStyle.stroke,
+    );
+    canvas.drawRRect(
+      RRect.fromLTRBR(
+          thumbCenter.dx - heightTween.evaluate(enableAnimation) * 1.3 + 1.0,
+          thumbCenter.dy - heightTween.evaluate(enableAnimation) + 1.0,
+          thumbCenter.dx + heightTween.evaluate(enableAnimation) * 1.3 - 1.0,
+          thumbCenter.dy + heightTween.evaluate(enableAnimation) - 1.0,
+          Radius.circular(7.0)
+      ),
+      new Paint()..color = Colors.white24
+                 ..strokeWidth = 1.0
                  ..style = PaintingStyle.stroke,
     );
   }

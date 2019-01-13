@@ -38,7 +38,10 @@ theme(BuildContext context, bool darkMode) {
           ),
           button: Theme.of(context).textTheme.button.copyWith(
             color: Colors.grey.shade50,
-          )
+          ),
+          body1: Theme.of(context).textTheme.body1.copyWith(
+            color: Colors.grey.shade50,
+          ),
       ),
       splashFactory: InkRipple.splashFactory,
       sliderTheme: Theme.of(context).sliderTheme.copyWith(

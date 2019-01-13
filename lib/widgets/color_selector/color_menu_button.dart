@@ -205,7 +205,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
               shape: RoundedRectangleBorder(
                 borderRadius: borderRadius.value,
               ),
-              shadowColor: Colors.black26,
+              shadowColor: Theme.of(context).brightness == Brightness.dark ? Colors.black54 : Colors.black26,
             ),
           ),
           Column(
@@ -298,10 +298,6 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                                   tileMode: TileMode.clamp, // repeats the gradient over the canvas
                                                 ),
                                                 borderRadius: BorderRadius.circular(8.0),
-                                                border: Border.all(
-                                                  color: Colors.black26,
-                                                  width: 2.0,
-                                                ),
                                               ),
                                             ),
                                           ),
@@ -364,10 +360,6 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                                   tileMode: TileMode.clamp, // repeats the gradient over the canvas
                                                 ),
                                                 borderRadius: BorderRadius.circular(8.0),
-                                                border: Border.all(
-                                                  color: Colors.black26,
-                                                  width: 2.0,
-                                                ),
                                               ),
                                             ),
                                           ),
@@ -430,10 +422,6 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                                   tileMode: TileMode.clamp, // repeats the gradient over the canvas
                                                 ),
                                                 borderRadius: BorderRadius.circular(8.0),
-                                                border: Border.all(
-                                                  color: Colors.black26,
-                                                  width: 2.0,
-                                                ),
                                               ),
                                             ),
                                           ),
@@ -608,7 +596,7 @@ class ColorMenuButton extends StatelessWidget {
           color: color,
           animationDuration: Duration(milliseconds: 400),
           elevation: active ? 6.0 : 0.0,
-          shadowColor: color.withAlpha(128),
+          shadowColor: color.withAlpha(Theme.of(context).brightness == Brightness.dark ? 255 : 128),
           borderRadius: BorderRadius.circular(8.0),
           child: InkWell(
             borderRadius: BorderRadius.circular(8.0),

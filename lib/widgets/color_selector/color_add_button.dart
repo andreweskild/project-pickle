@@ -12,6 +12,15 @@ const double _kButtonHeight = 40.0;
 const double _kMenuWidth = 300.0;
 const double _kMenuHeight = 192.0;
 
+Color _getBorderColor(Color color) {
+  if(color.computeLuminance() > 0.5) {
+    return Color.lerp(color, Colors.purple, 0.1);
+  }
+  else {
+    return Colors.transparent;
+  }
+}
+
 class _ColorPopupRouteLayout extends SingleChildLayoutDelegate {
   _ColorPopupRouteLayout(this.position);
 
@@ -170,7 +179,6 @@ class ColorPopupContentState extends State<ColorPopupContent> {
               color: Theme.of(context).cardColor,
               shape: RoundedRectangleBorder(
                 borderRadius: borderRadius.value,
-                side: BorderSide(color: Theme.of(context).dividerColor, width: 2.0),
               ),
               shadowColor: Colors.black26,
             ),
@@ -188,7 +196,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                       borderRadius: borderRadius.value,
                       side: BorderSide(
                         width: 2.0,
-                        color: Colors.black12,
+                        color: _getBorderColor(_color.toColor())
                       ),
                     ),
                     child: Padding(
@@ -265,10 +273,6 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                                   tileMode: TileMode.clamp, // repeats the gradient over the canvas
                                                 ),
                                                 borderRadius: BorderRadius.circular(8.0),
-                                                border: Border.all(
-                                                  color: Colors.black26,
-                                                  width: 2.0,
-                                                ),
                                               ),
                                             ),
                                           ),
@@ -331,10 +335,6 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                                   tileMode: TileMode.clamp, // repeats the gradient over the canvas
                                                 ),
                                                 borderRadius: BorderRadius.circular(8.0),
-                                                border: Border.all(
-                                                  color: Colors.black26,
-                                                  width: 2.0,
-                                                ),
                                               ),
                                             ),
                                           ),
@@ -397,10 +397,6 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                                   tileMode: TileMode.clamp, // repeats the gradient over the canvas
                                                 ),
                                                 borderRadius: BorderRadius.circular(8.0),
-                                                border: Border.all(
-                                                  color: Colors.black26,
-                                                  width: 2.0,
-                                                ),
                                               ),
                                             ),
                                           ),
