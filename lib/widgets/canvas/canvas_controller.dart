@@ -142,20 +142,17 @@ class CanvasController extends StatelessWidget {
               model.currentTool.handlePointerUp(details, context);
             }
           },
-          child: Opacity(
-            opacity: layers.length > 0 ? 1.0 : 0.0,
-            child: SizedBox(
-              width: 32.0,
-              height: 32.0,
-              child: Stack(
-                children: <Widget>[
-                  Stack(
-                    fit: StackFit.expand,
-                    children: layers
-                  ),
-                  SelectToolOverlay(),
-                ],
-              ),
+          child: SizedBox(
+            width: 32.0,
+            height: 32.0,
+            child: Stack(
+              children: <Widget>[
+                Stack(
+                  fit: StackFit.expand,
+                  children: layers
+                ),
+                SelectToolOverlay(),
+              ],
             ),
           ),
         );

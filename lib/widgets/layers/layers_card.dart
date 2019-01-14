@@ -96,7 +96,6 @@ class LayersCard extends StatelessWidget {
                 constraints: BoxConstraints.expand(height: 48.0),
                 child: FlatButton.icon(
                   color: Theme.of(context).cardColor,
-                  highlightColor: Theme.of(context).accentColor,
                   colorBrightness: Theme.of(context).brightness,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),

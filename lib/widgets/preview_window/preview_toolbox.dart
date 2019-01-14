@@ -54,7 +54,7 @@ class PreviewToolbox extends StatelessWidget {
             padding: const EdgeInsets.all(12.0),
             child: DecoratedBox(
               decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
+                  color: Theme.of(context).unselectedWidgetColor,
                   borderRadius: BorderRadius.circular(6.0)),
               child: Padding(
                 padding: const EdgeInsets.all(18.0),

@@ -18,10 +18,18 @@ class RightDrawer extends StatelessWidget {
       builder: (context, store) {
         return SizedBox(
           width: 196.0,
-          child: Material(
-            color: Theme.of(context).unselectedWidgetColor,
-            elevation: 24.0,
-            shadowColor: Colors.black,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Theme.of(context).unselectedWidgetColor,
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  blurRadius: 6.0,
+                  color: Theme.of(context).brightness == Brightness.light ? 
+                    Theme.of(context).accentIconTheme.color.withAlpha(72) :
+                    Colors.black26
+                )
+              ]
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[

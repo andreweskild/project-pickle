@@ -164,16 +164,20 @@ class _CanvasGestureContainerState extends State<CanvasGestureContainer> {
           behavior: HitTestBehavior.opaque,
           onScaleStart: _handleScaleStart,
           onScaleUpdate: _handleScaleUpdate,
-          child: new Container(
-            child: new Center (
+          child: Container(
+            child: Center (
               child: SizedBox(
-                height: 32.0 + 4.0 / _scale,
-                width: 32.0 + 4.0 / _scale,
+                height: 32.0 + 0.0 / _scale,
+                width: 32.0 + 0.0 / _scale,
                 child: Material(
                   elevation: 3.0,
                   shadowColor: Colors.black26,
                   color: Colors.white,
-                  child: Center(child: widget.canvasController)
+                  child: Center(
+                    widthFactor: 1.0,
+                    heightFactor: 1.0,
+                    child: widget.canvasController
+                  )
                 ),
               ),
             ),

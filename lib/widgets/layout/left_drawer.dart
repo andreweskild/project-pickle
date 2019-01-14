@@ -18,10 +18,18 @@ class LeftDrawer extends StatelessWidget {
       builder: (context, store) {
         return SizedBox(
           width: 72.0,
-          child: Material(
-            color: Theme.of(context).unselectedWidgetColor,
-            elevation: 8.0,
-            shadowColor: Colors.black38,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Theme.of(context).unselectedWidgetColor,
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  blurRadius: 6.0,
+                  color: Theme.of(context).brightness == Brightness.light ? 
+                    Theme.of(context).accentIconTheme.color.withAlpha(72) :
+                    Colors.black26
+                )
+              ]
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[

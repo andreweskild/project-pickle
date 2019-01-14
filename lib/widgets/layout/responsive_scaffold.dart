@@ -104,7 +104,6 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
         else {
           // return Desktop Scaffold
           return new Scaffold(
-            drawer: widget.drawer,
             appBar: new ResponsiveAppBar(
               elevation: 6.0,
               primary: true,
@@ -244,11 +243,11 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                       decoration: BoxDecoration(
                         boxShadow: <BoxShadow>[
                           BoxShadow(
-                            blurRadius: 12.0,
-                            spreadRadius: 6.0,
+                            blurRadius: 8.0,
+                            spreadRadius: 2.0,
                             color: Theme.of(context).brightness == Brightness.light ? 
                               Theme.of(context).accentIconTheme.color.withAlpha(72) :
-                              Colors.black26
+                              Colors.black38
                           )
                         ]
                       ),

@@ -46,7 +46,7 @@ class PushbuttonToggleGroup<T> extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
-            color: Theme.of(context).scaffoldBackgroundColor,
+            color: Theme.of(context).unselectedWidgetColor,
           ),
           child: Row(
             children: items.map<Widget>((item) {
