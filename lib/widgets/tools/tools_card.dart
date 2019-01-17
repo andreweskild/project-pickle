@@ -75,7 +75,7 @@ class ToolsCard extends StatelessWidget {
                    child: ToolButton(
                      active: model.currentTool is PixelTool,
                      icon: Icon(Icons.crop_square),
-                     label: Text('Pixel Tool'),
+                     label: 'Pixel Tool',
                      options: _getToolOptions(model.currentTool, model.currentTool is PixelTool),
                      onToggle: () => model.callback(PixelTool(context)),
                    ),
@@ -85,7 +85,7 @@ class ToolsCard extends StatelessWidget {
                    child: ToolButton(
                      active: model.currentTool is EraserTool,
                      icon: Icon(Icons.crop_square),
-                     label: Text('Eraser Tool'),
+                     label: 'Eraser Tool',
                      options: _getToolOptions(model.currentTool, model.currentTool is EraserTool),
                      onToggle: () => model.callback(EraserTool(context)),
                    ),
@@ -95,7 +95,7 @@ class ToolsCard extends StatelessWidget {
                    child: ToolButton(
                      active: model.currentTool is LineTool,
                      icon: Icon(Icons.crop_square),
-                     label: Text('Line Tool'),
+                     label: 'Line Tool',
                      options: _getToolOptions(model.currentTool, model.currentTool is LineTool),
                      onToggle: () => model.callback(LineTool(context)),
                    ),
@@ -105,7 +105,7 @@ class ToolsCard extends StatelessWidget {
                    child: ToolButton(
                      active: model.currentTool is ShapeTool,
                      icon: Icon(Icons.crop_square),
-                     label: Text('Shape Tool'),
+                     label: 'Shape Tool',
                      options: _getToolOptions(model.currentTool, model.currentTool is ShapeTool),
                      onToggle: () => model.callback(ShapeTool(context)),
                    ),
@@ -115,7 +115,7 @@ class ToolsCard extends StatelessWidget {
                    child: ToolButton(
                      active: model.currentTool is FillTool,
                      icon: Icon(Icons.crop_square),
-                     label: Text('Fill Tool'),
+                     label: 'Fill Tool',
                      options: _getToolOptions(model.currentTool, model.currentTool is FillTool),
                      onToggle: () => model.callback(FillTool(context)),
                    ),
@@ -125,7 +125,7 @@ class ToolsCard extends StatelessWidget {
                    child: ToolButton(
                      active: model.currentTool is MarqueeSelectorTool,
                      icon: Icon(Icons.crop_square),
-                     label: Text('Selection Tool'),
+                     label: 'Selection Tool',
                      options: _getToolOptions(model.currentTool, model.currentTool is MarqueeSelectorTool),
                      onToggle: () => model.callback(MarqueeSelectorTool(context)),
                    ),

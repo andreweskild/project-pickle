@@ -130,7 +130,12 @@ class ColorPopupContentState extends State<ColorPopupContent> {
   Widget build(BuildContext context) {
     final Animation<BorderRadius> borderRadius = BorderRadiusTween(
       begin: BorderRadius.circular(8.0),
-      end: BorderRadius.circular(8.0),
+      end: BorderRadius.only(
+        topLeft: Radius.circular(8.0), 
+        topRight: Radius.circular(8.0),
+        bottomLeft: Radius.circular(0.0),
+        bottomRight: Radius.circular(0.0),
+      ),
     ).animate(
       CurvedAnimation(
         parent: widget.parentAnimation,
@@ -178,7 +183,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
               animationDuration: Duration.zero,
               color: Theme.of(context).cardColor,
               shape: RoundedRectangleBorder(
-                borderRadius: borderRadius.value,
+                borderRadius: BorderRadius.circular(8.0)
               ),
               shadowColor: Colors.black26,
             ),
@@ -191,6 +196,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                 child: ConstrainedBox(
                   constraints: BoxConstraints.expand(),
                   child: Material(
+                    animationDuration: Duration.zero,
                     color: _color.toColor(),
                     shape: RoundedRectangleBorder(
                       borderRadius: borderRadius.value,

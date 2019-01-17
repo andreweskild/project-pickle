@@ -58,66 +58,11 @@ class LayerListItem extends StatelessWidget {
               ),
             ),
           ),
-          Stack(children: <Widget>[
-            Align(
-              alignment: Alignment.topLeft,
-              child: AspectRatio(
-                aspectRatio: 1.0,
-                child: Container(
-                  padding: EdgeInsets.all(4.0),
-                  foregroundDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Material(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6.0),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(6.0),
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          return Transform.scale(
-                            alignment: Alignment.topLeft,
-                            scale: constraints.maxHeight / 32.0,
-                            child: layerCanvas,
-                          );
-                        }
-                      )
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-                left: _kButtonHeight,
-                top: 0.0,
-                bottom: 0.0,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: Center(
-                      child: Text(
-                        label,
-                        style: Theme.of(context).textTheme.button.copyWith(
-                          color: selected
-                              ? Theme
-                              .of(context)
-                              .accentTextTheme
-                              .button
-                              .color
-                              : Theme
-                              .of(context)
-                              .textTheme
-                              .button
-                              .color,
-                          fontWeight: FontWeight.w500,
-                        )
-                      )),
-                )),
-          ]),
           Positioned.fill(
             child: RaisedButton(
               color: Colors.transparent,
+              splashColor: const Color(0x9986C040),
+              highlightColor: const Color(0x99B0EF63),
               elevation: 0.0,
               highlightElevation: 0.0,
               padding: const EdgeInsets.all(0.0),
@@ -125,6 +70,69 @@ class LayerListItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8.0),
               ),
               onPressed: onTap,
+            ),
+          ),
+          IgnorePointer(
+            child: Stack(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: AspectRatio(
+                    aspectRatio: 1.0,
+                    child: Container(
+                      padding: EdgeInsets.all(4.0),
+                      foregroundDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Material(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(6.0),
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              return Transform.scale(
+                                alignment: Alignment.topLeft,
+                                scale: constraints.maxHeight / 32.0,
+                                child: layerCanvas,
+                              );
+                            }
+                          )
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                    left: _kButtonHeight,
+                    top: 0.0,
+                    bottom: 0.0,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Center(
+                        child: Text(
+                          label,
+                          style: Theme.of(context).textTheme.button.copyWith(
+                            color: selected
+                                ? Theme
+                                .of(context)
+                                .accentTextTheme
+                                .button
+                                .color
+                                : Theme
+                                .of(context)
+                                .textTheme
+                                .button
+                                .color,
+                            fontWeight: FontWeight.w500,
+                          )
+                        )
+                      ),
+                    )
+                ),
+              ]
             ),
           ),
           Positioned(
@@ -138,6 +146,8 @@ class LayerListItem extends StatelessWidget {
                   aspectRatio: 1.0,
                   child: FlatButton(
                     padding: EdgeInsets.all(0.0),
+                    splashColor: const Color(0x9986C040),
+                    highlightColor: const Color(0x99B0EF63),
                     child: IconTheme(
                       data: IconThemeData(
                           color: selected

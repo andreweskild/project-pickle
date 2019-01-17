@@ -4,12 +4,12 @@ import 'package:flutter/rendering.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:project_pickle/widgets/color_selector/color_menu_button.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/common/reorderable_list.dart';
 import 'package:project_pickle/widgets/common/deletable.dart';
 import 'package:project_pickle/widgets/layers/layer_list_item.dart';
+import 'package:project_pickle/widgets/layers/layer_item.dart';
 import 'package:project_pickle/canvas/pixel_layer.dart';
 
 class LayersList extends StatefulWidget {
@@ -122,14 +122,21 @@ class _LayersListState extends State<LayersList> {
             );
           },
           builder: (context, layerModel) {
-            return LayerListItem(
-              layerCanvas: layerModel.layer.canvas,
-              selected:
+            return LayerItem(
+              canvas: layerModel.layer.canvas,
+              active:
                   (index == listModel.layers.indexOfActiveLayer),
-              label: layerModel.layer.name,
-              hidden: layerModel.layer.hidden,
-              onTap: () => layerModel.setActiveCallback(index),
-              onToggleHidden: () => layerModel.toggleHidden(index),
+              name: layerModel.layer.name,
+              onToggle: () => layerModel.setActiveCallback(index),
+              options: SizedBox(
+                height: 40.0,
+                width: 40.0,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                  ),
+                )
+              ),
             );
           } 
         );

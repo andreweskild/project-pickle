@@ -159,6 +159,8 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       onPressed: (){},
+                      splashColor: const Color(0x9986C040),
+                      highlightColor: const Color(0x99B0EF63),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 4.0, right: 4.0,),
@@ -177,6 +179,8 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       onPressed: (){},
+                      splashColor: const Color(0x9986C040),
+                      highlightColor: const Color(0x99B0EF63),
                     )
                   ],
                 ),

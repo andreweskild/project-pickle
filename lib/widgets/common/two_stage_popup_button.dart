@@ -89,6 +89,24 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
 
   @override
   Widget build(BuildContext context) {
+    final Animation<BorderRadius> borderRadius = BorderRadiusTween(
+      begin: BorderRadius.circular(8.0),
+      end: BorderRadius.only(
+        topLeft: Radius.circular(8.0), 
+        topRight: Radius.circular(8.0),
+        bottomLeft: Radius.circular(0.0),
+        bottomRight: Radius.circular(0.0),
+      ),
+    ).animate(
+      CurvedAnimation(
+        parent: widget.parentAnimation,
+        curve: Interval(
+          0.0, 1.0,
+          curve: Curves.ease,
+        ),
+      ),
+    );
+
     final Animation<Size> size = SizeTween(
       begin: widget.initialSize,
       end: Size(256.0, 114.0),
@@ -140,28 +158,26 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
                 SizedBox(
                   height: widget.initialSize.height,
                   child: Material(
+                    animationDuration: Duration.zero,
                     color: Theme.of(context).buttonColor,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(8.0), topRight: Radius.circular(8.0),),
+                      borderRadius: borderRadius.value
                     ),
                     child: InkWell(
                       onTap: widget.onAccept,
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Stack(
-                          children: <Widget>[
-                            IconTheme(
-                              data: IconThemeData(
-                                color: Theme.of(context).accentTextTheme.button.color,
-                              ),
-                              child: DefaultTextStyle(
-                                style: TextStyle(
-                                  color: Theme.of(context).accentTextTheme.button.color,
-                                ),
-                                child: widget.headerContent),
-                            ),
-                          ],
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8.0),
+                        topRight: Radius.circular(8.0)
+                      ),
+                      child: IconTheme(
+                        data: IconThemeData(
+                          color: Theme.of(context).accentTextTheme.button.color,
+                        ),
+                        child: DefaultTextStyle(
+                          style: TextStyle(
+                            color: Theme.of(context).accentTextTheme.button.color,
+                          ),
+                          child: widget.headerContent
                         ),
                       ),
                     ),
@@ -262,6 +278,8 @@ class _TwoStagePopupRoute extends PopupRoute<bool> {
   }
 }
 
+typedef _HeaderBuilder = Widget Function(bool);
+
 /// Creates a button that on first click toggles the button, and on second click
 /// opens the popup menu for additional related options.
 class TwoStagePopupButton extends StatefulWidget {
@@ -269,6 +287,7 @@ class TwoStagePopupButton extends StatefulWidget {
     Key key,
     this.icon,
     this.label,
+    @required this.headerContent,
     this.active = false,
     this.onToggled,
     @required this.popupContent,
@@ -277,6 +296,7 @@ class TwoStagePopupButton extends StatefulWidget {
   final Widget icon;
   final Widget label;
   final Widget popupContent;
+  final _HeaderBuilder headerContent;
   final bool active;
   final VoidCallback onToggled;
 
@@ -284,7 +304,7 @@ class TwoStagePopupButton extends StatefulWidget {
 }
 
 class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
-  double _height = 40.0;
+  double _height = 48.0;
   bool _opened = false;
 
   _showPopupMenu(BuildContext context) async {
@@ -293,18 +313,7 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
     _opened = await Navigator.of(context).push(new _TwoStagePopupRoute(
         initialSize: button.size,
         buttonContext: context,
-        header: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(4.0, 4.0, 8.0, 4.0),
-              child: widget.icon,
-            ),
-            Expanded(
-              child: widget.label,
-            )
-          ]
-        ),
+        header: widget.headerContent(true),
         popupContent: widget.popupContent,
       )
     );
@@ -312,8 +321,8 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.0,
+    return SizedBox(
+      height: _height,
       child: Stack(
         children: <Widget>[
           Positioned.fill(
@@ -333,48 +342,45 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
               ),
             ),
           ),
-          FlatButton(
-            color: Colors.transparent,
-            padding: const EdgeInsets.all(0.0),
-            onPressed: () {
-              if (!widget.active) {
-                Navigator.of(context)
-                    .popUntil((route) => route.settings.name != '/tool-options');
-                widget.onToggled();
-              }
-            },
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: IgnorePointer(
-              ignoring: !widget.active,
-              child: InkWell(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Stack(
-                    children: <Widget>[
-                      IconTheme(
-                        data: IconThemeData(
-                          color: (widget.active)
-                              ? Theme.of(context).accentTextTheme.button.color
-                              : Theme.of(context).textTheme.button.color,
-                        ),
-                        child: DefaultTextStyle(
-                          style: TextStyle(
-                            color: (widget.active)
-                                ? Theme.of(context).accentTextTheme.button.color
-                                : Theme.of(context).textTheme.button.color,
-                          ),
-                          child: Center(child: widget.icon),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+          Positioned.fill(
+            child: FlatButton(
+              color: Colors.transparent,
+              padding: const EdgeInsets.all(0.0),
+              onPressed: () {
+                if (!widget.active) {
+                  Navigator.of(context)
+                      .popUntil((route) => route.settings.name != '/tool-options');
+                  widget.onToggled();
+                }
+              },
+              splashColor: const Color(0x9986C040),
+              highlightColor: const Color(0x99B0EF63),
+              shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
-                onTap: () {
-                  _showPopupMenu(context);
-                },
+              ),
+              child: IgnorePointer(
+                ignoring: !widget.active,
+                child: InkWell(
+                  child: IconTheme(
+                    data: IconThemeData(
+                      color: (widget.active)
+                          ? Theme.of(context).accentTextTheme.button.color
+                          : Theme.of(context).textTheme.button.color,
+                    ),
+                    child: DefaultTextStyle(
+                      style: TextStyle(
+                        color: (widget.active)
+                            ? Theme.of(context).accentTextTheme.button.color
+                            : Theme.of(context).textTheme.button.color,
+                      ),
+                      child: widget.headerContent(false),
+                    ),
+                  ),
+                  borderRadius: BorderRadius.circular(8.0),
+                  onTap: () {
+                    _showPopupMenu(context);
+                  },
+                ),
               ),
             ),
           ),
