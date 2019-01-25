@@ -20,7 +20,7 @@ class LayerItem extends StatelessWidget {
   final VoidCallback onToggleHidden;
   final Widget canvas;
   final String name;
-  final Widget options;
+  final List<PopupContentItem> options;
 
   @override
   Widget build(BuildContext context) {

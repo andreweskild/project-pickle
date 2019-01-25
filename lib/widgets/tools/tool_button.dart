@@ -16,7 +16,7 @@ class ToolButton extends StatelessWidget {
   final VoidCallback onToggle;
   final Widget icon;
   final String label;
-  final Widget options;
+  final List<PopupContentItem> options;
 
   @override
   Widget build(BuildContext context) {

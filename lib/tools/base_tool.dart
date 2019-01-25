@@ -5,6 +5,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/state/app_state.dart';
 
+import 'package:project_pickle/widgets/common/two_stage_popup_button.dart';
+
 typedef PixelInputCallback = void Function(Offset);
 typedef OptionsBuilder = Widget Function();
 
@@ -24,7 +26,7 @@ abstract class BaseTool<T extends Widget> {
     else return store.state.selectionPath.contains(pos.translate(0.5, 0.5));
   }
 
-  Widget options;
+  List<PopupContentItem> options;
 
   void onPixelInputUpdate(Offset pos) {}
   void onPixelInputUp() {}

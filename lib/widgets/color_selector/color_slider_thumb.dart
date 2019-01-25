@@ -66,7 +66,7 @@ class ColorSliderThumbShape extends SliderComponentShape {
           thumbCenter.dy + heightTween.evaluate(enableAnimation),
           Radius.circular(8.0)
       ),
-      new Paint()..color = Colors.black26
+      new Paint()..color = Colors.black12
                  ..strokeWidth = 1.0
                  ..style = PaintingStyle.stroke,
     );

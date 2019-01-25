@@ -8,6 +8,7 @@ import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/common/reorderable_list.dart';
 import 'package:project_pickle/widgets/common/deletable.dart';
+import 'package:project_pickle/widgets/common/two_stage_popup_button.dart';
 import 'package:project_pickle/widgets/layers/layer_list_item.dart';
 import 'package:project_pickle/widgets/layers/layer_item.dart';
 import 'package:project_pickle/canvas/pixel_layer.dart';
@@ -128,15 +129,18 @@ class _LayersListState extends State<LayersList> {
                   (index == listModel.layers.indexOfActiveLayer),
               name: layerModel.layer.name,
               onToggle: () => layerModel.setActiveCallback(index),
-              options: SizedBox(
-                height: 40.0,
-                width: 40.0,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                  ),
+              options: <PopupContentItem>[
+                PopupContentItem(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.expand(),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.red
+                      ),
+                    ),
+                  )
                 )
-              ),
+              ]
             );
           } 
         );

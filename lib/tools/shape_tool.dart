@@ -6,6 +6,7 @@ import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/base_drawing_tool.dart';
 import 'package:project_pickle/widgets/common/pushbutton_toggle_group.dart';
+import 'package:project_pickle/widgets/common/two_stage_popup_button.dart';
 
 class ShapeModeModel {
   ShapeModeModel({
@@ -40,11 +41,8 @@ class ShapeTool extends BaseDrawingTool {
   Offset _endPoint;
 
 
-  Widget options = Column (
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 6.0),
+  List<PopupContentItem> options = <PopupContentItem>[
+          PopupContentItem(
             child: StoreConnector<AppState,ShapeModeModel>(
               converter: (store) {
                 return ShapeModeModel(
@@ -74,8 +72,7 @@ class ShapeTool extends BaseDrawingTool {
               }
             ),
           ),
-        ],
-      );
+        ];
 
   @override
   void onPixelInputUpdate(Offset pos) {

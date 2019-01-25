@@ -1,6 +1,26 @@
 import 'package:flutter/material.dart';
 
 const double _kMenuScreenPadding = 0.0;
+const double _kMenuItemSpacing = 12.0;
+const double _kMenuWidth = 256.0;
+
+class PopupContentItem extends StatelessWidget{
+  PopupContentItem({
+    @required this.child,
+    this.height = 40.0,
+  });
+
+  final Widget child;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      child: child,
+    );
+  }
+}
 
 class _TwoStagePopupRouteLayout extends SingleChildLayoutDelegate {
   _TwoStagePopupRouteLayout(this.position);
@@ -63,14 +83,14 @@ class _TwoStagePopupRouteLayout extends SingleChildLayoutDelegate {
 class TwoStagePopupContent extends StatefulWidget {
   TwoStagePopupContent({
     Key key,
-    @required this.child,
+    @required this.popupContent,
     @required this.headerContent,
     @required this.initialSize,
     @required this.parentAnimation,
     @required this.onAccept,
   }) : super(key: key);
 
-  final Widget child;
+  final List<PopupContentItem> popupContent;
   final Widget headerContent;
   final Size initialSize;
   final Animation<double> parentAnimation;
@@ -87,8 +107,19 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
     super.initState();
   }
 
+  double _getContentHeight(List<PopupContentItem> content, double spacing) {
+    double finalHeight = 0;
+    content.forEach(
+      (item) => finalHeight += item.height
+    );
+    finalHeight += (content.length + 1) * spacing;
+    return finalHeight;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final double _contentHeight = _getContentHeight(widget.popupContent, _kMenuItemSpacing);
+
     final Animation<BorderRadius> borderRadius = BorderRadiusTween(
       begin: BorderRadius.circular(8.0),
       end: BorderRadius.only(
@@ -109,7 +140,10 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
 
     final Animation<Size> size = SizeTween(
       begin: widget.initialSize,
-      end: Size(256.0, 114.0),
+      end: Size(
+        _kMenuWidth, 
+        114.0
+      ),
     ).animate(
       CurvedAnimation(
         parent: widget.parentAnimation,
@@ -183,9 +217,23 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
                     ),
                   ),
                 ),
-                Expanded(child: Opacity(
-                  opacity: opacity.value,
-                  child: widget.child)
+                Expanded(
+                  child: Opacity(
+                    opacity: opacity.value,
+                    child: Padding(
+                      padding: EdgeInsets.all(_kMenuItemSpacing/2.0),
+                      child: Column(
+                        children: widget.popupContent.map<Widget>(
+                          (item) {
+                            return Padding(
+                              padding: EdgeInsets.all(_kMenuItemSpacing/2.0),
+                              child: item,
+                            );
+                          }
+                        ).toList(),
+                      ),
+                    )
+                  )
                 ),
               ],
             ),
@@ -209,7 +257,7 @@ class _TwoStagePopupRoute extends PopupRoute<bool> {
   final BuildContext buttonContext;
   final Widget header;
   final Size initialSize;
-  final Widget popupContent;
+  final List<PopupContentItem> popupContent;
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 400);
@@ -269,7 +317,7 @@ class _TwoStagePopupRoute extends PopupRoute<bool> {
                 headerContent: header,
                 initialSize: initialSize,
                 parentAnimation: parentAnimation,
-                child: popupContent,
+                popupContent: popupContent,
                 onAccept: () => Navigator.pop(context),
               ));
         },
@@ -295,7 +343,7 @@ class TwoStagePopupButton extends StatefulWidget {
 
   final Widget icon;
   final Widget label;
-  final Widget popupContent;
+  final List<PopupContentItem> popupContent;
   final _HeaderBuilder headerContent;
   final bool active;
   final VoidCallback onToggled;
@@ -332,7 +380,7 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
               opacity: widget.active ? 1.0 : 0.0,
               child: Material(
                 elevation: 6.0,
-                shadowColor: Theme.of(context).buttonColor.withAlpha(
+                shadowColor: Theme.of(context).primaryColor.withAlpha(
                   Theme.of(context).brightness == Brightness.dark ? 255 : 128
                 ),
                 color: Theme.of(context).buttonColor,

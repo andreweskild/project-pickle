@@ -11,6 +11,7 @@ import 'package:project_pickle/tools/line_tool.dart';
 import 'package:project_pickle/tools/pixel_tool.dart';
 import 'package:project_pickle/tools/shape_tool.dart';
 import 'package:project_pickle/tools/marquee_selector_tool.dart';
+import 'package:project_pickle/widgets/common/two_stage_popup_button.dart';
 import 'package:project_pickle/widgets/tools/tool_button.dart';
 
 typedef _ToolCreationCallback = void Function(BaseTool tool);
@@ -39,9 +40,21 @@ class _ToolsModel {
   }
 }
 
-Widget _getToolOptions(dynamic currentTool, bool isCurrentToolType) {
+List<PopupContentItem> _getToolOptions(dynamic currentTool, bool isCurrentToolType) {
   return (isCurrentToolType && currentTool.options != null)
-      ? currentTool.options : SizedBox();
+      ? currentTool.options : 
+      <PopupContentItem>[
+        PopupContentItem(
+          child: ConstrainedBox(
+            constraints: BoxConstraints.expand(),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: Colors.red
+              ),
+            ),
+          )
+        )
+      ];
 }
 
 class ToolsCard extends StatelessWidget {

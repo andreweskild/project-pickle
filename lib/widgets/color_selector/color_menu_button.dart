@@ -225,10 +225,6 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                     color: _color.toColor(),
                     shape: RoundedRectangleBorder(
                       borderRadius: borderRadius.value,
-                      side: BorderSide(
-                        width: 2.0,
-                        color: _getBorderColor(widget.color.toColor())
-                      ),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
@@ -282,7 +278,6 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                         inactiveTrackColor: Colors.transparent,
                                         activeTickMarkColor: Colors.transparent,
                                         inactiveTickMarkColor: Colors.transparent,
-                                        thumbColor: _color.withSaturation(1.0).withLightness(0.5).toColor(),
                                         thumbShape: ColorSliderThumbShape(),
                                         overlayColor: _color.withAlpha(0.3).withSaturation(1.0).withLightness(0.5).toColor(),
                                         showValueIndicator: ShowValueIndicator.always,
@@ -345,7 +340,6 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                         activeTickMarkColor: Colors.transparent,
                                         inactiveTickMarkColor: Colors.transparent,
                                         overlayColor: _color.toColor().withOpacity(0.33),
-                                        thumbColor: _color.toColor(),
                                         thumbShape: ColorSliderThumbShape(),
                                         showValueIndicator: ShowValueIndicator.always,
                                         valueIndicatorColor: _color.toColor(),
@@ -408,7 +402,6 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                         inactiveTickMarkColor: Colors.transparent,
                                         showValueIndicator: ShowValueIndicator.always,
                                         overlayColor: _color.toColor().withOpacity(0.33),
-                                        thumbColor: _color.toColor(),
                                         thumbShape: ColorSliderThumbShape(),
                                         valueIndicatorColor: _color.toColor(),
                                         valueIndicatorShape: ColorSliderValueIndicatorShape(),
