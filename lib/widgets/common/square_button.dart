@@ -1,0 +1,38 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+class SquareButton extends StatelessWidget {
+  SquareButton({
+    Key key,
+    @required this.child,
+    @required this.onPressed,
+    this.color,
+  }) : super(key: key);
+
+  final Color color;
+  final Widget child;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      padding: EdgeInsets.all(0.0),
+      child: IconTheme(
+          data: IconThemeData(
+            color: onPressed == null ?
+            Theme.of(context).disabledColor :
+            Theme.of(context).accentIconTheme.color,
+          ),
+          child: child
+      ),
+      color: color ?? Colors.transparent,
+      colorBrightness: Theme.of(context).brightness,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      splashColor: Theme.of(context).splashColor,
+      highlightColor: Theme.of(context).highlightColor,
+      onPressed: onPressed,
+    );
+  }
+}

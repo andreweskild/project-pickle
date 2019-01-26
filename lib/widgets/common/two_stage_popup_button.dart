@@ -142,7 +142,7 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
       begin: widget.initialSize,
       end: Size(
         _kMenuWidth, 
-        114.0
+        _contentHeight + widget.initialSize.height
       ),
     ).animate(
       CurvedAnimation(
@@ -218,21 +218,24 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
                   ),
                 ),
                 Expanded(
-                  child: Opacity(
-                    opacity: opacity.value,
-                    child: Padding(
-                      padding: EdgeInsets.all(_kMenuItemSpacing/2.0),
-                      child: Column(
-                        children: widget.popupContent.map<Widget>(
-                          (item) {
-                            return Padding(
-                              padding: EdgeInsets.all(_kMenuItemSpacing/2.0),
-                              child: item,
-                            );
-                          }
-                        ).toList(),
-                      ),
-                    )
+                  child: Material(
+                    type: MaterialType.transparency,
+                    child: Opacity(
+                      opacity: opacity.value,
+                      child: Padding(
+                        padding: EdgeInsets.all(_kMenuItemSpacing/2.0),
+                        child: Column(
+                          children: widget.popupContent.map<Widget>(
+                            (item) {
+                              return Padding(
+                                padding: EdgeInsets.all(_kMenuItemSpacing/2.0),
+                                child: item,
+                              );
+                            }
+                          ).toList(),
+                        ),
+                      )
+                    ),
                   )
                 ),
               ],

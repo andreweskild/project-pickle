@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'package:project_pickle/widgets/common/square_button.dart';
 import 'package:project_pickle/widgets/common/two_stage_popup_button.dart';
+import 'package:project_pickle/widgets/common/value_slider.dart';
 
 class LayerItem extends StatelessWidget {
   LayerItem({
@@ -30,7 +32,7 @@ class LayerItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.fromLTRB(4.0, 4.0, 12.0, 4.0),
+              padding: const EdgeInsets.fromLTRB(6.0, 6.0, 12.0, 6.0),
               child: AspectRatio(
                 aspectRatio: 1.0,
                 child: DecoratedBox(
@@ -98,7 +100,120 @@ class LayerItem extends StatelessWidget {
           return content;
         }
       },
-      popupContent: options,
+      popupContent: <PopupContentItem>[
+        PopupContentItem(
+          height: 28.0,
+          child: Row(
+            children: <Widget>[
+              Icon(
+                Icons.opacity
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 12.0),
+                  child: ValueSlider(
+                    value: 21.0,
+                    min: 1.0,
+                    max: 100.0,
+                    onChanged: (value){
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        PopupContentItem(
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 6.0),
+                  child: SquareButton(
+                    child: Text(
+                      "Duplicate"
+                    ),
+                    onPressed: (){},
+                    color: Theme.of(context).unselectedWidgetColor,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 6.0),
+                  child: SquareButton(
+                    child: Text(
+                        "Merge"
+                    ),
+                    onPressed: (){},
+                    color: Theme.of(context).unselectedWidgetColor,
+                  ),
+                ),
+              )
+            ]
+          )
+        ),
+        PopupContentItem(
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 6.0),
+                  child: SquareButton(
+                    child: Text(
+                        "Alpha Lock"
+                    ),
+                    onPressed: (){},
+                    color: Theme.of(context).unselectedWidgetColor,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 6.0),
+                  child: SquareButton(
+                    child: Text(
+                        "Clip Layer"
+                    ),
+                    onPressed: (){},
+                    color: Theme.of(context).unselectedWidgetColor,
+                  ),
+                ),
+              )
+            ]
+          )
+        ),
+        PopupContentItem(
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 6.0),
+                  child: SquareButton(
+                    child: Text(
+                        "Select"
+                    ),
+                    onPressed: (){},
+                    color: Theme.of(context).unselectedWidgetColor,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 6.0),
+                  child: SquareButton(
+                    child: Text(
+                        "Clear"
+                    ),
+                    onPressed: (){},
+                    color: Theme.of(context).unselectedWidgetColor,
+                  ),
+                ),
+              )
+            ]
+          )
+        )
+      ],
       onToggled: onToggle,
       active: active,
     );
