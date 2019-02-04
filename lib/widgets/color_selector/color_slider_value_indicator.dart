@@ -272,7 +272,7 @@ class ColorSliderValueIndicatorShape extends SliderComponentShape {
     canvas.drawShadow(path, Colors.black26, 6.0, false);
     canvas.drawPath(path, paint);
     canvas.drawPath(path, paint
-      ..color = Colors.black26
+      ..color = Colors.black12
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0
     );

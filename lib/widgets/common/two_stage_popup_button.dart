@@ -4,6 +4,11 @@ const double _kMenuScreenPadding = 0.0;
 const double _kMenuItemSpacing = 12.0;
 const double _kMenuWidth = 256.0;
 
+const double _kButtonHeight = 48.0;
+
+const double _kHeaderHeight = 64.0;
+
+
 class PopupContentItem extends StatelessWidget{
   PopupContentItem({
     @required this.child,
@@ -123,7 +128,7 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
     final Animation<BorderRadius> borderRadius = BorderRadiusTween(
       begin: BorderRadius.circular(8.0),
       end: BorderRadius.only(
-        topLeft: Radius.circular(8.0), 
+        topLeft: Radius.circular(8.0),
         topRight: Radius.circular(8.0),
         bottomLeft: Radius.circular(0.0),
         bottomRight: Radius.circular(0.0),
@@ -142,7 +147,7 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
       begin: widget.initialSize,
       end: Size(
         _kMenuWidth, 
-        _contentHeight + widget.initialSize.height
+        _contentHeight + _kHeaderHeight
       ),
     ).animate(
       CurvedAnimation(
@@ -163,6 +168,34 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
         parent: widget.parentAnimation,
         curve: Interval(
           0.2,
+          1.0,
+          curve: Curves.ease,
+        ),
+      ),
+    );
+
+    final Animation<EdgeInsets> headerPadding = EdgeInsetsTween(
+      begin: EdgeInsets.all(6.0),
+      end: EdgeInsets.all(12.0),
+    ).animate(
+      CurvedAnimation(
+        parent: widget.parentAnimation,
+        curve: Interval(
+          0.0,
+          1.0,
+          curve: Curves.ease,
+        ),
+      ),
+    );
+
+    final Animation<double> headerHeight = Tween<double>(
+      begin: _kButtonHeight,
+      end: _kHeaderHeight,
+    ).animate(
+      CurvedAnimation(
+        parent: widget.parentAnimation,
+        curve: Interval(
+          0.0,
           1.0,
           curve: Curves.ease,
         ),
@@ -190,7 +223,7 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
             child: Column(
               children: <Widget>[
                 SizedBox(
-                  height: widget.initialSize.height,
+                  height: headerHeight.value,
                   child: Material(
                     animationDuration: Duration.zero,
                     color: Theme.of(context).buttonColor,
@@ -211,7 +244,10 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
                           style: TextStyle(
                             color: Theme.of(context).accentTextTheme.button.color,
                           ),
-                          child: widget.headerContent
+                          child: Padding(
+                            padding: headerPadding.value,
+                            child: widget.headerContent
+                          )
                         ),
                       ),
                     ),
@@ -355,13 +391,10 @@ class TwoStagePopupButton extends StatefulWidget {
 }
 
 class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
-  double _height = 48.0;
-  bool _opened = false;
 
   _showPopupMenu(BuildContext context) async {
     final RenderBox button = context.findRenderObject();
-    _opened = true;
-    _opened = await Navigator.of(context).push(new _TwoStagePopupRoute(
+    await Navigator.of(context).push(new _TwoStagePopupRoute(
         initialSize: button.size,
         buttonContext: context,
         header: widget.headerContent(true),
@@ -373,7 +406,7 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: _height,
+      height: _kButtonHeight,
       child: Stack(
         children: <Widget>[
           Positioned.fill(
@@ -424,7 +457,10 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
                             ? Theme.of(context).accentTextTheme.button.color
                             : Theme.of(context).textTheme.button.color,
                       ),
-                      child: widget.headerContent(false),
+                      child: Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: widget.headerContent(false),
+                      ),
                     ),
                   ),
                   borderRadius: BorderRadius.circular(8.0),

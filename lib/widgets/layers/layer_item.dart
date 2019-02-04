@@ -32,7 +32,7 @@ class LayerItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.fromLTRB(6.0, 6.0, 12.0, 6.0),
+              padding: const EdgeInsets.only(right: 12.0),
               child: AspectRatio(
                 aspectRatio: 1.0,
                 child: DecoratedBox(
@@ -53,7 +53,7 @@ class LayerItem extends StatelessWidget {
                 softWrap: false,
                 style: TextStyle(
                   inherit: true,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.bold,
                 )
               ),
             ),
@@ -105,13 +105,16 @@ class LayerItem extends StatelessWidget {
           height: 28.0,
           child: Row(
             children: <Widget>[
-              Icon(
-                Icons.opacity
+              Text(
+                "Opacity",
               ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12.0),
                   child: ValueSlider(
+                    //activeColor: Color(0xFFACA6AF),
+                    activeColor: Theme.of(context).accentColor,
+                    inactiveColor: Theme.of(context).unselectedWidgetColor,
                     value: 21.0,
                     min: 1.0,
                     max: 100.0,
@@ -131,7 +134,11 @@ class LayerItem extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 6.0),
                   child: SquareButton(
                     child: Text(
-                      "Duplicate"
+                      "Duplicate",
+                      style: TextStyle(
+                        inherit: true,
+                        fontWeight: FontWeight.normal,
+                      )
                     ),
                     onPressed: (){},
                     color: Theme.of(context).unselectedWidgetColor,
@@ -143,13 +150,17 @@ class LayerItem extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 6.0),
                   child: SquareButton(
                     child: Text(
-                        "Merge"
+                      "Merge",
+                      style: TextStyle(
+                        inherit: true,
+                        fontWeight: FontWeight.normal,
+                      )
                     ),
                     onPressed: (){},
                     color: Theme.of(context).unselectedWidgetColor,
                   ),
                 ),
-              )
+              ),
             ]
           )
         ),
@@ -161,7 +172,11 @@ class LayerItem extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 6.0),
                   child: SquareButton(
                     child: Text(
-                        "Alpha Lock"
+                      "Alpha Lock",
+                      style: TextStyle(
+                        inherit: true,
+                        fontWeight: FontWeight.normal,
+                      )
                     ),
                     onPressed: (){},
                     color: Theme.of(context).unselectedWidgetColor,
@@ -173,45 +188,57 @@ class LayerItem extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 6.0),
                   child: SquareButton(
                     child: Text(
-                        "Clip Layer"
+                      "Clip Layer",
+                      style: TextStyle(
+                        inherit: true,
+                        fontWeight: FontWeight.normal,
+                      )
                     ),
                     onPressed: (){},
                     color: Theme.of(context).unselectedWidgetColor,
                   ),
                 ),
-              )
+              ),
             ]
           )
         ),
         PopupContentItem(
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 6.0),
-                  child: SquareButton(
-                    child: Text(
-                        "Select"
+            child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 6.0),
+                      child: SquareButton(
+                        child: Text(
+                          "Select",
+                          style: TextStyle(
+                            inherit: true,
+                            fontWeight: FontWeight.normal,
+                          )
+                        ),
+                        onPressed: (){},
+                        color: Theme.of(context).unselectedWidgetColor,
+                      ),
                     ),
-                    onPressed: (){},
-                    color: Theme.of(context).unselectedWidgetColor,
                   ),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 6.0),
-                  child: SquareButton(
-                    child: Text(
-                        "Clear"
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 6.0),
+                      child: SquareButton(
+                        child: Text(
+                          "Clear Layer",
+                          style: TextStyle(
+                            inherit: true,
+                            fontWeight: FontWeight.normal,
+                          )
+                        ),
+                        onPressed: (){},
+                        color: Theme.of(context).unselectedWidgetColor,
+                      ),
                     ),
-                    onPressed: (){},
-                    color: Theme.of(context).unselectedWidgetColor,
-                  ),
-                ),
-              )
-            ]
-          )
+                  )
+                ]
+            )
         )
       ],
       onToggled: onToggle,

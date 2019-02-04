@@ -248,7 +248,9 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                 children: <Widget>[
                                   Padding(
                                     padding: const EdgeInsets.only(right: 12.0),
-                                    child: Text('H'),
+                                    child: Text(
+                                        'H',
+                                    ),
                                   ),
                                   Expanded(
                                     child: SliderTheme(
@@ -309,7 +311,9 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                 children: <Widget>[
                                   Padding(
                                     padding: const EdgeInsets.only(right: 12.0),
-                                    child: Text('S'),
+                                    child: Text(
+                                        'S',
+                                    ),
                                   ),
                                   Expanded(
                                     child: SliderTheme(
@@ -370,7 +374,9 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                 children: <Widget>[
                                   Padding(
                                     padding: const EdgeInsets.only(right: 12.0),
-                                    child: Text('L'),
+                                    child: Text(
+                                        'L',
+                                    ),
                                   ),
                                   Expanded(
                                     child: SliderTheme(

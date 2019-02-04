@@ -18,11 +18,16 @@ theme(BuildContext context, bool darkMode) {
             .copyWith(fontSize: 16.0, fontWeight: FontWeight.bold),
       ),
       primaryColor: const Color(0xFFD7FFA7),
+      primaryColorDark: Colors.red,
       accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
         color: const Color(0xFF5A990D),
       ),
       buttonTheme: ButtonTheme.of(context).copyWith(
         minWidth: 12.0,
+      ),
+      iconTheme: IconTheme.of(context).copyWith(
+        color: Colors.white,
+        size: 18.0,
       ),
       buttonColor: const Color(0xFFC4FB81),
       disabledColor: const Color(0xFFA2D95E),
@@ -100,7 +105,7 @@ theme(BuildContext context, bool darkMode) {
       buttonTheme: ButtonTheme.of(context).copyWith(
         minWidth: 12.0,
       ),
-      scaffoldBackgroundColor: const Color(0xFFF1F1F1),
+      scaffoldBackgroundColor: const Color(0xFFDEDBE0),
       textTheme: Theme.of(context).textTheme.copyWith(
           title: Theme.of(context).textTheme.title.copyWith(
             color: Colors.white,
@@ -121,7 +126,7 @@ theme(BuildContext context, bool darkMode) {
         overlayColor: const Color(0xFF8FC84A),
       ),
       toggleableActiveColor: const Color(0xFF86C040),
-      unselectedWidgetColor: const Color(0xFFF8F8F8),
+      unselectedWidgetColor: const Color(0xFFECEAED),
       primaryIconTheme: Theme.of(context).iconTheme.copyWith(
         color: const Color(0xFF5A990D),
       )

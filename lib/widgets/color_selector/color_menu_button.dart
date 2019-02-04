@@ -9,7 +9,9 @@ const double _kMenuScreenPadding = 8.0;
 
 const double _kButtonHeight = 48.0;
 
-const double _kMenuWidth = 300.0;
+const double _kHeaderHeight = 64.0;
+
+const double _kMenuWidth = 256.0;
 const double _kMenuHeight = 192.0;
 
 //class _ColorPickerModel {
@@ -217,7 +219,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               SizedBox(
-                height: 64.0,
+                height: _kHeaderHeight,
                 child: ConstrainedBox(
                   constraints: BoxConstraints.expand(),
                   child: Material(
@@ -269,7 +271,10 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                 children: <Widget>[
                                   Padding(
                                     padding: const EdgeInsets.only(right: 12.0),
-                                    child: Text('H'),
+                                    child: Text(
+                                      'H',
+                                    ),
+
                                   ),
                                   Expanded(
                                     child: SliderTheme(
@@ -330,7 +335,9 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                 children: <Widget>[
                                   Padding(
                                     padding: const EdgeInsets.only(right: 12.0),
-                                    child: Text('S'),
+                                    child: Text(
+                                        'S',
+                                    ),
                                   ),
                                   Expanded(
                                     child: SliderTheme(
@@ -391,7 +398,9 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                 children: <Widget>[
                                   Padding(
                                     padding: const EdgeInsets.only(right: 12.0),
-                                    child: Text('L'),
+                                    child: Text(
+                                        'L',
+                                    ),
                                   ),
                                   Expanded(
                                     child: SliderTheme(

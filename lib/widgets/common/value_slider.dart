@@ -431,7 +431,7 @@ class _ValueSliderState extends State<ValueSlider> with TickerProviderStateMixin
         inactiveTrackColor: widget.inactiveColor,
         activeTickMarkColor: widget.inactiveColor,
         inactiveTickMarkColor: widget.activeColor,
-        thumbColor: widget.activeColor,
+        thumbColor: Colors.white,
         thumbShape: SliderThumbShape(),
         valueIndicatorColor: widget.activeColor,
         overlayColor: widget.activeColor?.withAlpha(0x29),
@@ -1047,7 +1047,7 @@ class _RenderSlider extends RenderBox {
       bottomLeft: Radius.circular(8.0),
     );
     final RRect trackRightRect = RRect.fromRectAndCorners(
-      Rect.fromLTRB(trackActiveRight, trackTop, trackRight + thumbWidth, trackBottom),
+      Rect.fromLTRB(trackActiveRight, trackTop, trackRight + _overlayRadius, trackBottom),
       topRight: Radius.circular(8.0),
       bottomRight: Radius.circular(8.0),
     );

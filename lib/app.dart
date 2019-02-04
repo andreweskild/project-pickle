@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
@@ -30,6 +31,7 @@ final store = Store<AppState>(
     canvasFuture: Queue<PixelLayerList>(),
     canvasWidth: 32,
     canvasHeight: 32,
+    darkMode: true,
     drawingBuffer: PixelBuffer(32, 32),
     layers: PixelLayerList()..add(
       PixelLayer(
@@ -53,6 +55,12 @@ final store = Store<AppState>(
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+      statusBarColor: Color(0xFFC4FB81),
+      systemNavigationBarColor: Color(0xFFC4FB81),
+      systemNavigationBarDividerColor: Color(0xFFC4FB81),
+      //or set color with: Color(0xFF0000FF)
+    ));
     return StoreProvider(
       store: store,
       child: MaterialApp(

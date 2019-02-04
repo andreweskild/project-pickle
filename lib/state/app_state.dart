@@ -20,7 +20,7 @@ class AppState {
     this.canvasWidth,
     this.canvasHeight,
     this.canvasScale = 1.0,
-    this.darkMode = true,
+    this.darkMode = false,
     this.currentTool,
     this.activeColorIndex = 0,
     this.drawingBuffer,

@@ -17,14 +17,7 @@ class SquareButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlatButton(
       padding: EdgeInsets.all(0.0),
-      child: IconTheme(
-          data: IconThemeData(
-            color: onPressed == null ?
-            Theme.of(context).disabledColor :
-            Theme.of(context).accentIconTheme.color,
-          ),
-          child: child
-      ),
+      child: child,
       color: color ?? Colors.transparent,
       colorBrightness: Theme.of(context).brightness,
       shape: RoundedRectangleBorder(

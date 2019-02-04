@@ -25,7 +25,7 @@ class LeftDrawer extends StatelessWidget {
                 BoxShadow(
                   blurRadius: 6.0,
                   color: Theme.of(context).brightness == Brightness.light ? 
-                    Theme.of(context).accentIconTheme.color.withAlpha(72) :
+                    Theme.of(context).accentIconTheme.color.withAlpha(32) :
                     Colors.black26
                 )
               ]
