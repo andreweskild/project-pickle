@@ -7,11 +7,11 @@ import 'package:project_pickle/widgets/common/square_icon_button.dart';
 
 const double _kMenuScreenPadding = 8.0;
 
-const double _kButtonHeight = 48.0;
+const double _kButtonHeight = 52.0;
 
 const double _kHeaderHeight = 64.0;
 
-const double _kMenuWidth = 256.0;
+const double _kMenuWidth = 300.0;
 const double _kMenuHeight = 192.0;
 
 //class _ColorPickerModel {
@@ -639,22 +639,19 @@ class ColorMenuButton extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                         child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 12.0),
-                            child: AnimatedOpacity(
-                              curve: Curves.ease,
-                              duration: Duration(milliseconds: 300),
-                              opacity: active ? 1.0 : 0.0,
-                              child: DecoratedBox(
-                                decoration: ShapeDecoration(
-                                  color: Colors.black38,
-                                  shape: CircleBorder()
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Icon(Icons.check, size: 16.0, color: Colors.white),
-                                ),
+                          alignment: Alignment.center,
+                          child: AnimatedOpacity(
+                            curve: Curves.ease,
+                            duration: Duration(milliseconds: 300),
+                            opacity: active ? 1.0 : 0.0,
+                            child: DecoratedBox(
+                              decoration: ShapeDecoration(
+                                color: Colors.black38,
+                                shape: CircleBorder()
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Icon(Icons.check, size: 16.0, color: Colors.white),
                               ),
                             ),
                           )

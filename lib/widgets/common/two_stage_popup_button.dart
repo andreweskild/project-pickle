@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 const double _kMenuScreenPadding = 0.0;
 const double _kMenuItemSpacing = 12.0;
-const double _kMenuWidth = 256.0;
+const double _kMenuWidth = 300.0;
 
-const double _kButtonHeight = 48.0;
+const double _kButtonHeight = 52.0;
 
 const double _kHeaderHeight = 64.0;
 
@@ -285,13 +285,15 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
 
 typedef HeaderBuilder = Widget Function(BuildContext, Animation<double>);
 
-class _TwoStagePopupRoute extends PopupRoute<bool> {
+class _TwoStagePopupRoute extends PopupRoute<VoidCallback> {
   _TwoStagePopupRoute({
     @required this.buttonContext,
     @required this.header,
     @required this.initialSize,
     @required this.popupContent,
-  });
+  }) {
+    completed.then((returnedCallback) { returnedCallback(); });
+  }
 
   final BuildContext buttonContext;
   final Widget header;
@@ -311,7 +313,7 @@ class _TwoStagePopupRoute extends PopupRoute<bool> {
   String get barrierLabel => '';
 
   @override
-  bool get currentResult => false;
+  VoidCallback get currentResult => null;
 
   @override
   RouteSettings get settings => RouteSettings(name: '/tool-options');
@@ -378,6 +380,7 @@ class TwoStagePopupButton extends StatefulWidget {
     this.active = false,
     this.onToggled,
     @required this.popupContent,
+    this.onCompleted,
   }) : super(key: key);
 
   final Widget icon;
@@ -386,6 +389,7 @@ class TwoStagePopupButton extends StatefulWidget {
   final _HeaderBuilder headerContent;
   final bool active;
   final VoidCallback onToggled;
+  final VoidCallback onCompleted;
 
   _TwoStagePopupButtonState createState() => _TwoStagePopupButtonState();
 }
@@ -432,8 +436,8 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
               padding: const EdgeInsets.all(0.0),
               onPressed: () {
                 if (!widget.active) {
-                  Navigator.of(context)
-                      .popUntil((route) => route.settings.name != '/tool-options');
+//                  Navigator.of(context)
+//                      .popUntil((route) => route.settings.name != '/tool-options');
                   widget.onToggled();
                 }
               },

@@ -93,7 +93,7 @@ class LayersCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: ConstrainedBox(
-                constraints: BoxConstraints.expand(height: 48.0),
+                constraints: BoxConstraints.expand(height: 52.0),
                 child: FlatButton.icon(
                   color: Theme.of(context).cardColor,
                   colorBrightness: Theme.of(context).brightness,

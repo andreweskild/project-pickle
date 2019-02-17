@@ -1,4 +1,8 @@
+import 'dart:collection';
+
 import 'package:flutter/painting.dart';
+
+
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/canvas/pixel_layer.dart';
@@ -50,6 +54,20 @@ AppState stateReducer(AppState state, dynamic action) {
   else if (action is DeselectAction) {
     state.selectionPath = null;
     return state;
+  }
+  else if (action is DuplicateLayerAction) {
+    PixelLayer layerToDuplicate = state.layers[action.index];
+    PixelLayer newLayer = PixelLayer(
+      name: layerToDuplicate.name + ' Copy',
+      width: layerToDuplicate.width,
+      height: layerToDuplicate.height,
+      hidden: layerToDuplicate.hidden,
+      pixels: LinkedHashMap<Offset, Color>.from(layerToDuplicate.raw),
+    );
+    state.layers.insert(action.index, newLayer);
+    return state.copyWith(
+      layersDirty: true,
+    );
   }
   else if (action is FillAreaAction) {
     state.currentLayer.fillArea(

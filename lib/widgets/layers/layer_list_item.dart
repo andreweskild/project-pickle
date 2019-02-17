@@ -46,9 +46,7 @@ class LayerListItem extends StatelessWidget {
               opacity: selected ? 1.0 : 0.0,
               child: Material(
                 elevation: 6.0,
-                color: Theme
-                    .of(context)
-                    .buttonColor,
+                color: Colors.red,
                 shadowColor: Theme.of(context).buttonColor.withAlpha(
                   Theme.of(context).brightness == Brightness.dark ? 255 : 128
                 ),

@@ -58,60 +58,60 @@ class _LayerModel {
     this.layer,
     this.setActiveCallback,
     this.toggleHidden,
+    this.duplicateLayer,
   });
 
   final PixelLayer layer;
   final ValueSetter<int> setActiveCallback;
   final ValueSetter<int> toggleHidden;
+  final ValueSetter<int> duplicateLayer;
 }
 
 class _LayersListState extends State<LayersList> {
   static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  
 
   Widget buildListTile(int index, _LayerListModel listModel) {
     // don't allow deleting of last color in palette
-    if(listModel.layers.length > 1) {
-      return Deletable(
-        key: Key(listModel.layers[index].name + index.toString()),
-        direction: DismissDirection.endToStart,
-        onDeleted: (direction) => listModel.removeCallback(index),
-        background: DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color(0xFFFFBABA),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: FractionallySizedBox(
-              alignment: Alignment.centerLeft,
-              widthFactor: 0.75,
-              heightFactor: 1.0,
-              child: Icon(Icons.delete_outline, color: Color(0xFFDC5353)),
-            )
-        ), 
-        child: StoreConnector<AppState, _LayerModel>(
-          converter: (store) {
-            return _LayerModel(
-              layer: store.state.layers[index],
-              setActiveCallback: (index) =>
-                  store.dispatch(SetCurrentLayerIndexAction(index)),
-              toggleHidden: (index) => store.dispatch(ToggleLayerHiddenAction(index)),
-            );
-          },
-          builder: (context, layerModel) {
-            return LayerListItem(
-              layerCanvas: layerModel.layer.canvas,
-              selected:
-                  (index == listModel.layers.indexOfActiveLayer),
-              label: layerModel.layer.name,
-              hidden: layerModel.layer.hidden,
-              onTap: () => layerModel.setActiveCallback(index),
-              onToggleHidden: () => layerModel.toggleHidden(index),
-            );
-          } 
-        )
-      );
-    }
-    else {
+//      return Deletable(
+//        key: Key(listModel.layers[index].name + index.toString()),
+//        direction: DismissDirection.endToStart,
+////        onDeleted: (listModel.layers.length > 1) ?
+////            (direction) => listModel.removeCallback(index) :
+////            null,
+//        onDeleted: null,
+//        background: DecoratedBox(
+//            decoration: BoxDecoration(
+//              color: Color(0xFFFFBABA),
+//              borderRadius: BorderRadius.circular(8.0),
+//            ),
+//            child: FractionallySizedBox(
+//              alignment: Alignment.centerLeft,
+//              widthFactor: 0.75,
+//              heightFactor: 1.0,
+//              child: Icon(Icons.delete_outline, color: Color(0xFFDC5353)),
+//            )
+//        ),
+//        child: StoreConnector<AppState, _LayerModel>(
+//          converter: (store) {
+//            return _LayerModel(
+//              layer: store.state.layers[index],
+//              setActiveCallback: (index) =>
+//                  store.dispatch(SetCurrentLayerIndexAction(index)),
+//              toggleHidden: (index) => store.dispatch(ToggleLayerHiddenAction(index)),
+//              duplicateLayer: (index) => store.dispatch(DuplicateLayerAction(index)),
+//            );
+//          },
+//          builder: (context, layerModel) {
+//            return LayerItem(
+//              canvas: layerModel.layer.canvas,
+//              active: (index == listModel.layers.indexOfActiveLayer),
+//              name: layerModel.layer.name,
+//              onToggle: () => layerModel.setActiveCallback(index),
+//              onDuplicate: () => layerModel.duplicateLayer(index),
+//            );
+//          }
+//        )
+//      );
       return StoreConnector<AppState, _LayerModel>(
           key: Key(listModel.layers[index].name + index.toString()),
           converter: (store) {
@@ -120,32 +120,19 @@ class _LayersListState extends State<LayersList> {
               setActiveCallback: (index) =>
                   store.dispatch(SetCurrentLayerIndexAction(index)),
               toggleHidden: (index) => store.dispatch(ToggleLayerHiddenAction(index)),
+              duplicateLayer: (index) => store.dispatch(DuplicateLayerAction(index)),
             );
           },
           builder: (context, layerModel) {
             return LayerItem(
               canvas: layerModel.layer.canvas,
-              active:
-                  (index == listModel.layers.indexOfActiveLayer),
+              active: (index == listModel.layers.indexOfActiveLayer),
               name: layerModel.layer.name,
               onToggle: () => layerModel.setActiveCallback(index),
-              options: <PopupContentItem>[
-                PopupContentItem(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints.expand(),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: Colors.red
-                      ),
-                    ),
-                  )
-                )
-              ]
+              onDuplicate: () => layerModel.duplicateLayer(index),
             );
-          } 
-        );
-    }
-
+          }
+      );
   }
 
 

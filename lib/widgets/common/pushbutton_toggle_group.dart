@@ -40,7 +40,7 @@ class PushbuttonToggleGroup<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40.0,
+      height: 48.0,
       child: ConstrainedBox(
         constraints: BoxConstraints.expand(),
         child: DecoratedBox(

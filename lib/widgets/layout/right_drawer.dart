@@ -6,6 +6,8 @@ import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/layers/layers_card.dart';
 import 'package:project_pickle/widgets/preview_window/preview_toolbox.dart';
 
+double _kRightDrawerWidth = 256.0;
+
 class RightDrawer extends StatelessWidget {
   const RightDrawer({
     Key key,
@@ -17,7 +19,7 @@ class RightDrawer extends StatelessWidget {
       rebuildOnChange: false,
       builder: (context, store) {
         return SizedBox(
-          width: 196.0,
+          width: _kRightDrawerWidth,
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: Theme.of(context).unselectedWidgetColor,

@@ -105,6 +105,10 @@ theme(BuildContext context, bool darkMode) {
       buttonTheme: ButtonTheme.of(context).copyWith(
         minWidth: 12.0,
       ),
+      iconTheme: IconTheme.of(context).copyWith(
+        color: Colors.black,
+        size: 18.0,
+      ),
       scaffoldBackgroundColor: const Color(0xFFDEDBE0),
       textTheme: Theme.of(context).textTheme.copyWith(
           title: Theme.of(context).textTheme.title.copyWith(

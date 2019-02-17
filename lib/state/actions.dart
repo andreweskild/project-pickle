@@ -26,6 +26,12 @@ class DeselectAction {
   DeselectAction();
 }
 
+class DuplicateLayerAction {
+  DuplicateLayerAction(this.index);
+
+  final int index;
+}
+
 class EraseStartAction {
   EraseStartAction();
 }

@@ -31,7 +31,7 @@ final store = Store<AppState>(
     canvasFuture: Queue<PixelLayerList>(),
     canvasWidth: 32,
     canvasHeight: 32,
-    darkMode: true,
+    darkMode: false,
     drawingBuffer: PixelBuffer(32, 32),
     layers: PixelLayerList()..add(
       PixelLayer(

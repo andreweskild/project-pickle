@@ -571,73 +571,10 @@ class _DeletableState extends State<Deletable> with TickerProviderStateMixin, Au
       );
     }
 
-    
-
-    Widget content;
-
-    // if (background != null) {
-    //   final List<Widget> children = <Widget>[];
-
-    //   // TODO: change deletable implementation to use draggable widgets
-
-    //   if (!_moveAnimation.isDismissed) {
-        
-    //       children.add(
-    //         SizedBox(
-    //           height: _sizePriorToDrag.height,
-    //           width: _sizePriorToDrag.width,
-    //           child: Material(
-    //             clipBehavior: Clip.antiAlias,
-    //             elevation: 0.0,
-    //             color: Color(0xFFFFA6B1),
-    //             borderRadius: BorderRadius.circular(8.0),
-    //             child: FractionallySizedBox(
-    //               alignment: Alignment.centerLeft,
-    //               widthFactor: _kRevealAmount,
-    //               child: Stack(
-    //                 children: <Widget>[
-    //                   Center(
-    //                     child: UnconstrainedBox(
-    //                       child: SizedOverflowBox(
-    //                         size: Size.square(_sizePriorToDrag.height * _kRevealAmount),
-    //                         child: ScaleTransition(
-    //                           scale: _responseSizeAnimation,
-    //                           child: SizedBox(
-    //                             height: _sizePriorToDrag.height * 1.5,
-    //                             width: _sizePriorToDrag.height * 1.5,
-    //                             child: DecoratedBox(
-    //                               decoration: ShapeDecoration(
-    //                                 shape: CircleBorder(),
-    //                                 color: Color(0xFFFF485E),
-    //                               ),
-    //                             ),
-    //                           ),
-    //                         ),
-    //                       ),
-    //                     ),
-    //                   ),
-    //                   Center(
-    //                     child: Icon(Icons.delete_outline, color: Colors.white),
-    //                   )
-    //                 ],
-    //               ),
-    //             )
-    //           ),
-    //         )
-    //       );
-    //   }
-
-    //   children.add(
-    //     Opacity(
-    //       opacity: !_isActive ? 1.0 : 0.0,
-    //       child: widget.child,
-    //     )
-    //   );
-    //   content = Stack(children: children);
-    // }
 
     // We are not resizing but we may be being dragging in widget.direction.
-    return GestureDetector(
+    if (widget.onDeleted != null) {
+      return GestureDetector(
         onHorizontalDragStart: (details) => _directionIsXAxis ? _handleDragStart(context, details) : null,
         onHorizontalDragUpdate: _directionIsXAxis ? _handleDragUpdate : null,
         onHorizontalDragEnd: _directionIsXAxis ? _handleDragEnd : null,
@@ -646,6 +583,11 @@ class _DeletableState extends State<Deletable> with TickerProviderStateMixin, Au
         onVerticalDragEnd: _directionIsXAxis ? null : _handleDragEnd,
         behavior: HitTestBehavior.opaque,
         child: contentWidget
-    );
+      );
+    }
+    else {
+      return contentWidget;
+    }
+
   }
 }
