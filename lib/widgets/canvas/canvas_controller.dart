@@ -51,7 +51,7 @@ class CanvasController extends StatelessWidget {
         model.layers
           .getRange(0, model.layers.indexOfActiveLayer + 1)
             .where((layer) => !layer.hidden)
-              .map<PixelLayerWidget>(
+              .map<PixelCanvasWidget>(
                 (layer) {
                   return layer.canvas;
                 }
@@ -73,7 +73,7 @@ class CanvasController extends StatelessWidget {
       result.addAll(
         model.layers.getRange(model.layers.indexOfActiveLayer + 1, model.layers.length)
           .where((layer) => !layer.hidden)
-            .map<PixelLayerWidget>(
+            .map<PixelCanvasWidget>(
               (layer) {
                 return layer.canvas;
               }

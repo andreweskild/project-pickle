@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:flutter/animation.dart';
 import 'package:flutter/painting.dart';
 
 
@@ -37,6 +38,10 @@ AppState stateReducer(AppState state, dynamic action) {
     state.layers.insert(
         newIndex,
         PixelLayer(
+          animationController: AnimationController(
+            duration: Duration(milliseconds: 400),
+            vsync: state.tickerProvider
+          )..forward(),
           name: 'Layer $nameCount',
           height: 32,
           width: 32,
@@ -58,6 +63,10 @@ AppState stateReducer(AppState state, dynamic action) {
   else if (action is DuplicateLayerAction) {
     PixelLayer layerToDuplicate = state.layers[action.index];
     PixelLayer newLayer = PixelLayer(
+      animationController: AnimationController(
+        duration: Duration(milliseconds: 400),
+        vsync: state.tickerProvider,
+      )..forward(),
       name: layerToDuplicate.name + ' Copy',
       width: layerToDuplicate.width,
       height: layerToDuplicate.height,

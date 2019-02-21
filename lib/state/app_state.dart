@@ -33,7 +33,10 @@ class AppState {
     this.toolSize = 1.0,
     this.toolShape = ShapeMode.Rectangle,
     this.shapeFilled = false,
-  });
+    @required TickerProvider tickerProvider
+  }) {
+    _tickerProvider = tickerProvider;
+  }
 
   AppState copyWith({
     int activeColorIndex,
@@ -79,6 +82,7 @@ class AppState {
       toolSize: toolSize ?? this.toolSize,
       toolShape: toolShape ?? this.toolShape,
       shapeFilled: shapeFilled ?? this.shapeFilled,
+      tickerProvider: this._tickerProvider,
     );
   }
 
@@ -98,6 +102,8 @@ class AppState {
   PixelLayerList layers;
   var palette = <Color>[];
   Path selectionPath;
+  TickerProvider _tickerProvider;
+  get tickerProvider => _tickerProvider;
   double toolSize;
   double toolOpacity;
   ShapeMode toolShape;
