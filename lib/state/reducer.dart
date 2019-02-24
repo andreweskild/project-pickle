@@ -67,7 +67,7 @@ AppState stateReducer(AppState state, dynamic action) {
         duration: Duration(milliseconds: 400),
         vsync: state.tickerProvider,
       )..forward(),
-      name: layerToDuplicate.name + ' Copy',
+      name: _resolveNameConflicts(layerToDuplicate.name + ' Copy', state.layers),
       width: layerToDuplicate.width,
       height: layerToDuplicate.height,
       hidden: layerToDuplicate.hidden,
@@ -262,4 +262,20 @@ AppState stateReducer(AppState state, dynamic action) {
   else {
     return state;
   }
+}
+
+//take in the desired name and return a name that doesn't conflict with others
+// in the list of layers.
+String _resolveNameConflicts(String desiredName, PixelLayerList layers) {
+  var conflictingLayers = <PixelLayer>[];
+  layers.forEach(
+      (layer) {
+        if (layer.name == desiredName) {
+          conflictingLayers.add(layer);
+        }
+      }
+  );
+
+  if(conflictingLayers.isEmpty) { return desiredName; }
+  else { return desiredName + " (${conflictingLayers.length})"; }
 }
