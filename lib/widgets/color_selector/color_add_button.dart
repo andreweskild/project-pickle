@@ -7,7 +7,9 @@ import 'package:project_pickle/widgets/common/square_icon_button.dart';
 
 const double _kMenuScreenPadding = 8.0;
 
-const double _kButtonHeight = 64.0;
+const double _kButtonHeight = 72.0;
+
+const double _kHeaderHeight = 64.0;
 
 const double _kMenuWidth = 300.0;
 const double _kMenuHeight = 192.0;
@@ -192,7 +194,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               SizedBox(
-                height: 64.0,
+                height: _kHeaderHeight,
                 child: ConstrainedBox(
                   constraints: BoxConstraints.expand(),
                   child: Material(
@@ -548,19 +550,22 @@ class ColorAddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: _kButtonHeight,
-      child: RaisedButton(
-        elevation: 0.0,
-        highlightElevation: 0.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
+      child: ConstrainedBox(
+        constraints: BoxConstraints.expand(),
+        child: RaisedButton(
+          elevation: 0.0,
+          highlightElevation: 0.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          color: Theme
+              .of(context)
+              .cardColor,
+          padding: EdgeInsets.zero,
+          onPressed: () => _showColorMenu(context),
+          child: Center(child: Icon(Icons.add)),
+          colorBrightness: Theme.of(context).brightness,
         ),
-        color: Theme
-            .of(context)
-            .cardColor,
-        padding: EdgeInsets.zero,
-        onPressed: () => _showColorMenu(context),
-        child: Center(child: Icon(Icons.add)),
-        colorBrightness: Theme.of(context).brightness,
       )
     );
   }

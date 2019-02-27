@@ -4,7 +4,7 @@ const double _kMenuScreenPadding = 0.0;
 const double _kMenuItemSpacing = 12.0;
 const double _kMenuWidth = 300.0;
 
-const double _kButtonHeight = 52.0;
+const double _kButtonHeight = 72.0;
 
 const double _kHeaderHeight = 64.0;
 

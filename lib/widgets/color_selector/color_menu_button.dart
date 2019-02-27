@@ -7,12 +7,12 @@ import 'package:project_pickle/widgets/common/square_icon_button.dart';
 
 const double _kMenuScreenPadding = 8.0;
 
-const double _kButtonHeight = 52.0;
+const double _kButtonHeight = 72.0;
 
-const double _kHeaderHeight = 64.0;
+const double _kHeaderHeight = 96.0;
 
-const double _kMenuWidth = 300.0;
-const double _kMenuHeight = 192.0;
+const double _kMenuWidth = 324.0;
+const double _kMenuHeight = 224.0;
 
 //class _ColorPickerModel {
 //  _ColorPickerModel({this.currentTool, this.callback});
