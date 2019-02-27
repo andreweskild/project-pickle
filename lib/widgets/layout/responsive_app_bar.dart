@@ -11,6 +11,8 @@ import 'package:flutter/widgets.dart';
 // void _restitchDress() { }
 // void _repairDress() { }
 
+const double kToolbarHeight = 80.0;
+
 
 // Bottom justify the kToolbarHeight child which may overflow the top.
 class _ToolbarContainerLayout extends SingleChildLayoutDelegate {
@@ -389,8 +391,7 @@ class _ResponsiveAppBarState extends State<ResponsiveAppBar> {
     final Widget toolbar = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Expanded(child: leading),
-        title,
+        leading,
         Expanded(
             child: Align(alignment: Alignment.centerRight, child: actions)
         ),

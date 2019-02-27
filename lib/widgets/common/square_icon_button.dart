@@ -21,15 +21,15 @@ class SquareIconButton extends StatelessWidget {
           data: IconThemeData(
             color: onPressed == null ?
               Theme.of(context).disabledColor :
-              Theme.of(context).accentIconTheme.color,
+              Theme.of(context).iconTheme.color,
           ),
           child: icon
         ),
+        color: Theme.of(context).unselectedWidgetColor,
+        disabledColor: Theme.of(context).unselectedWidgetColor.withAlpha(125),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
         ),
-        splashColor: Theme.of(context).splashColor,
-        highlightColor: Theme.of(context).highlightColor,
         onPressed: onPressed,
       ),
     );

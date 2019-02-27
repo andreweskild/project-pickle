@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -6,6 +8,8 @@ import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/layers/layers_list.dart';
 import 'package:project_pickle/canvas/pixel_layer.dart';
+
+double _kBlurAmount = 20.0;
 
 typedef LayerIndexCallback = void Function(int);
 
@@ -78,37 +82,45 @@ class LayersCard extends StatelessWidget {
         );
       },
       builder: (context, model) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Expanded(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).unselectedWidgetColor,
-                ),
-                child: LayersList(),
-              ),
+        return ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: _kBlurAmount,
+              sigmaY: _kBlurAmount,
             ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: ConstrainedBox(
-                constraints: BoxConstraints.expand(height: 52.0),
-                child: FlatButton.icon(
-                  color: Theme.of(context).cardColor,
-                  colorBrightness: Theme.of(context).brightness,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: Theme.of(context).unselectedWidgetColor.withAlpha(180),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Expanded(
+                    child: LayersList(),
                   ),
-                  icon: Icon(Icons.add),
-                  label: Text('New Layer'),
-                  onPressed: () {
-                    model.addLayerCallback();
-                  },
-                ),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints.expand(height: 66.0),
+                      child: FlatButton.icon(
+                        color: Theme.of(context).cardColor,
+                        colorBrightness: Theme.of(context).brightness,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        icon: Icon(Icons.add),
+                        label: Text('New Layer'),
+                        onPressed: () {
+                          model.addLayerCallback();
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
+          ),
         );
       }
     );

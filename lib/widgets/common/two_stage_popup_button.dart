@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 
 const double _kMenuScreenPadding = 0.0;
 const double _kMenuItemSpacing = 12.0;
-const double _kMenuWidth = 300.0;
+const double _kMenuWidth = 330.0;
 
-const double _kButtonHeight = 72.0;
+const double _kButtonHeight = 66.0;
 
-const double _kHeaderHeight = 64.0;
+const double _kHeaderHeight = 80.0;
 
 
 class PopupContentItem extends StatelessWidget{
   PopupContentItem({
     @required this.child,
-    this.height = 40.0,
+    this.height = 64.0,
   });
 
   final Widget child;
@@ -117,7 +117,7 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
     content.forEach(
       (item) => finalHeight += item.height
     );
-    finalHeight += (content.length + 1) * spacing;
+    finalHeight += spacing;
     return finalHeight;
   }
 
@@ -245,7 +245,7 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
                             color: Theme.of(context).accentTextTheme.button.color,
                           ),
                           child: Padding(
-                            padding: headerPadding.value,
+                            padding: EdgeInsets.all(12.0),
                             child: widget.headerContent
                           )
                         ),
@@ -263,10 +263,7 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
                         child: Column(
                           children: widget.popupContent.map<Widget>(
                             (item) {
-                              return Padding(
-                                padding: EdgeInsets.all(_kMenuItemSpacing/2.0),
-                                child: item,
-                              );
+                              return item;
                             }
                           ).toList(),
                         ),
@@ -419,7 +416,7 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
               duration: Duration(milliseconds: 200),
               opacity: widget.active ? 1.0 : 0.0,
               child: Material(
-                elevation: 6.0,
+                elevation: 0.0,
                 shadowColor: Theme.of(context).primaryColor.withAlpha(
                   Theme.of(context).brightness == Brightness.dark ? 255 : 128
                 ),
@@ -462,7 +459,7 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
                             : Theme.of(context).textTheme.button.color,
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(6.0),
+                        padding: const EdgeInsets.all(12.0),
                         child: widget.headerContent(false),
                       ),
                     ),

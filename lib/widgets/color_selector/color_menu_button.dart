@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-import 'package:project_pickle/widgets/color_selector/color_slider_thumb.dart';
 import 'package:project_pickle/widgets/color_selector/color_slider_value_indicator.dart';
 import 'package:project_pickle/widgets/common/value_slider.dart';
+import 'package:project_pickle/widgets/common/slider_thumb_shape.dart';
 import 'package:project_pickle/widgets/common/square_icon_button.dart';
 
 const double _kMenuScreenPadding = 8.0;
 
-const double _kButtonHeight = 72.0;
+const double _kButtonHeight = 66.0;
 
-const double _kHeaderHeight = 96.0;
+const double _kHeaderHeight = 80.0;
 
-const double _kMenuWidth = 324.0;
+const double _kMenuWidth = 360.0;
 const double _kMenuHeight = 224.0;
 
 //class _ColorPickerModel {
@@ -283,7 +283,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                         inactiveTrackColor: Colors.transparent,
                                         activeTickMarkColor: Colors.transparent,
                                         inactiveTickMarkColor: Colors.transparent,
-                                        thumbShape: ColorSliderThumbShape(),
+                                        thumbShape: SliderThumbShape(),
                                         overlayColor: _color.withAlpha(0.3).withSaturation(1.0).withLightness(0.5).toColor(),
                                         showValueIndicator: ShowValueIndicator.always,
                                         valueIndicatorColor: _color.withSaturation(1.0).withLightness(0.5).toColor(),
@@ -330,7 +330,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                           Padding(
                             padding: const EdgeInsets.all(6.0),
                             child: SizedBox(
-                              height: 26.0,
+                              height: 36.0,
                               child: Row(
                                 children: <Widget>[
                                   Padding(
@@ -347,7 +347,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                         activeTickMarkColor: Colors.transparent,
                                         inactiveTickMarkColor: Colors.transparent,
                                         overlayColor: _color.toColor().withOpacity(0.33),
-                                        thumbShape: ColorSliderThumbShape(),
+                                        thumbShape: SliderThumbShape(),
                                         showValueIndicator: ShowValueIndicator.always,
                                         valueIndicatorColor: _color.toColor(),
                                         valueIndicatorShape: ColorSliderValueIndicatorShape(),
@@ -411,7 +411,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                         inactiveTickMarkColor: Colors.transparent,
                                         showValueIndicator: ShowValueIndicator.always,
                                         overlayColor: _color.toColor().withOpacity(0.33),
-                                        thumbShape: ColorSliderThumbShape(),
+                                        thumbShape: SliderThumbShape(),
                                         valueIndicatorColor: _color.toColor(),
                                         valueIndicatorShape: ColorSliderValueIndicatorShape(),
                                         valueIndicatorTextStyle: TextStyle(

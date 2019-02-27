@@ -20,33 +20,55 @@ class ToolButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TwoStagePopupButton(
-      icon: icon,
-      headerContent: (opened) {
-        if (opened) {
-          return Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: AspectRatio(
-                  aspectRatio: 1.0,
-                  child: icon
-                ),
+    return Stack(
+      children: <Widget>[
+        Positioned.fill(
+          child: AnimatedOpacity(
+            duration: Duration(milliseconds: 200),
+            curve: Curves.ease,
+            opacity: active ? 1.0 : 0.0,
+            child: Material(
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.circular(8.0),
+              elevation: 6.0,
+              shadowColor: Theme.of(context).primaryColor.withAlpha(
+                  Theme.of(context).brightness == Brightness.dark ? 255 : 128
               ),
-              Expanded(
-                child: Text(label, softWrap: false,),
-              )
-            ]
-          );
-        }
-        else {
-          return Center(child: icon);
-        }
-      },
-      popupContent: options,
-      onToggled: onToggle,
-      active: active,
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: TwoStagePopupButton(
+            icon: icon,
+            headerContent: (opened) {
+              if (opened) {
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: AspectRatio(
+                        aspectRatio: 1.0,
+                        child: icon
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(label, softWrap: false,),
+                    )
+                  ]
+                );
+              }
+              else {
+                return Center(child: icon);
+              }
+            },
+            popupContent: options,
+            onToggled: onToggle,
+            active: active,
+          ),
+        ),
+      ],
     );
   }
 

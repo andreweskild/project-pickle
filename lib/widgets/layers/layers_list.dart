@@ -75,10 +75,9 @@ class _LayersListState extends State<LayersList> {
       return Deletable(
         key: Key(listModel.layers[index].name + index.toString()),
         direction: DismissDirection.endToStart,
-//        onDeleted: (listModel.layers.length > 1) ?
-//            (direction) => listModel.removeCallback(index) :
-//            null,
-        onDeleted: null,
+        onDeleted: (listModel.layers.length > 1) ?
+            (direction) => listModel.removeCallback(index) :
+            null,
         background: DecoratedBox(
             decoration: BoxDecoration(
               color: Color(0xFFFFBABA),

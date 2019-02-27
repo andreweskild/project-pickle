@@ -71,7 +71,7 @@ theme(BuildContext context, bool darkMode) {
       cardColor: const Color(0xFFFFFFFF),
       bottomAppBarColor: const Color(0xFFC4FB81),
       buttonColor: const Color(0xFFC4FB81),
-      disabledColor: const Color(0xFFA2D95E),
+      disabledColor: const Color(0xFFDEDBE0),
       dividerColor: Colors.black.withAlpha(25),
       primarySwatch:
       MaterialColor(const Color(0xFFD7FFA7).value, const <int, Color>{
@@ -92,18 +92,21 @@ theme(BuildContext context, bool darkMode) {
         button: Theme.of(context)
             .accentTextTheme
             .button
-            .copyWith(color: const Color(0xFF5A990D)),
+            .copyWith(color: const Color(0xFF5A990D))
+            .copyWith(fontSize: 18.0),
         title: Theme.of(context)
             .accentTextTheme
             .title
             .copyWith(color: const Color(0xFF5A990D))
-            .copyWith(fontSize: 16.0, fontWeight: FontWeight.bold),
+            .copyWith(fontSize: 18.0, fontWeight: FontWeight.bold),
       ),
       accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
         color: const Color(0xFF5A990D),
+        size: 18.0,
       ),
       buttonTheme: ButtonTheme.of(context).copyWith(
         minWidth: 12.0,
+        height: 64.0,
       ),
       iconTheme: IconTheme.of(context).copyWith(
         color: Colors.black,
@@ -112,11 +115,12 @@ theme(BuildContext context, bool darkMode) {
       scaffoldBackgroundColor: const Color(0xFFDEDBE0),
       textTheme: Theme.of(context).textTheme.copyWith(
           title: Theme.of(context).textTheme.title.copyWith(
-            color: Colors.white,
-            fontSize: 16.0,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold
           ),
           button: Theme.of(context).textTheme.button.copyWith(
             color: Colors.grey.shade800,
+            fontSize: 16.0,
           )
       ),
       splashFactory: InkRipple.splashFactory,

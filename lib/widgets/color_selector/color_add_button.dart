@@ -7,12 +7,12 @@ import 'package:project_pickle/widgets/common/square_icon_button.dart';
 
 const double _kMenuScreenPadding = 8.0;
 
-const double _kButtonHeight = 72.0;
+const double _kButtonHeight = 66.0;
 
-const double _kHeaderHeight = 64.0;
+const double _kHeaderHeight = 80.0;
 
-const double _kMenuWidth = 300.0;
-const double _kMenuHeight = 192.0;
+const double _kMenuWidth = 324.0;
+const double _kMenuHeight = 224.0;
 
 Color _getBorderColor(Color color) {
   if(color.computeLuminance() > 0.5) {
@@ -548,25 +548,16 @@ class ColorAddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: _kButtonHeight,
-      child: ConstrainedBox(
-        constraints: BoxConstraints.expand(),
-        child: RaisedButton(
-          elevation: 0.0,
-          highlightElevation: 0.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          color: Theme
-              .of(context)
-              .cardColor,
-          padding: EdgeInsets.zero,
-          onPressed: () => _showColorMenu(context),
-          child: Center(child: Icon(Icons.add)),
-          colorBrightness: Theme.of(context).brightness,
-        ),
-      )
+    return FlatButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      color: Theme
+          .of(context)
+          .cardColor,
+      onPressed: () => _showColorMenu(context),
+      child: Icon(Icons.add),
+      colorBrightness: Theme.of(context).brightness,
     );
   }
 }

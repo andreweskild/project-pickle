@@ -6,7 +6,7 @@ import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/color_selector/color_section.dart';
 import 'package:project_pickle/widgets/tools/tools_card.dart';
 
-double _kLeftDrawerWidth = 96.0;
+double _kLeftDrawerWidth = 90.0;
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({
@@ -22,13 +22,11 @@ class LeftDrawer extends StatelessWidget {
           width: _kLeftDrawerWidth,
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: Theme.of(context).unselectedWidgetColor,
+              color: Colors.transparent,
               boxShadow: <BoxShadow>[
                 BoxShadow(
                   blurRadius: 6.0,
-                  color: Theme.of(context).brightness == Brightness.light ? 
-                    Theme.of(context).accentIconTheme.color.withAlpha(32) :
-                    Colors.black26
+                  color: Colors.black26
                 )
               ]
             ),

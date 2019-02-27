@@ -40,58 +40,38 @@ class PushbuttonToggleGroup<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 48.0,
-      child: ConstrainedBox(
-        constraints: BoxConstraints.expand(),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-            color: Theme.of(context).unselectedWidgetColor,
-          ),
-          child: Row(
-            children: items.map<Widget>((item) {
-              return Expanded(
-                child: Material(
-                  elevation: 0.0,
-                  type: MaterialType.transparency,
-                  child: InkWell(
-                    onTap: () => onChanged(item.value),
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: Stack(
-                      children: <Widget>[
-                        Positioned.fill(
-                          child: AnimatedOpacity(
-                            duration: Duration(milliseconds: 200),
-                            curve: Curves.ease,
-                            opacity: value == item.value ? 1.0 : 0.0,
-                            child: Material(
-                              elevation: 6.0,
-                              color: Theme.of(context).buttonColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              shadowColor: Theme.of(context).splashColor.withAlpha(60),
-                            ),
-                          ),
-                        ),
-                        Center(
-                          child: IconTheme(
-                            data: value == item.value ? Theme.of(context).accentIconTheme :
-                              Theme.of(context).iconTheme,
-                            child: DefaultTextStyle(
-                              style: Theme.of(context).accentTextTheme.button,
-                              child: item.child
-                            ),
-                          )
-                        )
-                      ],
-                    ),
-                  ),
+      height: 64.0,
+      child: Row(
+        children: items.map<Widget>((item) {
+          return Padding(
+            padding: const EdgeInsets.all(6.0),
+            child: AspectRatio(
+              aspectRatio: 1.0,
+              child: Material(
+                elevation: value == item.value ? 6.0 : 0.0,
+                color: value == item.value ? Theme.of(context).buttonColor : Theme.of(context).unselectedWidgetColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
-              );
-            }).toList(),
-          ),
-        ),
+                shadowColor: Theme.of(context).splashColor.withAlpha(60),
+                child: InkWell(
+                  onTap: () => onChanged(item.value),
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Center(
+                      child: IconTheme(
+                        data: value == item.value ? Theme.of(context).accentIconTheme :
+                        Theme.of(context).iconTheme,
+                        child: DefaultTextStyle(
+                            style: Theme.of(context).accentTextTheme.button,
+                            child: item.child
+                        ),
+                      )
+                  )
+                ),
+              ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

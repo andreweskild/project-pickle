@@ -127,7 +127,7 @@ class MyAppState extends State<MyApp> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-      statusBarColor: Color(0xFFC4FB81),
+      statusBarColor: Color(0xFFECEAEC),
       systemNavigationBarColor: Color(0xFFC4FB81),
       systemNavigationBarDividerColor: Color(0xFFC4FB81),
       //or set color with: Color(0xFF0000FF)

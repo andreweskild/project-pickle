@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -7,6 +9,9 @@ import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/color_selector/color_add_button.dart';
 import 'package:project_pickle/widgets/color_selector/palette_list.dart';
+
+
+double _kBlurAmount = 20.0;
 
 typedef SetActiveColorCallback = void Function(int, Color);
 typedef SetColorCallback = void Function(Color);
@@ -19,32 +24,37 @@ class ColorSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: Theme.of(context).unselectedWidgetColor,
-            ),
-            child: PaletteList(),
-          ),
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(
+          sigmaX: _kBlurAmount,
+          sigmaY: _kBlurAmount,
         ),
-        Padding(
-          padding: EdgeInsets.all(12.0),
-          child: SizedBox(
-            height: 48.0,
-            child: StoreBuilder<AppState>(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Expanded(
+              child: PaletteList(),
+            ),
+            StoreBuilder<AppState>(
               rebuildOnChange: false,
               builder: (context, store) {
-                return ColorAddButton(
-                  color: Colors.red,
-                  onAccepted: (color) => store.dispatch(AddNewColorToPaletteAction(color)),
+                return Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.expand(height: 66.0),
+                    child: ColorAddButton(
+                      color: Colors.red,
+                      onAccepted: (color) => store.dispatch(AddNewColorToPaletteAction(color)),
+                    ),
+                  ),
                 );
               }
             ),
-          )
+          ],
         ),
-      ],
+      ),
     );
   }
 }

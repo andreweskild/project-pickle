@@ -15,17 +15,20 @@ class SquareButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      padding: EdgeInsets.all(0.0),
-      child: child,
-      color: color ?? Colors.transparent,
-      colorBrightness: Theme.of(context).brightness,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
+    return ButtonTheme(
+      height: 64.0,
+      child: FlatButton(
+        padding: EdgeInsets.all(0.0),
+        child: child,
+        color: color ?? Colors.transparent,
+        colorBrightness: Theme.of(context).brightness,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        splashColor: Theme.of(context).splashColor,
+        highlightColor: Theme.of(context).highlightColor,
+        onPressed: onPressed,
       ),
-      splashColor: Theme.of(context).splashColor,
-      highlightColor: Theme.of(context).highlightColor,
-      onPressed: onPressed,
     );
   }
 }

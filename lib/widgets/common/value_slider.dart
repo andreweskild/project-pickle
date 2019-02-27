@@ -575,9 +575,9 @@ class _RenderSlider extends RenderBox {
   }
 
   static const Duration _positionAnimationDuration = Duration(milliseconds: 75);
-  static const double _overlayRadius = 12.0;
+  static const double _overlayRadius = 18.0;
   static const double _overlayDiameter = _overlayRadius * 2.0;
-  static const double _trackHeight = 24.0;
+  static const double _trackHeight = 36.0;
   static const double _preferredTrackWidth = 144.0;
   static const double _preferredTotalWidth = _preferredTrackWidth + _overlayDiameter;
   static const Duration _minimumInteractionTime = Duration(milliseconds: 500);
@@ -966,9 +966,9 @@ class _RenderSlider extends RenderBox {
       canvas.drawRRect(
         RRect.fromRectAndRadius(
           Rect.fromLTRB(
-            center.dx - radius * 1.2,
+            center.dx - radius,
             center.dy - radius,
-            center.dx + radius * 1.2,
+            center.dx + radius,
             center.dy + radius,
           ),
           Radius.circular(10.0),
@@ -1038,11 +1038,11 @@ class _RenderSlider extends RenderBox {
     final double trackRight = trackLeft + trackLength;
     final double trackActive = trackLeft + trackLength * visualPosition;
     final double thumbHeight = _sliderTheme.thumbShape.getPreferredSize(isInteractive, isDiscrete).height;
-    final double thumbWidth = _sliderTheme.thumbShape.getPreferredSize(isInteractive, isDiscrete).width / 2.0;
+    final double thumbWidth = _sliderTheme.thumbShape.getPreferredSize(isInteractive, isDiscrete).width;
     final double trackActiveLeft = math.max(0.0 + 2.0, trackActive - thumbWidth - thumbGap * (1.0 - _enableAnimation.value) + 2.0);
     final double trackActiveRight = math.min(trackActive + thumbWidth + thumbGap * (1.0 - _enableAnimation.value), trackRight);
     final RRect trackLeftRect = RRect.fromRectAndCorners(
-      Rect.fromLTRB(trackLeft - thumbWidth, trackTop, trackActiveLeft, trackBottom),
+      Rect.fromLTRB(trackLeft, trackTop, trackActiveLeft, trackBottom),
       topLeft: Radius.circular(8.0),
       bottomLeft: Radius.circular(8.0),
     );
@@ -1065,9 +1065,9 @@ class _RenderSlider extends RenderBox {
         Path()..addRRect(
           RRect.fromRectAndRadius(
             Rect.fromLTRB(
-              thumbCenter.dx - thumbWidth * 2.0,
+              thumbCenter.dx - thumbWidth,
               thumbCenter.dy - thumbHeight,
-              thumbCenter.dx + thumbWidth * 2.0,
+              thumbCenter.dx + thumbWidth,
               thumbCenter.dy + thumbHeight,
             ),
             Radius.circular(12.0),
