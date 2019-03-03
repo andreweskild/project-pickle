@@ -51,21 +51,29 @@ class ShapeTool extends BaseDrawingTool {
                 );
               },
               builder: (context, model) {
-                return PushbuttonToggleGroup<ShapeMode>(
-                  value: model.shape,
-                  onChanged: model.callback,
-                  items: <PushbuttonToggle<ShapeMode>>[
-                    PushbuttonToggle<ShapeMode>(
-                      child: Icon(Icons.crop_square),
-                      value: ShapeMode.Rectangle
-                    ),
-                    PushbuttonToggle<ShapeMode>(
-                        child: Icon(Icons.brightness_1),
-                        value: ShapeMode.Circle
-                    ),
-                    PushbuttonToggle<ShapeMode>(
-                        child: Icon(Icons.change_history),
-                        value: ShapeMode.Triangle
+                return Row(
+                  children: <Widget>[
+                    Expanded(child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text("Shape Mode"),
+                    )),
+                    PushbuttonToggleGroup<ShapeMode>(
+                      value: model.shape,
+                      onChanged: model.callback,
+                      items: <PushbuttonToggle<ShapeMode>>[
+                        PushbuttonToggle<ShapeMode>(
+                          child: Icon(Icons.crop_square),
+                          value: ShapeMode.Rectangle
+                        ),
+                        PushbuttonToggle<ShapeMode>(
+                            child: Icon(Icons.brightness_1),
+                            value: ShapeMode.Circle
+                        ),
+                        PushbuttonToggle<ShapeMode>(
+                            child: Icon(Icons.change_history),
+                            value: ShapeMode.Triangle
+                        ),
+                      ],
                     ),
                   ],
                 );

@@ -6,7 +6,7 @@ import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/color_selector/color_section.dart';
 import 'package:project_pickle/widgets/tools/tools_card.dart';
 
-double _kLeftDrawerWidth = 90.0;
+double _kLeftDrawerWidth = 80.0;
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({
@@ -18,26 +18,46 @@ class LeftDrawer extends StatelessWidget {
     return StoreBuilder<AppState>(
       rebuildOnChange: false,
       builder: (context, store) {
-        return SizedBox(
-          width: _kLeftDrawerWidth,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  blurRadius: 6.0,
-                  color: Colors.black26
-                )
-              ]
+        return Stack(
+          overflow: Overflow.visible,
+          children: <Widget>[
+            SizedBox(
+              width: _kLeftDrawerWidth,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  ToolsCard(),
+                  Expanded(child: ColorSection()),
+                ],
+              ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                ToolsCard(),
-                Expanded(child: ColorSection()),
-              ],
+            Positioned(
+              top: 0.0,
+              right: -32.0,
+              bottom: 0.0,
+              child: ConstrainedBox(
+                  constraints: BoxConstraints.expand(width: 32.0),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [Colors.black.withAlpha(10), Colors.transparent],
+                            tileMode: TileMode.clamp
+                        )
+//                        boxShadow: <BoxShadow>[
+//                          BoxShadow(
+//                              blurRadius: 8.0,
+//                              spreadRadius: 2.0,
+//                              color:
+//                              Colors.black26
+//                          )
+//                        ]
+                    ),
+                  )
+              ),
             ),
-          ),
+          ],
         );
       },
     );

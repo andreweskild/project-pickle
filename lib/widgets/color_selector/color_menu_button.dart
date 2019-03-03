@@ -7,7 +7,7 @@ import 'package:project_pickle/widgets/common/square_icon_button.dart';
 
 const double _kMenuScreenPadding = 8.0;
 
-const double _kButtonHeight = 66.0;
+const double _kButtonHeight = 56.0;
 
 const double _kHeaderHeight = 80.0;
 
@@ -206,7 +206,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
         children: <Widget>[
           Positioned.fill(
             child: Material(
-              elevation: 6.0,
+              elevation: 16.0,
               animationDuration: Duration.zero,
               color: Theme.of(context).cardColor,
               shape: RoundedRectangleBorder(
@@ -241,10 +241,12 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                               SquareIconButton(
                                 icon: Icon(Icons.clear, color: _getContrastingColor(_color.toColor())),
                                 onPressed: widget.onCancel,
+                                color: Colors.transparent,
                               ),
                               SquareIconButton(
                                 icon: Icon(Icons.check, color: _getContrastingColor(_color.toColor())),
                                 onPressed: () => widget.onAccept(_color),
+                                color: Colors.transparent,
                               )
                             ]
                         ),
@@ -252,6 +254,10 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                     )
                   ),
                 )
+              ),
+              Divider(
+                height: 1.0,
+                color: Color.alphaBlend(Theme.of(context).dividerColor, _color.toColor()),
               ),
               Expanded(
                 child: Opacity(
@@ -633,8 +639,7 @@ class ColorMenuButton extends StatelessWidget {
                       child: Container(
                         foregroundDecoration: BoxDecoration(
                           border: Border.all(
-                            color: _getBorderColor(color),
-                            width: 2.0
+                            color: !active ? Theme.of(context).dividerColor : Colors.transparent,
                           ),
                           borderRadius: BorderRadius.circular(8.0),
                         ),

@@ -6,31 +6,36 @@ class SquareIconButton extends StatelessWidget {
     Key key,
     @required this.icon,
     @required this.onPressed,
+    this.color,
   }) : super(key: key);
 
   final Widget icon;
   final VoidCallback onPressed;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
+    bool _buttonIsDisabled = onPressed == null;
+
     return AspectRatio(
       aspectRatio: 1.0,
-      child: FlatButton(
-        padding: EdgeInsets.all(0.0),
-        child: IconTheme(
-          data: IconThemeData(
-            color: onPressed == null ?
-              Theme.of(context).disabledColor :
-              Theme.of(context).iconTheme.color,
+      child: AnimatedOpacity(
+        duration: Duration(milliseconds: 200),
+        curve: Curves.ease,
+        opacity: _buttonIsDisabled ? 0.5 : 1.0,
+        child: FlatButton(
+          padding: EdgeInsets.all(0.0),
+          child: IconTheme(
+            data: IconThemeData(
+              color: color ?? Theme.of(context).iconTheme.color,
+            ),
+            child: icon
           ),
-          child: icon
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+          ),
+          onPressed: onPressed,
         ),
-        color: Theme.of(context).unselectedWidgetColor,
-        disabledColor: Theme.of(context).unselectedWidgetColor.withAlpha(125),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-        ),
-        onPressed: onPressed,
       ),
     );
   }

@@ -20,9 +20,9 @@ class SquareButton extends StatelessWidget {
       child: FlatButton(
         padding: EdgeInsets.all(0.0),
         child: child,
-        color: color ?? Colors.transparent,
         colorBrightness: Theme.of(context).brightness,
         shape: RoundedRectangleBorder(
+          side: BorderSide(color: Theme.of(context).dividerColor),
           borderRadius: BorderRadius.circular(8.0),
         ),
         splashColor: Theme.of(context).splashColor,

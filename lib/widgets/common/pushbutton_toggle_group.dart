@@ -40,7 +40,7 @@ class PushbuttonToggleGroup<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 64.0,
+      height: 60.0,
       child: Row(
         children: items.map<Widget>((item) {
           return Padding(
@@ -51,6 +51,9 @@ class PushbuttonToggleGroup<T> extends StatelessWidget {
                 elevation: value == item.value ? 6.0 : 0.0,
                 color: value == item.value ? Theme.of(context).buttonColor : Theme.of(context).unselectedWidgetColor,
                 shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: !(value == item.value) ? Theme.of(context).dividerColor : Colors.transparent,
+                  ),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 shadowColor: Theme.of(context).splashColor.withAlpha(60),

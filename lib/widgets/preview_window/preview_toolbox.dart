@@ -49,13 +49,26 @@ class PreviewToolbox extends StatelessWidget {
         return DecoratedBox(
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
+            border: Border(
+                top: BorderSide(
+                  color: Color.alphaBlend(Theme.of(context).dividerColor, Theme.of(context).primaryColor),
+                ),
+                left: BorderSide(
+                    color: Theme.of(context).dividerColor
+                ),
+                bottom: BorderSide(
+                    color: Theme.of(context).dividerColor
+                )
+            ),
           ),
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: DecoratedBox(
               decoration: BoxDecoration(
-                  color: Theme.of(context).unselectedWidgetColor,
-                  borderRadius: BorderRadius.circular(6.0)),
+                color: Theme.of(context).unselectedWidgetColor,
+                borderRadius: BorderRadius.circular(6.0),
+                border: Border.all(color: Theme.of(context).dividerColor),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: AspectRatio(

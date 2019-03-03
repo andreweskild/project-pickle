@@ -11,7 +11,7 @@ import 'package:flutter/widgets.dart';
 // void _restitchDress() { }
 // void _repairDress() { }
 
-const double kToolbarHeight = 80.0;
+const double kToolbarHeight = 64.0;
 
 
 // Bottom justify the kToolbarHeight child which may overflow the top.
@@ -464,7 +464,10 @@ class _ResponsiveAppBarState extends State<ResponsiveAppBar> {
         value: overlayStyle,
         child: Material(
           color: widget.backgroundColor ?? themeData.primaryColor,
-          child: appBar,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: appBar,
+          ),
         ),
       ),
     );

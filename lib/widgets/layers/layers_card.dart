@@ -90,6 +90,7 @@ class LayersCard extends StatelessWidget {
             ),
             child: DecoratedBox(
               decoration: BoxDecoration(
+                border: Border(left: BorderSide(color: Theme.of(context).dividerColor)),
                 color: Theme.of(context).unselectedWidgetColor.withAlpha(180),
               ),
               child: Column(
@@ -102,12 +103,15 @@ class LayersCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: ConstrainedBox(
-                      constraints: BoxConstraints.expand(height: 66.0),
+                      constraints: BoxConstraints.expand(height: 56.0),
                       child: FlatButton.icon(
                         color: Theme.of(context).cardColor,
                         colorBrightness: Theme.of(context).brightness,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
+                          side: BorderSide(
+                            color: Theme.of(context).dividerColor
+                          )
                         ),
                         icon: Icon(Icons.add),
                         label: Text('New Layer'),

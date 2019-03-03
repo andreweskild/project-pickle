@@ -71,10 +71,10 @@ theme(BuildContext context, bool darkMode) {
       cardColor: const Color(0xFFFFFFFF),
       bottomAppBarColor: const Color(0xFFC4FB81),
       buttonColor: const Color(0xFFC4FB81),
-      disabledColor: const Color(0xFFDEDBE0),
-      dividerColor: Colors.black.withAlpha(25),
+      disabledColor: Colors.black38,
+      dividerColor: Colors.black.withAlpha(40),
       primarySwatch:
-      MaterialColor(const Color(0xFFD7FFA7).value, const <int, Color>{
+      MaterialColor(const Color(0xFFC4FB81).value, const <int, Color>{
         50: const Color(0xFFD7FFA7),
         100: const Color(0xFFC4FB81),
         200: const Color(0xFFFFE082),
@@ -98,7 +98,7 @@ theme(BuildContext context, bool darkMode) {
             .accentTextTheme
             .title
             .copyWith(color: const Color(0xFF5A990D))
-            .copyWith(fontSize: 18.0, fontWeight: FontWeight.bold),
+            .copyWith(fontSize: 18.0),
       ),
       accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
         color: const Color(0xFF5A990D),
@@ -116,7 +116,6 @@ theme(BuildContext context, bool darkMode) {
       textTheme: Theme.of(context).textTheme.copyWith(
           title: Theme.of(context).textTheme.title.copyWith(
             fontSize: 18.0,
-            fontWeight: FontWeight.bold
           ),
           button: Theme.of(context).textTheme.button.copyWith(
             color: Colors.grey.shade800,
@@ -134,7 +133,7 @@ theme(BuildContext context, bool darkMode) {
         overlayColor: const Color(0xFF8FC84A),
       ),
       toggleableActiveColor: const Color(0xFF86C040),
-      unselectedWidgetColor: const Color(0xFFECEAED),
+      unselectedWidgetColor: const Color(0xFFF5F4F6),
       primaryIconTheme: Theme.of(context).iconTheme.copyWith(
         color: const Color(0xFF5A990D),
       )

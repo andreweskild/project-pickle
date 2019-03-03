@@ -4,15 +4,15 @@ const double _kMenuScreenPadding = 0.0;
 const double _kMenuItemSpacing = 12.0;
 const double _kMenuWidth = 330.0;
 
-const double _kButtonHeight = 66.0;
+const double _kButtonHeight = 56.0;
 
-const double _kHeaderHeight = 80.0;
+const double _kHeaderHeight = 72.0;
 
 
 class PopupContentItem extends StatelessWidget{
   PopupContentItem({
     @required this.child,
-    this.height = 64.0,
+    this.height = 60.0,
   });
 
   final Widget child;
@@ -210,7 +210,7 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
         children: <Widget>[
           Positioned.fill(
             child: Material(
-              elevation: 6.0,
+              elevation: 16.0,
               animationDuration: Duration.zero,
               color: Theme.of(context).cardColor,
               shape: RoundedRectangleBorder(

@@ -108,99 +108,80 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
               elevation: 6.0,
               primary: true,
               centerTitle: true,
-              backgroundColor: Colors.white,
-//              title: DefaultTextStyle(
-//                style: Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
-//                child: Center(
-//                  child: Row(
-//                      mainAxisSize: MainAxisSize.min,
-//                      children: <Widget> [
-//                        Icon(Icons.line_weight),
-//                        Padding(
-//                          padding: const EdgeInsets.only(left: 12.0),
-//                          child: ValueSlider(
-//                            value: 1.0,
-//                            min: 1.0,
-//                            max: 100.0,
-//                            onChanged: (value){
-//                              setState((){
-//                              });
-//                            },
-//                          ),
-//                        ),
-//                        Padding(
-//                          padding: const EdgeInsets.only(left: 16.0),
-//                          child: Icon(Icons.invert_colors),
-//                        ),
-//                        Padding(
-//                          padding: const EdgeInsets.only(left: 12.0),
-//                          child: ValueSlider(
-//                            value: 0.4,
-//                            onChanged: (value){
-//                              setState((){
-//                              });
-//                            },
-//                          ),
-//                        ),
-//                      ]
-//                  ),
-//                ),
-//              ),
-              leading: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: FlatButton.icon(
-                  padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-                  icon: Icon(
-                    Icons.chevron_left
-                  ),
-                  label: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
+              leading: Row(
+                children: <Widget>[
+                  FlatButton(
+                    padding: const EdgeInsets.only(left: 12.0, right: 12.0),
                     child: Text(
-                      'Return to Projects',
-                      style: Theme.of(context).textTheme.title,
+                      'Projects',
+                      style: Theme.of(context).accentTextTheme.title,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    onPressed: (){},
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 6.0, right: 6.0),
+                    child: Text(
+                      '>',
+                      style: Theme.of(context).accentTextTheme.title,
                     ),
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+                  FlatButton(
+                    padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                    child: Text(
+                      'Current Project Name',
+                      style: Theme.of(context).accentTextTheme.title,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    onPressed: (){},
                   ),
-                  onPressed: (){},
-                  color: Theme.of(context).unselectedWidgetColor,
-                ),
+                ],
               ),
               actions: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(12.0, 12.0, 6.0, 12.0),
-                  child: StoreConnector<AppState, UndoModel>(
+                StoreConnector<AppState, UndoModel>(
+                  converter: (store) {
+                    return UndoModel(
+                      canUndo: store.state.canvasHistory.isNotEmpty,
+                      callback: () => store.dispatch(UndoAction()),
+                    );
+                  },
+                  builder: (context, model) {
+                    return SquareIconButton (
+                      icon: Icon(Icons.undo),
+                      color: Theme.of(context).accentIconTheme.color,
+                      onPressed: model.canUndo ? model.callback : null,
+                    );
+                  }
+                ),
+                SizedBox(
+                  width: 12.0,
+                ),
+                StoreConnector<AppState, RedoModel>(
                     converter: (store) {
-                      return UndoModel(
-                        canUndo: store.state.canvasHistory.isNotEmpty,
-                        callback: () => store.dispatch(UndoAction()),
+                      return RedoModel(
+                        canRedo: store.state.canvasFuture.isNotEmpty,
+                        callback: () => store.dispatch(RedoAction()),
                       );
                     },
                     builder: (context, model) {
                       return SquareIconButton (
-                        icon: Icon(Icons.undo),
-                        onPressed: model.canUndo ? model.callback : null,
+                        icon: Icon(Icons.redo),
+                        color: Theme.of(context).accentIconTheme.color,
+                        onPressed: model.canRedo ? model.callback : null,
                       );
                     }
-                  ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(6.0, 12.0, 12.0, 12.0),
-                  child: StoreConnector<AppState, RedoModel>(
-                      converter: (store) {
-                        return RedoModel(
-                          canRedo: store.state.canvasFuture.isNotEmpty,
-                          callback: () => store.dispatch(RedoAction()),
-                        );
-                      },
-                      builder: (context, model) {
-                        return SquareIconButton (
-                          icon: Icon(Icons.redo),
-                          onPressed: model.canRedo ? model.callback : null,
-                        );
-                      }
-                  ),
+                SizedBox(
+                  width: 12.0,
+                ),
+                SquareIconButton (
+                  icon: Icon(Icons.more_vert),
+                  color: Theme.of(context).accentIconTheme.color,
+                  onPressed: (){},
                 ),
               ],
             ),
@@ -210,17 +191,15 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                 Align(
                   alignment: Alignment.topCenter,
                   child: ConstrainedBox(
-                    constraints: BoxConstraints.expand(height: 1.0),
+                    constraints: BoxConstraints.expand(height: 32.0),
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                            blurRadius: 8.0,
-                            spreadRadius: 2.0,
-                            color:
-                              Colors.black26
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [Colors.black.withAlpha(15), Colors.transparent],
+                              tileMode: TileMode.clamp
                           )
-                        ]
                       ),
                     )
                   )

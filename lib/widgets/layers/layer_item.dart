@@ -38,17 +38,15 @@ class LayerItem extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Positioned.fill(
-          child: AnimatedOpacity(
-            duration: Duration(milliseconds: 200),
-            curve: Curves.ease,
-            opacity: active ? 1.0 : 0.0,
-            child: Material(
-              color: Theme.of(context).primaryColor,
+          child: Material(
+            color: Theme.of(context).unselectedWidgetColor,
+            shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
-              elevation: 6.0,
-              shadowColor: Theme.of(context).primaryColor.withAlpha(
-                  Theme.of(context).brightness == Brightness.dark ? 255 : 128
-              ),
+              side: BorderSide(color: Theme.of(context).dividerColor)
+            ),
+            elevation: active ? 6.0 : 0.0,
+            shadowColor: Theme.of(context).primaryColor.withAlpha(
+                Theme.of(context).brightness == Brightness.dark ? 255 : 128
             ),
           ),
         ),
@@ -90,7 +88,6 @@ class LayerItem extends StatelessWidget {
                           softWrap: false,
                           style: TextStyle(
                             inherit: true,
-                            fontWeight: FontWeight.bold,
                           )
                         ),
                       ),

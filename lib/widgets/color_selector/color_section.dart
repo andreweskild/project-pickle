@@ -30,29 +30,36 @@ class ColorSection extends StatelessWidget {
           sigmaX: _kBlurAmount,
           sigmaY: _kBlurAmount,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Expanded(
-              child: PaletteList(),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: Theme.of(context).unselectedWidgetColor.withAlpha(180),
+            border: Border(
+                right: BorderSide(
+                    color: Theme.of(context).dividerColor
+                ),
             ),
-            StoreBuilder<AppState>(
-              rebuildOnChange: false,
-              builder: (context, store) {
-                return Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints.expand(height: 66.0),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Expanded(
+                child: PaletteList(),
+              ),
+              StoreBuilder<AppState>(
+                rebuildOnChange: false,
+                builder: (context, store) {
+                  return Padding(
+                    padding: const EdgeInsets.all(12.0),
                     child: ColorAddButton(
                       color: Colors.red,
                       onAccepted: (color) => store.dispatch(AddNewColorToPaletteAction(color)),
                     ),
-                  ),
-                );
-              }
-            ),
-          ],
+                  );
+                }
+              ),
+            ],
+          ),
         ),
       ),
     );

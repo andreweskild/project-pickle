@@ -23,17 +23,15 @@ class ToolButton extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Positioned.fill(
-          child: AnimatedOpacity(
-            duration: Duration(milliseconds: 200),
-            curve: Curves.ease,
-            opacity: active ? 1.0 : 0.0,
-            child: Material(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.circular(8.0),
-              elevation: 6.0,
-              shadowColor: Theme.of(context).primaryColor.withAlpha(
-                  Theme.of(context).brightness == Brightness.dark ? 255 : 128
-              ),
+          child: Material(
+            color: Theme.of(context).cardColor,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                side: BorderSide(color: Theme.of(context).dividerColor)
+            ),
+            elevation: active ? 6.0 : 0.0,
+            shadowColor: Theme.of(context).primaryColor.withAlpha(
+                Theme.of(context).brightness == Brightness.dark ? 255 : 128
             ),
           ),
         ),

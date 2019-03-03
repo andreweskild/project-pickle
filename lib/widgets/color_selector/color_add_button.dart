@@ -7,7 +7,7 @@ import 'package:project_pickle/widgets/common/square_icon_button.dart';
 
 const double _kMenuScreenPadding = 8.0;
 
-const double _kButtonHeight = 66.0;
+const double _kButtonHeight = 56.0;
 
 const double _kHeaderHeight = 80.0;
 
@@ -181,7 +181,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
         children: <Widget>[
           Positioned.fill(
             child: Material(
-              elevation: 6.0,
+              elevation: 16.0,
               animationDuration: Duration.zero,
               color: Theme.of(context).cardColor,
               shape: RoundedRectangleBorder(
@@ -220,10 +220,12 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                             SquareIconButton(
                               icon: Icon(Icons.clear, color: _getContrastingColor(_color.toColor())),
                               onPressed: widget.onCancel,
+                              color: Colors.transparent,
                             ),
                             SquareIconButton(
                               icon: Icon(Icons.add, color: _getContrastingColor(_color.toColor())),
                               onPressed: () => widget.onAccept(_color),
+                              color: Colors.transparent,
                             )
                           ]
                         ),
@@ -548,16 +550,23 @@ class ColorAddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
+    return SizedBox(
+      height: _kButtonHeight,
+      child: ConstrainedBox(
+        constraints: BoxConstraints.expand(),
+        child: FlatButton(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            side: BorderSide(color: Theme.of(context).dividerColor),
+          ),
+          color: Theme
+              .of(context)
+              .cardColor,
+          onPressed: () => _showColorMenu(context),
+          child: Icon(Icons.add),
+          colorBrightness: Theme.of(context).brightness,
+        ),
       ),
-      color: Theme
-          .of(context)
-          .cardColor,
-      onPressed: () => _showColorMenu(context),
-      child: Icon(Icons.add),
-      colorBrightness: Theme.of(context).brightness,
     );
   }
 }
