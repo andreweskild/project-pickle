@@ -55,7 +55,7 @@ class ShapeTool extends BaseDrawingTool {
                   children: <Widget>[
                     Expanded(child: Padding(
                       padding: const EdgeInsets.all(12.0),
-                      child: Text("Shape Mode"),
+                      child: Text("Shape Mode", softWrap: false,),
                     )),
                     PushbuttonToggleGroup<ShapeMode>(
                       value: model.shape,

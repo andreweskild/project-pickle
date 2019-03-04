@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import 'package:project_pickle/widgets/color_selector/color_slider_value_indicator.dart';
@@ -5,14 +7,16 @@ import 'package:project_pickle/widgets/common/value_slider.dart';
 import 'package:project_pickle/widgets/common/slider_thumb_shape.dart';
 import 'package:project_pickle/widgets/common/square_icon_button.dart';
 
-const double _kMenuScreenPadding = 8.0;
+const double _kMenuScreenPadding = 12.0;
 
 const double _kButtonHeight = 56.0;
 
-const double _kHeaderHeight = 80.0;
+const double _kHeaderHeight = 72.0;
 
-const double _kMenuWidth = 360.0;
+const double _kMenuWidth = 300.0;
 const double _kMenuHeight = 224.0;
+
+const double _kBlurAmount = 20.0;
 
 //class _ColorPickerModel {
 //  _ColorPickerModel({this.currentTool, this.callback});
@@ -206,266 +210,278 @@ class ColorPopupContentState extends State<ColorPopupContent> {
         children: <Widget>[
           Positioned.fill(
             child: Material(
-              elevation: 16.0,
+              elevation: 24.0,
               animationDuration: Duration.zero,
-              color: Theme.of(context).cardColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              shadowColor: Theme.of(context).brightness == Brightness.dark ? Colors.black54 : Colors.black26,
+              color: Colors.transparent,
+              shadowColor: Theme.of(context).brightness == Brightness.dark ? Colors.black54 : Colors.black54,
             ),
           ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              SizedBox(
-                height: _kHeaderHeight,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints.expand(),
-                  child: Material(
-                    animationDuration: Duration.zero,
-                    color: _color.toColor(),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: borderRadius.value,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Theme(
-                        data: Theme.of(context).copyWith(
-                          splashColor: _getContrastingColor(_color.toColor()).withAlpha(25),
-                          highlightColor: _getContrastingColor(_color.toColor()).withAlpha(25),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: _kBlurAmount,
+                sigmaY: _kBlurAmount,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  SizedBox(
+                    height: _kHeaderHeight,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints.expand(),
+                      child: Material(
+                        animationDuration: Duration.zero,
+                        color: _color.toColor(),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: borderRadius.value,
                         ),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              SquareIconButton(
-                                icon: Icon(Icons.clear, color: _getContrastingColor(_color.toColor())),
-                                onPressed: widget.onCancel,
-                                color: Colors.transparent,
-                              ),
-                              SquareIconButton(
-                                icon: Icon(Icons.check, color: _getContrastingColor(_color.toColor())),
-                                onPressed: () => widget.onAccept(_color),
-                                color: Colors.transparent,
-                              )
-                            ]
-                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Theme(
+                            data: Theme.of(context).copyWith(
+                              splashColor: _getContrastingColor(_color.toColor()).withAlpha(25),
+                              highlightColor: _getContrastingColor(_color.toColor()).withAlpha(25),
+                            ),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  SquareIconButton(
+                                    icon: Icon(Icons.clear, color: _getContrastingColor(_color.toColor())),
+                                    onPressed: widget.onCancel,
+                                    color: Colors.transparent,
+                                  ),
+                                  SquareIconButton(
+                                    icon: Icon(Icons.check, color: _getContrastingColor(_color.toColor())),
+                                    onPressed: () => widget.onAccept(_color),
+                                    color: Colors.transparent,
+                                  )
+                                ]
+                            ),
+                          ),
+                        )
                       ),
                     )
                   ),
-                )
-              ),
-              Divider(
-                height: 1.0,
-                color: Color.alphaBlend(Theme.of(context).dividerColor, _color.toColor()),
-              ),
-              Expanded(
-                child: Opacity(
-                  opacity: opacity.value,
-                  child: Padding(
-                    padding: const EdgeInsets.all(6.0),
+                  Divider(
+                    height: 1.0,
+                    color: Color.alphaBlend(Theme.of(context).dividerColor, _color.toColor()),
+                  ),
+                  Expanded(
                     child: Material(
-                      type: MaterialType.transparency,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: SizedBox(
-                              height: 26.0,
-                              child: Row(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 12.0),
-                                    child: Text(
-                                      'H',
-                                    ),
+                      color: Theme.of(context).cardColor.withAlpha(150),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(10.0),
+                          bottomRight: Radius.circular(10.0),
+                        ),
+                      ),
+                      child: Opacity(
+                        opacity: opacity.value,
+                        child: Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: SizedBox(
+                                  height: 26.0,
+                                  child: Row(
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 12.0),
+                                        child: Text(
+                                          'H',
+                                        ),
 
-                                  ),
-                                  Expanded(
-                                    child: SliderTheme(
-                                      data: SliderTheme.of(context).copyWith(
-                                        activeTrackColor: Colors.transparent,
-                                        inactiveTrackColor: Colors.transparent,
-                                        activeTickMarkColor: Colors.transparent,
-                                        inactiveTickMarkColor: Colors.transparent,
-                                        thumbShape: SliderThumbShape(),
-                                        overlayColor: _color.withAlpha(0.3).withSaturation(1.0).withLightness(0.5).toColor(),
-                                        showValueIndicator: ShowValueIndicator.always,
-                                        valueIndicatorColor: _color.withSaturation(1.0).withLightness(0.5).toColor(),
-                                        valueIndicatorShape: ColorSliderValueIndicatorShape(),
-                                        valueIndicatorTextStyle: TextStyle(
-                                          color: _getContrastingColor(_color.withSaturation(1.0).withLightness(0.5).toColor()),
-                                        )
                                       ),
-                                      child: Stack(
-                                        children: <Widget>[
-                                          Positioned.fill(
-                                            child: DecoratedBox(
-                                              decoration: BoxDecoration(
-                                                gradient: LinearGradient(
-                                                  begin: Alignment.centerLeft,
-                                                  end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
-                                                  colors: [const Color(0xFFFF0000), const Color(0xFFFFFF00), const Color(0xFF00FF00), const Color(0xFF00FFFF), const Color(0xFF0000FF), const Color(0xFFFF00FF), const Color(0xFFFF0000)], // whitish to gray
-                                                  tileMode: TileMode.clamp, // repeats the gradient over the canvas
+                                      Expanded(
+                                        child: SliderTheme(
+                                          data: SliderTheme.of(context).copyWith(
+                                            activeTrackColor: Colors.transparent,
+                                            inactiveTrackColor: Colors.transparent,
+                                            activeTickMarkColor: Colors.transparent,
+                                            inactiveTickMarkColor: Colors.transparent,
+                                            thumbShape: SliderThumbShape(),
+                                            overlayColor: _color.withAlpha(0.3).withSaturation(1.0).withLightness(0.5).toColor(),
+                                            showValueIndicator: ShowValueIndicator.always,
+                                            valueIndicatorColor: _color.withSaturation(1.0).withLightness(0.5).toColor(),
+                                            valueIndicatorShape: ColorSliderValueIndicatorShape(),
+                                            valueIndicatorTextStyle: TextStyle(
+                                              color: _getContrastingColor(_color.withSaturation(1.0).withLightness(0.5).toColor()),
+                                            )
+                                          ),
+                                          child: Stack(
+                                            children: <Widget>[
+                                              Positioned.fill(
+                                                child: DecoratedBox(
+                                                  decoration: BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                      begin: Alignment.centerLeft,
+                                                      end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
+                                                      colors: [const Color(0xFFFF0000), const Color(0xFFFFFF00), const Color(0xFF00FF00), const Color(0xFF00FFFF), const Color(0xFF0000FF), const Color(0xFFFF00FF), const Color(0xFFFF0000)], // whitish to gray
+                                                      tileMode: TileMode.clamp, // repeats the gradient over the canvas
+                                                    ),
+                                                    borderRadius: BorderRadius.circular(8.0),
+                                                  ),
                                                 ),
-                                                borderRadius: BorderRadius.circular(8.0),
                                               ),
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: ValueSlider(
-                                              onChanged: (value) {
-                                                updateColorWith(h: value);
-                                              },
-                                              label: (_color.hue).toStringAsFixed(0),
-                                              value: _color.hue,
-                                              min: 0.0,
-                                              max: 360.0,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: SizedBox(
-                              height: 36.0,
-                              child: Row(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 12.0),
-                                    child: Text(
-                                        'S',
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: SliderTheme(
-                                      data: SliderTheme.of(context).copyWith(
-                                        activeTrackColor: Colors.transparent,
-                                        inactiveTrackColor: Colors.transparent,
-                                        activeTickMarkColor: Colors.transparent,
-                                        inactiveTickMarkColor: Colors.transparent,
-                                        overlayColor: _color.toColor().withOpacity(0.33),
-                                        thumbShape: SliderThumbShape(),
-                                        showValueIndicator: ShowValueIndicator.always,
-                                        valueIndicatorColor: _color.toColor(),
-                                        valueIndicatorShape: ColorSliderValueIndicatorShape(),
-                                        valueIndicatorTextStyle: TextStyle(
-                                          color: _getContrastingColor(_color.toColor()),
-                                        )
-                                      ),
-                                      child: Stack(
-                                        children: <Widget>[
-                                          Positioned.fill(
-                                            child: DecoratedBox(
-                                              decoration: BoxDecoration(
-                                                gradient: LinearGradient(
-                                                  begin: Alignment.centerLeft,
-                                                  end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
-                                                  colors: [_color.withSaturation(0.0).toColor(), _color.withSaturation(1.0).toColor()], // whitish to gray
-                                                  tileMode: TileMode.clamp, // repeats the gradient over the canvas
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: ValueSlider(
+                                                  onChanged: (value) {
+                                                    updateColorWith(h: value);
+                                                  },
+                                                  label: (_color.hue).toStringAsFixed(0),
+                                                  value: _color.hue,
+                                                  min: 0.0,
+                                                  max: 360.0,
                                                 ),
-                                                borderRadius: BorderRadius.circular(8.0),
                                               ),
-                                            ),
+                                            ],
                                           ),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: ValueSlider(
-                                              onChanged: (value) {
-                                                updateColorWith(s: value);
-                                              },
-                                              label: (_color.saturation * 255.0).toStringAsFixed(0),
-                                              value: _color.saturation,
-                                              min: 0.0,
-                                              max: 1.0,
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: SizedBox(
-                              height: 26.0,
-                              child: Row(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 12.0),
-                                    child: Text(
-                                        'L',
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: SliderTheme(
-                                      data: SliderTheme.of(context).copyWith(
-                                        activeTrackColor: Colors.transparent,
-                                        inactiveTrackColor: Colors.transparent,
-                                        activeTickMarkColor: Colors.transparent,
-                                        inactiveTickMarkColor: Colors.transparent,
-                                        showValueIndicator: ShowValueIndicator.always,
-                                        overlayColor: _color.toColor().withOpacity(0.33),
-                                        thumbShape: SliderThumbShape(),
-                                        valueIndicatorColor: _color.toColor(),
-                                        valueIndicatorShape: ColorSliderValueIndicatorShape(),
-                                        valueIndicatorTextStyle: TextStyle(
-                                          color: _getContrastingColor(_color.toColor()),
-                                        )
+                              Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: SizedBox(
+                                  height: 36.0,
+                                  child: Row(
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 12.0),
+                                        child: Text(
+                                            'S',
+                                        ),
                                       ),
-                                      child: Stack(
-                                        children: <Widget>[
-                                          Positioned.fill(
-                                            child: DecoratedBox(
-                                              decoration: BoxDecoration(
-                                                gradient: LinearGradient(
-                                                  begin: Alignment.centerLeft,
-                                                  end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
-                                                  colors: [const Color(0xFF000000), _color.withLightness(0.5).toColor(), const Color(0xFFFFFFFF)], // whitish to gray
-                                                  tileMode: TileMode.clamp, // repeats the gradient over the canvas
+                                      Expanded(
+                                        child: SliderTheme(
+                                          data: SliderTheme.of(context).copyWith(
+                                            activeTrackColor: Colors.transparent,
+                                            inactiveTrackColor: Colors.transparent,
+                                            activeTickMarkColor: Colors.transparent,
+                                            inactiveTickMarkColor: Colors.transparent,
+                                            overlayColor: _color.toColor().withOpacity(0.33),
+                                            thumbShape: SliderThumbShape(),
+                                            showValueIndicator: ShowValueIndicator.always,
+                                            valueIndicatorColor: _color.toColor(),
+                                            valueIndicatorShape: ColorSliderValueIndicatorShape(),
+                                            valueIndicatorTextStyle: TextStyle(
+                                              color: _getContrastingColor(_color.toColor()),
+                                            )
+                                          ),
+                                          child: Stack(
+                                            children: <Widget>[
+                                              Positioned.fill(
+                                                child: DecoratedBox(
+                                                  decoration: BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                      begin: Alignment.centerLeft,
+                                                      end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
+                                                      colors: [_color.withSaturation(0.0).toColor(), _color.withSaturation(1.0).toColor()], // whitish to gray
+                                                      tileMode: TileMode.clamp, // repeats the gradient over the canvas
+                                                    ),
+                                                    borderRadius: BorderRadius.circular(8.0),
+                                                  ),
                                                 ),
-                                                borderRadius: BorderRadius.circular(8.0),
                                               ),
-                                            ),
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: ValueSlider(
+                                                  onChanged: (value) {
+                                                    updateColorWith(s: value);
+                                                  },
+                                                  label: (_color.saturation * 255.0).toStringAsFixed(0),
+                                                  value: _color.saturation,
+                                                  min: 0.0,
+                                                  max: 1.0,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: ValueSlider(
-                                              onChanged: (value) {
-                                                updateColorWith(l: value);
-                                              },
-                                              label: (_color.lightness * 255.0).toStringAsFixed(0),
-                                              value: _color.lightness,
-                                              min: 0.0,
-                                              max: 1.0,
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
+                              Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: SizedBox(
+                                  height: 26.0,
+                                  child: Row(
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 12.0),
+                                        child: Text(
+                                            'L',
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: SliderTheme(
+                                          data: SliderTheme.of(context).copyWith(
+                                            activeTrackColor: Colors.transparent,
+                                            inactiveTrackColor: Colors.transparent,
+                                            activeTickMarkColor: Colors.transparent,
+                                            inactiveTickMarkColor: Colors.transparent,
+                                            showValueIndicator: ShowValueIndicator.always,
+                                            overlayColor: _color.toColor().withOpacity(0.33),
+                                            thumbShape: SliderThumbShape(),
+                                            valueIndicatorColor: _color.toColor(),
+                                            valueIndicatorShape: ColorSliderValueIndicatorShape(),
+                                            valueIndicatorTextStyle: TextStyle(
+                                              color: _getContrastingColor(_color.toColor()),
+                                            )
+                                          ),
+                                          child: Stack(
+                                            children: <Widget>[
+                                              Positioned.fill(
+                                                child: DecoratedBox(
+                                                  decoration: BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                      begin: Alignment.centerLeft,
+                                                      end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
+                                                      colors: [const Color(0xFF000000), _color.withLightness(0.5).toColor(), const Color(0xFFFFFFFF)], // whitish to gray
+                                                      tileMode: TileMode.clamp, // repeats the gradient over the canvas
+                                                    ),
+                                                    borderRadius: BorderRadius.circular(8.0),
+                                                  ),
+                                                ),
+                                              ),
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: ValueSlider(
+                                                  onChanged: (value) {
+                                                    updateColorWith(l: value);
+                                                  },
+                                                  label: (_color.lightness * 255.0).toStringAsFixed(0),
+                                                  value: _color.lightness,
+                                                  min: 0.0,
+                                                  max: 1.0,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ],
       ),

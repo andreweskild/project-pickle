@@ -45,7 +45,7 @@ class LayerItem extends StatelessWidget {
               side: BorderSide(color: Theme.of(context).dividerColor)
             ),
             elevation: active ? 6.0 : 0.0,
-            shadowColor: Theme.of(context).primaryColor.withAlpha(
+            shadowColor: Theme.of(context).buttonColor.withAlpha(
                 Theme.of(context).brightness == Brightness.dark ? 255 : 128
             ),
           ),

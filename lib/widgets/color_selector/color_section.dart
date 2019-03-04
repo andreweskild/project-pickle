@@ -32,7 +32,7 @@ class ColorSection extends StatelessWidget {
         ),
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: Theme.of(context).unselectedWidgetColor.withAlpha(180),
+            color: Theme.of(context).unselectedWidgetColor.withAlpha(150),
             border: Border(
                 right: BorderSide(
                     color: Theme.of(context).dividerColor

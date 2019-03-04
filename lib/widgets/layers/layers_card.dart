@@ -91,7 +91,7 @@ class LayersCard extends StatelessWidget {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 border: Border(left: BorderSide(color: Theme.of(context).dividerColor)),
-                color: Theme.of(context).unselectedWidgetColor.withAlpha(180),
+                color: Theme.of(context).unselectedWidgetColor.withAlpha(150),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

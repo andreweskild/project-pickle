@@ -78,9 +78,6 @@ class ToolsCard extends StatelessWidget {
          return DecoratedBox(
             decoration: BoxDecoration(
               border: Border(
-                top: BorderSide(
-                  color: Color.alphaBlend(Theme.of(context).dividerColor, Theme.of(context).primaryColor),
-                ),
                 right: BorderSide(
                     color: Theme.of(context).dividerColor
                 ),

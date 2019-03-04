@@ -5,7 +5,7 @@ import 'package:project_pickle/widgets/color_selector/color_slider_value_indicat
 import 'package:project_pickle/widgets/common/value_slider.dart';
 import 'package:project_pickle/widgets/common/square_icon_button.dart';
 
-const double _kMenuScreenPadding = 8.0;
+const double _kMenuScreenPadding = 12.0;
 
 const double _kButtonHeight = 56.0;
 

@@ -114,7 +114,9 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                     padding: const EdgeInsets.only(left: 12.0, right: 12.0),
                     child: Text(
                       'Projects',
-                      style: Theme.of(context).accentTextTheme.title,
+                      style: Theme.of(context).accentTextTheme.title.copyWith(
+                          color: Colors.white
+                      ),
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
@@ -125,14 +127,18 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                     padding: const EdgeInsets.only(left: 6.0, right: 6.0),
                     child: Text(
                       '>',
-                      style: Theme.of(context).accentTextTheme.title,
+                      style: Theme.of(context).accentTextTheme.title.copyWith(
+                          color: Colors.white
+                      ),
                     ),
                   ),
                   FlatButton(
                     padding: const EdgeInsets.only(left: 12.0, right: 12.0),
                     child: Text(
                       'Current Project Name',
-                      style: Theme.of(context).accentTextTheme.title,
+                      style: Theme.of(context).accentTextTheme.title.copyWith(
+                        color: Colors.white
+                      ),
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
@@ -152,7 +158,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                   builder: (context, model) {
                     return SquareIconButton (
                       icon: Icon(Icons.undo),
-                      color: Theme.of(context).accentIconTheme.color,
+                      color: Colors.white,
                       onPressed: model.canUndo ? model.callback : null,
                     );
                   }
@@ -170,7 +176,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                     builder: (context, model) {
                       return SquareIconButton (
                         icon: Icon(Icons.redo),
-                        color: Theme.of(context).accentIconTheme.color,
+                        color: Colors.white,
                         onPressed: model.canRedo ? model.callback : null,
                       );
                     }
@@ -180,7 +186,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                 ),
                 SquareIconButton (
                   icon: Icon(Icons.more_vert),
-                  color: Theme.of(context).accentIconTheme.color,
+                  color: Colors.white,
                   onPressed: (){},
                 ),
               ],

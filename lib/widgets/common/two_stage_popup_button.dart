@@ -1,13 +1,16 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
-const double _kMenuScreenPadding = 0.0;
+const double _kMenuScreenPadding = 12.0;
 const double _kMenuItemSpacing = 12.0;
-const double _kMenuWidth = 330.0;
+const double _kMenuWidth = 300.0;
 
 const double _kButtonHeight = 56.0;
 
 const double _kHeaderHeight = 72.0;
 
+const double _kBlurAmount = 20.0;
 
 class PopupContentItem extends StatelessWidget{
   PopupContentItem({
@@ -147,7 +150,7 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
       begin: widget.initialSize,
       end: Size(
         _kMenuWidth, 
-        _contentHeight + _kHeaderHeight
+        _contentHeight + _kHeaderHeight + 1.0 //1.0 for divider height
       ),
     ).animate(
       CurvedAnimation(
@@ -210,68 +213,87 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
         children: <Widget>[
           Positioned.fill(
             child: Material(
-              elevation: 16.0,
+              elevation: 24.0,
+              color: Colors.transparent,
               animationDuration: Duration.zero,
-              color: Theme.of(context).cardColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              shadowColor: Theme.of(context).brightness == Brightness.dark ? Colors.black54 : Colors.black26,
+              shadowColor: Theme.of(context).brightness == Brightness.dark ? Colors.black54 : Colors.black54,
             ),
           ),
           Positioned.fill(
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: headerHeight.value,
-                  child: Material(
-                    animationDuration: Duration.zero,
-                    color: Theme.of(context).buttonColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: borderRadius.value
-                    ),
-                    child: InkWell(
-                      onTap: widget.onAccept,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(8.0),
-                        topRight: Radius.circular(8.0)
-                      ),
-                      child: IconTheme(
-                        data: IconThemeData(
-                          color: Theme.of(context).accentTextTheme.button.color,
-                        ),
-                        child: DefaultTextStyle(
-                          style: TextStyle(
-                            color: Theme.of(context).accentTextTheme.button.color,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(12.0),
-                            child: widget.headerContent
-                          )
-                        ),
-                      ),
-                    ),
-                  ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: _kBlurAmount,
+                  sigmaY: _kBlurAmount,
                 ),
-                Expanded(
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: Opacity(
-                      opacity: opacity.value,
-                      child: Padding(
-                        padding: EdgeInsets.all(_kMenuItemSpacing/2.0),
-                        child: Column(
-                          children: widget.popupContent.map<Widget>(
-                            (item) {
-                              return item;
-                            }
-                          ).toList(),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: headerHeight.value,
+                      child: Material(
+                        animationDuration: Duration.zero,
+                        color: Theme.of(context).buttonColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: borderRadius.value
+                        ),
+                        child: InkWell(
+                          onTap: widget.onAccept,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(8.0),
+                            topRight: Radius.circular(8.0)
+                          ),
+                          child: IconTheme(
+                            data: IconThemeData(
+                              color: Theme.of(context).accentTextTheme.button.color,
+                            ),
+                            child: DefaultTextStyle(
+                              style: TextStyle(
+                                color: Theme.of(context).accentTextTheme.button.color,
+                              ),
+                              child: Padding(
+                                padding: headerPadding.value,
+                                child: widget.headerContent
+                              )
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      height: 1.0,
+                      color: Color.alphaBlend(Theme.of(context).dividerColor, Theme.of(context).buttonColor)
+                    ),
+                    Expanded(
+                      child: Material(
+                        color: Theme.of(context).cardColor.withAlpha(150),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10.0),
+                            bottomRight: Radius.circular(10.0),
+                          ),
+                        ),
+                        child: Opacity(
+                          opacity: opacity.value,
+                          child: Padding(
+                            padding: EdgeInsets.all(_kMenuItemSpacing/2.0),
+                            child: Column(
+                              children: widget.popupContent.map<Widget>(
+                                (item) {
+                                  return item;
+                                }
+                              ).toList(),
+                            ),
+                          )
                         ),
                       )
                     ),
-                  )
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ],
@@ -459,7 +481,7 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
                             : Theme.of(context).textTheme.button.color,
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(12.0),
+                        padding: const EdgeInsets.all(6.0),
                         child: widget.headerContent(false),
                       ),
                     ),

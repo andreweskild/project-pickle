@@ -74,7 +74,7 @@ theme(BuildContext context, bool darkMode) {
       disabledColor: Colors.black38,
       dividerColor: Colors.black.withAlpha(40),
       primarySwatch:
-      MaterialColor(const Color(0xFFC4FB81).value, const <int, Color>{
+      MaterialColor(const Color(0xFF5B5360).value, const <int, Color>{
         50: const Color(0xFFD7FFA7),
         100: const Color(0xFFC4FB81),
         200: const Color(0xFFFFE082),
