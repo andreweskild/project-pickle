@@ -1,6 +1,8 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+import 'package:project_pickle/tangible/tangible.dart';
 
 const double _kMenuScreenPadding = 12.0;
 const double _kMenuItemSpacing = 12.0;
@@ -208,95 +210,34 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
     return SizedBox(
       height: size.value.height,
       width: size.value.width,
-      child: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          Positioned.fill(
-            child: Material(
-              elevation: 24.0,
-              color: Colors.transparent,
-              animationDuration: Duration.zero,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
+      child: Card(
+        child: Column(
+          children: <Widget>[
+            CardHeader(
+              height: headerHeight.value,
+              child: Padding(
+                padding: headerPadding.value,
+                child: widget.headerContent
               ),
-              shadowColor: Theme.of(context).brightness == Brightness.dark ? Colors.black54 : Colors.black54,
+              onTap: widget.onAccept,
             ),
-          ),
-          Positioned.fill(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(
-                  sigmaX: _kBlurAmount,
-                  sigmaY: _kBlurAmount,
-                ),
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: headerHeight.value,
-                      child: Material(
-                        animationDuration: Duration.zero,
-                        color: Theme.of(context).buttonColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: borderRadius.value
-                        ),
-                        child: InkWell(
-                          onTap: widget.onAccept,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(8.0),
-                            topRight: Radius.circular(8.0)
-                          ),
-                          child: IconTheme(
-                            data: IconThemeData(
-                              color: Theme.of(context).accentTextTheme.button.color,
-                            ),
-                            child: DefaultTextStyle(
-                              style: TextStyle(
-                                color: Theme.of(context).accentTextTheme.button.color,
-                              ),
-                              child: Padding(
-                                padding: headerPadding.value,
-                                child: widget.headerContent
-                              )
-                            ),
-                          ),
-                        ),
-                      ),
+            Expanded(
+              child: Opacity(
+                  opacity: opacity.value,
+                  child: Padding(
+                    padding: EdgeInsets.all(_kMenuItemSpacing/2.0),
+                    child: Column(
+                      children: widget.popupContent.map<Widget>(
+                              (item) {
+                            return item;
+                          }
+                      ).toList(),
                     ),
-                    Divider(
-                      height: 1.0,
-                      color: Color.alphaBlend(Theme.of(context).dividerColor, Theme.of(context).buttonColor)
-                    ),
-                    Expanded(
-                      child: Material(
-                        color: Theme.of(context).cardColor.withAlpha(150),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(10.0),
-                            bottomRight: Radius.circular(10.0),
-                          ),
-                        ),
-                        child: Opacity(
-                          opacity: opacity.value,
-                          child: Padding(
-                            padding: EdgeInsets.all(_kMenuItemSpacing/2.0),
-                            child: Column(
-                              children: widget.popupContent.map<Widget>(
-                                (item) {
-                                  return item;
-                                }
-                              ).toList(),
-                            ),
-                          )
-                        ),
-                      )
-                    ),
-                  ],
-                ),
+                  )
               ),
-            ),
-          ),
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -393,22 +334,28 @@ typedef _HeaderBuilder = Widget Function(bool);
 class TwoStagePopupButton extends StatefulWidget {
   TwoStagePopupButton({
     Key key,
+    @required this.headerContent,
+    @required this.popupContent,
+    this.active = false,
+    this.color,
     this.icon,
     this.label,
-    @required this.headerContent,
-    this.active = false,
     this.onToggled,
-    @required this.popupContent,
     this.onCompleted,
+    this.toggledColor,
+    this.toggledElevation = 6,
   }) : super(key: key);
 
+  final bool active;
+  final Color color;
+  final _HeaderBuilder headerContent;
   final Widget icon;
   final Widget label;
-  final List<PopupContentItem> popupContent;
-  final _HeaderBuilder headerContent;
-  final bool active;
   final VoidCallback onToggled;
   final VoidCallback onCompleted;
+  final List<PopupContentItem> popupContent;
+  final Color toggledColor;
+  final int toggledElevation;
 
   _TwoStagePopupButtonState createState() => _TwoStagePopupButtonState();
 }
@@ -430,71 +377,21 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: _kButtonHeight,
-      child: Stack(
-        children: <Widget>[
-          Positioned.fill(
-            child: AnimatedOpacity(
-              curve: Curves.ease,
-              duration: Duration(milliseconds: 200),
-              opacity: widget.active ? 1.0 : 0.0,
-              child: Material(
-                elevation: 0.0,
-                shadowColor: Theme.of(context).primaryColor.withAlpha(
-                  Theme.of(context).brightness == Brightness.dark ? 255 : 128
-                ),
-                color: Theme.of(context).buttonColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-            ),
-          ),
-          Positioned.fill(
-            child: FlatButton(
-              color: Colors.transparent,
-              padding: const EdgeInsets.all(0.0),
-              onPressed: () {
-                if (!widget.active) {
-//                  Navigator.of(context)
-//                      .popUntil((route) => route.settings.name != '/tool-options');
-                  widget.onToggled();
-                }
-              },
-              splashColor: const Color(0x9986C040),
-              highlightColor: const Color(0x99B0EF63),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: IgnorePointer(
-                ignoring: !widget.active,
-                child: InkWell(
-                  child: IconTheme(
-                    data: IconThemeData(
-                      color: (widget.active)
-                          ? Theme.of(context).accentTextTheme.button.color
-                          : Theme.of(context).textTheme.button.color,
-                    ),
-                    child: DefaultTextStyle(
-                      style: TextStyle(
-                        color: (widget.active)
-                            ? Theme.of(context).accentTextTheme.button.color
-                            : Theme.of(context).textTheme.button.color,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: widget.headerContent(false),
-                      ),
-                    ),
-                  ),
-                  borderRadius: BorderRadius.circular(8.0),
-                  onTap: () {
-                    _showPopupMenu(context);
-                  },
-                ),
-              ),
-            ),
-          ),
-        ],
+      child: ToggleButton(
+        color: widget.color,
+        toggledColor: widget.toggledColor,
+        toggled: widget.active,
+        toggledElevation: widget.toggledElevation,
+        onToggle: (toggled) {
+          if (!toggled) {
+            widget.onToggled();
+          }
+          else { _showPopupMenu(context); }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: widget.headerContent(false),
+        ),
       ),
     );
   }

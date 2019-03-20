@@ -22,19 +22,6 @@ class ToolButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Positioned.fill(
-          child: Material(
-            color: Theme.of(context).cardColor,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                side: BorderSide(color: Theme.of(context).dividerColor)
-            ),
-            elevation: active ? 6.0 : 0.0,
-            shadowColor: Theme.of(context).buttonColor.withAlpha(
-                Theme.of(context).brightness == Brightness.dark ? 255 : 128
-            ),
-          ),
-        ),
         Align(
           alignment: Alignment.center,
           child: TwoStagePopupButton(

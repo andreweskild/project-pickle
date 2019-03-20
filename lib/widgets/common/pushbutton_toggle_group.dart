@@ -41,40 +41,43 @@ class PushbuttonToggleGroup<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 60.0,
-      child: Row(
-        children: items.map<Widget>((item) {
-          return Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: AspectRatio(
-              aspectRatio: 1.0,
-              child: Material(
-                elevation: value == item.value ? 6.0 : 0.0,
-                color: value == item.value ? Theme.of(context).buttonColor : Theme.of(context).unselectedWidgetColor,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: !(value == item.value) ? Theme.of(context).dividerColor : Colors.transparent,
+      child: Padding(
+        padding: const EdgeInsets.all(3.0),
+        child: Row(
+          children: items.map<Widget>((item) {
+            return Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: AspectRatio(
+                aspectRatio: 1.0,
+                child: Material(
+                  elevation: value == item.value ? 6.0 : 0.0,
+                  color: value == item.value ? Theme.of(context).buttonColor : Theme.of(context).unselectedWidgetColor,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      color: !(value == item.value) ? Theme.of(context).dividerColor : Colors.transparent,
+                    ),
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                shadowColor: Theme.of(context).splashColor.withAlpha(60),
-                child: InkWell(
-                  onTap: () => onChanged(item.value),
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Center(
-                      child: IconTheme(
-                        data: value == item.value ? Theme.of(context).accentIconTheme :
-                        Theme.of(context).iconTheme,
-                        child: DefaultTextStyle(
-                            style: Theme.of(context).accentTextTheme.button,
-                            child: item.child
-                        ),
-                      )
-                  )
+                  shadowColor: Theme.of(context).splashColor.withAlpha(60),
+                  child: InkWell(
+                    onTap: () => onChanged(item.value),
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Center(
+                        child: IconTheme(
+                          data: value == item.value ? Theme.of(context).accentIconTheme :
+                          Theme.of(context).iconTheme,
+                          child: DefaultTextStyle(
+                              style: Theme.of(context).accentTextTheme.button,
+                              child: item.child
+                          ),
+                        )
+                    )
+                  ),
                 ),
               ),
-            ),
-          );
-        }).toList(),
+            );
+          }).toList(),
+        ),
       ),
     );
   }

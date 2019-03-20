@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide FlatButton, IconButton;
 import 'package:flutter_redux/flutter_redux.dart';
+
+import 'package:project_pickle/tangible/tangible.dart';
 
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
-import 'package:project_pickle/widgets/common/square_icon_button.dart';
-import 'package:project_pickle/widgets/common/square_button.dart';
 import 'package:project_pickle/widgets/layout/responsive_app_bar.dart';
 
 class UndoModel {
@@ -111,15 +111,8 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
               leading: Row(
                 children: <Widget>[
                   FlatButton(
-                    padding: const EdgeInsets.only(left: 12.0, right: 12.0),
                     child: Text(
                       'Projects',
-                      style: Theme.of(context).accentTextTheme.title.copyWith(
-                          color: Colors.white
-                      ),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
                     ),
                     onPressed: (){},
                   ),
@@ -127,21 +120,11 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                     padding: const EdgeInsets.only(left: 6.0, right: 6.0),
                     child: Text(
                       '>',
-                      style: Theme.of(context).accentTextTheme.title.copyWith(
-                          color: Colors.white
-                      ),
                     ),
                   ),
                   FlatButton(
-                    padding: const EdgeInsets.only(left: 12.0, right: 12.0),
                     child: Text(
                       'Current Project Name',
-                      style: Theme.of(context).accentTextTheme.title.copyWith(
-                        color: Colors.white
-                      ),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
                     ),
                     onPressed: (){},
                   ),
@@ -156,9 +139,8 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                     );
                   },
                   builder: (context, model) {
-                    return SquareIconButton (
+                    return IconButton (
                       icon: Icon(Icons.undo),
-                      color: Colors.white,
                       onPressed: model.canUndo ? model.callback : null,
                     );
                   }
@@ -174,9 +156,8 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                       );
                     },
                     builder: (context, model) {
-                      return SquareIconButton (
+                      return IconButton (
                         icon: Icon(Icons.redo),
-                        color: Colors.white,
                         onPressed: model.canRedo ? model.callback : null,
                       );
                     }
@@ -184,9 +165,8 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                 SizedBox(
                   width: 12.0,
                 ),
-                SquareIconButton (
+                IconButton (
                   icon: Icon(Icons.more_vert),
-                  color: Colors.white,
                   onPressed: (){},
                 ),
               ],
@@ -203,7 +183,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                           gradient: LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
-                              colors: [Colors.black.withAlpha(15), Colors.transparent],
+                              colors: [Colors.black.withAlpha(30), Colors.transparent],
                               tileMode: TileMode.clamp
                           )
                       ),

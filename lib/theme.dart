@@ -74,20 +74,20 @@ theme(BuildContext context, bool darkMode) {
       disabledColor: Colors.black38,
       dividerColor: Colors.black.withAlpha(40),
       primarySwatch:
-      MaterialColor(const Color(0xFF5B5360).value, const <int, Color>{
-        50: const Color(0xFFD7FFA7),
-        100: const Color(0xFFC4FB81),
-        200: const Color(0xFFFFE082),
-        300: const Color(0xFFFFD54F),
-        400: const Color(0xFFFFCA28),
-        500: const Color(0xFFFFC107),
-        600: const Color(0xFFFFB300),
-        700: const Color(0xFFFFA000),
-        800: const Color(0xFFFF8F00),
-        900: const Color(0xFFFF6F00)
-      }),
-      splashColor: const Color(0x9986C040),
-      highlightColor: const Color(0x99B0EF63),
+        MaterialColor(const Color(0xFFFFFFFF).value, const <int, Color>{
+          50: const Color(0xFFD7FFA7),
+          100: const Color(0xFFC4FB81),
+          200: const Color(0xFFFFE082),
+          300: const Color(0xFFFFD54F),
+          400: const Color(0xFFFFCA28),
+          500: const Color(0xFFFFC107),
+          600: const Color(0xFFFFB300),
+          700: const Color(0xFFFFA000),
+          800: const Color(0xFFFF8F00),
+          900: const Color(0xFFFF6F00)
+        }),
+      splashColor: const Color(0xFFAFF35B),
+      highlightColor: const Color(0xFFDEFEB7),
       accentTextTheme: Theme.of(context).accentTextTheme.copyWith(
         button: Theme.of(context)
             .accentTextTheme
@@ -102,23 +102,22 @@ theme(BuildContext context, bool darkMode) {
       ),
       accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
         color: const Color(0xFF5A990D),
-        size: 18.0,
       ),
       buttonTheme: ButtonTheme.of(context).copyWith(
         minWidth: 12.0,
         height: 64.0,
       ),
       iconTheme: IconTheme.of(context).copyWith(
-        color: Colors.black,
-        size: 18.0,
+        color: const Color(0xFF666666),
       ),
       scaffoldBackgroundColor: const Color(0xFFDEDBE0),
       textTheme: Theme.of(context).textTheme.copyWith(
           title: Theme.of(context).textTheme.title.copyWith(
+            color: const Color(0xFF666666),
             fontSize: 18.0,
           ),
           button: Theme.of(context).textTheme.button.copyWith(
-            color: Colors.grey.shade800,
+            color: const Color(0xFF666666),
             fontSize: 16.0,
           )
       ),
@@ -135,7 +134,7 @@ theme(BuildContext context, bool darkMode) {
       toggleableActiveColor: const Color(0xFF86C040),
       unselectedWidgetColor: const Color(0xFFF5F4F6),
       primaryIconTheme: Theme.of(context).iconTheme.copyWith(
-        color: const Color(0xFF5A990D),
+        color: const Color(0xFF666666),
       )
     );
   }

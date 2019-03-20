@@ -1,8 +1,10 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as Material;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+
+import 'package:project_pickle/tangible/tangible.dart';
 
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
@@ -82,49 +84,32 @@ class LayersCard extends StatelessWidget {
         );
       },
       builder: (context, model) {
-        return ClipRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: _kBlurAmount,
-              sigmaY: _kBlurAmount,
-            ),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                border: Border(left: BorderSide(color: Theme.of(context).dividerColor)),
-                color: Theme.of(context).unselectedWidgetColor.withAlpha(150),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Expanded(
-                    child: LayersList(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints.expand(height: 56.0),
-                      child: FlatButton.icon(
-                        color: Theme.of(context).cardColor,
-                        colorBrightness: Theme.of(context).brightness,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          side: BorderSide(
-                            color: Theme.of(context).dividerColor
-                          )
-                        ),
-                        icon: Icon(Icons.add),
-                        label: Text('New Layer'),
-                        onPressed: () {
-                          model.addLayerCallback();
-                        },
-                      ),
+        return Card(
+          color: Material.Theme.of(context).unselectedWidgetColor,
+          elevation: 0.0,
+          borderRadius: BorderRadius.zero,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Expanded(
+                  child: LayersList(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.expand(height: 56.0),
+                    child: Button.icon(
+                      icon: Icon(Icons.add),
+                      label: Text('New Layer'),
+                      onPressed: () {
+                        model.addLayerCallback();
+                      },
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ),
         );
       }
     );

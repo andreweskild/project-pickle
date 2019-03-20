@@ -6,7 +6,7 @@ const double _kMinFlingVelocity = 700.0;
 const double _kMinFlingVelocityDelta = 400.0;
 const double _kFlingVelocityScale = 1.0 / 300.0;
 const double _kDismissThreshold = 1.0;
-const double _kRevealAmount = 36.0;
+const double _kRevealAmount = 48.0;
 
 /// Signature used by [Deletable] to indicate that it has been dismissed in
 /// the given `direction`.

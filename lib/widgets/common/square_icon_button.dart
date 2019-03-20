@@ -32,7 +32,10 @@ class SquareIconButton extends StatelessWidget {
             child: icon
           ),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(8.0),
+            side: BorderSide(
+              color: color,
+            )
           ),
           onPressed: onPressed,
         ),

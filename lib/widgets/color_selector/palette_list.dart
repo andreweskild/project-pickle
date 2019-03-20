@@ -78,45 +78,45 @@ class _PaletteListState extends State<PaletteList> {
 
   Widget buildListTile(int index, _PaletteModel model) {
     // don't allow deleting of last color in palette
-    if(model.palette.length > 1) {
-      return Deletable(
-        key: Key(model.palette[index].value.toString() + index.toString()),
-        direction: DismissDirection.startToEnd,
-        onDeleted: (direction) => model.removeCallback(index),
-        background: DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color(0xFFFFBABA),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: FractionallySizedBox(
-              alignment: Alignment.centerLeft,
-              widthFactor: 0.75,
-              heightFactor: 1.0,
-              child: Icon(Icons.delete_outline, color: Color(0xFFDC5353)),
-            )
-        ),
-        child: StoreConnector<AppState, _ColorModel>(
-          distinct: true,
-          converter: (store) {
-            return _ColorModel(
-              active: index == store.state.activeColorIndex,
-              color: store.state.palette[index],
-              setActiveColorCallback: (index) => store.dispatch(SetActiveColorIndexAction(index)),
-              colorChangeCallback: (newColor, colorIndex) => store.dispatch(SetPaletteColorAction(colorIndex, newColor)),
-            );
-          },
-          builder: (context, colorModel) {
-            return ColorMenuButton(
-              color: colorModel.color,
-              onColorChanged: (color) => colorModel.colorChangeCallback(color, index),
-              active: colorModel.active,
-              onToggled: () => colorModel.setActiveColorCallback(index),
-            );
-          } 
-        ),
-      );
-    }
-    else {
+//    if(model.palette.length > 1) {
+//      return Deletable(
+//        key: Key(model.palette[index].value.toString() + index.toString()),
+//        direction: DismissDirection.startToEnd,
+//        onDeleted: (direction) => model.removeCallback(index),
+//        background: DecoratedBox(
+//            decoration: BoxDecoration(
+//              color: Color(0xFFFFBABA),
+//              borderRadius: BorderRadius.circular(8.0),
+//            ),
+//            child: FractionallySizedBox(
+//              alignment: Alignment.centerLeft,
+//              widthFactor: 0.75,
+//              heightFactor: 1.0,
+//              child: Icon(Icons.delete_outline, color: Color(0xFFDC5353)),
+//            )
+//        ),
+//        child: StoreConnector<AppState, _ColorModel>(
+//          distinct: true,
+//          converter: (store) {
+//            return _ColorModel(
+//              active: index == store.state.activeColorIndex,
+//              color: store.state.palette[index],
+//              setActiveColorCallback: (index) => store.dispatch(SetActiveColorIndexAction(index)),
+//              colorChangeCallback: (newColor, colorIndex) => store.dispatch(SetPaletteColorAction(colorIndex, newColor)),
+//            );
+//          },
+//          builder: (context, colorModel) {
+//            return ColorMenuButton(
+//              color: colorModel.color,
+//              onColorChanged: (color) => colorModel.colorChangeCallback(color, index),
+//              active: colorModel.active,
+//              onToggled: () => colorModel.setActiveColorCallback(index),
+//            );
+//          }
+//        ),
+//      );
+//    }
+//    else {
       return StoreConnector<AppState, _ColorModel>(
           key: Key(model.palette[index].value.toString() + index.toString()),
           distinct: true,
@@ -137,7 +137,7 @@ class _PaletteListState extends State<PaletteList> {
             );
           } 
         );
-    }
+//    }
 
   }
 

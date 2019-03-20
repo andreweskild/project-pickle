@@ -7,9 +7,13 @@ class SquareButton extends StatelessWidget {
     @required this.child,
     @required this.onPressed,
     this.color,
+    this.splashColor,
+    this.highlightColor,
   }) : super(key: key);
 
   final Color color;
+  final Color splashColor;
+  final Color highlightColor;
   final Widget child;
   final VoidCallback onPressed;
 
@@ -20,14 +24,12 @@ class SquareButton extends StatelessWidget {
       child: FlatButton(
         padding: EdgeInsets.all(0.0),
         child: child,
-        color: color,
+        color: color ?? Theme.of(context).unselectedWidgetColor,
         colorBrightness: Theme.of(context).brightness,
         shape: RoundedRectangleBorder(
           side: BorderSide(color: Theme.of(context).dividerColor),
           borderRadius: BorderRadius.circular(8.0),
         ),
-        splashColor: Theme.of(context).splashColor,
-        highlightColor: Theme.of(context).highlightColor,
         onPressed: onPressed,
       ),
     );

@@ -102,13 +102,6 @@ class MyAppState extends State<MyApp> with TickerProviderStateMixin{
         darkMode: false,
         drawingBuffer: PixelBuffer(32, 32),
         layers: PixelLayerList(),
-//    layers: PixelLayerList()..add(
-//      PixelLayer(
-//        name: 'Layer 1',
-//        width: 32,
-//        height: 32,
-//      )
-//    ),
         palette: <Color>[
           Colors.purple,
           Colors.amber,
@@ -127,9 +120,9 @@ class MyAppState extends State<MyApp> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-      statusBarColor: Color(0xFF4E4752),
-      systemNavigationBarColor: Color(0xFFC4FB81),
-      systemNavigationBarDividerColor: Color(0xFFC4FB81),
+      statusBarColor: Color(0xFFDEDBE0),
+      systemNavigationBarColor: Color(0xFFDEDBE0),
+      systemNavigationBarDividerColor: Color(0xFFDEDBE0),
       //or set color with: Color(0xFF0000FF)
     ));
     return StoreProvider(

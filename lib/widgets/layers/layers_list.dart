@@ -72,45 +72,27 @@ class _LayersListState extends State<LayersList> {
 
   Widget buildListTile(int index, _LayerListModel listModel) {
     // don't allow deleting of last color in palette
-      return Deletable(
+      return StoreConnector<AppState, _LayerModel>(
         key: Key(listModel.layers[index].name + index.toString()),
-        direction: DismissDirection.endToStart,
-        onDeleted: (listModel.layers.length > 1) ?
-            (direction) => listModel.removeCallback(index) :
-            null,
-        background: DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color(0xFFFFBABA),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: FractionallySizedBox(
-              alignment: Alignment.centerLeft,
-              widthFactor: 0.75,
-              heightFactor: 1.0,
-              child: Icon(Icons.delete_outline, color: Color(0xFFDC5353)),
-            )
-        ),
-        child: StoreConnector<AppState, _LayerModel>(
-          converter: (store) {
-            return _LayerModel(
-              layer: store.state.layers[index],
-              setActiveCallback: (index) =>
-                  store.dispatch(SetCurrentLayerIndexAction(index)),
-              toggleHidden: (index) => store.dispatch(ToggleLayerHiddenAction(index)),
-              duplicateLayer: (index) => store.dispatch(DuplicateLayerAction(index)),
-            );
-          },
-          builder: (context, layerModel) {
-            return LayerItem(
-              animationController: layerModel.layer.animationController,
-              canvas: layerModel.layer.canvas,
-              active: (index == listModel.layers.indexOfActiveLayer),
-              name: layerModel.layer.name,
-              onToggle: () => layerModel.setActiveCallback(index),
-              onDuplicate: () => layerModel.duplicateLayer(index),
-            );
-          }
-        )
+        converter: (store) {
+          return _LayerModel(
+            layer: store.state.layers[index],
+            setActiveCallback: (index) =>
+                store.dispatch(SetCurrentLayerIndexAction(index)),
+            toggleHidden: (index) => store.dispatch(ToggleLayerHiddenAction(index)),
+            duplicateLayer: (index) => store.dispatch(DuplicateLayerAction(index)),
+          );
+        },
+        builder: (context, layerModel) {
+          return LayerItem(
+            animationController: layerModel.layer.animationController,
+            canvas: layerModel.layer.canvas,
+            active: (index == listModel.layers.indexOfActiveLayer),
+            name: layerModel.layer.name,
+            onToggle: () => layerModel.setActiveCallback(index),
+            onDuplicate: () => layerModel.duplicateLayer(index),
+          );
+        }
       );
 //      return StoreConnector<AppState, _LayerModel>(
 //          key: Key(listModel.layers[index].name + index.toString()),
