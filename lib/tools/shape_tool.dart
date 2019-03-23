@@ -5,8 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/tools/base_drawing_tool.dart';
-import 'package:project_pickle/widgets/common/pushbutton_toggle_group.dart';
-import 'package:project_pickle/widgets/common/two_stage_popup_button.dart';
+import 'package:project_pickle/tangible/tangible.dart';
 
 class ShapeModeModel {
   ShapeModeModel({
@@ -42,45 +41,45 @@ class ShapeTool extends BaseDrawingTool {
 
 
   List<PopupContentItem> options = <PopupContentItem>[
-          PopupContentItem(
-            child: StoreConnector<AppState,ShapeModeModel>(
-              converter: (store) {
-                return ShapeModeModel(
-                  shape: store.state.toolShape,
-                  callback: (value) => store.dispatch(SetToolShapeAction(value)),
-                );
-              },
-              builder: (context, model) {
-                return Row(
-                  children: <Widget>[
-                    Expanded(child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text("Shape Mode", softWrap: false,),
-                    )),
-                    PushbuttonToggleGroup<ShapeMode>(
-                      value: model.shape,
-                      onChanged: model.callback,
-                      items: <PushbuttonToggle<ShapeMode>>[
-                        PushbuttonToggle<ShapeMode>(
-                          child: Icon(Icons.crop_square),
-                          value: ShapeMode.Rectangle
-                        ),
-                        PushbuttonToggle<ShapeMode>(
-                            child: Icon(Icons.brightness_1),
-                            value: ShapeMode.Circle
-                        ),
-                        PushbuttonToggle<ShapeMode>(
-                            child: Icon(Icons.change_history),
-                            value: ShapeMode.Triangle
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              }
-            ),
-          ),
-        ];
+    PopupContentItem(
+      child: StoreConnector<AppState,ShapeModeModel>(
+        converter: (store) {
+          return ShapeModeModel(
+            shape: store.state.toolShape,
+            callback: (value) => store.dispatch(SetToolShapeAction(value)),
+          );
+        },
+        builder: (context, model) {
+          return Row(
+            children: <Widget>[
+              Expanded(child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text("Shape Mode", softWrap: false,),
+              )),
+              PushbuttonToggleGroup<ShapeMode>(
+                activeValue: model.shape,
+                onChanged: model.callback,
+                items: <PushbuttonToggle<ShapeMode>>[
+                  PushbuttonToggle<ShapeMode>(
+                    child: Icon(Icons.crop_square),
+                    value: ShapeMode.Rectangle
+                  ),
+                  PushbuttonToggle<ShapeMode>(
+                      child: Icon(Icons.brightness_1),
+                      value: ShapeMode.Circle
+                  ),
+                  PushbuttonToggle<ShapeMode>(
+                      child: Icon(Icons.change_history),
+                      value: ShapeMode.Triangle
+                  ),
+                ],
+              ),
+            ],
+          );
+        }
+      ),
+    ),
+  ];
 
   @override
   void onPixelInputUpdate(Offset pos) {

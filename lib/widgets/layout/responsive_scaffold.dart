@@ -105,6 +105,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
           // return Desktop Scaffold
           return new Scaffold(
             appBar: new ResponsiveAppBar(
+              backgroundColor: Theme.of(context).cardColor,
               elevation: 6.0,
               primary: true,
               centerTitle: true,

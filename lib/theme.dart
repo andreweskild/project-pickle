@@ -70,11 +70,11 @@ theme(BuildContext context, bool darkMode) {
       accentColor: const Color(0xFFB0EF63),
       cardColor: const Color(0xFFFFFFFF),
       bottomAppBarColor: const Color(0xFFC4FB81),
-      buttonColor: const Color(0xFFC4FB81),
+      buttonColor: const Color(0xFFFFFFFF),
       disabledColor: Colors.black38,
       dividerColor: Colors.black.withAlpha(40),
       primarySwatch:
-        MaterialColor(const Color(0xFFFFFFFF).value, const <int, Color>{
+        MaterialColor(const Color(0xFFC4FB81).value, const <int, Color>{
           50: const Color(0xFFD7FFA7),
           100: const Color(0xFFC4FB81),
           200: const Color(0xFFFFE082),
@@ -106,6 +106,9 @@ theme(BuildContext context, bool darkMode) {
       buttonTheme: ButtonTheme.of(context).copyWith(
         minWidth: 12.0,
         height: 64.0,
+      ),
+      chipTheme: ChipTheme.of(context).copyWith(
+
       ),
       iconTheme: IconTheme.of(context).copyWith(
         color: const Color(0xFF666666),

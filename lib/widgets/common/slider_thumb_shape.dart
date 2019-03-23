@@ -4,8 +4,8 @@ class SliderThumbShape extends SliderComponentShape {
   /// Create a slider thumb that draws a circle.
   const SliderThumbShape();
 
-  static const double _thumbHeight = 18.0;
-  static const double _disabledThumbHeight = 18.0;
+  static const double _thumbHeight = 40.0;
+  static const double _disabledThumbHeight = 40.0;
 
   @override
   Size getPreferredSize(bool isEnabled, bool isDiscrete) {
@@ -36,10 +36,10 @@ class SliderThumbShape extends SliderComponentShape {
     );
     canvas.drawRRect(
       RRect.fromLTRBR(
-          thumbCenter.dx - heightTween.evaluate(enableAnimation),
-          thumbCenter.dy - heightTween.evaluate(enableAnimation),
-          thumbCenter.dx + heightTween.evaluate(enableAnimation),
-          thumbCenter.dy + heightTween.evaluate(enableAnimation),
+          thumbCenter.dx - heightTween.evaluate(enableAnimation) * .3,
+          thumbCenter.dy - heightTween.evaluate(enableAnimation) / 2,
+          thumbCenter.dx + heightTween.evaluate(enableAnimation) * .3,
+          thumbCenter.dy + heightTween.evaluate(enableAnimation) / 2,
           Radius.circular(8.0)
       ),
       new Paint()..color = colorTween.evaluate(enableAnimation),

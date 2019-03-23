@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' as Material;
 import 'package:flutter/widgets.dart';
 
 import 'shadows.dart';
+export 'two_stage_popup_button.dart';
 
 class Button extends StatelessWidget {
   Button({
@@ -32,11 +33,11 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material.ButtonTheme(
-      height: 64.0,
+      height: 52.0,
       child: Material.FlatButton(
-        padding: EdgeInsets.all(0.0),
+        padding: EdgeInsets.zero,
         child: child,
-        color: color ?? Material.Theme.of(context).unselectedWidgetColor,
+        color: color ?? Material.Theme.of(context).buttonColor,
         colorBrightness: Material.Theme.of(context).brightness,
         shape: RoundedRectangleBorder(
           side: BorderSide(color: Material.Theme.of(context).dividerColor),
@@ -95,7 +96,7 @@ class FlatButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material.ButtonTheme(
-      height: 64.0,
+      height: 52.0,
       child: Material.FlatButton(
         padding: EdgeInsets.only(left: 12.0, right: 12.0),
         child: child,
@@ -141,7 +142,7 @@ class ToggleButton extends StatelessWidget {
     (toggled) ?
     toggledColor ?? Material.Theme
         .of(context)
-        .buttonColor :
+        .primaryColor :
     color ?? Material.Theme
         .of(context)
         .cardColor;
@@ -159,9 +160,6 @@ class ToggleButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
         ),
         elevation: 0.0,
-        shadowColor: toggledColor ?? Material.Theme
-            .of(context)
-            .buttonColor,
         child: Material.InkWell(
           splashColor: splashColor,
           highlightColor: highlightColor,
@@ -208,13 +206,9 @@ class IconButton extends StatelessWidget {
     @required this.icon,
     @required this.onPressed,
     this.color,
-    this.splashColor,
-    this.highlightColor,
   }) : super(key: key);
 
   final Color color;
-  final Color splashColor;
-  final Color highlightColor;
   final Widget icon;
   final VoidCallback onPressed;
 
@@ -239,6 +233,48 @@ class IconButton extends StatelessWidget {
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
+          ),
+          onPressed: onPressed,
+        ),
+      ),
+    );
+  }
+}
+
+class OutlineIconButton extends StatelessWidget {
+  OutlineIconButton({
+    Key key,
+    @required this.icon,
+    @required this.onPressed,
+    this.color,
+  }) : super(key: key);
+
+  final Color color;
+  final Widget icon;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+
+    bool _buttonIsDisabled = onPressed == null;
+
+    return AspectRatio(
+      aspectRatio: 1.0,
+      child: AnimatedOpacity(
+        duration: Duration(milliseconds: 200),
+        curve: Curves.ease,
+        opacity: _buttonIsDisabled ? 0.5 : 1.0,
+        child: Material.FlatButton(
+          padding: EdgeInsets.all(0.0),
+          child: IconTheme(
+              data: IconThemeData(
+                color: color ?? Material.Theme.of(context).iconTheme.color,
+              ),
+              child: icon
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            side: BorderSide(color: color.withAlpha(40)),
           ),
           onPressed: onPressed,
         ),

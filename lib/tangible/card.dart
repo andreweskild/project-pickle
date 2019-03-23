@@ -60,7 +60,12 @@ class CardHeader extends StatelessWidget {
   CardHeader({
     Key key,
     this.child,
-    this.borderRadius = const BorderRadius.all(const Radius.circular(8.0)),
+    this.borderRadius = const BorderRadius.only(
+      topLeft: Radius.circular(8.0),
+      topRight: Radius.circular(8.0),
+      bottomLeft: Radius.zero,
+      bottomRight: Radius.zero,
+    ),
     this.color,
     this.height = 72.0,
     this.onTap,
@@ -85,7 +90,7 @@ class CardHeader extends StatelessWidget {
     }
 
     Color headerColor = (color == null) ?
-      Material.Theme.of(context).buttonColor :
+      Material.Theme.of(context).primaryColor :
       color;
 
     return Column(

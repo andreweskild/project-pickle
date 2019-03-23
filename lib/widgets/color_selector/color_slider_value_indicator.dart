@@ -161,7 +161,7 @@ class ColorSliderValueIndicatorShape extends SliderComponentShape {
       TextPainter labelPainter,
       ) {
     canvas.save();
-    canvas.translate(center.dx, center.dy);
+    canvas.translate(center.dx, center.dy - 8.0);
     // The entire value indicator should scale with the size of the label,
     // to keep it large enough to encompass the label text.
     final double textScaleFactor = labelPainter.height / _labelTextDesignSize;
@@ -223,23 +223,7 @@ class ColorSliderValueIndicatorShape extends SliderComponentShape {
     final double stretch = (neckStretchBaseline * t).clamp(0.0, 10.0 * neckStretchBaseline);
     final Offset neckStretch = new Offset(0.0, neckStretchBaseline - stretch);
 
-    assert(!_debuggingLabelLocation ||
-            () {
-          final Offset leftCenter = _topLobeCenter - new Offset(leftWidthNeeded, 0.0) + neckStretch;
-          final Offset rightCenter = _topLobeCenter + new Offset(rightWidthNeeded, 0.0) + neckStretch;
-          final Rect valueRect = new Rect.fromLTRB(
-            leftCenter.dx - _topLobeRadius,
-            leftCenter.dy - _topLobeRadius,
-            rightCenter.dx + _topLobeRadius,
-            rightCenter.dy + _topLobeRadius,
-          );
-          // final Paint outlinePaint = new Paint()
-          //   ..color = const Color(0xffff0000)
-          //   ..style = PaintingStyle.stroke
-          //   ..strokeWidth = 2.0;
-          // canvas.drawRect(valueRect, outlinePaint);
-          return true;
-        }());
+    assert(!_debuggingLabelLocation);
 
     _addArc(
       path,

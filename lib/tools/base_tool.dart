@@ -5,7 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:project_pickle/state/app_state.dart';
 
-import 'package:project_pickle/widgets/common/two_stage_popup_button.dart';
+import 'package:project_pickle/tangible/tangible.dart';
 
 typedef PixelInputCallback = void Function(Offset);
 typedef OptionsBuilder = Widget Function();

@@ -3,10 +3,6 @@ import 'package:flutter/widgets.dart';
 
 import 'package:project_pickle/tangible/tangible.dart';
 
-import 'package:project_pickle/widgets/common/square_button.dart';
-import 'package:project_pickle/widgets/common/two_stage_popup_button.dart';
-import 'package:project_pickle/widgets/common/value_slider.dart';
-
 class LayerItem extends StatelessWidget {
   LayerItem({
     this.active,
@@ -87,39 +83,86 @@ class LayerItem extends StatelessWidget {
             },
             popupContent: <PopupContentItem>[
               PopupContentItem(
+              height: 52.0,
+                padding: EdgeInsets.zero,
+                child: ListView(
+                  padding: EdgeInsets.only(left: 12.0, top: 6.0, bottom: 12.0, right: 12.0),
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    FilterChip(
+                      avatar: Icon(Icons.remove_red_eye),
+                      selected: true,
+                      label: Text(
+                          "Hidden",
+                          style: TextStyle(
+                            inherit: true,
+                            fontWeight: FontWeight.normal,
+                          )
+                      ),
+                      onSelected: (selected) => {},
+                    ),
+                    SizedBox(
+                      width: 12.0
+                    ),
+                    FilterChip(
+                      avatar: Icon(Icons.lock_outline),
+                      selected: false,
+                      label: Text(
+                        "Alpha Lock",
+                        style: TextStyle(
+                          inherit: true,
+                          fontWeight: FontWeight.normal,
+                        )
+                      ),
+                      onSelected: (selected) => {},
+                    ),
+                    SizedBox(
+                        width: 12.0
+                    ),
+                    FilterChip(
+                      avatar: Icon(Icons.layers),
+                      selected: true,
+                      label: Text(
+                          "Clip Layer",
+                          style: TextStyle(
+                            inherit: true,
+                            fontWeight: FontWeight.normal,
+                          )
+                      ),
+                      onSelected: (selected) => {},
+                    ),
+                  ]
+                ),
+              ),
+              PopupContentItem(
+                padding: EdgeInsets.only(left: 12.0, right: 12.0, bottom: 6.0),
                 child: Row(
                   children: <Widget>[
                     Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: SquareButton(
-                          child: Text(
-                            "Duplicate",
-                            style: TextStyle(
-                              inherit: true,
-                              fontWeight: FontWeight.normal,
-                            )
-                          ),
-                          onPressed: () {
-                            performPopupAction(context, onDuplicate);
-//                        onDuplicate();
-                          },
+                      child: Button(
+                        child: Text(
+                          "Duplicate",
+                          style: TextStyle(
+                            inherit: true,
+                            fontWeight: FontWeight.normal,
+                          )
                         ),
+                        onPressed: () {
+                          performPopupAction(context, onDuplicate);
+//                        onDuplicate();
+                        },
                       ),
                     ),
                     Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: SquareButton(
-                          child: Text(
-                            "Merge",
-                            style: TextStyle(
-                              inherit: true,
-                              fontWeight: FontWeight.normal,
-                            )
-                          ),
-                          onPressed: (){},
+                      child: Button(
+                        child: Text(
+                          "Merge",
+                          style: TextStyle(
+                            inherit: true,
+                            fontWeight: FontWeight.normal,
+                          )
                         ),
+                        onPressed: (){},
                       ),
                     ),
                   ]
@@ -129,33 +172,27 @@ class LayerItem extends StatelessWidget {
                 child: Row(
                   children: <Widget>[
                     Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: SquareButton(
-                          child: Text(
-                            "Alpha Lock",
-                            style: TextStyle(
-                              inherit: true,
-                              fontWeight: FontWeight.normal,
-                            )
-                          ),
-                          onPressed: (){},
+                      child: Button(
+                        child: Text(
+                          "Alpha Lock",
+                          style: TextStyle(
+                            inherit: true,
+                            fontWeight: FontWeight.normal,
+                          )
                         ),
+                        onPressed: (){},
                       ),
                     ),
                     Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: SquareButton(
-                          child: Text(
-                            "Clip Layer",
-                            style: TextStyle(
-                              inherit: true,
-                              fontWeight: FontWeight.normal,
-                            )
-                          ),
-                          onPressed: (){},
+                      child: Button(
+                        child: Text(
+                          "Clip Layer",
+                          style: TextStyle(
+                            inherit: true,
+                            fontWeight: FontWeight.normal,
+                          )
                         ),
+                        onPressed: (){},
                       ),
                     ),
                   ]
@@ -165,56 +202,46 @@ class LayerItem extends StatelessWidget {
                   child: Row(
                       children: <Widget>[
                         Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: SquareButton(
-                              child: Text(
-                                "Select",
-                                style: TextStyle(
-                                  inherit: true,
-                                  fontWeight: FontWeight.normal,
-                                )
-                              ),
-                              onPressed: (){},
+                          child: Button(
+                            child: Text(
+                              "Select",
+                              style: TextStyle(
+                                inherit: true,
+                                fontWeight: FontWeight.normal,
+                              )
                             ),
+                            onPressed: (){},
                           ),
                         ),
                         Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: SquareButton(
-                              child: Text(
-                                "Clear Layer",
-                                style: TextStyle(
-                                  inherit: true,
-                                  fontWeight: FontWeight.normal,
-                                )
-                              ),
-                              onPressed: (){},
+                          child: Button(
+                            child: Text(
+                              "Clear Layer",
+                              style: TextStyle(
+                                inherit: true,
+                                fontWeight: FontWeight.normal,
+                              )
                             ),
+                            onPressed: (){},
                           ),
                         )
                       ]
                   )
               ),
               PopupContentItem(
-                  child: Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints.expand(),
-                      child: SquareButton(
-
-                        child: Text(
-                            "Delete",
-                            style: TextStyle(
-                              inherit: true,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.white,
-                            )
-                        ),
-                        color: Material.Theme.of(context).errorColor,
-                        onPressed: (){},
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.expand(),
+                    child: Button(
+                      child: Text(
+                          "Delete",
+                          style: TextStyle(
+                            inherit: true,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.white,
+                          )
                       ),
+                      color: Material.Theme.of(context).errorColor,
+                      onPressed: (){},
                     ),
                   )
               )

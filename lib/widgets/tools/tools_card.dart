@@ -1,6 +1,8 @@
-import 'package:flutter/material.dart';
+//import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+
+import 'package:project_pickle/tangible/tangible.dart';
 
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
@@ -11,7 +13,6 @@ import 'package:project_pickle/tools/line_tool.dart';
 import 'package:project_pickle/tools/pixel_tool.dart';
 import 'package:project_pickle/tools/shape_tool.dart';
 import 'package:project_pickle/tools/marquee_selector_tool.dart';
-import 'package:project_pickle/widgets/common/two_stage_popup_button.dart';
 import 'package:project_pickle/widgets/tools/tool_button.dart';
 
 typedef _ToolCreationCallback = void Function(BaseTool tool);
@@ -78,7 +79,7 @@ class ToolsCard extends StatelessWidget {
          return DecoratedBox(
             decoration: BoxDecoration(
               border: Border(
-                right: BorderSide(
+                top: BorderSide(
                     color: Theme.of(context).dividerColor
                 ),
                 bottom: BorderSide(

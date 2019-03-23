@@ -1,48 +1,23 @@
 import 'dart:ui';
 
-//import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/painting.dart';
 
 import 'package:project_pickle/tangible/tangible.dart';
 
+import 'package:project_pickle/widgets/color_selector/color_slider_thumb.dart';
 import 'package:project_pickle/widgets/color_selector/color_slider_value_indicator.dart';
 import 'package:project_pickle/widgets/common/value_slider.dart';
 import 'package:project_pickle/widgets/common/slider_thumb_shape.dart';
-import 'package:project_pickle/widgets/common/square_icon_button.dart';
 
 const double _kMenuScreenPadding = 12.0;
 
 const double _kButtonHeight = 56.0;
 
-const double _kHeaderHeight = 72.0;
-
 const double _kMenuWidth = 300.0;
-const double _kMenuHeight = 224.0;
+const double _kMenuHeight = 72.0 + 12.0 * 4.0 + 40.0 * 3.0 + 1.0;
 
-const double _kBlurAmount = 20.0;
 
-//class _ColorPickerModel {
-//  _ColorPickerModel({this.currentTool, this.callback});
-//
-//  final BaseTool currentTool;
-//  final VoidCallback callback;
-//
-//
-//  @override
-//  int get hashCode {
-//    int result = 17;
-//    result = 37 * result + currentTool.hashCode;
-//    return result;
-//  }
-//
-//  @override
-//  bool operator ==(dynamic other) {
-//    if (other is! _ColorPickerModel) return false;
-//    _ColorPickerModel model = other;
-//    return (model.currentTool.runtimeType == currentTool.runtimeType);
-//  }
-//}
 
 Color _getBorderColor(Color color) {
   if(color.computeLuminance() > 0.5) {
@@ -215,38 +190,35 @@ class ColorPopupContentState extends State<ColorPopupContent> {
           children: <Widget>[
             CardHeader(
               color: _color.toColor(),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8.0),
-                topRight: Radius.circular(8.0),
-                bottomLeft: Radius.zero,
-                bottomRight: Radius.zero,
-              ),
-              child: Row(
-                  children: <Widget>[
-                    SquareIconButton(
-                      icon: Icon(Icons.clear, color: _getContrastingColor(_color.toColor()),),
-                      onPressed: widget.onCancel,
-                      color: Colors.transparent,
-                    ),
-                    SizedBox(
-                        width: 12.0
-                    ),
-                    SquareIconButton(
-                      icon: Icon(Icons.delete, color: _getContrastingColor(_color.toColor())),
-                      onPressed: widget.onCancel,
-                      color: Colors.transparent,
-                    ),
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: SquareIconButton(
-                          icon: Icon(Icons.check, color: _getContrastingColor(_color.toColor())),
-                          onPressed: () => widget.onAccept(_color),
-                          color: Colors.transparent,
-                        ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                    children: <Widget>[
+                      OutlineIconButton(
+                        icon: Icon(Icons.clear),
+                        onPressed: widget.onCancel,
+                        color: _getContrastingColor(_color.toColor()),
                       ),
-                    )
-                  ]
+                      SizedBox(
+                          width: 12.0
+                      ),
+                      OutlineIconButton(
+                        icon: Icon(Icons.delete_outline),
+                        onPressed: widget.onCancel,
+                        color: _getContrastingColor(_color.toColor()),
+                      ),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: OutlineIconButton(
+                            icon: Icon(Icons.check),
+                            onPressed: () => widget.onAccept(_color),
+                            color: _getContrastingColor(_color.toColor()),
+                          ),
+                        ),
+                      )
+                    ]
+                ),
               ),
             ),
             Expanded(
@@ -260,7 +232,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                       Padding(
                         padding: const EdgeInsets.all(6.0),
                         child: SizedBox(
-                          height: 26.0,
+                          height: 40.0,
                           child: Row(
                             children: <Widget>[
                               Padding(
@@ -277,7 +249,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                       inactiveTrackColor: Colors.transparent,
                                       activeTickMarkColor: Colors.transparent,
                                       inactiveTickMarkColor: Colors.transparent,
-                                      thumbShape: SliderThumbShape(),
+                                      thumbShape: ColorSliderThumbShape(_color.withSaturation(1.0).withLightness(0.5).toColor()),
                                       overlayColor: _color.withAlpha(0.3).withSaturation(1.0).withLightness(0.5).toColor(),
                                       showValueIndicator: ShowValueIndicator.always,
                                       valueIndicatorColor: _color.withSaturation(1.0).withLightness(0.5).toColor(),
@@ -324,7 +296,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                       Padding(
                         padding: const EdgeInsets.all(6.0),
                         child: SizedBox(
-                          height: 36.0,
+                          height: 40.0,
                           child: Row(
                             children: <Widget>[
                               Padding(
@@ -341,7 +313,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                       activeTickMarkColor: Colors.transparent,
                                       inactiveTickMarkColor: Colors.transparent,
                                       overlayColor: _color.toColor().withOpacity(0.33),
-                                      thumbShape: SliderThumbShape(),
+                                      thumbShape: ColorSliderThumbShape(_color.toColor()),
                                       showValueIndicator: ShowValueIndicator.always,
                                       valueIndicatorColor: _color.toColor(),
                                       valueIndicatorShape: ColorSliderValueIndicatorShape(),
@@ -387,7 +359,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                       Padding(
                         padding: const EdgeInsets.all(6.0),
                         child: SizedBox(
-                          height: 26.0,
+                          height: 40.0,
                           child: Row(
                             children: <Widget>[
                               Padding(
@@ -405,7 +377,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                       inactiveTickMarkColor: Colors.transparent,
                                       showValueIndicator: ShowValueIndicator.always,
                                       overlayColor: _color.toColor().withOpacity(0.33),
-                                      thumbShape: SliderThumbShape(),
+                                      thumbShape: ColorSliderThumbShape(_color.toColor()),
                                       valueIndicatorColor: _color.toColor(),
                                       valueIndicatorShape: ColorSliderValueIndicatorShape(),
                                       valueIndicatorTextStyle: TextStyle(
@@ -454,538 +426,9 @@ class ColorPopupContentState extends State<ColorPopupContent> {
             )
           ],
         )
-//        header: CardHeader(
-//          color: _color.toColor(),
-//          borderRadius: BorderRadius.only(
-//            topLeft: Radius.circular(8.0),
-//            topRight: Radius.circular(8.0),
-//            bottomLeft: Radius.zero,
-//            bottomRight: Radius.zero,
-//          ),
-//          child: Row(
-//            children: <Widget>[
-//              SquareIconButton(
-//                icon: Icon(Icons.clear, color: _getContrastingColor(_color.toColor()),),
-//                onPressed: widget.onCancel,
-//                color: Colors.transparent,
-//              ),
-//              SizedBox(
-//                width: 12.0
-//              ),
-//              SquareIconButton(
-//                icon: Icon(Icons.delete, color: _getContrastingColor(_color.toColor())),
-//                onPressed: widget.onCancel,
-//                color: Colors.transparent,
-//              ),
-//              Expanded(
-//                child: Align(
-//                  alignment: Alignment.centerRight,
-//                  child: SquareIconButton(
-//                    icon: Icon(Icons.check, color: _getContrastingColor(_color.toColor())),
-//                    onPressed: () => widget.onAccept(_color),
-//                    color: Colors.transparent,
-//                  ),
-//                ),
-//              )
-//            ]
-//          ),
-//        ),
-//        content: Opacity(
-//          opacity: opacity.value,
-//          child: Padding(
-//            padding: const EdgeInsets.all(6.0),
-//            child: Column(
-//              mainAxisSize: MainAxisSize.min,
-//              children: <Widget>[
-//                Padding(
-//                  padding: const EdgeInsets.all(6.0),
-//                  child: SizedBox(
-//                    height: 26.0,
-//                    child: Row(
-//                      children: <Widget>[
-//                        Padding(
-//                          padding: const EdgeInsets.only(right: 12.0),
-//                          child: Text(
-//                            'H',
-//                          ),
-//
-//                        ),
-//                        Expanded(
-//                          child: SliderTheme(
-//                            data: SliderTheme.of(context).copyWith(
-//                              activeTrackColor: Colors.transparent,
-//                              inactiveTrackColor: Colors.transparent,
-//                              activeTickMarkColor: Colors.transparent,
-//                              inactiveTickMarkColor: Colors.transparent,
-//                              thumbShape: SliderThumbShape(),
-//                              overlayColor: _color.withAlpha(0.3).withSaturation(1.0).withLightness(0.5).toColor(),
-//                              showValueIndicator: ShowValueIndicator.always,
-//                              valueIndicatorColor: _color.withSaturation(1.0).withLightness(0.5).toColor(),
-//                              valueIndicatorShape: ColorSliderValueIndicatorShape(),
-//                              valueIndicatorTextStyle: TextStyle(
-//                                color: _getContrastingColor(_color.withSaturation(1.0).withLightness(0.5).toColor()),
-//                              )
-//                            ),
-//                            child: Stack(
-//                              children: <Widget>[
-//                                Positioned.fill(
-//                                  child: DecoratedBox(
-//                                    decoration: BoxDecoration(
-//                                      gradient: LinearGradient(
-//                                        begin: Alignment.centerLeft,
-//                                        end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
-//                                        colors: [const Color(0xFFFF0000), const Color(0xFFFFFF00), const Color(0xFF00FF00), const Color(0xFF00FFFF), const Color(0xFF0000FF), const Color(0xFFFF00FF), const Color(0xFFFF0000)], // whitish to gray
-//                                        tileMode: TileMode.clamp, // repeats the gradient over the canvas
-//                                      ),
-//                                      borderRadius: BorderRadius.circular(8.0),
-//                                    ),
-//                                  ),
-//                                ),
-//                                Align(
-//                                  alignment: Alignment.centerLeft,
-//                                  child: ValueSlider(
-//                                    onChanged: (value) {
-//                                      updateColorWith(h: value);
-//                                    },
-//                                    label: (_color.hue).toStringAsFixed(0),
-//                                    value: _color.hue,
-//                                    min: 0.0,
-//                                    max: 360.0,
-//                                  ),
-//                                ),
-//                              ],
-//                            ),
-//                          ),
-//                        ),
-//                      ],
-//                    ),
-//                  ),
-//                ),
-//                Padding(
-//                  padding: const EdgeInsets.all(6.0),
-//                  child: SizedBox(
-//                    height: 36.0,
-//                    child: Row(
-//                      children: <Widget>[
-//                        Padding(
-//                          padding: const EdgeInsets.only(right: 12.0),
-//                          child: Text(
-//                              'S',
-//                          ),
-//                        ),
-//                        Expanded(
-//                          child: SliderTheme(
-//                            data: SliderTheme.of(context).copyWith(
-//                              activeTrackColor: Colors.transparent,
-//                              inactiveTrackColor: Colors.transparent,
-//                              activeTickMarkColor: Colors.transparent,
-//                              inactiveTickMarkColor: Colors.transparent,
-//                              overlayColor: _color.toColor().withOpacity(0.33),
-//                              thumbShape: SliderThumbShape(),
-//                              showValueIndicator: ShowValueIndicator.always,
-//                              valueIndicatorColor: _color.toColor(),
-//                              valueIndicatorShape: ColorSliderValueIndicatorShape(),
-//                              valueIndicatorTextStyle: TextStyle(
-//                                color: _getContrastingColor(_color.toColor()),
-//                              )
-//                            ),
-//                            child: Stack(
-//                              children: <Widget>[
-//                                Positioned.fill(
-//                                  child: DecoratedBox(
-//                                    decoration: BoxDecoration(
-//                                      gradient: LinearGradient(
-//                                        begin: Alignment.centerLeft,
-//                                        end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
-//                                        colors: [_color.withSaturation(0.0).toColor(), _color.withSaturation(1.0).toColor()], // whitish to gray
-//                                        tileMode: TileMode.clamp, // repeats the gradient over the canvas
-//                                      ),
-//                                      borderRadius: BorderRadius.circular(8.0),
-//                                    ),
-//                                  ),
-//                                ),
-//                                Align(
-//                                  alignment: Alignment.centerLeft,
-//                                  child: ValueSlider(
-//                                    onChanged: (value) {
-//                                      updateColorWith(s: value);
-//                                    },
-//                                    label: (_color.saturation * 255.0).toStringAsFixed(0),
-//                                    value: _color.saturation,
-//                                    min: 0.0,
-//                                    max: 1.0,
-//                                  ),
-//                                ),
-//                              ],
-//                            ),
-//                          ),
-//                        ),
-//                      ],
-//                    ),
-//                  ),
-//                ),
-//                Padding(
-//                  padding: const EdgeInsets.all(6.0),
-//                  child: SizedBox(
-//                    height: 26.0,
-//                    child: Row(
-//                      children: <Widget>[
-//                        Padding(
-//                          padding: const EdgeInsets.only(right: 12.0),
-//                          child: Text(
-//                              'L',
-//                          ),
-//                        ),
-//                        Expanded(
-//                          child: SliderTheme(
-//                            data: SliderTheme.of(context).copyWith(
-//                              activeTrackColor: Colors.transparent,
-//                              inactiveTrackColor: Colors.transparent,
-//                              activeTickMarkColor: Colors.transparent,
-//                              inactiveTickMarkColor: Colors.transparent,
-//                              showValueIndicator: ShowValueIndicator.always,
-//                              overlayColor: _color.toColor().withOpacity(0.33),
-//                              thumbShape: SliderThumbShape(),
-//                              valueIndicatorColor: _color.toColor(),
-//                              valueIndicatorShape: ColorSliderValueIndicatorShape(),
-//                              valueIndicatorTextStyle: TextStyle(
-//                                color: _getContrastingColor(_color.toColor()),
-//                              )
-//                            ),
-//                            child: Stack(
-//                              children: <Widget>[
-//                                Positioned.fill(
-//                                  child: DecoratedBox(
-//                                    decoration: BoxDecoration(
-//                                      gradient: LinearGradient(
-//                                        begin: Alignment.centerLeft,
-//                                        end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
-//                                        colors: [const Color(0xFF000000), _color.withLightness(0.5).toColor(), const Color(0xFFFFFFFF)], // whitish to gray
-//                                        tileMode: TileMode.clamp, // repeats the gradient over the canvas
-//                                      ),
-//                                      borderRadius: BorderRadius.circular(8.0),
-//                                    ),
-//                                  ),
-//                                ),
-//                                Align(
-//                                  alignment: Alignment.centerLeft,
-//                                  child: ValueSlider(
-//                                    onChanged: (value) {
-//                                      updateColorWith(l: value);
-//                                    },
-//                                    label: (_color.lightness * 255.0).toStringAsFixed(0),
-//                                    value: _color.lightness,
-//                                    min: 0.0,
-//                                    max: 1.0,
-//                                  ),
-//                                ),
-//                              ],
-//                            ),
-//                          ),
-//                        ),
-//                      ],
-//                    ),
-//                  ),
-//                ),
-//              ],
-//            ),
-//          ),
-//        ),
       )
     );
-//
-//    return SizedBox(
-//      height: size.value.height,
-//      width: size.value.width,
-//      child: Stack(
-//        children: <Widget>[
-//          Positioned.fill(
-//            child: Material(
-//              elevation: 24.0,
-//              animationDuration: Duration.zero,
-//              color: Colors.transparent,
-//              shadowColor: Theme.of(context).brightness == Brightness.dark ? Colors.black54 : Colors.black54,
-//            ),
-//          ),
-//          ClipRRect(
-//            borderRadius: BorderRadius.circular(10.0),
-//            child: BackdropFilter(
-//              filter: ImageFilter.blur(
-//                sigmaX: _kBlurAmount,
-//                sigmaY: _kBlurAmount,
-//              ),
-//              child: Column(
-//                mainAxisSize: MainAxisSize.min,
-//                children: <Widget>[
-//                  SizedBox(
-//                    height: _kHeaderHeight,
-//                    child: ConstrainedBox(
-//                      constraints: BoxConstraints.expand(),
-//                      child: Material(
-//                        animationDuration: Duration.zero,
-//                        color: _color.toColor(),
-//                        shape: RoundedRectangleBorder(
-//                          borderRadius: borderRadius.value,
-//                        ),
-//                        child: Padding(
-//                          padding: const EdgeInsets.all(12.0),
-//                          child: Theme(
-//                            data: Theme.of(context).copyWith(
-//                              splashColor: _getContrastingColor(_color.toColor()).withAlpha(25),
-//                              highlightColor: _getContrastingColor(_color.toColor()).withAlpha(25),
-//                            ),
-//                            child: Row(
-//                              mainAxisAlignment: MainAxisAlignment.start,
-//                              children: <Widget>[
-//                                SquareIconButton(
-//                                  icon: Icon(Icons.clear, color: _getContrastingColor(_color.toColor())),
-//                                  onPressed: widget.onCancel,
-//                                  color: Colors.transparent,
-//                                ),
-//                                SizedBox(
-//                                  width: 12.0
-//                                ),
-//                                SquareIconButton(
-//                                  icon: Icon(Icons.delete, color: _getContrastingColor(_color.toColor())),
-//                                  onPressed: widget.onCancel,
-//                                  color: Colors.transparent,
-//                                ),
-//                                SquareIconButton(
-//                                  icon: Icon(Icons.check, color: _getContrastingColor(_color.toColor())),
-//                                  onPressed: () => widget.onAccept(_color),
-//                                  color: Colors.transparent,
-//                                )
-//                              ]
-//                            ),
-//                          ),
-//                        )
-//                      ),
-//                    )
-//                  ),
-//                  Divider(
-//                    height: 1.0,
-//                    color: Color.alphaBlend(Theme.of(context).dividerColor, _color.toColor()),
-//                  ),
-//                  Expanded(
-//                    child: Material(
-//                      color: Theme.of(context).cardColor.withAlpha(150),
-//                      shape: RoundedRectangleBorder(
-//                        borderRadius: BorderRadius.only(
-//                          bottomLeft: Radius.circular(10.0),
-//                          bottomRight: Radius.circular(10.0),
-//                        ),
-//                      ),
-//                      child: Opacity(
-//                        opacity: opacity.value,
-//                        child: Padding(
-//                          padding: const EdgeInsets.all(6.0),
-//                          child: Column(
-//                            mainAxisSize: MainAxisSize.min,
-//                            children: <Widget>[
-//                              Padding(
-//                                padding: const EdgeInsets.all(6.0),
-//                                child: SizedBox(
-//                                  height: 26.0,
-//                                  child: Row(
-//                                    children: <Widget>[
-//                                      Padding(
-//                                        padding: const EdgeInsets.only(right: 12.0),
-//                                        child: Text(
-//                                          'H',
-//                                        ),
-//
-//                                      ),
-//                                      Expanded(
-//                                        child: SliderTheme(
-//                                          data: SliderTheme.of(context).copyWith(
-//                                            activeTrackColor: Colors.transparent,
-//                                            inactiveTrackColor: Colors.transparent,
-//                                            activeTickMarkColor: Colors.transparent,
-//                                            inactiveTickMarkColor: Colors.transparent,
-//                                            thumbShape: SliderThumbShape(),
-//                                            overlayColor: _color.withAlpha(0.3).withSaturation(1.0).withLightness(0.5).toColor(),
-//                                            showValueIndicator: ShowValueIndicator.always,
-//                                            valueIndicatorColor: _color.withSaturation(1.0).withLightness(0.5).toColor(),
-//                                            valueIndicatorShape: ColorSliderValueIndicatorShape(),
-//                                            valueIndicatorTextStyle: TextStyle(
-//                                              color: _getContrastingColor(_color.withSaturation(1.0).withLightness(0.5).toColor()),
-//                                            )
-//                                          ),
-//                                          child: Stack(
-//                                            children: <Widget>[
-//                                              Positioned.fill(
-//                                                child: DecoratedBox(
-//                                                  decoration: BoxDecoration(
-//                                                    gradient: LinearGradient(
-//                                                      begin: Alignment.centerLeft,
-//                                                      end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
-//                                                      colors: [const Color(0xFFFF0000), const Color(0xFFFFFF00), const Color(0xFF00FF00), const Color(0xFF00FFFF), const Color(0xFF0000FF), const Color(0xFFFF00FF), const Color(0xFFFF0000)], // whitish to gray
-//                                                      tileMode: TileMode.clamp, // repeats the gradient over the canvas
-//                                                    ),
-//                                                    borderRadius: BorderRadius.circular(8.0),
-//                                                  ),
-//                                                ),
-//                                              ),
-//                                              Align(
-//                                                alignment: Alignment.centerLeft,
-//                                                child: ValueSlider(
-//                                                  onChanged: (value) {
-//                                                    updateColorWith(h: value);
-//                                                  },
-//                                                  label: (_color.hue).toStringAsFixed(0),
-//                                                  value: _color.hue,
-//                                                  min: 0.0,
-//                                                  max: 360.0,
-//                                                ),
-//                                              ),
-//                                            ],
-//                                          ),
-//                                        ),
-//                                      ),
-//                                    ],
-//                                  ),
-//                                ),
-//                              ),
-//                              Padding(
-//                                padding: const EdgeInsets.all(6.0),
-//                                child: SizedBox(
-//                                  height: 36.0,
-//                                  child: Row(
-//                                    children: <Widget>[
-//                                      Padding(
-//                                        padding: const EdgeInsets.only(right: 12.0),
-//                                        child: Text(
-//                                            'S',
-//                                        ),
-//                                      ),
-//                                      Expanded(
-//                                        child: SliderTheme(
-//                                          data: SliderTheme.of(context).copyWith(
-//                                            activeTrackColor: Colors.transparent,
-//                                            inactiveTrackColor: Colors.transparent,
-//                                            activeTickMarkColor: Colors.transparent,
-//                                            inactiveTickMarkColor: Colors.transparent,
-//                                            overlayColor: _color.toColor().withOpacity(0.33),
-//                                            thumbShape: SliderThumbShape(),
-//                                            showValueIndicator: ShowValueIndicator.always,
-//                                            valueIndicatorColor: _color.toColor(),
-//                                            valueIndicatorShape: ColorSliderValueIndicatorShape(),
-//                                            valueIndicatorTextStyle: TextStyle(
-//                                              color: _getContrastingColor(_color.toColor()),
-//                                            )
-//                                          ),
-//                                          child: Stack(
-//                                            children: <Widget>[
-//                                              Positioned.fill(
-//                                                child: DecoratedBox(
-//                                                  decoration: BoxDecoration(
-//                                                    gradient: LinearGradient(
-//                                                      begin: Alignment.centerLeft,
-//                                                      end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
-//                                                      colors: [_color.withSaturation(0.0).toColor(), _color.withSaturation(1.0).toColor()], // whitish to gray
-//                                                      tileMode: TileMode.clamp, // repeats the gradient over the canvas
-//                                                    ),
-//                                                    borderRadius: BorderRadius.circular(8.0),
-//                                                  ),
-//                                                ),
-//                                              ),
-//                                              Align(
-//                                                alignment: Alignment.centerLeft,
-//                                                child: ValueSlider(
-//                                                  onChanged: (value) {
-//                                                    updateColorWith(s: value);
-//                                                  },
-//                                                  label: (_color.saturation * 255.0).toStringAsFixed(0),
-//                                                  value: _color.saturation,
-//                                                  min: 0.0,
-//                                                  max: 1.0,
-//                                                ),
-//                                              ),
-//                                            ],
-//                                          ),
-//                                        ),
-//                                      ),
-//                                    ],
-//                                  ),
-//                                ),
-//                              ),
-//                              Padding(
-//                                padding: const EdgeInsets.all(6.0),
-//                                child: SizedBox(
-//                                  height: 26.0,
-//                                  child: Row(
-//                                    children: <Widget>[
-//                                      Padding(
-//                                        padding: const EdgeInsets.only(right: 12.0),
-//                                        child: Text(
-//                                            'L',
-//                                        ),
-//                                      ),
-//                                      Expanded(
-//                                        child: SliderTheme(
-//                                          data: SliderTheme.of(context).copyWith(
-//                                            activeTrackColor: Colors.transparent,
-//                                            inactiveTrackColor: Colors.transparent,
-//                                            activeTickMarkColor: Colors.transparent,
-//                                            inactiveTickMarkColor: Colors.transparent,
-//                                            showValueIndicator: ShowValueIndicator.always,
-//                                            overlayColor: _color.toColor().withOpacity(0.33),
-//                                            thumbShape: SliderThumbShape(),
-//                                            valueIndicatorColor: _color.toColor(),
-//                                            valueIndicatorShape: ColorSliderValueIndicatorShape(),
-//                                            valueIndicatorTextStyle: TextStyle(
-//                                              color: _getContrastingColor(_color.toColor()),
-//                                            )
-//                                          ),
-//                                          child: Stack(
-//                                            children: <Widget>[
-//                                              Positioned.fill(
-//                                                child: DecoratedBox(
-//                                                  decoration: BoxDecoration(
-//                                                    gradient: LinearGradient(
-//                                                      begin: Alignment.centerLeft,
-//                                                      end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
-//                                                      colors: [const Color(0xFF000000), _color.withLightness(0.5).toColor(), const Color(0xFFFFFFFF)], // whitish to gray
-//                                                      tileMode: TileMode.clamp, // repeats the gradient over the canvas
-//                                                    ),
-//                                                    borderRadius: BorderRadius.circular(8.0),
-//                                                  ),
-//                                                ),
-//                                              ),
-//                                              Align(
-//                                                alignment: Alignment.centerLeft,
-//                                                child: ValueSlider(
-//                                                  onChanged: (value) {
-//                                                    updateColorWith(l: value);
-//                                                  },
-//                                                  label: (_color.lightness * 255.0).toStringAsFixed(0),
-//                                                  value: _color.lightness,
-//                                                  min: 0.0,
-//                                                  max: 1.0,
-//                                                ),
-//                                              ),
-//                                            ],
-//                                          ),
-//                                        ),
-//                                      ),
-//                                    ],
-//                                  ),
-//                                ),
-//                              ),
-//                            ],
-//                          ),
-//                        ),
-//                      ),
-//                    ),
-//                  ),
-//                ],
-//              ),
-//            ),
-//          ),
-//        ],
-//      ),
-//    );
-}
+  }
 }
 
 
@@ -1140,75 +583,6 @@ class ColorMenuButton extends StatelessWidget {
           )
         )
       )
-//      child: Theme(
-//        data: Theme.of(context).copyWith(
-//          splashColor: _getContrastingColor(color).withAlpha(25),
-//          highlightColor: _getContrastingColor(color).withAlpha(25),
-//        ),
-//        child: Material(
-//          color: color,
-//          animationDuration: Duration(milliseconds: 400),
-//          elevation: active ? 6.0 : 0.0,
-//          shadowColor: color.withAlpha(Theme.of(context).brightness == Brightness.dark ? 255 : 128),
-//          borderRadius: BorderRadius.circular(8.0),
-//          child: InkWell(
-//            borderRadius: BorderRadius.circular(8.0),
-//            onTap: () {
-//              if(!active) {
-//                onToggled();
-//              }
-//            },
-//            child: IgnorePointer(
-//              ignoring: !active,
-//              child: Stack(
-//                children: <Widget>[
-//                  Positioned.fill(
-//                    child: InkWell(
-//                      child: Padding(
-//                        padding: const EdgeInsets.all(12.0),
-//                        child: Text(''),
-//                      ),
-//                      borderRadius: BorderRadius.circular(8.0),
-//                      onTap: () => _showColorMenu(context),
-//                    ),
-//                  ),
-//                  Positioned.fill(
-//                    child: IgnorePointer(
-//                      ignoring: true,
-//                      child: Container(
-//                        foregroundDecoration: BoxDecoration(
-//                          border: Border.all(
-//                            color: !active ? Theme.of(context).dividerColor : Colors.transparent,
-//                          ),
-//                          borderRadius: BorderRadius.circular(8.0),
-//                        ),
-//                        child: Align(
-//                          alignment: Alignment.center,
-//                          child: AnimatedOpacity(
-//                            curve: Curves.ease,
-//                            duration: Duration(milliseconds: 300),
-//                            opacity: active ? 1.0 : 0.0,
-//                            child: DecoratedBox(
-//                              decoration: ShapeDecoration(
-//                                color: Colors.black38,
-//                                shape: CircleBorder()
-//                              ),
-//                              child: Padding(
-//                                padding: const EdgeInsets.all(4.0),
-//                                child: Icon(Icons.check, size: 16.0, color: Colors.white),
-//                              ),
-//                            ),
-//                          )
-//                        )
-//                      ),
-//                    ),
-//                  ),
-//                ],
-//              ),
-//            ),
-//          ),
-//        ),
-//      ),
     );
   }
 }

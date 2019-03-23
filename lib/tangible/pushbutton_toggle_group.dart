@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as Material;
 import 'package:flutter/widgets.dart';
+
+import 'package:project_pickle/tangible/tangible.dart';
 
 
 /// A Pushbutton with an associated value, and a child that determines the look of
@@ -30,41 +32,37 @@ class PushbuttonToggleGroup<T> extends StatelessWidget {
   PushbuttonToggleGroup({
     @required this.items,
     @required this.onChanged,
-    @required this.value,
+    @required this.activeValue,
   });
 
   final List<PushbuttonToggle<T>> items;
   final ValueChanged<T> onChanged;
-  final T value;
+  final T activeValue;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 60.0,
-      child: Padding(
-        padding: const EdgeInsets.all(3.0),
-        child: Row(
-          children: items.map<Widget>((item) {
-            return Padding(
-              padding: const EdgeInsets.all(3.0),
-              child: AspectRatio(
-                aspectRatio: 1.0,
-                child: Material(
-                  elevation: value == item.value ? 6.0 : 0.0,
-                  color: value == item.value ? Theme.of(context).buttonColor : Theme.of(context).unselectedWidgetColor,
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      color: !(value == item.value) ? Theme.of(context).dividerColor : Colors.transparent,
-                    ),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  shadowColor: Theme.of(context).splashColor.withAlpha(60),
-                  child: InkWell(
+      height: 64.0,
+      child: Row(
+        children: items.map<Widget>((item) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 6.0),
+            child: AspectRatio(
+              aspectRatio: 1.0,
+              child: Material.Material(
+                elevation: activeValue == item.value ? 6.0 : 0.0,
+                color: activeValue == item.value ? Theme.of(context).buttonColor : Theme.of(context).unselectedWidgetColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  side: BorderSide(color: activeValue == item.value ? Colors.transparent : Theme.of(context).dividerColor)
+                ),
+                shadowColor: Theme.of(context).splashColor.withAlpha(60),
+                child: Material.InkWell(
                     onTap: () => onChanged(item.value),
                     borderRadius: BorderRadius.circular(8.0),
                     child: Center(
                         child: IconTheme(
-                          data: value == item.value ? Theme.of(context).accentIconTheme :
+                          data: activeValue == item.value ? Theme.of(context).accentIconTheme :
                           Theme.of(context).iconTheme,
                           child: DefaultTextStyle(
                               style: Theme.of(context).accentTextTheme.button,
@@ -72,12 +70,11 @@ class PushbuttonToggleGroup<T> extends StatelessWidget {
                           ),
                         )
                     )
-                  ),
                 ),
               ),
-            );
-          }).toList(),
-        ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

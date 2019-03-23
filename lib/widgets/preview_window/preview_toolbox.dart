@@ -50,6 +50,9 @@ class PreviewToolbox extends StatelessWidget {
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
             border: Border(
+                top: BorderSide(
+                    color: Theme.of(context).dividerColor
+                ),
                 bottom: BorderSide(
                     color: Theme.of(context).dividerColor
                 )

@@ -48,12 +48,6 @@ class SelectToolOverlayPainter extends CustomPainter {
       canvas.clipRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height));
       Path drawPath = Path();
       drawPath.addRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height));
-//      canvas.drawPath(Path.combine(PathOperation.difference, drawPath, _selectionPath), Paint()
-//        ..color = Theme.of(context).primaryColor.withOpacity(0.2)
-//        ..strokeWidth = 4.0 / _canvasScale
-//        ..filterQuality = FilterQuality.none
-//        ..isAntiAlias = true
-//      );
       canvas.drawPath(_selectionPath, Paint()
         ..style = PaintingStyle.stroke
         ..color = Theme.of(context).highlightColor

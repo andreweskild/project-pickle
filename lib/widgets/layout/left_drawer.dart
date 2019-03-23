@@ -45,14 +45,6 @@ class LeftDrawer extends StatelessWidget {
                             colors: [Colors.black.withAlpha(10), Colors.transparent],
                             tileMode: TileMode.clamp
                         )
-//                        boxShadow: <BoxShadow>[
-//                          BoxShadow(
-//                              blurRadius: 8.0,
-//                              spreadRadius: 2.0,
-//                              color:
-//                              Colors.black26
-//                          )
-//                        ]
                     ),
                   )
               ),

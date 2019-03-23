@@ -17,17 +17,22 @@ const double _kBlurAmount = 20.0;
 class PopupContentItem extends StatelessWidget{
   PopupContentItem({
     @required this.child,
-    this.height = 60.0,
+    this.height = 48.0,
+    this.padding = const EdgeInsets.only(left: 12.0, right: 12.0, top: 6.0, bottom: 6.0),
   });
 
   final Widget child;
   final double height;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      child: child,
+    return Padding(
+      padding: padding,
+      child: SizedBox(
+        height: height,
+        child: child,
+      ),
     );
   }
 }
@@ -120,10 +125,9 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
   double _getContentHeight(List<PopupContentItem> content, double spacing) {
     double finalHeight = 0;
     content.forEach(
-      (item) => finalHeight += item.height
+      (item) => finalHeight += item.height + item.padding.top + item.padding.bottom
     );
-    finalHeight += spacing;
-    return finalHeight;
+    return finalHeight + 12.0; // add additional padding for top + bottom of popup
   }
 
   @override
@@ -165,9 +169,9 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
       ),
     );
 
-    final Animation<double> opacity = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
+    final Animation<double> opacityAnim = Tween<double>(
+      begin: 1.0,
+      end: 0.0,
     ).animate(
       CurvedAnimation(
         parent: widget.parentAnimation,
@@ -222,18 +226,34 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
               onTap: widget.onAccept,
             ),
             Expanded(
-              child: Opacity(
-                  opacity: opacity.value,
-                  child: Padding(
-                    padding: EdgeInsets.all(_kMenuItemSpacing/2.0),
-                    child: Column(
-                      children: widget.popupContent.map<Widget>(
+              child: Stack(
+                children: <Widget>[
+                  Positioned.fill(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 6.0, bottom: 6.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: widget.popupContent.map<Widget>(
                               (item) {
                             return item;
                           }
-                      ).toList(),
+                        ).toList(),
+                      ),
                     ),
-                  )
+                  ),
+                  Positioned.fill(
+                    child: IgnorePointer(
+                      child: FadeTransition(
+                        opacity: opacityAnim,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).unselectedWidgetColor
+                          ),
+                        ),
+                      ),
+                    )
+                  ),
+                ],
               ),
             )
           ],
@@ -311,16 +331,16 @@ class _TwoStagePopupRoute extends PopupRoute<VoidCallback> {
       child: new Builder(
         builder: (BuildContext context) {
           return new CustomSingleChildLayout(
-              delegate: new _TwoStagePopupRouteLayout(
-                buttonPosition,
-              ),
-              child: TwoStagePopupContent(
-                headerContent: header,
-                initialSize: initialSize,
-                parentAnimation: parentAnimation,
-                popupContent: popupContent,
-                onAccept: () => Navigator.pop(context),
-              ));
+            delegate: new _TwoStagePopupRouteLayout(
+              buttonPosition,
+            ),
+            child: TwoStagePopupContent(
+              headerContent: header,
+              initialSize: initialSize,
+              parentAnimation: parentAnimation,
+              popupContent: popupContent,
+              onAccept: () => Navigator.pop(context),
+            ));
         },
       ),
     );

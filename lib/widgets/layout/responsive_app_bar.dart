@@ -465,9 +465,6 @@ class _ResponsiveAppBarState extends State<ResponsiveAppBar> {
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: widget.backgroundColor ?? themeData.primaryColor,
-            border: Border(
-              bottom: BorderSide(color: Theme.of(context).dividerColor)
-            )
           ),
           child: Padding(
             padding: const EdgeInsets.all(12.0),

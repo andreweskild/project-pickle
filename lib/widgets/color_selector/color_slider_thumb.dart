@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 
 class ColorSliderThumbShape extends SliderComponentShape {
   /// Create a slider thumb that draws a circle.
-  const ColorSliderThumbShape();
+  const ColorSliderThumbShape(this.color);
 
-  static const double _thumbHeight = 13.0;
-  static const double _disabledThumbHeight = 13.0;
+  static const double _thumbHeight = 40.0;
+  static const double _disabledThumbHeight = 40.0;
+  final Color color;
 
   @override
   Size getPreferredSize(bool isEnabled, bool isDiscrete) {
-    return new Size(_thumbHeight * 1.3, isEnabled ? _thumbHeight : _disabledThumbHeight);
+    return new Size(_thumbHeight, isEnabled ? _thumbHeight : _disabledThumbHeight);
   }
 
   @override
@@ -31,54 +32,28 @@ class ColorSliderThumbShape extends SliderComponentShape {
       end: _thumbHeight,
     );
     final ColorTween colorTween = new ColorTween(
-      begin: sliderTheme.disabledThumbColor,
-      end: sliderTheme.thumbColor,
-    );
-    canvas.drawShadow(
-        Path()..addRRect(
-          RRect.fromLTRBR(
-              thumbCenter.dx - heightTween.evaluate(enableAnimation) * 1.3,
-              thumbCenter.dy - heightTween.evaluate(enableAnimation),
-              thumbCenter.dx + heightTween.evaluate(enableAnimation) * 1.3,
-              thumbCenter.dy + heightTween.evaluate(enableAnimation),
-              Radius.circular(8.0)
-          ),
-        ),
-        Colors.black38,
-        8.0,
-        false
+      begin: sliderTheme.thumbColor,
+      end: color,
     );
     canvas.drawRRect(
       RRect.fromLTRBR(
-          thumbCenter.dx - heightTween.evaluate(enableAnimation) * 1.3,
-          thumbCenter.dy - heightTween.evaluate(enableAnimation),
-          thumbCenter.dx + heightTween.evaluate(enableAnimation) * 1.3,
-          thumbCenter.dy + heightTween.evaluate(enableAnimation),
+          thumbCenter.dx - heightTween.evaluate(enableAnimation) * .3,
+          thumbCenter.dy - heightTween.evaluate(enableAnimation) / 2,
+          thumbCenter.dx + heightTween.evaluate(enableAnimation) * .3,
+          thumbCenter.dy + heightTween.evaluate(enableAnimation) / 2,
           Radius.circular(8.0)
       ),
-      new Paint()..color = colorTween.evaluate(enableAnimation),
+      new Paint()..color = colorTween.evaluate(activationAnimation),
     );
     canvas.drawRRect(
       RRect.fromLTRBR(
-          thumbCenter.dx - heightTween.evaluate(enableAnimation) * 1.3,
-          thumbCenter.dy - heightTween.evaluate(enableAnimation),
-          thumbCenter.dx + heightTween.evaluate(enableAnimation) * 1.3,
-          thumbCenter.dy + heightTween.evaluate(enableAnimation),
+          thumbCenter.dx - heightTween.evaluate(enableAnimation) * .3,
+          thumbCenter.dy - heightTween.evaluate(enableAnimation) / 2,
+          thumbCenter.dx + heightTween.evaluate(enableAnimation) * .3,
+          thumbCenter.dy + heightTween.evaluate(enableAnimation) / 2,
           Radius.circular(8.0)
       ),
-      new Paint()..color = Colors.black12
-                 ..strokeWidth = 1.0
-                 ..style = PaintingStyle.stroke,
-    );
-    canvas.drawRRect(
-      RRect.fromLTRBR(
-          thumbCenter.dx - heightTween.evaluate(enableAnimation) * 1.3 + 1.0,
-          thumbCenter.dy - heightTween.evaluate(enableAnimation) + 1.0,
-          thumbCenter.dx + heightTween.evaluate(enableAnimation) * 1.3 - 1.0,
-          thumbCenter.dy + heightTween.evaluate(enableAnimation) - 1.0,
-          Radius.circular(7.0)
-      ),
-      new Paint()..color = Colors.white24
+      new Paint()..color = Colors.black26
                  ..strokeWidth = 1.0
                  ..style = PaintingStyle.stroke,
     );

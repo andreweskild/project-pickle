@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:project_pickle/widgets/common/two_stage_popup_button.dart';
+import 'package:project_pickle/tangible/tangible.dart';
 
 class ToolButton extends StatelessWidget {
   ToolButton({

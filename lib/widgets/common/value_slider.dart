@@ -575,9 +575,9 @@ class _RenderSlider extends RenderBox {
   }
 
   static const Duration _positionAnimationDuration = Duration(milliseconds: 75);
-  static const double _overlayRadius = 18.0;
+  static const double _overlayRadius = 20.0;
   static const double _overlayDiameter = _overlayRadius * 2.0;
-  static const double _trackHeight = 36.0;
+  static const double _trackHeight = 40.0;
   static const double _preferredTrackWidth = 144.0;
   static const double _preferredTotalWidth = _preferredTrackWidth + _overlayDiameter;
   static const Duration _minimumInteractionTime = Duration(milliseconds: 500);
@@ -1060,23 +1060,6 @@ class _RenderSlider extends RenderBox {
     if (visualPosition < 1.0) {
       canvas.drawRRect(trackRightRect, rightTrackPaint);
     }
-
-    canvas.drawShadow(
-        Path()..addRRect(
-          RRect.fromRectAndRadius(
-            Rect.fromLTRB(
-              thumbCenter.dx - thumbWidth,
-              thumbCenter.dy - thumbHeight,
-              thumbCenter.dx + thumbWidth,
-              thumbCenter.dy + thumbHeight,
-            ),
-            Radius.circular(12.0),
-          ),
-        ),
-        Colors.black38,
-        8.0,
-        false
-    );
 
     _paintOverlay(canvas, thumbCenter);
 
