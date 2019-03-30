@@ -134,24 +134,6 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
   Widget build(BuildContext context) {
     final double _contentHeight = _getContentHeight(widget.popupContent, _kMenuItemSpacing);
 
-    final Animation<BorderRadius> borderRadius = BorderRadiusTween(
-      begin: BorderRadius.circular(8.0),
-      end: BorderRadius.only(
-        topLeft: Radius.circular(8.0),
-        topRight: Radius.circular(8.0),
-        bottomLeft: Radius.circular(0.0),
-        bottomRight: Radius.circular(0.0),
-      ),
-    ).animate(
-      CurvedAnimation(
-        parent: widget.parentAnimation,
-        curve: Interval(
-          0.0, 1.0,
-          curve: Curves.ease,
-        ),
-      ),
-    );
-
     final Animation<Size> size = SizeTween(
       begin: widget.initialSize,
       end: Size(
@@ -281,7 +263,10 @@ class _TwoStagePopupRoute extends PopupRoute<VoidCallback> {
   final List<PopupContentItem> popupContent;
 
   @override
-  Duration get transitionDuration => const Duration(milliseconds: 400);
+  bool get maintainState => true;
+
+  @override
+  Duration get transitionDuration => const Duration(milliseconds: 500);
 
   @override
   bool get barrierDismissible => true;
@@ -296,7 +281,7 @@ class _TwoStagePopupRoute extends PopupRoute<VoidCallback> {
   VoidCallback get currentResult => null;
 
   @override
-  RouteSettings get settings => RouteSettings(name: '/tool-options');
+  RouteSettings get settings => RouteSettings(name: '/popup-menu');
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
@@ -361,7 +346,6 @@ class TwoStagePopupButton extends StatefulWidget {
     this.icon,
     this.label,
     this.onToggled,
-    this.onCompleted,
     this.toggledColor,
     this.toggledElevation = 6,
   }) : super(key: key);
@@ -372,7 +356,6 @@ class TwoStagePopupButton extends StatefulWidget {
   final Widget icon;
   final Widget label;
   final VoidCallback onToggled;
-  final VoidCallback onCompleted;
   final List<PopupContentItem> popupContent;
   final Color toggledColor;
   final int toggledElevation;

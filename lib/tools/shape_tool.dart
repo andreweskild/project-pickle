@@ -65,7 +65,7 @@ class ShapeTool extends BaseDrawingTool {
                     value: ShapeMode.Rectangle
                   ),
                   PushbuttonToggle<ShapeMode>(
-                      child: Icon(Icons.brightness_1),
+                      child: Icon(Icons.panorama_fish_eye),
                       value: ShapeMode.Circle
                   ),
                   PushbuttonToggle<ShapeMode>(

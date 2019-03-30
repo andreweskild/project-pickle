@@ -134,6 +134,7 @@ class PixelLayer extends ChangeNotifier {
       height: layer.height,
       hidden: layer.hidden,
       pixels: LinkedHashMap<Offset, Color>.from(layer.raw),
+      animationController: layer.animationController,
     );
   }
 

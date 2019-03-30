@@ -184,7 +184,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                           gradient: LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
-                              colors: [Colors.black.withAlpha(30), Colors.transparent],
+                              colors: [Colors.black.withAlpha(20), Colors.transparent],
                               tileMode: TileMode.clamp
                           )
                       ),

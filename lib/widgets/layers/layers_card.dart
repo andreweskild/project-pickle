@@ -68,50 +68,38 @@ class LayersCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, LayerListModel>(
-      ignoreChange: (state) => !state.canvasDirty,
-      converter: (store) {
-        return LayerListModel(
-          layers: store.state.layers,
-          currentLayerIndex: store.state.layers.indexOfActiveLayer,
-          addLayerCallback: () => store.dispatch(AddNewLayerAction()),
-          setLayerCallback: (index) =>
-              store.dispatch(SetCurrentLayerIndexAction(index)),
-          removeLayerCallback: (index) =>
-              store.dispatch(RemoveLayerAction(index)),
-          toggleLayerHiddenCallback: (index) =>
-              store.dispatch(ToggleLayerHiddenAction(index)),
-        );
-      },
-      builder: (context, model) {
-        return Card(
-          color: Material.Theme.of(context).unselectedWidgetColor,
-          elevation: 0.0,
-          borderRadius: BorderRadius.zero,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Expanded(
-                  child: LayersList(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints.expand(height: 56.0),
-                    child: Button.icon(
+    return Card(
+      color: Material.Theme.of(context).unselectedWidgetColor,
+      elevation: 0.0,
+      borderRadius: BorderRadius.zero,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Expanded(
+              child: LayersList(),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: ConstrainedBox(
+                constraints: BoxConstraints.expand(height: 56.0),
+                child: StoreConnector<AppState, VoidCallback>(
+                  ignoreChange: (state) => !state.layersDirty,
+                  converter: (store) => () => store.dispatch(AddNewLayerAction()),
+                  builder: (context, callback) {
+                    return Button.icon(
                       icon: Icon(Icons.add),
                       label: Text('New Layer'),
                       onPressed: () {
-                        model.addLayerCallback();
+                        callback();
                       },
-                    ),
-                  ),
+                    );
+                  }
                 ),
-              ],
+              ),
             ),
-        );
-      }
+          ],
+        ),
     );
   }
 }

@@ -4,6 +4,99 @@ import 'package:flutter/widgets.dart';
 import 'package:project_pickle/tangible/tangible.dart';
 
 
+class _PushbuttonToggleButton extends StatelessWidget {
+  _PushbuttonToggleButton({
+    Key key,
+    @required this.child,
+    @required this.onToggle,
+    @required this.toggled,
+    this.color,
+    this.toggledColor,
+    this.splashColor,
+    this.shadowColor,
+    this.highlightColor,
+    this.toggledElevation = 6,
+  }) : super(key: key);
+
+  final Color color;
+  final Color toggledColor;
+  final Color splashColor;
+  final Color shadowColor;
+  final Color highlightColor;
+  final int toggledElevation;
+  final Widget child;
+  final VoidCallback onToggle;
+  final bool toggled;
+
+
+  @override
+  Widget build(BuildContext context) {
+    final currentColor =              // Color used for background of button
+    (toggled) ?
+    toggledColor ?? Material.Theme
+        .of(context)
+        .primaryColor :
+    color ?? Material.Theme
+        .of(context)
+        .cardColor;
+
+    return AspectRatio(
+      aspectRatio: 1.0,
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 200),
+        decoration: BoxDecoration(
+          color: currentColor,
+          borderRadius: BorderRadius.circular(8.0),
+          boxShadow: toggled ? kColoredShadowMap(shadowColor ?? Material.Theme.of(context).accentColor)[toggledElevation] : null,
+          border: Border.all(
+            color: toggled ? Colors.transparent : Material.Theme.of(context).dividerColor,
+          )
+        ),
+        child: Material.Material(
+          type: Material.MaterialType.transparency,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          elevation: 0.0,
+          child: Material.InkWell(
+            splashColor: splashColor,
+            highlightColor: highlightColor,
+            borderRadius: BorderRadius.circular(8.0),
+            onTap: onToggle,
+            child: IconTheme(
+              data: IconThemeData(
+                  color: toggled
+                      ? Material.Theme
+                      .of(context)
+                      .accentIconTheme
+                      .color
+                      : Material.Theme
+                      .of(context)
+                      .iconTheme
+                      .color
+              ),
+              child: DefaultTextStyle(
+                  style: TextStyle(
+                      color: toggled
+                          ? Material.Theme
+                          .of(context)
+                          .accentIconTheme
+                          .color
+                          : Material.Theme
+                          .of(context)
+                          .iconTheme
+                          .color
+                  ),
+                  child: child
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// A Pushbutton with an associated value, and a child that determines the look of
 /// the button. To be used in conjunction with [PushbuttonToggleGroup].
 class PushbuttonToggle<T> {
@@ -47,32 +140,18 @@ class PushbuttonToggleGroup<T> extends StatelessWidget {
         children: items.map<Widget>((item) {
           return Padding(
             padding: const EdgeInsets.only(left: 6.0),
-            child: AspectRatio(
-              aspectRatio: 1.0,
-              child: Material.Material(
-                elevation: activeValue == item.value ? 6.0 : 0.0,
-                color: activeValue == item.value ? Theme.of(context).buttonColor : Theme.of(context).unselectedWidgetColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  side: BorderSide(color: activeValue == item.value ? Colors.transparent : Theme.of(context).dividerColor)
-                ),
-                shadowColor: Theme.of(context).splashColor.withAlpha(60),
-                child: Material.InkWell(
-                    onTap: () => onChanged(item.value),
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: Center(
-                        child: IconTheme(
-                          data: activeValue == item.value ? Theme.of(context).accentIconTheme :
-                          Theme.of(context).iconTheme,
-                          child: DefaultTextStyle(
-                              style: Theme.of(context).accentTextTheme.button,
-                              child: item.child
-                          ),
-                        )
-                    )
+            child: _PushbuttonToggleButton(
+              child: IconTheme(
+                data: activeValue == item.value ? Theme.of(context).accentIconTheme :
+                Theme.of(context).iconTheme,
+                child: DefaultTextStyle(
+                  style: Theme.of(context).accentTextTheme.button,
+                  child: item.child
                 ),
               ),
-            ),
+              onToggle: () => onChanged(item.value),
+              toggled: activeValue == item.value
+            )
           );
         }).toList(),
       ),

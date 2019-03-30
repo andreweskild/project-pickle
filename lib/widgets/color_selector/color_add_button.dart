@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:project_pickle/tangible/tangible.dart';
 
+import 'package:project_pickle/widgets/color_selector/color_slider_thumb.dart';
 import 'package:project_pickle/widgets/color_selector/color_slider_value_indicator.dart';
 import 'package:project_pickle/widgets/common/value_slider.dart';
 import 'package:project_pickle/widgets/common/slider_thumb_shape.dart';
@@ -225,7 +226,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                       inactiveTrackColor: Colors.transparent,
                                       activeTickMarkColor: Colors.transparent,
                                       inactiveTickMarkColor: Colors.transparent,
-                                      thumbShape: SliderThumbShape(),
+                                      thumbShape: ColorSliderThumbShape(_color.withAlpha(0.3).withSaturation(1.0).withLightness(0.5).toColor()),
                                       overlayColor: _color.withAlpha(0.3).withSaturation(1.0).withLightness(0.5).toColor(),
                                       showValueIndicator: ShowValueIndicator.always,
                                       valueIndicatorColor: _color.withSaturation(1.0).withLightness(0.5).toColor(),
@@ -289,7 +290,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                       activeTickMarkColor: Colors.transparent,
                                       inactiveTickMarkColor: Colors.transparent,
                                       overlayColor: _color.toColor().withOpacity(0.33),
-                                      thumbShape: SliderThumbShape(),
+                                      thumbShape: ColorSliderThumbShape(_color.toColor()),
                                       showValueIndicator: ShowValueIndicator.always,
                                       valueIndicatorColor: _color.toColor(),
                                       valueIndicatorShape: ColorSliderValueIndicatorShape(),
@@ -353,7 +354,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                       inactiveTickMarkColor: Colors.transparent,
                                       showValueIndicator: ShowValueIndicator.always,
                                       overlayColor: _color.toColor().withOpacity(0.33),
-                                      thumbShape: SliderThumbShape(),
+                                      thumbShape: ColorSliderThumbShape(_color.toColor()),
                                       valueIndicatorColor: _color.toColor(),
                                       valueIndicatorShape: ColorSliderValueIndicatorShape(),
                                       valueIndicatorTextStyle: TextStyle(

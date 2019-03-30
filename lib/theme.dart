@@ -71,8 +71,9 @@ theme(BuildContext context, bool darkMode) {
       cardColor: const Color(0xFFFFFFFF),
       bottomAppBarColor: const Color(0xFFC4FB81),
       buttonColor: const Color(0xFFFFFFFF),
-      disabledColor: Colors.black38,
-      dividerColor: Colors.black.withAlpha(40),
+      disabledColor: const Color(0xFFDEDBE0),
+      dividerColor: Colors.black.withAlpha(48),
+      errorColor: const Color(0xFFFF6E6E),
       primarySwatch:
         MaterialColor(const Color(0xFFC4FB81).value, const <int, Color>{
           50: const Color(0xFFD7FFA7),
@@ -122,6 +123,7 @@ theme(BuildContext context, bool darkMode) {
           button: Theme.of(context).textTheme.button.copyWith(
             color: const Color(0xFF666666),
             fontSize: 16.0,
+            fontWeight: FontWeight.normal
           )
       ),
       splashFactory: InkRipple.splashFactory,

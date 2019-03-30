@@ -9,7 +9,6 @@ import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/canvas/pixel_layer.dart';
 
 AppState stateReducer(AppState state, dynamic action) {
-
   if (action is AddCurrentColorToPaletteAction) {
     List<Color> newPalette = List.from(state.palette);
     if (!newPalette.contains(state.activeColor)) {

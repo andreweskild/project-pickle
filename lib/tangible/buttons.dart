@@ -10,13 +10,19 @@ class Button extends StatelessWidget {
     @required this.child,
     @required this.onPressed,
     this.color,
+    this.disabledColor,
+    this.disabledTextColor,
     this.splashColor,
     this.highlightColor,
+    this.textColor,
   }) : super(key: key);
 
   final Color color;
+  final Color disabledColor;
+  final Color disabledTextColor;
   final Color splashColor;
   final Color highlightColor;
+  final Color textColor;
   final Widget child;
   final VoidCallback onPressed;
 
@@ -26,8 +32,11 @@ class Button extends StatelessWidget {
     @required Widget label,
     @required VoidCallback onPressed,
     Color color,
+    Color disabledColor,
+    Color disabledTextColor,
     Color splashColor,
     Color highlightColor,
+    Color textColor,
   }) = _ButtonWithIcon;
 
   @override
@@ -39,8 +48,12 @@ class Button extends StatelessWidget {
         child: child,
         color: color ?? Material.Theme.of(context).buttonColor,
         colorBrightness: Material.Theme.of(context).brightness,
+        disabledColor: disabledColor ?? Material.Theme.of(context).disabledColor,
+        disabledTextColor: disabledTextColor ?? Material.Theme.of(context).textTheme.button.color.withAlpha(150),
+        textColor: textColor ?? Material.Theme.of(context).textTheme.button.color,
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: Material.Theme.of(context).dividerColor),
+          side: onPressed == null ?  BorderSide(color: Material.Theme.of(context).dividerColor.withAlpha(24)) :
+            BorderSide(color: Material.Theme.of(context).dividerColor),
           borderRadius: BorderRadius.circular(8.0),
         ),
         onPressed: onPressed,
@@ -54,8 +67,11 @@ class _ButtonWithIcon extends Button {
     Key key,
     @required VoidCallback onPressed,
     Color color,
+    Color disabledColor,
+    Color disabledTextColor,
     Color highlightColor,
     Color splashColor,
+    Color textColor,
     @required Widget icon,
     @required Widget label,
   }) : assert(icon != null),
@@ -64,8 +80,11 @@ class _ButtonWithIcon extends Button {
         key: key,
         onPressed: onPressed,
         color: color,
+        disabledColor: disabledColor,
+        disabledTextColor: disabledTextColor,
         highlightColor: highlightColor,
         splashColor: splashColor,
+        textColor: textColor,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[

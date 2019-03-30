@@ -575,7 +575,7 @@ class _RenderSlider extends RenderBox {
   }
 
   static const Duration _positionAnimationDuration = Duration(milliseconds: 75);
-  static const double _overlayRadius = 20.0;
+  static const double _overlayRadius = 12.0;
   static const double _overlayDiameter = _overlayRadius * 2.0;
   static const double _trackHeight = 40.0;
   static const double _preferredTrackWidth = 144.0;
