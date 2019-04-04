@@ -66,7 +66,7 @@ class FilterChip extends StatelessWidget {
           tooltip: tooltip,
           shape: StadiumBorder(
               side: BorderSide(
-                color: selected ? Colors.transparent : Theme.of(context).dividerColor.withAlpha(25),
+                color: Theme.of(context).dividerColor.withAlpha(25),
               )
           ),
           clipBehavior: Clip.antiAlias,

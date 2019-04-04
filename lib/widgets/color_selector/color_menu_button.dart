@@ -14,7 +14,7 @@ const double _kMenuScreenPadding = 12.0;
 
 const double _kButtonHeight = 56.0;
 
-const double _kMenuWidth = 300.0;
+const double _kMenuWidth = 324.0;
 const double _kMenuHeight = 72.0 + 12.0 * 4.0 + 40.0 * 3.0 + 1.0;
 
 
@@ -565,6 +565,7 @@ class ColorMenuButton extends StatelessWidget {
         color: color,
         toggledColor: color,
         shadowColor: color,
+        toggledElevation: 0,
         toggled: active,
         onToggle: (toggled) {
           if(toggled) { _showColorMenu(context); }

@@ -66,16 +66,16 @@ theme(BuildContext context, bool darkMode) {
     );
   } else {
     return ThemeData(
-      brightness: Brightness.light,
-      accentColor: const Color(0xFFB0EF63),
-      cardColor: const Color(0xFFFFFFFF),
-      bottomAppBarColor: const Color(0xFFC4FB81),
-      buttonColor: const Color(0xFFFFFFFF),
-      disabledColor: const Color(0xFFDEDBE0),
-      dividerColor: Colors.black.withAlpha(48),
-      errorColor: const Color(0xFFFF6E6E),
-      primarySwatch:
-        MaterialColor(const Color(0xFFC4FB81).value, const <int, Color>{
+        brightness: Brightness.light,
+        accentColor: Colors.white,
+        cardColor: const Color(0xFFFFFFFF),
+        bottomAppBarColor: const Color(0xFFC4FB81),
+        buttonColor: const Color(0xFFFFFFFF),
+        disabledColor: const Color(0xFFDEDBE0),
+        dividerColor: Colors.black.withAlpha(48),
+        errorColor: const Color(0xFFFF6E6E),
+        primarySwatch:
+        MaterialColor(const Color(0xFF67DE73).value, const <int, Color>{
           50: const Color(0xFFD7FFA7),
           100: const Color(0xFFC4FB81),
           200: const Color(0xFFFFE082),
@@ -87,60 +87,137 @@ theme(BuildContext context, bool darkMode) {
           800: const Color(0xFFFF8F00),
           900: const Color(0xFFFF6F00)
         }),
-      splashColor: const Color(0xFFAFF35B),
-      highlightColor: const Color(0xFFDEFEB7),
-      accentTextTheme: Theme.of(context).accentTextTheme.copyWith(
-        button: Theme.of(context)
-            .accentTextTheme
-            .button
-            .copyWith(color: const Color(0xFF5A990D))
-            .copyWith(fontSize: 18.0),
-        title: Theme.of(context)
-            .accentTextTheme
-            .title
-            .copyWith(color: const Color(0xFF5A990D))
-            .copyWith(fontSize: 18.0),
-      ),
-      accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
-        color: const Color(0xFF5A990D),
-      ),
-      buttonTheme: ButtonTheme.of(context).copyWith(
-        minWidth: 12.0,
-        height: 64.0,
-      ),
-      chipTheme: ChipTheme.of(context).copyWith(
+        splashColor: Colors.black.withAlpha(48),
+        highlightColor: Colors.black.withAlpha(48),
+        accentTextTheme: Theme.of(context).accentTextTheme.copyWith(
+          button: Theme.of(context)
+              .accentTextTheme
+              .button
+              .copyWith(color: Colors.white)
+              .copyWith(fontSize: 18.0),
+          title: Theme.of(context)
+              .accentTextTheme
+              .title
+              .copyWith(color: Colors.white)
+              .copyWith(fontSize: 18.0),
+        ),
+        accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
+          color: Colors.white,
+        ),
+        buttonTheme: ButtonTheme.of(context).copyWith(
+          minWidth: 12.0,
+          height: 64.0,
+        ),
+        chipTheme: ChipTheme.of(context).copyWith(
 
-      ),
-      iconTheme: IconTheme.of(context).copyWith(
-        color: const Color(0xFF666666),
-      ),
-      scaffoldBackgroundColor: const Color(0xFFDEDBE0),
-      textTheme: Theme.of(context).textTheme.copyWith(
-          title: Theme.of(context).textTheme.title.copyWith(
-            color: const Color(0xFF666666),
-            fontSize: 18.0,
-          ),
-          button: Theme.of(context).textTheme.button.copyWith(
-            color: const Color(0xFF666666),
-            fontSize: 16.0,
-            fontWeight: FontWeight.normal
-          )
-      ),
-      splashFactory: InkRipple.splashFactory,
-      sliderTheme: Theme.of(context).sliderTheme.copyWith(
-        activeTrackColor: const Color(0xFFC4FB81),
-        activeTickMarkColor: Colors.black.withAlpha(25),
-        inactiveTrackColor: const Color(0xFFA2D95E),
-        inactiveTickMarkColor: Colors.black.withAlpha(25),
-        thumbColor: Colors.white,
-        thumbShape: SliderThumbShape(),
-        overlayColor: const Color(0xFF8FC84A),
-      ),
-      toggleableActiveColor: const Color(0xFF86C040),
-      unselectedWidgetColor: const Color(0xFFF5F4F6),
-      primaryIconTheme: Theme.of(context).iconTheme.copyWith(
-        color: const Color(0xFF666666),
-      )
+        ),
+        iconTheme: IconTheme.of(context).copyWith(
+          color: const Color(0xFF666666),
+        ),
+        scaffoldBackgroundColor: const Color(0xFFDEDBE0),
+        textTheme: Theme.of(context).textTheme.copyWith(
+            title: Theme.of(context).textTheme.title.copyWith(
+              color: const Color(0xFF666666),
+              fontSize: 18.0,
+            ),
+            button: Theme.of(context).textTheme.button.copyWith(
+                color: const Color(0xFF666666),
+                fontSize: 16.0,
+                fontWeight: FontWeight.normal
+            )
+        ),
+        splashFactory: InkRipple.splashFactory,
+        sliderTheme: Theme.of(context).sliderTheme.copyWith(
+          activeTrackColor: const Color(0xFFC4FB81),
+          activeTickMarkColor: Colors.black.withAlpha(25),
+          inactiveTrackColor: const Color(0xFFA2D95E),
+          inactiveTickMarkColor: Colors.black.withAlpha(25),
+          thumbColor: Colors.white,
+          thumbShape: SliderThumbShape(),
+          overlayColor: const Color(0xFF8FC84A),
+        ),
+        toggleableActiveColor: const Color(0xFF86C040),
+        unselectedWidgetColor: const Color(0xFFF5F4F6),
+        primaryIconTheme: Theme.of(context).iconTheme.copyWith(
+          color: const Color(0xFF666666),
+        )
     );
+//    return ThemeData(
+//      brightness: Brightness.light,
+//      accentColor: const Color(0xFF86C040),
+//      cardColor: const Color(0xFFFFFFFF),
+//      bottomAppBarColor: const Color(0xFFC4FB81),
+//      buttonColor: const Color(0xFFFFFFFF),
+//      disabledColor: const Color(0xFFDEDBE0),
+//      dividerColor: Colors.black.withAlpha(48),
+//      errorColor: const Color(0xFFFF6E6E),
+//      primarySwatch:
+//        MaterialColor(const Color(0xFFC4FB81).value, const <int, Color>{
+//          50: const Color(0xFFD7FFA7),
+//          100: const Color(0xFFC4FB81),
+//          200: const Color(0xFFFFE082),
+//          300: const Color(0xFFFFD54F),
+//          400: const Color(0xFFFFCA28),
+//          500: const Color(0xFFFFC107),
+//          600: const Color(0xFFFFB300),
+//          700: const Color(0xFFFFA000),
+//          800: const Color(0xFFFF8F00),
+//          900: const Color(0xFFFF6F00)
+//        }),
+//      splashColor: const Color(0xFFAFF35B),
+//      highlightColor: const Color(0xFFDEFEB7),
+//      accentTextTheme: Theme.of(context).accentTextTheme.copyWith(
+//        button: Theme.of(context)
+//            .accentTextTheme
+//            .button
+//            .copyWith(color: const Color(0xFF5A990D))
+//            .copyWith(fontSize: 18.0),
+//        title: Theme.of(context)
+//            .accentTextTheme
+//            .title
+//            .copyWith(color: const Color(0xFF5A990D))
+//            .copyWith(fontSize: 18.0),
+//      ),
+//      accentIconTheme: Theme.of(context).accentIconTheme.copyWith(
+//        color: const Color(0xFF5A990D),
+//      ),
+//      buttonTheme: ButtonTheme.of(context).copyWith(
+//        minWidth: 12.0,
+//        height: 64.0,
+//      ),
+//      chipTheme: ChipTheme.of(context).copyWith(
+//
+//      ),
+//      iconTheme: IconTheme.of(context).copyWith(
+//        color: const Color(0xFF666666),
+//      ),
+//      scaffoldBackgroundColor: const Color(0xFFDEDBE0),
+//      textTheme: Theme.of(context).textTheme.copyWith(
+//          title: Theme.of(context).textTheme.title.copyWith(
+//            color: const Color(0xFF666666),
+//            fontSize: 18.0,
+//          ),
+//          button: Theme.of(context).textTheme.button.copyWith(
+//            color: const Color(0xFF666666),
+//            fontSize: 16.0,
+//            fontWeight: FontWeight.normal
+//          )
+//      ),
+//      splashFactory: InkRipple.splashFactory,
+//      sliderTheme: Theme.of(context).sliderTheme.copyWith(
+//        activeTrackColor: const Color(0xFFC4FB81),
+//        activeTickMarkColor: Colors.black.withAlpha(25),
+//        inactiveTrackColor: const Color(0xFFA2D95E),
+//        inactiveTickMarkColor: Colors.black.withAlpha(25),
+//        thumbColor: Colors.white,
+//        thumbShape: SliderThumbShape(),
+//        overlayColor: const Color(0xFF8FC84A),
+//      ),
+//      toggleableActiveColor: const Color(0xFF86C040),
+//      unselectedWidgetColor: const Color(0xFFF5F4F6),
+//      primaryIconTheme: Theme.of(context).iconTheme.copyWith(
+//        color: const Color(0xFF666666),
+//      )
+//    );
   }
 }

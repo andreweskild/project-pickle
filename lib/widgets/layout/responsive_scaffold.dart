@@ -140,9 +140,15 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                     );
                   },
                   builder: (context, model) {
-                    return IconButton (
-                      icon: Icon(Icons.undo),
-                      onPressed: model.canUndo ? model.callback : null,
+//                    return IconButton (
+//                      icon: Icon(Icons.undo),
+//                      onPressed: model.canUndo ? model.callback : null,
+//                    );
+                    return FlatButton(
+                      child: Text(
+                        'UNDO',
+                      ),
+                      onPressed: (){},
                     );
                   }
                 ),
@@ -157,9 +163,15 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                       );
                     },
                     builder: (context, model) {
-                      return IconButton (
-                        icon: Icon(Icons.redo),
-                        onPressed: model.canRedo ? model.callback : null,
+//                      return IconButton (
+//                        icon: Icon(Icons.redo),
+//                        onPressed: model.canRedo ? model.callback : null,
+//                      );
+                      return FlatButton(
+                        child: Text(
+                          'REDO',
+                        ),
+                        onPressed: (){},
                       );
                     }
                 ),
@@ -175,22 +187,22 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
             body: Stack(
               children: <Widget>[
                 widget.body,
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints.expand(height: 32.0),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [Colors.black.withAlpha(20), Colors.transparent],
-                              tileMode: TileMode.clamp
-                          )
-                      ),
-                    )
-                  )
-                ),
+//                Align(
+//                  alignment: Alignment.topCenter,
+//                  child: ConstrainedBox(
+//                    constraints: BoxConstraints.expand(height: 32.0),
+//                    child: DecoratedBox(
+//                      decoration: BoxDecoration(
+//                          gradient: LinearGradient(
+//                              begin: Alignment.topCenter,
+//                              end: Alignment.bottomCenter,
+//                              colors: [Colors.black.withAlpha(20), Colors.transparent],
+//                              tileMode: TileMode.clamp
+//                          )
+//                      ),
+//                    )
+//                  )
+//                ),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: widget.drawer,

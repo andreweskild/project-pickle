@@ -116,6 +116,7 @@ class FlatButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material.ButtonTheme(
       height: 52.0,
+      minWidth: 52.0,
       child: Material.FlatButton(
         padding: EdgeInsets.only(left: 12.0, right: 12.0),
         child: child,

@@ -87,9 +87,8 @@ class LayersCard extends StatelessWidget {
                   ignoreChange: (state) => !state.layersDirty,
                   converter: (store) => () => store.dispatch(AddNewLayerAction()),
                   builder: (context, callback) {
-                    return Button.icon(
-                      icon: Icon(Icons.add),
-                      label: Text('New Layer'),
+                    return Button(
+                      child: Text('NEW LAYER'),
                       onPressed: () {
                         callback();
                       },
