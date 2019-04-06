@@ -33,50 +33,47 @@ class FilterChip extends StatelessWidget {
     Widget _paddedAvatar;
 
     if(avatar != null) {
-      _paddedAvatar = Padding(
-        padding: EdgeInsets.only(right: 12.0),
-        child: avatar,
+      _paddedAvatar = IconTheme(
+        data: IconThemeData(
+          color: selected ? Theme.of(context).primaryIconTheme.color : Theme.of(context).textTheme.button.color,
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(right: 12.0),
+          child: avatar,
+        ),
       );
     }
 
     assert(debugCheckHasMaterial(context));
-    return AnimatedContainer(
-      curve: Curves.ease,
-      duration: Duration(milliseconds: 200),
-      decoration: ShapeDecoration(
-        shape: StadiumBorder(),
-        shadows: selected ? kColoredShadowMap(Theme.of(context).accentColor)[6] : null,
+    return IconTheme(
+      data: IconThemeData(
+        color: Theme.of(context).accentIconTheme.color,
+        size: 20.0,
       ),
-      child: IconTheme(
-        data: IconThemeData(
-          color: Theme.of(context).accentIconTheme.color,
-          size: 20.0,
+      child: RawChip(
+        avatar: selected ? _paddedAvatar : null,
+        label: label,
+        labelStyle: Theme.of(context).textTheme.button.copyWith(
+          color: selected ? Theme.of(context).primaryTextTheme.button.color : Theme.of(context).textTheme.button.color
         ),
-        child: RawChip(
-          avatar: selected ? _paddedAvatar : null,
-          label: label,
-          labelStyle: Theme.of(context).textTheme.button.copyWith(
-            color: selected ? Theme.of(context).accentTextTheme.button.color : Theme.of(context).textTheme.button.color
-          ),
-          labelPadding: EdgeInsets.zero,
-          onSelected: onSelected,
-          pressElevation: 0.0,
-          showCheckmark: false,
-          selected: selected,
-          tooltip: tooltip,
-          shape: StadiumBorder(
-              side: BorderSide(
-                color: Theme.of(context).dividerColor.withAlpha(25),
-              )
-          ),
-          clipBehavior: Clip.antiAlias,
-          backgroundColor: Theme.of(context).buttonColor,
-          disabledColor: Colors.red,
-          selectedColor: Theme.of(context).primaryColor,
-          padding: EdgeInsets.only(left: 16.0, right: 16.0),
-          isEnabled: isEnabled,
-          elevation: 0.0,
+        labelPadding: EdgeInsets.zero,
+        onSelected: onSelected,
+        pressElevation: 0.0,
+        showCheckmark: false,
+        selected: selected,
+        tooltip: tooltip,
+        shape: StadiumBorder(
+            side: BorderSide(
+              color: Colors.black12.withAlpha(25),
+            )
         ),
+        clipBehavior: Clip.antiAlias,
+        backgroundColor: Theme.of(context).buttonColor,
+        disabledColor: Colors.red,
+        selectedColor: Theme.of(context).primaryColor,
+        padding: EdgeInsets.only(left: 16.0, right: 16.0),
+        isEnabled: isEnabled,
+        elevation: 0.0,
       ),
     );
   }

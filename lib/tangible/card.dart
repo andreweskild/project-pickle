@@ -11,7 +11,8 @@ class Card extends StatelessWidget {
     Key key,
     this.child,
     this.color,
-    this.borderRadius = const BorderRadius.all(const Radius.circular(8.0)),
+    this.borderSide,
+    this.borderRadius = const BorderRadius.all(const Radius.circular(kBorderRadius+2.0)),
     this.elevation = 24.0,
   }) : super(key: key);
 
@@ -19,13 +20,16 @@ class Card extends StatelessWidget {
   final Color color;
   final double elevation;
   final BorderRadius borderRadius;
+  final BorderSide borderSide;
 
   @override
   Widget build(BuildContext context) {
     Color _color = color ?? Material.Theme.of(context).cardColor;
+    BorderSide _side = borderSide ?? BorderSide(color: Material.Theme.of(context).dividerColor);
 
     return Stack(
       children: <Widget>[
+        // Shadow
         Positioned.fill(
           child: Material.Material(
             elevation: elevation,
@@ -35,6 +39,7 @@ class Card extends StatelessWidget {
               Material.Colors.black54 : Material.Colors.black54,
           ),
         ),
+        // Blur and card surface
         ClipRRect(
           borderRadius: borderRadius,
           child: BackdropFilter(
@@ -45,7 +50,8 @@ class Card extends StatelessWidget {
             child: Material.Material(
               color: _color.withAlpha(kSurfaceOpacity),
               shape: RoundedRectangleBorder(
-                borderRadius: borderRadius
+                borderRadius: borderRadius,
+                side: _side
               ),
               child: child,
             ),
@@ -61,8 +67,8 @@ class CardHeader extends StatelessWidget {
     Key key,
     this.child,
     this.borderRadius = const BorderRadius.only(
-      topLeft: Radius.circular(8.0),
-      topRight: Radius.circular(8.0),
+      topLeft: Radius.circular(kBorderRadius + 2.0),
+      topRight: Radius.circular(kBorderRadius + 2.0),
       bottomLeft: Radius.zero,
       bottomRight: Radius.zero,
     ),
@@ -108,6 +114,9 @@ class CardHeader extends StatelessWidget {
                     topLeft: borderRadius.topLeft,
                     topRight: borderRadius.topRight
                 ),
+                side: BorderSide(
+                  color: Material.Colors.black12,
+                )
               ),
               child: Material.Theme(
                 data: Material.Theme.of(context).copyWith(
@@ -122,11 +131,11 @@ class CardHeader extends StatelessWidget {
                   ),
                   child: IconTheme(
                     data: IconThemeData(
-                      color: Material.Theme.of(context).accentTextTheme.button.color,
+                      color: Material.Theme.of(context).primaryIconTheme.color,
                     ),
                     child: DefaultTextStyle(
                         style: TextStyle(
-                          color: Material.Theme.of(context).accentTextTheme.button.color,
+                          color: Material.Theme.of(context).primaryTextTheme.button.color,
                         ),
                         child: child
                     ),
@@ -135,10 +144,6 @@ class CardHeader extends StatelessWidget {
               )
             ),
           )
-        ),
-        Material.Divider(
-          height: 1.0,
-          color: Color.alphaBlend(Material.Theme.of(context).dividerColor, headerColor),
         ),
       ],
     );

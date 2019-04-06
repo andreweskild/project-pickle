@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:project_pickle/tangible/tangible.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/common/reorderable_list.dart';
@@ -156,7 +157,7 @@ class _LayersListState extends State<LayersList> {
               }
             ),
             feedbackDecoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(kBorderRadius),
               color: Colors.transparent,
             ),
             spacing: 12.0,

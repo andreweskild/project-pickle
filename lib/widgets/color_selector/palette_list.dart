@@ -8,7 +8,6 @@ import 'package:project_pickle/widgets/color_selector/color_menu_button.dart';
 import 'package:project_pickle/state/actions.dart';
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/common/reorderable_list.dart';
-import 'package:project_pickle/widgets/common/deletable.dart';
 
 class PaletteList extends StatefulWidget {
   const PaletteList({ Key key }) : super(key: key);

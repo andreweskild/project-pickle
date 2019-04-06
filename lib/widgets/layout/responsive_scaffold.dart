@@ -146,7 +146,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
 //                    );
                     return FlatButton(
                       child: Text(
-                        'UNDO',
+                        'Undo',
                       ),
                       onPressed: (){},
                     );
@@ -169,7 +169,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
 //                      );
                       return FlatButton(
                         child: Text(
-                          'REDO',
+                          'Redo',
                         ),
                         onPressed: (){},
                       );
@@ -187,22 +187,18 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
             body: Stack(
               children: <Widget>[
                 widget.body,
-//                Align(
-//                  alignment: Alignment.topCenter,
-//                  child: ConstrainedBox(
-//                    constraints: BoxConstraints.expand(height: 32.0),
-//                    child: DecoratedBox(
-//                      decoration: BoxDecoration(
-//                          gradient: LinearGradient(
-//                              begin: Alignment.topCenter,
-//                              end: Alignment.bottomCenter,
-//                              colors: [Colors.black.withAlpha(20), Colors.transparent],
-//                              tileMode: TileMode.clamp
-//                          )
-//                      ),
-//                    )
-//                  )
-//                ),
+               Align(
+                 alignment: Alignment.topCenter,
+                 child: ConstrainedBox(
+                   constraints: BoxConstraints.expand(height: 1.0),
+                   child: DecoratedBox(
+                     decoration: BoxDecoration(
+                         shape: BoxShape.rectangle,
+                         color: Theme.of(context).dividerColor
+                     ),
+                   )
+                 )
+               ),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: widget.drawer,

@@ -72,10 +72,10 @@ theme(BuildContext context, bool darkMode) {
         bottomAppBarColor: const Color(0xFFC4FB81),
         buttonColor: const Color(0xFFFFFFFF),
         disabledColor: const Color(0xFFDEDBE0),
-        dividerColor: Colors.black.withAlpha(48),
+        dividerColor: const Color(0xFFD1D1D1),
         errorColor: const Color(0xFFFF6E6E),
         primarySwatch:
-        MaterialColor(const Color(0xFF67DE73).value, const <int, Color>{
+        MaterialColor(const Color(0xFFC0E9B1).value, const <int, Color>{
           50: const Color(0xFFD7FFA7),
           100: const Color(0xFFC4FB81),
           200: const Color(0xFFFFE082),
@@ -114,7 +114,7 @@ theme(BuildContext context, bool darkMode) {
         iconTheme: IconTheme.of(context).copyWith(
           color: const Color(0xFF666666),
         ),
-        scaffoldBackgroundColor: const Color(0xFFDEDBE0),
+        scaffoldBackgroundColor: const Color(0xFFF2F2F2),
         textTheme: Theme.of(context).textTheme.copyWith(
             title: Theme.of(context).textTheme.title.copyWith(
               color: const Color(0xFF666666),
@@ -137,9 +137,14 @@ theme(BuildContext context, bool darkMode) {
           overlayColor: const Color(0xFF8FC84A),
         ),
         toggleableActiveColor: const Color(0xFF86C040),
-        unselectedWidgetColor: const Color(0xFFF5F4F6),
+        unselectedWidgetColor: const Color(0xFFF2F1F3),
         primaryIconTheme: Theme.of(context).iconTheme.copyWith(
-          color: const Color(0xFF666666),
+          color: const Color(0xFF42AC1C),
+        ),
+        primaryTextTheme: Theme.of(context).primaryTextTheme.copyWith(
+          button: Theme.of(context).primaryTextTheme.button.copyWith(
+            color: const Color(0xFF42AC1C),
+          )
         )
     );
 //    return ThemeData(

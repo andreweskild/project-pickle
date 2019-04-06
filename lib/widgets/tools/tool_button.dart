@@ -24,6 +24,7 @@ class ToolButton extends StatelessWidget {
         Align(
           alignment: Alignment.center,
           child: TwoStagePopupButton(
+            color: Colors.transparent,
             icon: icon,
             headerContent: (opened) {
               if (opened) {

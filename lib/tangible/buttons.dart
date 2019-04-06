@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' as Material;
 import 'package:flutter/widgets.dart';
 
+import 'constants.dart';
 import 'shadows.dart';
 export 'two_stage_popup_button.dart';
 
@@ -54,7 +55,7 @@ class Button extends StatelessWidget {
         shape: RoundedRectangleBorder(
           side: onPressed == null ?  BorderSide(color: Material.Theme.of(context).dividerColor.withAlpha(24)) :
             BorderSide(color: Material.Theme.of(context).dividerColor),
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(kBorderRadius),
         ),
         onPressed: onPressed,
       ),
@@ -123,7 +124,7 @@ class FlatButton extends StatelessWidget {
         color: color ?? Material.Colors.transparent,
         colorBrightness: Material.Theme.of(context).brightness,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(kBorderRadius),
         ),
         onPressed: onPressed,
       ),
@@ -171,19 +172,22 @@ class ToggleButton extends StatelessWidget {
       duration: Duration(milliseconds: 200),
       decoration: BoxDecoration(
         color: currentColor,
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(kBorderRadius),
         boxShadow: toggled ? kColoredShadowMap(shadowColor ?? Material.Theme.of(context).accentColor)[toggledElevation] : null,
+        // border: Border.all(
+        //   color: toggled ? Material.Colors.black12 : Material.Colors.transparent,
+        // )
       ),
       child: Material.Material(
         type: Material.MaterialType.transparency,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(kBorderRadius),
         ),
         elevation: 0.0,
         child: Material.InkWell(
           splashColor: splashColor,
           highlightColor: highlightColor,
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(kBorderRadius),
           onTap: () {
             onToggle(toggled);
           },
@@ -192,7 +196,7 @@ class ToggleButton extends StatelessWidget {
                   color: toggled
                       ? Material.Theme
                       .of(context)
-                      .accentIconTheme
+                      .primaryIconTheme
                       .color
                       : Material.Theme
                       .of(context)
@@ -204,7 +208,7 @@ class ToggleButton extends StatelessWidget {
                     color: toggled
                         ? Material.Theme
                         .of(context)
-                        .accentIconTheme
+                        .primaryIconTheme
                         .color
                         : Material.Theme
                         .of(context)
@@ -252,7 +256,7 @@ class IconButton extends StatelessWidget {
             child: icon
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(kBorderRadius),
           ),
           onPressed: onPressed,
         ),
@@ -293,7 +297,7 @@ class OutlineIconButton extends StatelessWidget {
               child: icon
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(kBorderRadius),
             side: BorderSide(color: color.withAlpha(40)),
           ),
           onPressed: onPressed,

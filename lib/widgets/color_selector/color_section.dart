@@ -25,30 +25,26 @@ class ColorSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      borderRadius: BorderRadius.zero,
-      elevation: 0.0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Expanded(
-            child: PaletteList(),
-          ),
-          StoreBuilder<AppState>(
-            rebuildOnChange: false,
-            builder: (context, store) {
-              return Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: ColorAddButton(
-                  color: Colors.red,
-                  onAccepted: (color) => store.dispatch(AddNewColorToPaletteAction(color)),
-                ),
-              );
-            }
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Expanded(
+          child: PaletteList(),
+        ),
+        StoreBuilder<AppState>(
+          rebuildOnChange: false,
+          builder: (context, store) {
+            return Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: ColorAddButton(
+                color: Colors.red,
+                onAccepted: (color) => store.dispatch(AddNewColorToPaletteAction(color)),
+              ),
+            );
+          }
+        ),
+      ],
     );
   }
 }

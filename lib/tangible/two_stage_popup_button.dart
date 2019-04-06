@@ -138,7 +138,7 @@ class _TwoStagePopupContentState extends State<TwoStagePopupContent> {
       begin: widget.initialSize,
       end: Size(
         _kMenuWidth, 
-        _contentHeight + _kHeaderHeight + 1.0 //1.0 for divider height
+        _contentHeight + _kHeaderHeight //1.0 for divider height
       ),
     ).animate(
       CurvedAnimation(
@@ -325,7 +325,8 @@ class _TwoStagePopupRoute extends PopupRoute<VoidCallback> {
               parentAnimation: parentAnimation,
               popupContent: popupContent,
               onAccept: () => Navigator.pop(context),
-            ));
+            )
+          );
         },
       ),
     );

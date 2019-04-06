@@ -138,23 +138,6 @@ class ColorPopupContentState extends State<ColorPopupContent> {
 
   @override
   Widget build(BuildContext context) {
-    final Animation<BorderRadius> borderRadius = BorderRadiusTween(
-      begin: BorderRadius.circular(8.0),
-      end: BorderRadius.only(
-        topLeft: Radius.circular(8.0),
-        topRight: Radius.circular(8.0),
-        bottomLeft: Radius.circular(0.0),
-        bottomRight: Radius.circular(0.0),
-      ),
-    ).animate(
-      CurvedAnimation(
-        parent: widget.parentAnimation,
-        curve: Interval(
-          0.0, 1.0,
-          curve: Curves.ease,
-        ),
-      ),
-    );
 
     final Animation<Size> size = SizeTween(
       begin: widget.initialSize,

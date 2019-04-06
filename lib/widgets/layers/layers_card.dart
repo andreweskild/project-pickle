@@ -11,8 +11,6 @@ import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/widgets/layers/layers_list.dart';
 import 'package:project_pickle/canvas/pixel_layer.dart';
 
-double _kBlurAmount = 20.0;
-
 typedef LayerIndexCallback = void Function(int);
 
 class LayerListModel {
@@ -68,37 +66,32 @@ class LayersCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Material.Theme.of(context).unselectedWidgetColor,
-      elevation: 0.0,
-      borderRadius: BorderRadius.zero,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Expanded(
-              child: LayersList(),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: ConstrainedBox(
-                constraints: BoxConstraints.expand(height: 56.0),
-                child: StoreConnector<AppState, VoidCallback>(
-                  ignoreChange: (state) => !state.layersDirty,
-                  converter: (store) => () => store.dispatch(AddNewLayerAction()),
-                  builder: (context, callback) {
-                    return Button(
-                      child: Text('NEW LAYER'),
-                      onPressed: () {
-                        callback();
-                      },
-                    );
-                  }
-                ),
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Expanded(
+            child: LayersList(),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: ConstrainedBox(
+              constraints: BoxConstraints.expand(height: 56.0),
+              child: StoreConnector<AppState, VoidCallback>(
+                ignoreChange: (state) => !state.layersDirty,
+                converter: (store) => () => store.dispatch(AddNewLayerAction()),
+                builder: (context, callback) {
+                  return Button(
+                    child: Text('New Layer'),
+                    onPressed: () {
+                      callback();
+                    },
+                  );
+                }
               ),
             ),
-          ],
-        ),
-    );
+          ),
+        ],
+      );
   }
 }

@@ -78,7 +78,7 @@ class LayerItem extends StatelessWidget {
       duration: Duration(milliseconds: 200),
       decoration: BoxDecoration(
         color: Material.Theme.of(context).buttonColor,
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(kBorderRadius),
         boxShadow: active ? kColoredShadowMap(Material.Theme.of(context).accentColor)[6] : null,
       ),
       child: FadeTransition(
@@ -90,7 +90,6 @@ class LayerItem extends StatelessWidget {
             parent: animationController, curve: Curves.ease
           ),
           child: TwoStagePopupButton(
-            color: Material.Theme.of(context).unselectedWidgetColor,
             headerContent: (opened) {
               return Row(
                 mainAxisSize: MainAxisSize.min,
@@ -102,10 +101,10 @@ class LayerItem extends StatelessWidget {
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(6.0)
+                          borderRadius: BorderRadius.circular(kBorderRadius - 2.0)
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(6.0),
+                          borderRadius: BorderRadius.circular(kBorderRadius - 2.0),
                           child: canvas
                         )
                       )
@@ -140,7 +139,7 @@ class LayerItem extends StatelessWidget {
                           label: Text(
                               "Visible",
                           ),
-                          onSelected: (hidden) => { layerModel.toggleHiddenCallback() },
+                          onSelected: (hidden) => layerModel.toggleHiddenCallback(),
                         );
                       }
                     ),
