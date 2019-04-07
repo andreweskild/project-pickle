@@ -73,164 +73,155 @@ class LayerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      curve: Curves.ease,
-      duration: Duration(milliseconds: 200),
-      decoration: BoxDecoration(
-        color: Material.Theme.of(context).buttonColor,
-        borderRadius: BorderRadius.circular(kBorderRadius),
-        boxShadow: active ? kColoredShadowMap(Material.Theme.of(context).accentColor)[6] : null,
+    return FadeTransition(
+      opacity: CurvedAnimation(
+          parent: animationController, curve: Curves.ease
       ),
-      child: FadeTransition(
-        opacity: CurvedAnimation(
-            parent: animationController, curve: Curves.ease
+      child: SizeTransition(
+        sizeFactor: CurvedAnimation(
+          parent: animationController, curve: Curves.ease
         ),
-        child: SizeTransition(
-          sizeFactor: CurvedAnimation(
-            parent: animationController, curve: Curves.ease
-          ),
-          child: TwoStagePopupButton(
-            headerContent: (opened) {
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(right: 12.0),
-                    child: AspectRatio(
-                      aspectRatio: 1.0,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(kBorderRadius - 2.0)
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(kBorderRadius - 2.0),
-                          child: canvas
-                        )
+        child: TwoStagePopupButton(
+          headerContent: (opened) {
+            return Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(right: 12.0),
+                  child: AspectRatio(
+                    aspectRatio: 1.0,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(kBorderRadius - 2.0)
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(kBorderRadius - 2.0),
+                        child: canvas
                       )
+                    )
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    name,
+                    softWrap: false,
+                  ),
+                ),
+              ]
+            );
+          },
+          popupContent: <PopupContentItem>[
+            PopupContentItem(
+            height: 52.0,
+              padding: EdgeInsets.zero,
+              child: ListView(
+                padding: EdgeInsets.only(left: 12.0, top: 6.0, bottom: 12.0, right: 12.0),
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  StoreConnector<AppState, _LayerItemModel>(
+                    converter: (store) => _LayerItemModel(
+                      hidden: store.state.layers[index].hidden,
+                      toggleHiddenCallback: () => store.dispatch(ToggleLayerHiddenAction(index)),
+                    ),
+                    builder: (context, layerModel) {
+                      return FilterChip(
+                        avatar: Icon(Icons.remove_red_eye),
+                        selected: !layerModel.hidden,
+                        label: Text(
+                            "Visible",
+                        ),
+                        onSelected: (hidden) => layerModel.toggleHiddenCallback(),
+                      );
+                    }
+                  ),
+                  HorizontalSpacer(),
+                  FilterChip(
+                    avatar: Icon(Icons.lock_outline),
+                    selected: false,
+                    label: Text(
+                      "Alpha Lock",
+                    ),
+                    onSelected: (selected) => {},
+                  ),
+                  HorizontalSpacer(),
+                  FilterChip(
+                    avatar: Icon(Icons.layers),
+                    selected: true,
+                    label: Text(
+                        "Clip Layer",
+                    ),
+                    onSelected: (selected) => {},
+                  ),
+                ]
+              ),
+            ),
+            PopupContentItem(
+              padding: EdgeInsets.only(left: 12.0, right: 12.0, bottom: 6.0),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Button(
+                      child: Text(
+                        "Duplicate",
+                      ),
+                      onPressed: () {
+                        performPopupAction(context, onDuplicate);
+//                        onDuplicate();
+                      },
                     ),
                   ),
+                  HorizontalSpacer(),
                   Expanded(
-                    child: Text(
-                      name,
-                      softWrap: false,
+                    child: Button(
+                      child: Text(
+                        "Merge",
+                      ),
+                      onPressed: (){},
                     ),
                   ),
                 ]
-              );
-            },
-            popupContent: <PopupContentItem>[
-              PopupContentItem(
-              height: 52.0,
-                padding: EdgeInsets.zero,
-                child: ListView(
-                  padding: EdgeInsets.only(left: 12.0, top: 6.0, bottom: 12.0, right: 12.0),
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    StoreConnector<AppState, _LayerItemModel>(
-                      converter: (store) => _LayerItemModel(
-                        hidden: store.state.layers[index].hidden,
-                        toggleHiddenCallback: () => store.dispatch(ToggleLayerHiddenAction(index)),
-                      ),
-                      builder: (context, layerModel) {
-                        return FilterChip(
-                          avatar: Icon(Icons.remove_red_eye),
-                          selected: !layerModel.hidden,
-                          label: Text(
-                              "Visible",
-                          ),
-                          onSelected: (hidden) => layerModel.toggleHiddenCallback(),
-                        );
-                      }
-                    ),
-                    HorizontalSpacer(),
-                    FilterChip(
-                      avatar: Icon(Icons.lock_outline),
-                      selected: false,
-                      label: Text(
-                        "Alpha Lock",
-                      ),
-                      onSelected: (selected) => {},
-                    ),
-                    HorizontalSpacer(),
-                    FilterChip(
-                      avatar: Icon(Icons.layers),
-                      selected: true,
-                      label: Text(
-                          "Clip Layer",
-                      ),
-                      onSelected: (selected) => {},
-                    ),
-                  ]
-                ),
-              ),
-              PopupContentItem(
-                padding: EdgeInsets.only(left: 12.0, right: 12.0, bottom: 6.0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Button(
-                        child: Text(
-                          "Duplicate",
-                        ),
-                        onPressed: () {
-                          performPopupAction(context, onDuplicate);
-//                        onDuplicate();
-                        },
-                      ),
-                    ),
-                    HorizontalSpacer(),
-                    Expanded(
-                      child: Button(
-                        child: Text(
-                          "Merge",
-                        ),
-                        onPressed: (){},
-                      ),
-                    ),
-                  ]
-                )
-              ),
-              PopupContentItem(
-                  child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Button(
-                            child: Text(
-                              "Select",
-                            ),
-                            onPressed: (){},
-                          ),
-                        ),
-                        HorizontalSpacer(),
-                        Expanded(
-                          child: Button(
-                            child: Text(
-                              "Clear Layer",
-                            ),
-                            onPressed: (){},
-                          ),
-                        )
-                      ]
-                  )
-              ),
-              PopupContentItem(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints.expand(),
-                    child: Button(
-                      child: Text(
-                          "Delete",
-                      ),
-                      color: Material.Theme.of(context).errorColor,
-                      textColor: Colors.white,
-                      onPressed: onDelete == null ? null : () => performPopupAction(context, _startDeleteAnimation),
-                    ),
-                  )
               )
-            ],
-            onToggled: onToggle,
-            active: active,
-          ),
+            ),
+            PopupContentItem(
+                child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Button(
+                          child: Text(
+                            "Select",
+                          ),
+                          onPressed: (){},
+                        ),
+                      ),
+                      HorizontalSpacer(),
+                      Expanded(
+                        child: Button(
+                          child: Text(
+                            "Clear Layer",
+                          ),
+                          onPressed: (){},
+                        ),
+                      )
+                    ]
+                )
+            ),
+            PopupContentItem(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints.expand(),
+                  child: Button(
+                    child: Text(
+                        "Delete",
+                    ),
+                    color: Material.Theme.of(context).errorColor,
+                    textColor: Colors.white,
+                    onPressed: onDelete == null ? null : () => performPopupAction(context, _startDeleteAnimation),
+                  ),
+                )
+            )
+          ],
+          onToggled: onToggle,
+          active: active,
         ),
       ),
     );

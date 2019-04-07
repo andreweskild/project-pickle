@@ -41,6 +41,8 @@ class Divider extends StatelessWidget {
     return Container(
       height: _height,
       width: _width,
+      margin: EdgeInsets.zero,
+      padding: EdgeInsets.zero,
       color: color ?? Theme.of(context).dividerColor,
     );
   }

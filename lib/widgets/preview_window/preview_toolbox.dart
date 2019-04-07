@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:project_pickle/tangible/tangible.dart';
+
 import 'package:project_pickle/state/app_state.dart';
 import 'package:project_pickle/canvas/pixel_layer.dart';
 
@@ -59,7 +61,7 @@ class PreviewToolbox extends StatelessWidget {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 color: Theme.of(context).scaffoldBackgroundColor,
-                borderRadius: BorderRadius.circular(6.0),
+                borderRadius: BorderRadius.circular(kBorderRadius),
                 border: Border.all(color: Theme.of(context).dividerColor),
               ),
               child: Padding(

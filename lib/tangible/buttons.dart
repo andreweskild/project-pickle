@@ -105,11 +105,13 @@ class FlatButton extends StatelessWidget {
     this.color,
     this.splashColor,
     this.highlightColor,
+    this.textColor,
   }) : super(key: key);
 
   final Color color;
   final Color splashColor;
   final Color highlightColor;
+  final Color textColor;
   final Widget child;
   final VoidCallback onPressed;
 
@@ -120,7 +122,14 @@ class FlatButton extends StatelessWidget {
       minWidth: 52.0,
       child: Material.FlatButton(
         padding: EdgeInsets.only(left: 12.0, right: 12.0),
-        child: child,
+        child: DefaultTextStyle(
+          style: (textColor != null) ?
+            Material.Theme.of(context).textTheme.button.copyWith(color: textColor) :
+            Material.Theme.of(context).textTheme.button,
+          child: child
+        ),
+        splashColor: splashColor,
+        highlightColor: highlightColor,
         color: color ?? Material.Colors.transparent,
         colorBrightness: Material.Theme.of(context).brightness,
         shape: RoundedRectangleBorder(
@@ -159,67 +168,70 @@ class ToggleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentColor =              // Color used for background of button
-    (toggled) ?
-    toggledColor ?? Material.Theme
-        .of(context)
-        .primaryColor :
-    color ?? Material.Theme
-        .of(context)
-        .cardColor;
-
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 200),
-      decoration: BoxDecoration(
-        color: currentColor,
-        borderRadius: BorderRadius.circular(kBorderRadius),
-        boxShadow: toggled ? kColoredShadowMap(shadowColor ?? Material.Theme.of(context).accentColor)[toggledElevation] : null,
-        // border: Border.all(
-        //   color: toggled ? Material.Colors.black12 : Material.Colors.transparent,
-        // )
-      ),
-      child: Material.Material(
-        type: Material.MaterialType.transparency,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(kBorderRadius),
-        ),
-        elevation: 0.0,
-        child: Material.InkWell(
-          splashColor: splashColor,
-          highlightColor: highlightColor,
-          borderRadius: BorderRadius.circular(kBorderRadius),
-          onTap: () {
-            onToggle(toggled);
-          },
-          child: IconTheme(
-              data: IconThemeData(
-                  color: toggled
-                      ? Material.Theme
+    return Material.Stack(
+      children: <Material.Widget>[
+        Positioned.fill(
+          child:AnimatedOpacity(
+            duration: Duration(milliseconds: 200),
+            opacity: toggled ? 1.0 : 0.0,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: toggledColor ?? Material.Theme
                       .of(context)
-                      .primaryIconTheme
-                      .color
-                      : Material.Theme
-                      .of(context)
-                      .iconTheme
-                      .color
+                      .primaryColor ,
+                borderRadius: BorderRadius.circular(kBorderRadius),
+                border: Border.all(
+                  color: Material.Colors.black12,
+                )
               ),
-            child: DefaultTextStyle(
-                style: TextStyle(
-                    color: toggled
-                        ? Material.Theme
-                        .of(context)
-                        .primaryIconTheme
-                        .color
-                        : Material.Theme
-                        .of(context)
-                        .iconTheme
-                        .color
+            ),
+          )
+        ),
+        Positioned.fill(
+          child: Material.Material(
+            type: Material.MaterialType.transparency,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(kBorderRadius),
+            ),
+            elevation: 0.0,
+            child: Material.InkWell(
+              splashColor: splashColor,
+              highlightColor: highlightColor,
+              borderRadius: BorderRadius.circular(kBorderRadius),
+              onTap: () {
+                onToggle(toggled);
+              },
+              child: IconTheme(
+                  data: IconThemeData(
+                      color: toggled
+                          ? Material.Theme
+                          .of(context)
+                          .primaryIconTheme
+                          .color
+                          : Material.Theme
+                          .of(context)
+                          .iconTheme
+                          .color
+                  ),
+                child: DefaultTextStyle(
+                    style: TextStyle(
+                        color: toggled
+                            ? Material.Theme
+                            .of(context)
+                            .primaryIconTheme
+                            .color
+                            : Material.Theme
+                            .of(context)
+                            .iconTheme
+                            .color
+                    ),
+                    child: child
                 ),
-                child: child
+              ),
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

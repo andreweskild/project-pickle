@@ -14,7 +14,7 @@ const double _kMenuScreenPadding = 12.0;
 
 const double _kButtonHeight = 56.0;
 
-const double _kMenuWidth = 324.0;
+const double _kMenuWidth = 360.0;
 const double _kMenuHeight = 72.0 + 12.0 * 4.0 + 40.0 * 3.0 + 1.0;
 
 
@@ -164,6 +164,7 @@ class ColorPopupContentState extends State<ColorPopupContent> {
         ),
       ),
     );
+    Color _contrastingColor =_getContrastingColor(_color.toColor());
 
     return SizedBox(
       height: size.value.height,
@@ -176,32 +177,28 @@ class ColorPopupContentState extends State<ColorPopupContent> {
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Row(
-                    children: <Widget>[
-                      OutlineIconButton(
-                        icon: Icon(Icons.clear),
-                        onPressed: widget.onCancel,
-                        color: _getContrastingColor(_color.toColor()),
-                      ),
-                      SizedBox(
-                          width: 12.0
-                      ),
-                      OutlineIconButton(
-                        icon: Icon(Icons.delete_outline),
-                        onPressed: widget.onCancel,
-                        color: _getContrastingColor(_color.toColor()),
-                      ),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: OutlineIconButton(
-                            icon: Icon(Icons.check),
-                            onPressed: () => widget.onAccept(_color),
-                            color: _getContrastingColor(_color.toColor()),
-                          ),
+                  children: <Widget>[
+                    FlatButton(
+                      child: Text('Delete'),
+                      onPressed: widget.onCancel,
+                      highlightColor: _contrastingColor.withAlpha(100),
+                      splashColor: _contrastingColor.withAlpha(100),
+                      textColor:_contrastingColor,
+                    ),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: FlatButton(
+                          child: Text('Accept'),
+                          onPressed: () => widget.onAccept(_color),
+                          highlightColor: _contrastingColor.withAlpha(100),
+                          splashColor: _contrastingColor.withAlpha(100),
+                          textColor: _contrastingColor,   
                         ),
-                      )
-                    ]
-                ),
+                      ),
+                    )
+                  ]
+                  ),
               ),
             ),
             Expanded(
@@ -540,11 +537,12 @@ class ColorMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color _contrastingColor =_getContrastingColor(color);
     return SizedBox(
       height: _kButtonHeight,
       child: ToggleButton(
-        splashColor: _getContrastingColor(color).withAlpha(50),
-        highlightColor: _getContrastingColor(color).withAlpha(50),
+        splashColor: _contrastingColor.withAlpha(100),
+        highlightColor: _contrastingColor.withAlpha(100),
         color: color,
         toggledColor: color,
         shadowColor: color,
@@ -562,7 +560,7 @@ class ColorMenuButton extends StatelessWidget {
             opacity: active ? 1.0 : 0.0,
             child: Padding(
               padding: const EdgeInsets.all(4.0),
-              child: Icon(Icons.check, color: _getContrastingColor(color)),
+              child: Icon(Icons.check, color: _contrastingColor),
             ),
           )
         )

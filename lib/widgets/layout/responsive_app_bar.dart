@@ -1,5 +1,7 @@
 import 'dart:math' as math;
 
+import 'package:project_pickle/tangible/tangible.dart' as Tangible;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -448,7 +450,7 @@ class _ResponsiveAppBarState extends State<ResponsiveAppBar> {
         fit: StackFit.passthrough,
         children: <Widget>[
           widget.flexibleSpace,
-          appBar,
+          appBar
         ],
       );
     }
@@ -462,14 +464,23 @@ class _ResponsiveAppBarState extends State<ResponsiveAppBar> {
       explicitChildNodes: true,
       child: AnnotatedRegion<SystemUiOverlayStyle>(
         value: overlayStyle,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: widget.backgroundColor ?? themeData.primaryColor,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: appBar,
-          ),
+        child: Column(
+          children: <Widget>[
+            Tangible.Divider.horizontal(
+              thickness: 1.0,
+            ),
+            Expanded(
+              child: Tangible.Card(
+                borderRadius: BorderRadius.zero,
+                borderSide: BorderSide.none,
+                elevation: 0.0,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: appBar,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
