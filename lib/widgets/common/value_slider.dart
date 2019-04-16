@@ -831,7 +831,6 @@ class _RenderSlider extends RenderBox {
       _currentDragValue = _getValueFromGlobalPosition(globalPosition);
       onChanged(_discretize(_currentDragValue));
       _state.overlayController.forward();
-      if (showValueIndicator) {
         _state.valueIndicatorController.forward();
         _state.interactionTimer?.cancel();
         _state.interactionTimer = new Timer(_minimumInteractionTime * timeDilation, () {
@@ -841,7 +840,6 @@ class _RenderSlider extends RenderBox {
             _state.valueIndicatorController.reverse();
           }
         });
-      }
     }
   }
 
@@ -853,9 +851,7 @@ class _RenderSlider extends RenderBox {
       _active = false;
       _currentDragValue = 0.0;
       _state.overlayController.reverse();
-      if (showValueIndicator && _state.interactionTimer == null) {
-        _state.valueIndicatorController.reverse();
-      }
+      _state.valueIndicatorController.reverse();
     }
   }
 
@@ -981,8 +977,10 @@ class _RenderSlider extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     final Canvas canvas = context.canvas;
+    final double thumbHeight = _sliderTheme.thumbShape.getPreferredSize(isInteractive, isDiscrete).height;
+    final double thumbWidth = _sliderTheme.thumbShape.getPreferredSize(isInteractive, isDiscrete).width;
 
-    final double trackLength = size.width - 2 * _overlayRadius;
+    final double trackLength = size.width - thumbWidth;
     final double value = _state.positionController.value;
     final ColorTween activeTrackEnableColor = new ColorTween(begin: _sliderTheme.disabledActiveTrackColor, end: _sliderTheme.activeTrackColor);
     final ColorTween inactiveTrackEnableColor = new ColorTween(begin: _sliderTheme.disabledInactiveTrackColor, end: _sliderTheme.inactiveTrackColor);
@@ -1032,13 +1030,11 @@ class _RenderSlider extends RenderBox {
     const double thumbGap = 2.0;
 
     final double trackVerticalCenter = offset.dy + (size.height) / 2.0;
-    final double trackLeft = offset.dx + _overlayRadius;
+    final double trackLeft = offset.dx + thumbWidth / 2;
     final double trackTop = trackVerticalCenter - trackRadius;
     final double trackBottom = trackVerticalCenter + trackRadius;
     final double trackRight = trackLeft + trackLength;
     final double trackActive = trackLeft + trackLength * visualPosition;
-    final double thumbHeight = _sliderTheme.thumbShape.getPreferredSize(isInteractive, isDiscrete).height;
-    final double thumbWidth = _sliderTheme.thumbShape.getPreferredSize(isInteractive, isDiscrete).width;
     final double trackActiveLeft = math.max(0.0 + 2.0, trackActive - thumbWidth - thumbGap * (1.0 - _enableAnimation.value) + 2.0);
     final double trackActiveRight = math.min(trackActive + thumbWidth + thumbGap * (1.0 - _enableAnimation.value), trackRight);
     final RRect trackLeftRect = RRect.fromRectAndCorners(

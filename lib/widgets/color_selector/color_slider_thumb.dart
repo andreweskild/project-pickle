@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:project_pickle/tangible/constants.dart';
+
 class ColorSliderThumbShape extends SliderComponentShape {
   /// Create a slider thumb that draws a circle.
   const ColorSliderThumbShape(this.color);
@@ -37,21 +39,21 @@ class ColorSliderThumbShape extends SliderComponentShape {
     );
     canvas.drawRRect(
       RRect.fromLTRBR(
-          thumbCenter.dx - heightTween.evaluate(enableAnimation) * .3,
-          thumbCenter.dy - heightTween.evaluate(enableAnimation) / 2,
-          thumbCenter.dx + heightTween.evaluate(enableAnimation) * .3,
-          thumbCenter.dy + heightTween.evaluate(enableAnimation) / 2,
-          Radius.circular(8.0)
+          thumbCenter.dx - heightTween.evaluate(enableAnimation) * .5,
+          thumbCenter.dy - heightTween.evaluate(enableAnimation) * .5,
+          thumbCenter.dx + heightTween.evaluate(enableAnimation) * .5,
+          thumbCenter.dy + heightTween.evaluate(enableAnimation) * .5,
+          Radius.circular(kBorderRadius)
       ),
       new Paint()..color = colorTween.evaluate(activationAnimation),
     );
     canvas.drawRRect(
       RRect.fromLTRBR(
-          thumbCenter.dx - heightTween.evaluate(enableAnimation) * .3,
-          thumbCenter.dy - heightTween.evaluate(enableAnimation) / 2,
-          thumbCenter.dx + heightTween.evaluate(enableAnimation) * .3,
-          thumbCenter.dy + heightTween.evaluate(enableAnimation) / 2,
-          Radius.circular(8.0)
+          thumbCenter.dx - heightTween.evaluate(enableAnimation) * .5,
+          thumbCenter.dy - heightTween.evaluate(enableAnimation) * .5,
+          thumbCenter.dx + heightTween.evaluate(enableAnimation) * .5,
+          thumbCenter.dy + heightTween.evaluate(enableAnimation) * .5,
+          Radius.circular(kBorderRadius)
       ),
       new Paint()..color = Colors.black26
                  ..strokeWidth = 1.0

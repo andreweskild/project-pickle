@@ -12,7 +12,12 @@ class Card extends StatelessWidget {
     this.child,
     this.color,
     this.borderSide,
-    this.borderRadius = const BorderRadius.all(const Radius.circular(kBorderRadius+2.0)),
+    this.borderRadius = const BorderRadius.only(
+      topLeft: const Radius.circular(kBorderRadius),
+      topRight: const Radius.circular(kBorderRadius),
+      bottomLeft: const Radius.circular(kBorderRadius+2.0),
+      bottomRight: const Radius.circular(kBorderRadius+2.0),
+    ),
     this.elevation = 24.0,
   }) : super(key: key);
 
@@ -48,6 +53,7 @@ class Card extends StatelessWidget {
               sigmaY: kBlurAmount,
             ),
             child: Material.Material(
+              borderOnForeground: false,
               color: _color.withAlpha(kSurfaceOpacity),
               shape: RoundedRectangleBorder(
                 borderRadius: borderRadius,
@@ -67,8 +73,8 @@ class CardHeader extends StatelessWidget {
     Key key,
     this.child,
     this.borderRadius = const BorderRadius.only(
-      topLeft: Radius.circular(kBorderRadius + 2.0),
-      topRight: Radius.circular(kBorderRadius + 2.0),
+      topLeft: Radius.circular(kBorderRadius),
+      topRight: Radius.circular(kBorderRadius),
       bottomLeft: Radius.zero,
       bottomRight: Radius.zero,
     ),

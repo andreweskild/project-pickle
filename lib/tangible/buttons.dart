@@ -152,7 +152,6 @@ class ToggleButton extends StatelessWidget {
     this.splashColor,
     this.shadowColor,
     this.highlightColor,
-    this.toggledElevation = 6,
   }) : super(key: key);
 
   final Color color;
@@ -160,7 +159,6 @@ class ToggleButton extends StatelessWidget {
   final Color splashColor;
   final Color shadowColor;
   final Color highlightColor;
-  final int toggledElevation;
   final Widget child;
   final ValueChanged<bool> onToggle;
   final bool toggled;

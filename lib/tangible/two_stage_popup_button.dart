@@ -385,7 +385,6 @@ class _TwoStagePopupButtonState extends State<TwoStagePopupButton> {
         color: widget.color,
         toggledColor: widget.toggledColor,
         toggled: widget.active,
-        toggledElevation: widget.toggledElevation,
         onToggle: (toggled) {
           if (!toggled) {
             widget.onToggled();

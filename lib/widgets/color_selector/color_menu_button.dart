@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart' as Material;
 import 'package:flutter/widgets.dart';
 import 'package:flutter/painting.dart';
 
@@ -231,25 +232,23 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                       inactiveTickMarkColor: Colors.transparent,
                                       thumbShape: ColorSliderThumbShape(_color.withSaturation(1.0).withLightness(0.5).toColor()),
                                       overlayColor: _color.withAlpha(0.3).withSaturation(1.0).withLightness(0.5).toColor(),
-                                      showValueIndicator: ShowValueIndicator.always,
-                                      valueIndicatorColor: _color.withSaturation(1.0).withLightness(0.5).toColor(),
-                                      valueIndicatorShape: ColorSliderValueIndicatorShape(),
-                                      valueIndicatorTextStyle: TextStyle(
-                                        color: _getContrastingColor(_color.withSaturation(1.0).withLightness(0.5).toColor()),
-                                      )
                                   ),
                                   child: Stack(
                                     children: <Widget>[
-                                      Positioned.fill(
-                                        child: DecoratedBox(
-                                          decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              begin: Alignment.centerLeft,
-                                              end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
-                                              colors: [const Color(0xFFFF0000), const Color(0xFFFFFF00), const Color(0xFF00FF00), const Color(0xFF00FFFF), const Color(0xFF0000FF), const Color(0xFFFF00FF), const Color(0xFFFF0000)], // whitish to gray
-                                              tileMode: TileMode.clamp, // repeats the gradient over the canvas
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: ConstrainedBox(
+                                          constraints: BoxConstraints.expand(height: 4.0),
+                                          child: DecoratedBox(
+                                            decoration: ShapeDecoration(
+                                              gradient: LinearGradient(
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
+                                                colors: [const Color(0xFFFF0000), const Color(0xFFFFFF00), const Color(0xFF00FF00), const Color(0xFF00FFFF), const Color(0xFF0000FF), const Color(0xFFFF00FF), const Color(0xFFFF0000)], // whitish to gray
+                                                tileMode: TileMode.clamp, // repeats the gradient over the canvas
+                                              ),
+                                              shape: StadiumBorder(),
                                             ),
-                                            borderRadius: BorderRadius.circular(8.0),
                                           ),
                                         ),
                                       ),
@@ -294,25 +293,23 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                       inactiveTickMarkColor: Colors.transparent,
                                       overlayColor: _color.toColor().withOpacity(0.33),
                                       thumbShape: ColorSliderThumbShape(_color.toColor()),
-                                      showValueIndicator: ShowValueIndicator.always,
-                                      valueIndicatorColor: _color.toColor(),
-                                      valueIndicatorShape: ColorSliderValueIndicatorShape(),
-                                      valueIndicatorTextStyle: TextStyle(
-                                        color: _getContrastingColor(_color.toColor()),
-                                      )
                                   ),
                                   child: Stack(
                                     children: <Widget>[
-                                      Positioned.fill(
-                                        child: DecoratedBox(
-                                          decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              begin: Alignment.centerLeft,
-                                              end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
-                                              colors: [_color.withSaturation(0.0).toColor(), _color.withSaturation(1.0).toColor()], // whitish to gray
-                                              tileMode: TileMode.clamp, // repeats the gradient over the canvas
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: ConstrainedBox(
+                                          constraints: BoxConstraints.expand(height: 4.0),
+                                          child: DecoratedBox(
+                                            decoration: ShapeDecoration(
+                                              gradient: LinearGradient(
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
+                                                colors: [_color.withSaturation(0.0).toColor(), _color.withSaturation(1.0).toColor()], // whitish to gray
+                                                tileMode: TileMode.clamp, // repeats the gradient over the canvas
+                                              ),
+                                              shape: StadiumBorder()
                                             ),
-                                            borderRadius: BorderRadius.circular(8.0),
                                           ),
                                         ),
                                       ),
@@ -355,27 +352,25 @@ class ColorPopupContentState extends State<ColorPopupContent> {
                                       inactiveTrackColor: Colors.transparent,
                                       activeTickMarkColor: Colors.transparent,
                                       inactiveTickMarkColor: Colors.transparent,
-                                      showValueIndicator: ShowValueIndicator.always,
                                       overlayColor: _color.toColor().withOpacity(0.33),
                                       thumbShape: ColorSliderThumbShape(_color.toColor()),
-                                      valueIndicatorColor: _color.toColor(),
-                                      valueIndicatorShape: ColorSliderValueIndicatorShape(),
-                                      valueIndicatorTextStyle: TextStyle(
-                                        color: _getContrastingColor(_color.toColor()),
-                                      )
                                   ),
                                   child: Stack(
                                     children: <Widget>[
-                                      Positioned.fill(
-                                        child: DecoratedBox(
-                                          decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              begin: Alignment.centerLeft,
-                                              end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
-                                              colors: [const Color(0xFF000000), _color.withLightness(0.5).toColor(), const Color(0xFFFFFFFF)], // whitish to gray
-                                              tileMode: TileMode.clamp, // repeats the gradient over the canvas
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: ConstrainedBox(
+                                          constraints: BoxConstraints.expand(height: 4.0),
+                                          child: DecoratedBox(
+                                            decoration: ShapeDecoration(
+                                              gradient: LinearGradient(
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight,// 10% of the width, so there are ten blinds.
+                                                colors: [const Color(0xFF000000), _color.withLightness(0.5).toColor(), const Color(0xFFFFFFFF)], // whitish to gray
+                                                tileMode: TileMode.clamp, // repeats the gradient over the canvas
+                                              ),
+                                              shape: StadiumBorder(),
                                             ),
-                                            borderRadius: BorderRadius.circular(8.0),
                                           ),
                                         ),
                                       ),
@@ -540,13 +535,11 @@ class ColorMenuButton extends StatelessWidget {
     Color _contrastingColor =_getContrastingColor(color);
     return SizedBox(
       height: _kButtonHeight,
-      child: ToggleButton(
+      child: _ColorToggleButton(
         splashColor: _contrastingColor.withAlpha(100),
         highlightColor: _contrastingColor.withAlpha(100),
         color: color,
-        toggledColor: color,
         shadowColor: color,
-        toggledElevation: 0,
         toggled: active,
         onToggle: (toggled) {
           if(toggled) { _showColorMenu(context); }
@@ -565,6 +558,65 @@ class ColorMenuButton extends StatelessWidget {
           )
         )
       )
+    );
+  }
+}
+
+class _ColorToggleButton extends StatelessWidget {
+  _ColorToggleButton({
+    Key key,
+    @required this.child,
+    @required this.onToggle,
+    @required this.toggled,
+    this.color,
+    this.splashColor,
+    this.shadowColor,
+    this.highlightColor,
+  }) : super(key: key);
+
+  final Color color;
+  final Color splashColor;
+  final Color shadowColor;
+  final Color highlightColor;
+  final Widget child;
+  final ValueChanged<bool> onToggle;
+  final bool toggled;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Material.Stack(
+      children: <Material.Widget>[
+        Positioned.fill(
+          child:DecoratedBox(
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(kBorderRadius),
+              border: Border.all(
+                color: Material.Colors.black12,
+              )
+            ),
+          )
+        ),
+        Positioned.fill(
+          child: Material.Material(
+            type: Material.MaterialType.transparency,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(kBorderRadius),
+            ),
+            elevation: 0.0,
+            child: Material.InkWell(
+              splashColor: splashColor,
+              highlightColor: highlightColor,
+              borderRadius: BorderRadius.circular(kBorderRadius),
+              onTap: () {
+                onToggle(toggled);
+              },
+              child: child,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
